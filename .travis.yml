@@ -1,0 +1,11 @@
+node_js:
+  - "node"
+language: node_js
+install:
+  - yarn
+  - yarn postinstall
+script:
+  - yarn build
+  - yarn test
+  - yarn example
+  - yarn doc
