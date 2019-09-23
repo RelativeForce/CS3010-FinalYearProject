@@ -1,4 +1,4 @@
-module Emodius where
+module ProjectArken where
 
 import Prelude
 
