@@ -2,13 +2,14 @@
 name: Feature
 about: 'A new feature to be added to the '
 title: "[Feature] New Feature"
-labels: ''
+labels: Feature
 assignees: ''
 
 ---
 
-## Reviewed Date:
-## Points Spent:
+## Details:
+Reviewed Date:
+Points Spent:
 
 ## Background
 
@@ -17,3 +18,5 @@ assignees: ''
 ## Acceptance Criteria
 
 ## Closing Notes
+
+## Review Notes
