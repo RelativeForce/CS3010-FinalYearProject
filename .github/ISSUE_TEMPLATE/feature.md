@@ -9,7 +9,7 @@ assignees: ''
 
 ## Details:
 Reviewed Date:
-Points Spent:
+Points Spent: 0
 
 ## Background
 
