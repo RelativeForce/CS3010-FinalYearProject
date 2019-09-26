@@ -1,6 +1,11 @@
 # Project Arken (WIP Title)
 
-A functional 2D game written using the Emo8 game engine.
+A functional 2D game written using the Emo8 game engine. Project Arken is the placeholder title until a title is determined. This game is inspired by the old NES game Contra.
+
+### Brief
+
+CodeWorld, Elm and PureScript are typed functional programming languages for interactive web applications. This project should develop a web-based 2D game sufficiently different from those already available. 
+The goal is not only to develop the game but to study the pros and cons of using a typed functional language compiled to JavaScript compared to writing JavaScript manually. A comparison could be made on aspects such as documentation and support, maintainability, ease of integration with other tools and libraries.
 
 ### Why PureScript?
 
@@ -38,11 +43,11 @@ It is also compiled into JavaScript and easy to distribute.
  \___/¯\___/
 ```
 
-
 ## Sample Programs
 
 Clone this repository first.
-`yarn` is required. `npm install yarn -g`
+`yarn` is required. 
+`npm install yarn -g`
 
 ### Install
 
