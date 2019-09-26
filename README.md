@@ -1,22 +1,11 @@
-# EMO8
+# Project Arken (WIP Title)
 
-[![Build status](https://travis-ci.org/opyapeus/purescript-emo8.svg?branch=master)](https://travis-ci.org/opyapeus/purescript-emo8)
+A functional 2D game written using the Emo8 game engine. Project Arken is the placeholder title until a title is determined. This game is inspired by the old NES game Contra.
 
-A functional 2D game engine that can create emoji games.
+### Brief
 
-※ It's still a beta version.
-
-[ [日本語](README.ja.md) ]
-
-![emo8](emo8.jpg)
-![emodius](https://opyapeus.github.io/emo8/img/emodius-half.gif)
-
-## Recommended For The Person 
-
-- Who want to make simple games in functional language
-- Who thinks it is troublesome to prepare game materials
-- Who want to distribute the game easily
-- *Who want a start to learn purescript*
+CodeWorld, Elm and PureScript are typed functional programming languages for interactive web applications. This project should develop a web-based 2D game sufficiently different from those already available. 
+The goal is not only to develop the game but to study the pros and cons of using a typed functional language compiled to JavaScript compared to writing JavaScript manually. A comparison could be made on aspects such as documentation and support, maintainability, ease of integration with other tools and libraries.
 
 ### Why PureScript?
 
@@ -29,31 +18,16 @@ It is also compiled into JavaScript and easy to distribute.
 | Elm        | △ (No type class) | ○                                   |
 | PureScript | ○                 | ○                                   |
 
-### Why Emoji?
-
-Because it is the materials that everyone can use easily on the Web.
-In addition, I think that the limited materials stimulate your imagination like playing with the LEGO block.
-
-This library is made with inspiration form [PICO-8](https://www.lexaloffle.com/pico-8.php).
-PICO-8 also has severe restrictions, but I think that it will make the game making fun.
-
-## Play Now!
-
-You can play sample programs on the web.
-
-- [EMO8 GAMES](https://opyapeus.github.io/emo8/index.html)
-
 ## Specification
 
 - Display: variable size (recommended 256px~1024px)
 - Background Color: HTML Named Color 140 colors
-- Emoji: Unicode Emoji - [Supported Emojis](docs/emoji.md)
 - Input: 8 buttons（up down left right 4 buttons x 2）
 - Map: No limit Emoji map - [Map Edit](docs/usage.md#map-edit)
 - Sound: 4 channels Emoji score - [Sound Edit](docs/usage.md#sound-edit)
 - Language: [PureScript](http://www.purescript.org/)
 - Compiled File Volume: about 500KB~1MB
-- Frame Rate: about 60 FPS
+- Frame Rate: about 60 FPS (Depending on hardware acceleration)
 - Operating Environment: web browser
 
 ## Controller
@@ -68,25 +42,18 @@ You can play sample programs on the web.
  \___/¯\___/
 ```
 
-- Touch Screen (Swipe)
-
-```
-|¯¯¯¯¯¯¯¯|¯¯¯¯¯¯¯¯|
-|   👆    |   👆   |
-| 👈   👉 | 👈   👉 |
-|   👇    |   👇   |
-|________|________|
-```
-
 ## Sample Programs
 
 Clone this repository first.
-`yarn` is required.
+`yarn` is required. 
+`npm install yarn -g`
 
 ### Install
 
 ```sh
 yarn
+1 - purescript-record#^1.0.0
+1 - purescript-typelevel-prelude#^3.0.0
 yarn postinstall
 ```
 
@@ -94,45 +61,27 @@ yarn postinstall
 
 ```sh
 yarn build
-yarn example
+yarn projectArken
 ```
 
 ### Start (Open html in browser)
 
 ```sh
-open dist/hello/index.html
-open dist/basic/index.html
-open dist/emodius/index.html
-open dist/nekof/index.html
+copy index.html into /dist
+open dist/index.html
 ```
 
 ## Simple Manual
 
 - [Usage](docs/usage.md)
 
-## Useful Game Development Template
-
-- [EMO8 Builder](https://github.com/opyapeus/emo8-builder)
-
-## API Documentation
+## Emo8 Engine Documentation
 
 - [Module documentation on Pursuit](https://pursuit.purescript.org/packages/purescript-emo8/)
 
-## Under Developing
-
-- [ ] Interpreter which executes code on the web
-- [ ] Improve performance
-
-## Wait And See
+## Known Issues
 
 - emoji rotate (45°, 135°, 225°, 315°) problem on canvas [Why won't emojis render when rotated to 45 (or 315) degrees?](https://stackoverflow.com/questions/39749540/why-wont-emojis-render-when-rotated-to-45-or-315-degrees)
-- default emoji presentation [CSS Fonts Module Level 4 - Editor’s Draft, 17 August 2018](https://drafts.csswg.org/css-fonts-4/#font-variant-emoji-prop)
-
-## Contribution
-
-Please wait as it is still a beta version.
-If you find improvements please give me an issue.
-Thank you.
 
 ## License
 
