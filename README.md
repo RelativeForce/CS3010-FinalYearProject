@@ -22,13 +22,12 @@ It is also compiled into JavaScript and easy to distribute.
 
 - Display: variable size (recommended 256px~1024px)
 - Background Color: HTML Named Color 140 colors
-- Emoji: Unicode Emoji - [Supported Emojis](docs/emoji.md)
 - Input: 8 buttons（up down left right 4 buttons x 2）
 - Map: No limit Emoji map - [Map Edit](docs/usage.md#map-edit)
 - Sound: 4 channels Emoji score - [Sound Edit](docs/usage.md#sound-edit)
 - Language: [PureScript](http://www.purescript.org/)
 - Compiled File Volume: about 500KB~1MB
-- Frame Rate: about 60 FPS
+- Frame Rate: about 60 FPS (Depending on hardware acceleration)
 - Operating Environment: web browser
 
 ## Controller
