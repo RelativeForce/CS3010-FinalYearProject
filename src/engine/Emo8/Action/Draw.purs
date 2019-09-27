@@ -12,6 +12,7 @@ type Draw = Free DrawF
 
 data DrawF n
     = ClearScreen Color n
+    | EmoI n
     | Emo Appearance Emoji Size X Y n
     | Emor Appearance Deg Emoji Size X Y n
     | Emap Appearance MapId Size X Y n
@@ -21,6 +22,9 @@ data Appearance = Normal | Mirrored
 -- | Clear screen with given color.
 cls :: Color -> Draw Unit
 cls c = liftF $ ClearScreen c unit
+
+drawImageWithLocalContext :: Draw Unit
+drawImageWithLocalContext = liftF $ EmoI unit
 
 -- | Draw emoji.
 emo :: Emoji -> Size -> X -> Y -> Draw Unit

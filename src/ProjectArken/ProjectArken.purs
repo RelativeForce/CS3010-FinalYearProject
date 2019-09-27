@@ -15,7 +15,7 @@ import Data.Particle (Particle, initParticle, updateParticle)
 import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
 import Effect (Effect)
 import Emo8 (emo8)
-import Emo8.Action.Draw (cls, emo, emor, emor')
+import Emo8.Action.Draw (cls, emo, emor, emor', drawImageWithLocalContext)
 import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
 import Emo8.Data.Emoji as E
@@ -94,13 +94,14 @@ instance gameState :: Game State where
                 }
 
     draw TitleState = do
-        cls Aqua
-        emor' 30 E.helicopter 192 50 50
-        emo E.spiderWeb 256 200 200
-        emor (-15) E.octopus 128 300 300
-        emo E.pill 64 150 400
-        emor 75 E.pill 64 100 300
-        emo E.fastForwardButton 64 350 100
+        --cls Aqua
+      --  emor' 30 E.helicopter 192 50 50
+      --  emo E.spiderWeb 256 200 200
+      --  emor (-15) E.octopus 128 300 300
+     --   emo E.pill 64 150 400
+    --    emor 75 E.pill 64 100 300
+        --emo E.fastForwardButton 64 350 100
+        drawImageWithLocalContext
     draw OverState = do
         cls Maroon
         emo E.hole 256 125 150

@@ -13,10 +13,11 @@ import Emo8.Action.Draw (Appearance(..), Draw, DrawF(..))
 import Emo8.Constants (fontFamily)
 import Emo8.Data.Color (Color(..), colorToCode)
 import Emo8.Data.Emoji (Emoji, japaneseVacancyButton)
+import Emo8.Data.Image (Image(..), loadImage)
 import Emo8.Excepiton (providedMap)
 import Emo8.FFI.TextBaseline (TextBaseline(..), setTextBaseline)
 import Emo8.Types (Deg, IdX, IdY, MapId, MonitorSize, Size, X, Y, DrawContext)
-import Graphics.Canvas (Context2D, fillRect, fillText, restore, rotate, save, scale, setFillStyle, setFont, translate)
+import Graphics.Canvas (Context2D, fillRect, fillText, restore, rotate, save, scale, setFillStyle, setFont, translate, drawImage)
 import Math (pi)
 
 type RenderOp = DrawContext -> Effect Unit
@@ -26,6 +27,7 @@ runDraw dctx = foldFree interpret
   where
     interpret :: DrawF ~> Effect
     interpret (ClearScreen c n) = const n <$> cls c dctx
+    interpret (EmoI n) = const n <$> drawImageWithLocalContext dctx
     interpret (Emo Normal e size x y n) = const n <$> emo e size x y dctx
     interpret (Emo Mirrored e size x y n) = const n <$> emo' e size x y dctx
     interpret (Emor Normal deg e size x y n) = const n <$> emor deg e size x y dctx
@@ -63,6 +65,11 @@ drawEmoji e size x y ctx
         fillText ctx (show e) x y
         where
             font = sizeToFont size
+
+drawImageWithLocalContext :: RenderOp
+drawImageWithLocalContext =
+    withLocalDraw \dctx ->
+        loadImage "test.jpg" (\src -> drawImage dctx.ctx src 20.0 20.0)
 
 emo :: Emoji -> Size -> X -> Y -> RenderOp
 emo e size x y =
