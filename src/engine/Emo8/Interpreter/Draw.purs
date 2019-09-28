@@ -5,19 +5,21 @@ import Prelude
 import Control.Monad.Free (foldFree)
 import Data.Array (length, zip, (..))
 import Data.Int (toNumber)
+import Data.Maybe (Maybe(..))
 import Data.String (joinWith)
 import Data.Traversable (for_)
 import Data.Tuple (Tuple(..))
 import Effect (Effect)
+import Effect.Exception (throwException, error)
 import Emo8.Action.Draw (Appearance(..), Draw, DrawF(..))
 import Emo8.Constants (fontFamily)
 import Emo8.Data.Color (Color(..), colorToCode)
 import Emo8.Data.Emoji (Emoji, japaneseVacancyButton)
-import Emo8.Data.Image (Image(..), loadImage)
+import Emo8.Data.Image (Image, ScaledImage)
 import Emo8.Excepiton (providedMap)
 import Emo8.FFI.TextBaseline (TextBaseline(..), setTextBaseline)
 import Emo8.Types (Deg, IdX, IdY, MapId, MonitorSize, Size, X, Y, DrawContext)
-import Graphics.Canvas (Context2D, fillRect, fillText, restore, rotate, save, scale, setFillStyle, setFont, translate, drawImage)
+import Graphics.Canvas (Context2D, CanvasImageSource, fillRect, fillText, restore, rotate, save, scale, setFillStyle, setFont, translate, drawImage, tryLoadImage)
 import Math (pi)
 
 type RenderOp = DrawContext -> Effect Unit
@@ -149,3 +151,9 @@ degToRad d = 2.0 * pi * toNumber d / 360.0
 sizeToFont :: Size -> String
 sizeToFont px = joinWith " " [fontSize, fontFamily]
     where fontSize = show px <> "px"
+
+loadImage :: String -> (CanvasImageSource -> Effect Unit) -> Effect Unit
+loadImage imagePath f = tryLoadImage imagePath $ \maybeImageSource -> 
+    case maybeImageSource of
+        Just imageSource -> f imageSource
+        Nothing -> throwException $ error ("Error - Could not load image from path: " <> (show imagePath))

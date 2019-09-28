@@ -62,6 +62,7 @@ emptyAsset = { mapData: [], soundData: [] }
 
 defaultMonitorSize :: MonitorSize
 defaultMonitorSize =
-    { width: 512
-    , height: 512
+    { 
+        width: 1280, 
+        height: 720
     }
