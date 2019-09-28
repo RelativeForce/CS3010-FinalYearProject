@@ -17,9 +17,9 @@ import Emo8.Data.Color (Color(..), colorToCode)
 import Emo8.Data.Emoji (Emoji, japaneseVacancyButton)
 import Emo8.Excepiton (providedMap)
 import Emo8.FFI.TextBaseline (TextBaseline(..), setTextBaseline)
-import Emo8.Types (Deg, IdX, IdY, MapId, MonitorSize, Size, X, Y, Width, Height, DrawContext, Image, ScaledImage)
+import Emo8.Types (Deg, IdX, IdY, MapId, MonitorSize, Size, X, Y, DrawContext, Image, ScaledImage)
 import Graphics.Canvas (Context2D, CanvasImageSource, fillRect, fillText, restore, rotate, save, scale, setFillStyle, setFont, translate, drawImage, tryLoadImage, drawImageScale)
-import Math (pi, sin, cos)
+import Math (pi)
 
 type RenderOp = DrawContext -> Effect Unit
 
