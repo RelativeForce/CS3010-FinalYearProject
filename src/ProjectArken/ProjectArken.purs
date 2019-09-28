@@ -15,7 +15,7 @@ import Data.Particle (Particle, initParticle, updateParticle)
 import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
 import Effect (Effect)
 import Emo8 (emo8)
-import Emo8.Action.Draw (cls, emo, emor, emor', drawScaledImage)
+import Emo8.Action.Draw (cls, emo, emor, emor', drawRotatedScaledImage)
 import Emo8.Data.Image as I
 import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
@@ -95,7 +95,8 @@ instance gameState :: Game State where
                 }
 
     draw TitleState = do
-        drawScaledImage I.titleScreen 0 0
+        drawRotatedScaledImage I.titleScreen 0 0 0
+        drawRotatedScaledImage I.titleScreen 100 0 30
     draw OverState = do
         cls Maroon
         emo E.hole 256 125 150

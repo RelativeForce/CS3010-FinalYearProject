@@ -14,6 +14,7 @@ data DrawF n
     = ClearScreen Color n
     | DrawImageNoScaling Image X Y n
     | DrawScaledImage ScaledImage X Y n
+    | DrawRotatedScaledImage ScaledImage X Y Deg n
     | Emo Appearance Emoji Size X Y n
     | Emor Appearance Deg Emoji Size X Y n
     | Emap Appearance MapId Size X Y n
@@ -29,6 +30,9 @@ drawImageNoScaling image x y = liftF $ DrawImageNoScaling image x y unit
 
 drawScaledImage :: ScaledImage -> X -> Y -> Draw Unit
 drawScaledImage image x y = liftF $ DrawScaledImage image x y unit
+
+drawRotatedScaledImage :: ScaledImage -> X -> Y -> Deg -> Draw Unit
+drawRotatedScaledImage image x y angle = liftF $ DrawRotatedScaledImage image x y angle unit
 
 -- | Draw emoji.
 emo :: Emoji -> Size -> X -> Y -> Draw Unit
