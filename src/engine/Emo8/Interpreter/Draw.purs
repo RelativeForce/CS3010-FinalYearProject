@@ -15,11 +15,10 @@ import Emo8.Action.Draw (Appearance(..), Draw, DrawF(..))
 import Emo8.Constants (fontFamily)
 import Emo8.Data.Color (Color(..), colorToCode)
 import Emo8.Data.Emoji (Emoji, japaneseVacancyButton)
-import Emo8.Data.Image (Image, ScaledImage)
 import Emo8.Excepiton (providedMap)
 import Emo8.FFI.TextBaseline (TextBaseline(..), setTextBaseline)
-import Emo8.Types (Deg, IdX, IdY, MapId, MonitorSize, Size, X, Y, DrawContext)
-import Graphics.Canvas (Context2D, CanvasImageSource, fillRect, fillText, restore, rotate, save, scale, setFillStyle, setFont, translate, drawImage, tryLoadImage)
+import Emo8.Types (Deg, IdX, IdY, MapId, MonitorSize, Size, X, Y, Width, Height, DrawContext, Image, ScaledImage)
+import Graphics.Canvas (Context2D, CanvasImageSource, fillRect, fillText, restore, rotate, save, scale, setFillStyle, setFont, translate, drawImage, tryLoadImage, drawImageScale)
 import Math (pi)
 
 type RenderOp = DrawContext -> Effect Unit
@@ -29,7 +28,8 @@ runDraw dctx = foldFree interpret
   where
     interpret :: DrawF ~> Effect
     interpret (ClearScreen c n) = const n <$> cls c dctx
-    interpret (EmoI path n) = const n <$> drawImageWithLocalContext path dctx
+    interpret (DrawImageNoScaling image x y n) = const n <$> drawImageNoScaling image x y dctx
+    interpret (DrawScaledImage image x y n) = const n <$> drawScaledImage image x y dctx
     interpret (Emo Normal e size x y n) = const n <$> emo e size x y dctx
     interpret (Emo Mirrored e size x y n) = const n <$> emo' e size x y dctx
     interpret (Emor Normal deg e size x y n) = const n <$> emor deg e size x y dctx
@@ -67,11 +67,6 @@ drawEmoji e size x y ctx
         fillText ctx (show e) x y
         where
             font = sizeToFont size
-
-drawImageWithLocalContext :: String -> RenderOp
-drawImageWithLocalContext path =
-    withLocalDraw \dctx ->
-        loadImage path (\src -> drawImage dctx.ctx src 0.0 0.0)
 
 emo :: Emoji -> Size -> X -> Y -> RenderOp
 emo e size x y =
@@ -151,6 +146,21 @@ degToRad d = 2.0 * pi * toNumber d / 360.0
 sizeToFont :: Size -> String
 sizeToFont px = joinWith " " [fontSize, fontFamily]
     where fontSize = show px <> "px"
+
+drawImageWithLocalContext :: String -> RenderOp
+drawImageWithLocalContext path =
+    withLocalDraw \dctx ->
+        loadImage path (\src -> drawImage dctx.ctx src 0.0 0.0)
+
+drawImageNoScaling :: Image -> X -> Y -> RenderOp
+drawImageNoScaling image x y =
+            withLocalDraw \dctx ->
+                loadImage image $ \src -> drawImage dctx.ctx src (toNumber x) (toNumber y)
+
+drawScaledImage :: ScaledImage -> X -> Y -> RenderOp
+drawScaledImage scaledImage x y =
+            withLocalDraw \dctx ->
+                loadImage scaledImage.image $ \src -> drawImageScale dctx.ctx src (toNumber x) (toNumber y) (toNumber scaledImage.width) (toNumber scaledImage.height)
 
 loadImage :: String -> (CanvasImageSource -> Effect Unit) -> Effect Unit
 loadImage imagePath f = tryLoadImage imagePath $ \maybeImageSource -> 
