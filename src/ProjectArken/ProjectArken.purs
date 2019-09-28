@@ -96,7 +96,7 @@ instance gameState :: Game State where
 
     draw TitleState = do
         drawRotatedScaledImage I.titleScreen 0 0 0
-        drawRotatedScaledImage I.titleScreen 100 0 30
+        drawRotatedScaledImage I.titleScreen 0 500 30
     draw OverState = do
         cls Maroon
         emo E.hole 256 125 150

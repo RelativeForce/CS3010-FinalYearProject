@@ -165,9 +165,11 @@ drawRotatedScaledImage scaledImage x y angle =
                     deltaY = ((toNumber scaledImage.height) / 2.0)
                 loadImage scaledImage.image $ \src -> 
                     do
+                        translate dctx.ctx { translateX: toNumber x, translateY: toNumber y }
                         rotate dctx.ctx (-degToRad angle)
-                        drawImageScale dctx.ctx src (toNumber x) (toNumber y) (toNumber scaledImage.width) (toNumber scaledImage.height)
+                        drawImageScale dctx.ctx src 0.0 0.0 (toNumber scaledImage.width) (toNumber scaledImage.height)
                         rotate dctx.ctx (degToRad angle)
+                        translate dctx.ctx { translateX: -toNumber x, translateY: -toNumber y }
 
 loadImage :: String -> (CanvasImageSource -> Effect Unit) -> Effect Unit
 loadImage imagePath f = tryLoadImage imagePath $ \maybeImageSource -> 
