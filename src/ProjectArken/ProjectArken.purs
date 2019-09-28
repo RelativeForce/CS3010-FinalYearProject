@@ -94,14 +94,15 @@ instance gameState :: Game State where
                 }
 
     draw TitleState = do
-        --cls Aqua
+        
       --  emor' 30 E.helicopter 192 50 50
       --  emo E.spiderWeb 256 200 200
       --  emor (-15) E.octopus 128 300 300
      --   emo E.pill 64 150 400
     --    emor 75 E.pill 64 100 300
         --emo E.fastForwardButton 64 350 100
-        drawImageWithLocalContext
+        drawImageWithLocalContext "test.jpg"
+        drawImageWithLocalContext "test1.jpg"
     draw OverState = do
         cls Maroon
         emo E.hole 256 125 150

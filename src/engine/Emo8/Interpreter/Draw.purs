@@ -27,7 +27,7 @@ runDraw dctx = foldFree interpret
   where
     interpret :: DrawF ~> Effect
     interpret (ClearScreen c n) = const n <$> cls c dctx
-    interpret (EmoI n) = const n <$> drawImageWithLocalContext dctx
+    interpret (EmoI path n) = const n <$> drawImageWithLocalContext path dctx
     interpret (Emo Normal e size x y n) = const n <$> emo e size x y dctx
     interpret (Emo Mirrored e size x y n) = const n <$> emo' e size x y dctx
     interpret (Emor Normal deg e size x y n) = const n <$> emor deg e size x y dctx
@@ -66,10 +66,10 @@ drawEmoji e size x y ctx
         where
             font = sizeToFont size
 
-drawImageWithLocalContext :: RenderOp
-drawImageWithLocalContext =
+drawImageWithLocalContext :: String -> RenderOp
+drawImageWithLocalContext path =
     withLocalDraw \dctx ->
-        loadImage "test.jpg" (\src -> drawImage dctx.ctx src 20.0 20.0)
+        loadImage path (\src -> drawImage dctx.ctx src 0.0 0.0)
 
 emo :: Emoji -> Size -> X -> Y -> RenderOp
 emo e size x y =
