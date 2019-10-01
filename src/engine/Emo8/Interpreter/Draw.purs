@@ -160,9 +160,7 @@ drawScaledImage scaledImage x y =
 
 drawRotatedScaledImage :: ScaledImage -> X -> Y -> Deg -> RenderOp
 drawRotatedScaledImage scaledImage x y angle =
-            withLocalDraw \dctx -> do
-                let deltaX = ((toNumber scaledImage.width) / 2.0)
-                    deltaY = ((toNumber scaledImage.height) / 2.0)
+            withLocalDraw \dctx ->
                 loadImage scaledImage.image $ \src -> 
                     do
                         translate dctx.ctx { translateX: toNumber x, translateY: toNumber y }
