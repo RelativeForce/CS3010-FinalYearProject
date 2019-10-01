@@ -1,10 +1,11 @@
 module Emo8.Utils
-    ( mkAsset
-    , emptyAsset
-    , defaultMonitorSize
-    , isMonitorCollide
-    , isOutOfMonitor
-    , isCollide
+    ( 
+        mkAsset, 
+        emptyAsset, 
+        defaultMonitorSize, 
+        isMonitorCollide, 
+        isOutOfMonitor, 
+        isCollide
     ) where
 
 import Prelude
@@ -58,10 +59,13 @@ mkAsset rms rss = do
 
 -- | Empty asset for convenience. 
 emptyAsset :: Asset
-emptyAsset = { mapData: [], soundData: [] }
+emptyAsset = { 
+    mapData: [], 
+    soundData: [] 
+}
 
 defaultMonitorSize :: MonitorSize
-defaultMonitorSize =
-    { width: 512
-    , height: 512
-    }
+defaultMonitorSize = { 
+    width: 1280, 
+    height: 720
+}
