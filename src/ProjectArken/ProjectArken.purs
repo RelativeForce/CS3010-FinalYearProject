@@ -28,14 +28,14 @@ data State
     = TitleState
     | OverState
     | ClearState
-    | PlayState
-        { distance :: Int
-        , player :: Player
-        , bullets :: Array Bullet
-        , enemies :: Array Enemy
-        , particles :: Array Particle
-        , enemyBullets :: Array EnemyBullet
-        }
+    | PlayState { 
+        distance :: Int, 
+        player :: Player, 
+        bullets :: Array Bullet, 
+        enemies :: Array Enemy, 
+        particles :: Array Particle, 
+        enemyBullets :: Array EnemyBullet
+    }
 
 instance gameState :: Game State where
     update input TitleState =
@@ -85,14 +85,14 @@ instance gameState :: Game State where
         pure $ case isGameClear, isGameOver of
             true, _ -> ClearState
             false, true -> OverState
-            false, false -> PlayState $ s 
-                { distance = s.distance + speed
-                , player = nnp
-                , bullets = nnbullets <> newBullets
-                , enemies = nnenemies <> newEnemies
-                , particles = nnparticles <> newParticles
-                , enemyBullets = nnenemyBullets <> newEnemyBullets
-                }
+            false, false -> PlayState $ s { 
+                distance = s.distance + speed, 
+                player = nnp, 
+                bullets = nnbullets <> newBullets, 
+                enemies = nnenemies <> newEnemies, 
+                particles = nnparticles <> newParticles, 
+                enemyBullets = nnenemyBullets <> newEnemyBullets
+            }
 
     draw TitleState = do
         drawRotatedScaledImage I.titleScreen 0 0 0
@@ -119,14 +119,14 @@ instance gameState :: Game State where
     sound _ = pure unit
 
 initialPlayState :: State
-initialPlayState = PlayState
-    { distance: 0
-    , player: initialPlayer
-    , bullets: []
-    , enemies: []
-    , particles: []
-    , enemyBullets : []
-    }
+initialPlayState = PlayState { 
+    distance: 0, 
+    player: initialPlayer, 
+    bullets: [], 
+    enemies: [], 
+    particles: [], 
+    enemyBullets : []
+}
 
 initialState :: State
 initialState = TitleState
