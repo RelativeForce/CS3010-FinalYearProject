@@ -1,6 +1,6 @@
 module Emo8.Data.Image where
 
-import Emo8.Types (Image, ScaledImage)
+import Emo8.Types (ScaledImage)
 
 titleScreen :: ScaledImage
 titleScreen = {

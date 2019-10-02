@@ -6,7 +6,7 @@ import Control.Monad.Free (Free, liftF)
 import Control.Monad.Gen (Size)
 import Emo8.Data.Color (Color)
 import Emo8.Data.Emoji (Emoji)
-import Emo8.Types (Deg, MapId, X, Y, Image, ScaledImage)
+import Emo8.Types (Deg, MapId, X, Y, Image, ScaledImage, Sprite)
 
 type Draw = Free DrawF
 
@@ -15,6 +15,8 @@ data DrawF n
     | DrawImageNoScaling Image X Y n
     | DrawScaledImage ScaledImage X Y n
     | DrawRotatedScaledImage ScaledImage X Y Deg n
+    | DrawSprite Sprite X Y n
+    | DrawRotatedSprite Sprite X Y Deg n
     | Emo Appearance Emoji Size X Y n
     | Emor Appearance Deg Emoji Size X Y n
     | Emap Appearance MapId Size X Y n
@@ -33,6 +35,12 @@ drawScaledImage image x y = liftF $ DrawScaledImage image x y unit
 
 drawRotatedScaledImage :: ScaledImage -> X -> Y -> Deg -> Draw Unit
 drawRotatedScaledImage image x y angle = liftF $ DrawRotatedScaledImage image x y angle unit
+
+drawSprite :: Sprite -> X -> Y -> Draw Unit
+drawSprite sprite x y = liftF $ DrawSprite sprite x y unit
+
+drawRotatedSprite :: Sprite -> X -> Y -> Deg -> Draw Unit
+drawRotatedSprite sprite x y angle = liftF $ DrawRotatedSprite sprite x y angle unit
 
 -- | Draw emoji.
 emo :: Emoji -> Size -> X -> Y -> Draw Unit

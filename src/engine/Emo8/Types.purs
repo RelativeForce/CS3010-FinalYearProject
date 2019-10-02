@@ -41,9 +41,18 @@ type SoundContext = {
 type Image = String
     
 type ScaledImage = {
-    image :: Image,
-    width :: Width,
-    height :: Height
+  image :: Image,
+  width :: Width,
+  height :: Height
+}
+
+type Sprite = {
+  frameFolder :: String,
+  currentFrame :: Int,
+  frameCount :: Int,
+  width :: Width,
+  height :: Height,
+  extension :: String
 }
 
 type X = Int
