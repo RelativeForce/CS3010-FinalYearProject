@@ -1,5 +1,5 @@
 module Test.RawSemigroup
-    ( rawSemigroupTest
+    ( rawSemigroupTests
     ) where
 
 import Prelude
@@ -8,9 +8,9 @@ import Emo8.Parse (RawMap(..), RawSound(..))
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 
-rawSemigroupTest :: TestSuite
-rawSemigroupTest =
-    suite "Raw Semigroup Append" do
+rawSemigroupTests :: TestSuite
+rawSemigroupTests =
+    suite "Parse - Raw Semigroup Append" do
         test "sound" do
             equal soundSum $ soundA <> soundB
         test "map" do

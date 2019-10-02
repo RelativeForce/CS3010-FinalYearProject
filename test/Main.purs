@@ -4,7 +4,7 @@ import Prelude
 
 import Effect (Effect)
 import Test.ParseSound (parseSoundTests)
-import Test.RawSemigroup (rawSemigroupTest)
+import Test.RawSemigroup (rawSemigroupTests)
 import Test.Sprite (frameFileNameTests)
 import Test.Unit.Main (runTest)
 
@@ -12,5 +12,5 @@ main :: Effect Unit
 main =
   runTest do
     parseSoundTests
-    rawSemigroupTest
+    rawSemigroupTests
     frameFileNameTests
