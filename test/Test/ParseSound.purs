@@ -1,6 +1,6 @@
-module Test.ParseSound
-    ( parseSoundTest
-    ) where
+module Test.ParseSound( 
+    parseSoundTests
+) where
 
 import Prelude
 
@@ -10,31 +10,31 @@ import Emo8.Parse (RawSound(..), parseSound)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 
-parseSoundTest :: TestSuite
-parseSoundTest =
-    suite "Parse Sound" do
+parseSoundTests :: TestSuite
+parseSoundTests =
+    suite "Parse - parseSound" do
         test "valid" do
             equal expected $ parseSound validSound
         test "stringArrayToTick: invalid format" do
             equal true $ isLeft $ parseSound invalidFormatSound
         test "matchNote: not match" do
             equal true $ isLeft $ parseSound notMatchSound
-        test "satisfyNoteLen: exceed note length" do
+        test "satisfyNoteLength: exceed note length" do
             equal true $ isLeft $ parseSound exceedNoteLengthSound
     where
         expected = Right $
-            [
-                { scales:
-                    [ { octave: Fourth, note: C }
-                    , { octave: Fourth, note: CS }
-                    , { octave: Fourth, note: D }
-                    , { octave: Fifth, note: C }
-                    , { octave: Fifth, note: CS }
-                    ]
-                , vol: Low
-                , efct: None
-                }
-            ]
+            [{ 
+                scales:
+                [ 
+                    { octave: Fourth, note: C }, 
+                    { octave: Fourth, note: CS }, 
+                    { octave: Fourth, note: D }, 
+                    { octave: Fifth, note: C }, 
+                    { octave: Fifth, note: CS }
+                ], 
+                vol: Low, 
+                efct: None
+            }]
 
 validSound :: RawSound
 validSound = RawSound """
