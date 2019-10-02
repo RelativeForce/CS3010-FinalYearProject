@@ -12,8 +12,14 @@ import Test.Unit.Assert (equal)
 frameFileNameTests :: TestSuite
 frameFileNameTests =
     suite "Sprite - frameFileName" do
-        test "checkValid [test 1 png]" do
+        test "shouldReturnValidFileNameWhenSpriteIsValid [test 1 png]" do
             equal "test\\1.png" $ frameFileName $ buildSpriteForFileName "test" 1 "png"
+        test "shouldReturnValidFileNameWhenSpriteIsValid [test 1 bmp]" do
+            equal "test\\1.bmp" $ frameFileName $ buildSpriteForFileName "test" 1 "bmp"
+        test "shouldReturnValidFileNameWhenSpriteIsValid [test 5 png]" do
+            equal "test\\5.png" $ frameFileName $ buildSpriteForFileName "test" 5 "png"
+        test "shouldReturnValidFileNameWhenSpriteIsValid [nested\\test 1 png]" do
+            equal "nested\\test\\1.png" $ frameFileName $ buildSpriteForFileName "nested\\test" 1 "png"
 
 buildSpriteForFileName :: String -> Int -> String -> Sprite
 buildSpriteForFileName folder current extension = {
