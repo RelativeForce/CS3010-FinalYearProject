@@ -16,7 +16,7 @@ import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
 import Effect (Effect)
 import Emo8 (emo8)
 import Emo8.Action.Draw (cls, emo, emor, drawRotatedScaledImage)
-import Emo8.Data.Image as I
+import Data.Images as I
 import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
 import Emo8.Data.Emoji as E
