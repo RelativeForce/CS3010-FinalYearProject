@@ -5,14 +5,14 @@ import Prelude
 import Effect (Effect)
 import Test.Unit.Main (runTest)
 import Test.Parse (parseTests)
-import Test.Sprite (frameFileNameTests)
+import Test.Sprite (spriteTests)
 
 main :: Effect Unit
 main =
   do
     -- Tests
-    runTest do
-      frameFileNameTests
+          
     -- Sub Modules
     parseTests
+    spriteTests
 

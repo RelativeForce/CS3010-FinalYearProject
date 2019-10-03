@@ -1,4 +1,4 @@
-module Test.Sprite ( 
+module Test.Sprite.FrameFileName ( 
     frameFileNameTests 
 ) where
 
