@@ -11,12 +11,11 @@ import Emo8.Input (Input)
 import Emo8.Utils (defaultMonitorSize)
 import Types (Pos)
 
-
-data Player = Player
-    { pos :: Pos
-    , energy :: Int
-    , appear :: Appear
-    }
+data Player = Player { 
+    pos :: Pos, 
+    energy :: Int, 
+    appear :: Appear
+}
 
 data Appear = Stable | Forword | Backword
 
@@ -34,11 +33,11 @@ instance objectDrawPlayer :: ObjectDraw Player where
 
 updatePlayer :: Input -> Player -> Player
 updatePlayer i (Player s) =
-    Player $ s
-        { pos = newPos
-        , energy = newEnergy
-        , appear = newAppear
-        }
+    Player $ s { 
+        pos = newPos, 
+        energy = newEnergy, 
+        appear = newAppear
+    }
     where
         newPos = updatePos i s.pos
         newEnergy = case (canEmit s.energy), (i.isW || i.isS || i.isD) of
@@ -72,14 +71,14 @@ addBullet i (Player p) =
         _ -> []
 
 initialPlayer :: Player
-initialPlayer = Player
-    { pos:
-        { x: 0
-        , y: defaultMonitorSize.height / 2
-        }
-    , energy: 30
-    , appear: Stable
-    }
+initialPlayer = Player { 
+    pos: { 
+        x: 0, 
+        y: defaultMonitorSize.height / 2
+    }, 
+    energy: 30, 
+    appear: Stable
+}
 
 canEmit :: Int -> Boolean
-canEmit e = e > 29
+canEmit energy = energy > 29
