@@ -12,7 +12,7 @@ toScaledImage sprite = {
 }
 
 frameFileName :: Sprite -> String
-frameFileName s = s.frameFolder <> "\\" <> (show $ frameIndexToCurrentFrame s) <> "." <> s.extension
+frameFileName s = s.folderPath <> "\\" <> (show $ frameIndexToCurrentFrame s) <> "." <> s.extension
 
 incrementFrame :: Sprite -> Sprite
 incrementFrame s = s { frameIndex = nextFrameIndex}

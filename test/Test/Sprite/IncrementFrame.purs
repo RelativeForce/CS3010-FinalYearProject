@@ -30,7 +30,7 @@ incrementFrameTests =
 
 buildSprite :: Int -> Int -> Int -> Sprite
 buildSprite current frameCount framesPerSecond = {
-    frameFolder: "test",
+    folderPath: "test",
     frameIndex: current,
     framesPerSecond: framesPerSecond,
     frameCount: frameCount,

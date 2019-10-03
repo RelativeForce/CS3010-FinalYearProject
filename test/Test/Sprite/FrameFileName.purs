@@ -23,7 +23,7 @@ frameFileNameTests =
 
 buildSpriteForFileName :: String -> Int -> String -> Sprite
 buildSpriteForFileName folder current extension = {
-    frameFolder: folder,
+    folderPath: folder,
     frameCount: 10,
     frameIndex: current,
     framesPerSecond: 2,
