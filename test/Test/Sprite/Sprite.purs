@@ -5,12 +5,14 @@ module Test.Sprite(
 import Prelude
 
 import Effect (Effect)
-import Test.Unit.Main (runTest)
 import Test.Sprite.FrameFileName (frameFileNameTests)
+import Test.Sprite.IncrementFrame (incrementFrameTests)
+import Test.Unit.Main (runTest)
 
 spriteTests :: Effect Unit
 spriteTests = do
     -- Tests
     runTest do
         frameFileNameTests
+        incrementFrameTests
     -- Sub Modules
