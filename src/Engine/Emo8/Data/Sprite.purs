@@ -2,7 +2,6 @@ module Emo8.Data.Sprite where
 
 import Prelude
 import Emo8.Types (Sprite, ScaledImage)
-import Math (remainder)
 import Data.Int (toNumber, floor)
 
 toScaledImage :: Sprite -> ScaledImage
@@ -13,7 +12,15 @@ toScaledImage sprite = {
 }
 
 frameFileName :: Sprite -> String
-frameFileName s = s.frameFolder <> "\\" <> (show s.currentFrame) <> "." <> s.extension
+frameFileName s = s.frameFolder <> "\\" <> (show $ frameIndexToCurrentFrame s) <> "." <> s.extension
 
 incrementFrame :: Sprite -> Sprite
-incrementFrame s = s { currentFrame = floor $ remainder (toNumber (s.currentFrame + 1)) (toNumber s.frameCount)}
+incrementFrame s = s { frameIndex = nextFrameIndex}
+    where 
+        nextFrameIndex = mod (s.frameIndex + 1) (frameLimit s)
+
+frameLimit :: Sprite -> Int
+frameLimit s = s.framesPerSecond * s.frameCount
+
+frameIndexToCurrentFrame :: Sprite -> Int
+frameIndexToCurrentFrame s = floor $ (toNumber s.frameIndex) / (toNumber s.framesPerSecond)

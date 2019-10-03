@@ -10,3 +10,6 @@ fontFamily = "sans-serif"
 
 maxNoteSize :: Int
 maxNoteSize = 5
+
+targetFramesPerSecond :: Int
+targetFramesPerSecond = 60

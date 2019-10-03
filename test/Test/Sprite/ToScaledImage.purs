@@ -34,8 +34,9 @@ toScaledImageTests =
 buildSprite :: Int -> Int -> Sprite
 buildSprite width height = {
     frameFolder: "test",
-    currentFrame: 1,
     frameCount: 10,
+    frameIndex: 1,
+    framesPerSecond: 1,
     width: width,
     height: height,
     extension: "png"

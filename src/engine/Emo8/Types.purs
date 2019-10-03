@@ -48,7 +48,8 @@ type ScaledImage = {
 
 type Sprite = {
   frameFolder :: String,
-  currentFrame :: Int,
+  frameIndex :: Int,
+  framesPerSecond :: Int,
   frameCount :: Int,
   width :: Width,
   height :: Height,
