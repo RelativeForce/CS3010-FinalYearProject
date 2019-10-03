@@ -22,7 +22,7 @@ incrementFrameTests =
                 result = incrementFrame $ buildSprite 5 10 3
                 expectedFrame = 6
             equal expectedFrame result.frameIndex 
-        test "shouldIncrementFrameWhenSpriteIsValid [9 10 4]" do
+        test "shouldIncrementFrameWhenSpriteIsValid [39 10 4]" do
             let 
                 result = incrementFrame $ buildSprite 39 10 4
                 expectedFrame = 0
