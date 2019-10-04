@@ -12,17 +12,17 @@ import Test.Unit.Assert (equal)
 incrementFrameTests :: TestSuite
 incrementFrameTests =
     suite "Sprite - incrementFrame" do
-        test "shouldIncrementFrameWhenSpriteIsValid [1 10 1]" do
+        test "shouldIncrementFrameWhenFrameIndexIsWithinFrameLimit [0 10 1]" do
             let 
                 result = incrementFrame $ buildSprite 0 10 1
                 expectedFrame = 1
             equal expectedFrame result.frameIndex 
-        test "shouldIncrementFrameWhenSpriteIsValid [5 10 3]" do
+        test "shouldIncrementFrameWhenFrameIndexIsWithinFrameLimit [5 10 3]" do
             let 
                 result = incrementFrame $ buildSprite 5 10 3
                 expectedFrame = 6
             equal expectedFrame result.frameIndex 
-        test "shouldIncrementFrameWhenSpriteIsValid [39 10 4]" do
+        test "shouldResetFrameIndexWhenFrameIndexIsAtFrameLimit [39 10 4]" do
             let 
                 result = incrementFrame $ buildSprite 39 10 4
                 expectedFrame = 0
