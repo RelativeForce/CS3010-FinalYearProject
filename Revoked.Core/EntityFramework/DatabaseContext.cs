@@ -6,7 +6,7 @@ namespace Revoked.Core.EntityFramework
 {
     public sealed class DatabaseContext : DbContext
     {
-        internal DatabaseContext() : base() 
+        public DatabaseContext(DbContextOptions options) : base(options) 
         {
 
         }
@@ -18,19 +18,6 @@ namespace Revoked.Core.EntityFramework
             base.OnModelCreating(modelBuilder);
 
             PlayerScore.Configure(modelBuilder);
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var connectionString = Environment.GetEnvironmentVariable("DBConnectionString");
-
-            if (connectionString == null)
-            {
-                optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=Revoked;Trusted_Connection=True;MultipleActiveResultSets=true");
-                return;
-            }
-            
-            optionsBuilder.UseSqlServer(connectionString);
         }
     }
 }

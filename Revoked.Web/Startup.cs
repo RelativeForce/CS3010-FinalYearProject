@@ -1,9 +1,16 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Revoked.Core;
+using Revoked.Core.EntityFramework;
+using Revoked.Core.Interfaces;
+using Revoked.Services;
+using Revoked.Services.Interfaces;
 
 namespace Revoked.Web
 {
@@ -28,6 +35,24 @@ namespace Revoked.Web
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddDbContext<DatabaseContext>(options =>
+            {
+                var connectionString = Environment.GetEnvironmentVariable("DBConnectionString");
+
+                options.UseLazyLoadingProxies();
+
+                if (connectionString == null)
+                {
+                    options.UseSqlServer("Server=.\\SQLEXPRESS;Database=Revoked;Trusted_Connection=True;MultipleActiveResultSets=true");
+                    return;
+                }
+
+                options.UseSqlServer(connectionString);
+            });
+            services.AddScoped<IRepository, Repository>();
+            services.AddScoped<IScoreService, ScoreService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

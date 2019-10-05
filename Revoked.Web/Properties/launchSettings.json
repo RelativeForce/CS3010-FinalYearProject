@@ -12,8 +12,7 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "DBConnectionString": "Server=.\\;Database=Revoked;Trusted_Connection=True;MultipleActiveResultSets=true"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "Revoked.API": {
