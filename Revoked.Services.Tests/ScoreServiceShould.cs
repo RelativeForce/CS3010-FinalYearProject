@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Moq;
 using Revoked.Core.Interfaces;
@@ -15,6 +17,8 @@ namespace Revoked.Services.Tests
         {
             _repositoryMock = new Mock<IRepository>(MockBehavior.Strict);
         }
+
+        #region StoreScoreAsync Tests
 
         [Fact]
         public async void ShouldAddScoreToRepositoryWhenScoreIsValid()
@@ -68,7 +72,7 @@ namespace Revoked.Services.Tests
 
             _repositoryMock
                 .Setup(m => m.AddAsync(It.Is(entityCheck)))
-                .ReturnsAsync((Core.Entities.PlayerScore) null)
+                .ReturnsAsync((Core.Entities.PlayerScore)null)
                 .Verifiable();
 
             var service = NewService();
@@ -83,10 +87,75 @@ namespace Revoked.Services.Tests
             {
                 Assert.Equal("Failed to add high score", e.Message);
             }
-            
+
 
             _repositoryMock.Verify(m => m.AddAsync(It.Is(entityCheck)), Times.Once);
         }
+
+        #endregion
+
+        #region ListTop Tests
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        [InlineData(-10)]
+        public void ShouldThrowExceptionWhenNumberOfScoresIsLessThanOrEqualToZero(int numberOfScores)
+        {
+            var service = NewService();
+
+            try
+            {
+                var result = service.ListTop(numberOfScores);
+
+                Assert.False(true, "Should not reach this line");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                // ArgumentOutOfRangeException is expected
+            }
+        }
+
+        [Fact]
+        public void ShouldReturnTestScoresInCorrectOrder()
+        {
+            var testScores = new List<Core.Entities.PlayerScore>();
+            const int numberOfScores = 10;
+            const int topCount = numberOfScores - 2;
+
+            for (var i = 0; i < numberOfScores; i++)
+            {
+                testScores.Add(new Core.Entities.PlayerScore
+                {
+                    Score = i,
+                    Id = i,
+                    Time = new TimeSpan(numberOfScores - i),
+                    Username = "user " + i
+                });
+            }
+
+            _repositoryMock
+                .Setup(m => m.Query<Core.Entities.PlayerScore>())
+                .Returns(testScores.AsQueryable())
+                .Verifiable();
+
+            var service = NewService();
+
+            var result = service.ListTop(topCount);
+
+            Assert.Equal(topCount, result.Count);
+
+            var orderedTestScores = testScores.OrderByDescending(hs => hs.Score).ToList();
+
+            for (var s = 0; s < topCount; s++)
+            {
+                Assert.Equal(orderedTestScores[s].Username, result[s].Username);
+
+                s++;
+            }
+        }
+
+        #endregion
 
         public ScoreService NewService()
         {
