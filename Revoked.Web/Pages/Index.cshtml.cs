@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Revoked.Services.Data;
@@ -18,12 +17,17 @@ namespace Revoked.Web.Pages
 
         public void OnGet()
         {
-            
+            // Required for page GET
         }
 
         public async Task OnPostStoreScore([FromBody] PlayerScore score)
         {
             await _scoreService.StoreScoreAsync(score);
+        }
+
+        public JsonResult OnPostTopTen()
+        {
+            return new JsonResult(_scoreService.ListTop(10));
         }
     }
 }
