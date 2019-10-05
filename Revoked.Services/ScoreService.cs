@@ -29,6 +29,10 @@ namespace Revoked.Services
 
         public List<PlayerScore> ListTop(int numberOfScores)
         {
+            if(numberOfScores <= 0)
+                throw new ArgumentOutOfRangeException($"{nameof(numberOfScores)} cannot be less than or equal to zero");
+
+
             return _repository
                 .Query<Core.Entities.PlayerScore>()
                 .OrderByDescending(hs => hs.Score)
