@@ -13,5 +13,11 @@ namespace Revoked.Core.Entities
         {
             builder.Entity<PlayerScore>().HasKey(ps => ps.Id);
         }
+
+        // Public constructor required by EF
+        public PlayerScore()
+        {
+
+        }
     }
 }

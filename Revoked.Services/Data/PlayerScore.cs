@@ -24,11 +24,5 @@ namespace Revoked.Services.Data
             Score = playerScore.Score;
             Time = playerScore.Time;
         }
-
-        // Public constructor required by EF
-        public PlayerScore()
-        {
-
-        }
     }
 }
