@@ -9,6 +9,7 @@
 /Revoked.Web/Client/.psa*
 /Revoked.Web/wwwroot/js/app.js
 /Revoked.Web/bin/
+/Revoked.Web/obj/
 *.lock
 .vs/
 
