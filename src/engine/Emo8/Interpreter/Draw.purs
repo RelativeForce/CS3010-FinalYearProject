@@ -17,7 +17,8 @@ import Emo8.Data.Color (Color(..), colorToCode)
 import Emo8.Data.Emoji (Emoji, japaneseVacancyButton)
 import Emo8.Excepiton (providedMap)
 import Emo8.FFI.TextBaseline (TextBaseline(..), setTextBaseline)
-import Emo8.Types (Deg, IdX, IdY, MapId, MonitorSize, Size, X, Y, DrawContext, Image, ScaledImage)
+import Emo8.Types (Deg, IdX, IdY, MapId, MonitorSize, Size, X, Y, DrawContext, Image, ScaledImage, Sprite)
+import Emo8.Data.Sprite (toScaledImage)
 import Graphics.Canvas (Context2D, CanvasImageSource, fillRect, fillText, restore, rotate, save, scale, setFillStyle, setFont, translate, drawImage, tryLoadImage, drawImageScale)
 import Math (pi)
 
@@ -31,6 +32,8 @@ runDraw dctx = foldFree interpret
     interpret (DrawImageNoScaling image x y n) = const n <$> drawImageNoScaling image x y dctx
     interpret (DrawScaledImage image x y n) = const n <$> drawScaledImage image x y dctx
     interpret (DrawRotatedScaledImage image x y angle n) = const n <$> drawRotatedScaledImage image x y angle dctx
+    interpret (DrawSprite sprite x y n) = const n <$> drawSprite sprite x y dctx
+    interpret (DrawRotatedSprite sprite x y angle n) = const n <$> drawRotatedSprite sprite x y angle dctx
     interpret (Emo Normal e size x y n) = const n <$> emo e size x y dctx
     interpret (Emo Mirrored e size x y n) = const n <$> emo' e size x y dctx
     interpret (Emor Normal deg e size x y n) = const n <$> emor deg e size x y dctx
@@ -168,6 +171,12 @@ drawRotatedScaledImage scaledImage x y angle =
                         drawImageScale dctx.ctx src 0.0 0.0 (toNumber scaledImage.width) (toNumber scaledImage.height)
                         rotate dctx.ctx (degToRad angle)
                         translate dctx.ctx { translateX: -toNumber x, translateY: -toNumber y }
+
+drawSprite :: Sprite -> X -> Y -> RenderOp
+drawSprite sprite x y = drawScaledImage (toScaledImage sprite) x y
+
+drawRotatedSprite :: Sprite -> X -> Y -> Deg -> RenderOp
+drawRotatedSprite sprite x y angle = drawRotatedScaledImage (toScaledImage sprite) x y angle
 
 loadImage :: String -> (CanvasImageSource -> Effect Unit) -> Effect Unit
 loadImage imagePath f = tryLoadImage imagePath $ \maybeImageSource -> 
