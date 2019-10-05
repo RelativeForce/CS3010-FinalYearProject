@@ -47,6 +47,47 @@ namespace Revoked.Services.Tests
             _repositoryMock.Verify(m => m.AddAsync(It.Is(entityCheck)), Times.Once);
         }
 
+        [Fact]
+        public async void ShouldThrowExceptionWhenScoreIsValid()
+        {
+            const string username = "test username";
+            const long points = 5453;
+            var time = new TimeSpan(0, 10, 0);
+
+            var score = new PlayerScore
+            {
+                Username = username,
+                Score = points,
+                Time = time
+            };
+
+            Expression<Func<Core.Entities.PlayerScore, bool>> entityCheck = ps =>
+                ps.Score == points &&
+                ps.Time == time &&
+                ps.Username == username;
+
+            _repositoryMock
+                .Setup(m => m.AddAsync(It.Is(entityCheck)))
+                .ReturnsAsync((Core.Entities.PlayerScore) null)
+                .Verifiable();
+
+            var service = NewService();
+
+            try
+            {
+                await service.StoreScoreAsync(score);
+
+                Assert.False(true, "Should not reach this line");
+            }
+            catch (Exception e)
+            {
+                Assert.Equal("Failed to add high score", e.Message);
+            }
+            
+
+            _repositoryMock.Verify(m => m.AddAsync(It.Is(entityCheck)), Times.Once);
+        }
+
         public ScoreService NewService()
         {
             return new ScoreService(_repositoryMock.Object);
