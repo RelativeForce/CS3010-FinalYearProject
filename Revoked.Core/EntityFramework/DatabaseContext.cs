@@ -22,14 +22,15 @@ namespace Revoked.Core.EntityFramework
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (Environment.GetEnvironmentVariable("Environment") == "Production")
+            var connectionString = Environment.GetEnvironmentVariable("DBConnectionString");
+
+            if (connectionString == null)
             {
-                optionsBuilder.UseSqlServer(@"Live database connection string");
+                optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=Revoked;Trusted_Connection=True;MultipleActiveResultSets=true");
+                return;
             }
-            else
-            {
-                optionsBuilder.UseSqlServer(@"Server=.\;Database=Revoked;Trusted_Connection=True;MultipleActiveResultSets=true");
-            }
+            
+            optionsBuilder.UseSqlServer(connectionString);
         }
     }
 }
