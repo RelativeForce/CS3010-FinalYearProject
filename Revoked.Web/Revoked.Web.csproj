@@ -19,6 +19,6 @@
 
   <Target Name="GenerateSomeFiles" BeforeTargets="BeforeBuild">
     <Exec Command="cd Client" />
-    <Exec Command="npm run projectArken --prefix Client" />
+    <Exec Command="npm run revoked --prefix Client" />
   </Target>
 </Project>

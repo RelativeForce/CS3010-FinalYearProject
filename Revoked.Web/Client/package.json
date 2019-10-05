@@ -4,7 +4,7 @@
     "postinstall": "bower install",
     "build": "pulp build -- --censor-lib --strict",
     "test": "pulp test",
-    "projectArken": "pulp build --main ProjectArken --to ../wwwroot/js/app.js",
+    "revoked": "pulp build --main Revoked --to ../wwwroot/js/app.js",
     "doc": "pulp docs -- --format html"
   },
   "devDependencies": {
