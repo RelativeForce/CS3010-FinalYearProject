@@ -10,6 +10,10 @@
 /Revoked.Web/wwwroot/js/app.js
 /Revoked.Web/bin/
 /Revoked.Web/obj/
+/Revoked.Core/bin/
+/Revoked.Core/obj/
+/Revoked.Services/bin/
+/Revoked.Services/obj/
 *.lock
 .vs/
 
