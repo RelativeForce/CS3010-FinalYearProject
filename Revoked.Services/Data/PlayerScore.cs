@@ -24,5 +24,9 @@ namespace Revoked.Services.Data
             Score = playerScore.Score;
             Time = playerScore.Time;
         }
+
+        public PlayerScore()
+        {
+        }
     }
 }

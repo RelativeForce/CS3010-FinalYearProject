@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Revoked.Core", "Revoked.Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Revoked.Services", "Revoked.Services\Revoked.Services.csproj", "{3F598B77-9B1F-4341-A3E9-AB4E1E1003E0}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Revoked.Services.Tests", "Revoked.Services.Tests\Revoked.Services.Tests.csproj", "{E14411CA-C75D-4EBC-A938-A6398458739C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{3F598B77-9B1F-4341-A3E9-AB4E1E1003E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F598B77-9B1F-4341-A3E9-AB4E1E1003E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F598B77-9B1F-4341-A3E9-AB4E1E1003E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E14411CA-C75D-4EBC-A938-A6398458739C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E14411CA-C75D-4EBC-A938-A6398458739C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E14411CA-C75D-4EBC-A938-A6398458739C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E14411CA-C75D-4EBC-A938-A6398458739C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

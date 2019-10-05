@@ -17,3 +17,5 @@
 *.lock
 .vs/
 
+/Revoked.Services.Tests/obj
+/Revoked.Services.Tests/bin
