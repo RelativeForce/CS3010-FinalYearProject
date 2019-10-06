@@ -1,6 +1,8 @@
-# Project Arken (WIP Title)
+# Revoked
 
-A functional 2D game written using the Emo8 game engine. Project Arken is the placeholder title until a title is determined. This game is inspired by the old NES game Contra.
+Revoked is a 2D side scrolling shooter inspired by the NES game Contra. Set in 1991 Wyoming USA players take up the mantel of Lieutenant G Ravestomper. Tasked with flushing out an insurgent cell from their base under the rocky mountains, all rests on the lieutenant when the cell deploys their newest weapon. Fight with a variety of guns and powerups through the rough terrain and relentless enemy soldiers.  When all hope is lost heroes will rise.
+
+This repository contains a functional 2D game written using the Emo8 game engine. The web app that is used to deploy the game and manage the game persistence is developed in .Net Core 2.1. Code first Entity Framework is used for SQL database management.
 
 ### Brief
 
@@ -20,15 +22,15 @@ It is also compiled into JavaScript and easy to distribute.
 
 ## Specification
 
-- Display: variable size (recommended 256px~1024px)
-- Background Color: HTML Named Color 140 colors
+- Display: Variable size (recommended 720px 16:9)
 - Input: 8 buttons（up down left right 4 buttons x 2）
 - Map: No limit Emoji map - [Map Edit](docs/usage.md#map-edit)
 - Sound: 4 channels Emoji score - [Sound Edit](docs/usage.md#sound-edit)
 - Language: [PureScript](http://www.purescript.org/)
-- Compiled File Volume: about 500KB~1MB
-- Frame Rate: about 60 FPS (Depending on hardware acceleration)
-- Operating Environment: web browser
+- Deployed https://revoked.azurewebsites.net
+- Target Frame Rate: 60 FPS (Depending on hardware acceleration)
+- Operating Environment: Web browser
+- Development Environment: Visual Studio 2019
 
 ## Controller
 
@@ -42,34 +44,26 @@ It is also compiled into JavaScript and easy to distribute.
  \___/¯\___/
 ```
 
-## Sample Programs
-
-Clone this repository first.
-`yarn` is required. 
-`npm install yarn -g`
-
 ### Install
 
 ```sh
+npm install yarn -g
+cd "./Revoked.Web/Client"
 yarn
 1 - purescript-record#^1.0.0
 1 - purescript-typelevel-prelude#^3.0.0
 yarn postinstall
 ```
-
 ### Build
 
-```sh
-yarn build
-yarn projectArken
-```
+Open Revoked.sln in Visual Studio 2019
+Build Solution (Game is built as part of .Net Core build)
 
-### Start (Open html in browser)
+## Local Database
+A developement database is required to run the web app locally. Requires SQLExpress 2017
 
-```sh
-copy index.html into /dist
-open dist/index.html
-```
+1. Open Revoked.Core in the package manager console in Visual Studio 2019
+2. `update-database`
 
 ## Simple Manual
 
