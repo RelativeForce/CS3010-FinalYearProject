@@ -77,17 +77,7 @@ namespace Revoked.Services.Tests
 
             var service = NewService();
 
-            try
-            {
-                await service.StoreScoreAsync(score);
-
-                Assert.False(true, "Should not reach this line");
-            }
-            catch (Exception e)
-            {
-                Assert.Equal("Failed to add high score", e.Message);
-            }
-
+            await Assert.ThrowsAsync<Exception>(async () => { await service.StoreScoreAsync(score); });
 
             _repositoryMock.Verify(m => m.AddAsync(It.Is(entityCheck)), Times.Once);
         }
@@ -104,16 +94,7 @@ namespace Revoked.Services.Tests
         {
             var service = NewService();
 
-            try
-            {
-                var result = service.ListTop(numberOfScores);
-
-                Assert.False(true, "Should not reach this line");
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                // ArgumentOutOfRangeException is expected
-            }
+            Assert.Throws<ArgumentOutOfRangeException>(() => { service.ListTop(numberOfScores); });
         }
 
         [Fact]
