@@ -32,8 +32,10 @@ runDraw dctx = foldFree interpret
     interpret (DrawImageNoScaling image x y n) = const n <$> drawImageNoScaling image x y dctx
     interpret (DrawScaledImage image x y n) = const n <$> drawScaledImage image x y dctx
     interpret (DrawRotatedScaledImage image x y angle n) = const n <$> drawRotatedScaledImage image x y angle dctx
+    interpret (DrawRotatedScaledFlippedImage image x y angle n) = const n <$> drawRotatedScaledFlippedImage image x y angle dctx
     interpret (DrawSprite sprite x y n) = const n <$> drawSprite sprite x y dctx
     interpret (DrawRotatedSprite sprite x y angle n) = const n <$> drawRotatedSprite sprite x y angle dctx
+    interpret (DrawRotatedFlippedSprite sprite x y angle n) = const n <$> drawRotatedFlippedSprite sprite x y angle dctx
     interpret (Emo Normal e size x y n) = const n <$> emo e size x y dctx
     interpret (Emo Mirrored e size x y n) = const n <$> emo' e size x y dctx
     interpret (Emor Normal deg e size x y n) = const n <$> emor deg e size x y dctx
@@ -172,11 +174,20 @@ drawRotatedScaledImage scaledImage x y angle =
                         rotate dctx.ctx (degToRad angle)
                         translate dctx.ctx { translateX: -toNumber x, translateY: -toNumber y }
 
+drawRotatedScaledFlippedImage :: ScaledImage -> X -> Y -> Deg -> RenderOp
+drawRotatedScaledFlippedImage scaledImage x y angle = 
+    drawRotatedScaledImage flippedScaledImage x y angle
+        where
+            flippedScaledImage = scaledImage { height = -scaledImage.height, width = -scaledImage.width }
+
 drawSprite :: Sprite -> X -> Y -> RenderOp
 drawSprite sprite x y = drawScaledImage (toScaledImage sprite) x y
 
 drawRotatedSprite :: Sprite -> X -> Y -> Deg -> RenderOp
 drawRotatedSprite sprite x y angle = drawRotatedScaledImage (toScaledImage sprite) x y angle
+
+drawRotatedFlippedSprite :: Sprite -> X -> Y -> Deg -> RenderOp
+drawRotatedFlippedSprite sprite x y angle = drawRotatedScaledFlippedImage (toScaledImage sprite) x y angle
 
 loadImage :: String -> (CanvasImageSource -> Effect Unit) -> Effect Unit
 loadImage imagePath f = tryLoadImage imagePath $ \maybeImageSource -> 
