@@ -12,7 +12,7 @@ import Emo8.Types (
 )
 
 player :: Sprite
-player = buildSprite "player" 32 32 5 2 "png"
+player = buildSprite "player" 32 32 1 1 "png"
 
 buildSprite :: FolderPath -> Width -> Height -> FrameCount -> FramesPerSecond -> FileExtension -> Sprite
 buildSprite folderPath width height frameCount fps extension = {

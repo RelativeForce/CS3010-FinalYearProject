@@ -108,7 +108,7 @@ instance gameState :: Game State where
         emo E.globeWithMeridians 256 75 75
         emo E.thumbsUp 64 100 400
     draw (PlayState s) = do
-        cls Aqua
+        --cls Aqua
         drawScrollMap s.distance
         draw s.player
         traverse_ draw s.bullets
