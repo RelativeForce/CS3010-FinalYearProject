@@ -43,7 +43,7 @@ emo8 state asset ms = withCanvas \canvas -> do
       bootState = initialState ms
       bootDrawCtx = { ctx: context, mapData: bootAsset.mapData, monitorSize: ms }
       bootSoundCtx = { ctx: audCtx, soundData: bootAsset.soundData, channelSets: chSets }
-  scale context { scaleX: 1.0, scaleY: 1.0 }
+
   frameSig <- animationFrame
   keyTouchInputSig <- poll
   let keyTouchInputSampleSig = sampleOn frameSig keyTouchInputSig
@@ -76,7 +76,7 @@ emo8Dev state asset ms = withCanvas \canvas -> do
   chSets <- mkChannelSets audCtx
   let drawCtx = { ctx: context, mapData: asset.mapData, monitorSize: ms }
       soundCtx = { ctx: audCtx, soundData: asset.soundData, channelSets: chSets }
-  scale context { scaleX: 1.0, scaleY: 1.0 }
+
   frameSig <- animationFrame
   keyTouchInputSig <- poll
   let keyTouchInputSampleSig = sampleOn frameSig keyTouchInputSig
