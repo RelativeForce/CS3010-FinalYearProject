@@ -2,19 +2,22 @@ module Data.Player where
 
 import Prelude
 
-import Class.Object (class Object, class ObjectDraw, position, size)
+import Class.Object (class Object, class ObjectDraw, position)
 import Constants (emoSize)
 import Data.Bullet (Bullet(..))
-import Emo8.Action.Draw (emo', emor')
-import Emo8.Data.Emoji as E
+import Emo8.Action.Draw (drawRotatedSprite)
 import Emo8.Input (Input)
 import Emo8.Utils (defaultMonitorSize)
+import Emo8.Data.Sprite (incrementFrame)
+import Data.Sprites as S
 import Types (Pos)
+import Emo8.Types (Sprite)
 
 data Player = Player { 
     pos :: Pos, 
     energy :: Int, 
-    appear :: Appear
+    appear :: Appear,
+    sprite :: Sprite
 }
 
 data Appear = Stable | Forword | Backword
@@ -24,26 +27,25 @@ instance objectPlayer :: Object Player where
     position (Player s) = s.pos
 
 instance objectDrawPlayer :: ObjectDraw Player where
-    draw o@(Player p) = emoF E.helicopter (size o) (position o).x (position o).y
-        where
-            emoF = case p.appear of
-                Stable -> emo'
-                Forword -> emor' (- 30)
-                Backword -> emor' 30
+    draw o@(Player p) = case p.appear of
+            Stable -> drawRotatedSprite p.sprite (position o).x (position o).y 0
+            Forword -> drawRotatedSprite p.sprite (position o).x (position o).y (- 30)
+            Backword -> drawRotatedSprite p.sprite (position o).x (position o).y 30
 
 updatePlayer :: Input -> Player -> Player
-updatePlayer i (Player s) =
-    Player $ s { 
+updatePlayer i (Player p) =
+    Player $ p { 
         pos = newPos, 
         energy = newEnergy, 
-        appear = newAppear
+        appear = newAppear,
+        sprite = incrementFrame p.sprite
     }
     where
-        newPos = updatePos i s.pos
-        newEnergy = case (canEmit s.energy), (i.isW || i.isS || i.isD) of
+        newPos = updatePos i p.pos
+        newEnergy = case (canEmit p.energy), (i.isW || i.isS || i.isD) of
             true, true -> 0
-            true, false -> s.energy
-            false, _ -> s.energy + 1
+            true, false -> p.energy
+            false, _ -> p.energy + 1
         newAppear =
             case i.isLeft, i.isRight of
                 true, false -> Backword 
@@ -77,7 +79,8 @@ initialPlayer = Player {
         y: defaultMonitorSize.height / 2
     }, 
     energy: 30, 
-    appear: Stable
+    appear: Stable,
+    sprite: S.player
 }
 
 canEmit :: Int -> Boolean

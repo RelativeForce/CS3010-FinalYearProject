@@ -17,9 +17,24 @@ import Emo8.Data.Color (Color(..), colorToCode)
 import Emo8.Data.Emoji (Emoji, japaneseVacancyButton)
 import Emo8.Excepiton (providedMap)
 import Emo8.FFI.TextBaseline (TextBaseline(..), setTextBaseline)
-import Emo8.Types (Deg, IdX, IdY, MapId, MonitorSize, Size, X, Y, DrawContext, Image, ScaledImage, Sprite)
+import Emo8.Types (Deg, IdX, IdY, MapId, MonitorSize, Size, X, Y, DrawContext, Image, ScaledImage, Sprite, Height)
 import Emo8.Data.Sprite (toScaledImage)
-import Graphics.Canvas (Context2D, CanvasImageSource, fillRect, fillText, restore, rotate, save, scale, setFillStyle, setFont, translate, drawImage, tryLoadImage, drawImageScale)
+import Graphics.Canvas (
+    Context2D, 
+    CanvasImageSource, 
+    fillRect, 
+    fillText, 
+    restore, 
+    rotate, 
+    save, 
+    scale, 
+    setFillStyle, 
+    setFont, 
+    translate, 
+    drawImage, 
+    tryLoadImage, 
+    drawImageScale
+)
 import Math (pi)
 
 type RenderOp = DrawContext -> Effect Unit
@@ -154,23 +169,26 @@ sizeToFont px = joinWith " " [fontSize, fontFamily]
 drawImageNoScaling :: Image -> X -> Y -> RenderOp
 drawImageNoScaling image x y =
             withLocalDraw \dctx ->
-                loadImage image $ \src -> drawImage dctx.ctx src (toNumber x) (toNumber y)
+                let y' = toBaseY dctx.monitorSize y   
+                in loadImage image $ \src -> drawImage dctx.ctx src (toNumber x) (toNumber y')                   
 
 drawScaledImage :: ScaledImage -> X -> Y -> RenderOp
 drawScaledImage scaledImage x y =
             withLocalDraw \dctx ->
-                loadImage scaledImage.image $ \src -> drawImageScale dctx.ctx src (toNumber x) (toNumber y) (toNumber scaledImage.width) (toNumber scaledImage.height)
+                let y' = offsetY dctx.monitorSize scaledImage.height y   
+                in loadImage scaledImage.image $ \src -> drawImageScale dctx.ctx src (toNumber x) (toNumber y') (toNumber scaledImage.width) (toNumber scaledImage.height)              
 
 drawRotatedScaledImage :: ScaledImage -> X -> Y -> Deg -> RenderOp
 drawRotatedScaledImage scaledImage x y angle =
             withLocalDraw \dctx ->
-                loadImage scaledImage.image $ \src -> 
+                let y' = offsetY dctx.monitorSize scaledImage.height y     
+                in loadImage scaledImage.image $ \src -> 
                     do
-                        translate dctx.ctx { translateX: toNumber x, translateY: toNumber y }
+                        translate dctx.ctx { translateX: toNumber x, translateY: toNumber y' }
                         rotate dctx.ctx (-degToRad angle)
                         drawImageScale dctx.ctx src 0.0 0.0 (toNumber scaledImage.width) (toNumber scaledImage.height)
                         rotate dctx.ctx (degToRad angle)
-                        translate dctx.ctx { translateX: -toNumber x, translateY: -toNumber y }
+                        translate dctx.ctx { translateX: -toNumber x, translateY: -toNumber y' }                                           
 
 drawSprite :: Sprite -> X -> Y -> RenderOp
 drawSprite sprite x y = drawScaledImage (toScaledImage sprite) x y
@@ -184,3 +202,5 @@ loadImage imagePath f = tryLoadImage imagePath $ \maybeImageSource ->
         Just imageSource -> f imageSource
         Nothing -> throwException $ error ("Error - Could not load image from path: " <> (show imagePath))
 
+offsetY :: MonitorSize -> Height -> Y -> Y
+offsetY monitorSize height y = monitorSize.height - (y + height)
