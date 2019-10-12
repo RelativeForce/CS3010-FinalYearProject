@@ -12,13 +12,13 @@ import Test.Unit.Assert (equal)
 currentFrameTests :: TestSuite
 currentFrameTests =
     suite "Sprite - currentFrame" do
-        test "shouldReturnValidFileNameWhenSpriteIsValid [1 -> frame0]" do
+        test "shouldReturnFrame0WhenSpriteIsOnIndex1" do
             equal "frame0" $ currentFrame $ buildSprite 1
-        test "shouldReturnValidFileNameWhenSpriteIsValid [2 -> frame0]" do
+        test "shouldReturnFrame1WhenSpriteIsOnIndex2" do
             equal "frame1" $ currentFrame $ buildSprite 2
-        test "shouldReturnValidFileNameWhenSpriteIsValid [10 -> frame5]" do
+        test "shouldReturnFrame5WhenSpriteIsOnIndex10" do
             equal "frame5" $ currentFrame $ buildSprite 10
-        test "shouldReturnValidFileNameWhenSpriteIsValid [17 -> frame8]" do
+        test "shouldReturnFrame8WhenSpriteIsOnIndex17" do
             equal "frame8" $ currentFrame $ buildSprite 17
 
 buildSprite :: Int -> Sprite
