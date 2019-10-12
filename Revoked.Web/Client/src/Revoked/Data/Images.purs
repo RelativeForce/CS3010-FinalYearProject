@@ -1,8 +1,8 @@
 module Data.Images where
 
-import Prelude
-import Emo8.Types (ScaledImage, FolderPath)
+import Emo8.Types (ScaledImage)
 import Assets.Images.TitleScreen (titleScreenData)
+import Assets.Images.BlackBackground (blackBackgroundData)
 
 titleScreen :: ScaledImage
 titleScreen = {
@@ -13,10 +13,7 @@ titleScreen = {
 
 blackBackground :: ScaledImage
 blackBackground = {
-    image: imagesFolder <> "background.png",
+    image: blackBackgroundData,
     height: 720,
     width: 1280
 }
-
-imagesFolder :: FolderPath
-imagesFolder = "assets\\images\\"
