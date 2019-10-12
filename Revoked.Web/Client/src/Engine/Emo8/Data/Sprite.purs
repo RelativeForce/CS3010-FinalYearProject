@@ -1,6 +1,8 @@
 module Emo8.Data.Sprite where
 
 import Prelude
+import Data.Array (index)
+import Data.Maybe (Maybe(..))
 import Data.Int (toNumber, floor)
 import Emo8.Types (
     Sprite, 
@@ -15,7 +17,9 @@ toScaledImage sprite = {
 }
 
 frameFileName :: Sprite -> String
-frameFileName s = s.folderPath <> "\\" <> (show $ frameIndexToCurrentFrame s) <> "." <> s.extension
+frameFileName s = case index s.frames $ frameIndexToCurrentFrame s of
+    Nothing -> ""
+    Just frame -> frame
 
 incrementFrame :: Sprite -> Sprite
 incrementFrame s = s { frameIndex = nextFrameIndex}

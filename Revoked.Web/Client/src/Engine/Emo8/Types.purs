@@ -47,13 +47,12 @@ type ScaledImage = {
 }
 
 type Sprite = {
-  folderPath :: FolderPath,
+  frames :: FrameArray,
   frameIndex :: Int,
   framesPerSecond :: FramesPerSecond,
   frameCount :: FrameCount,
   width :: Width,
-  height :: Height,
-  extension :: FileExtension
+  height :: Height
 }
 
 type X = Int
@@ -63,7 +62,7 @@ type Height = Int
 type FrameCount = Int
 type FramesPerSecond = Int
 type FolderPath = String
-type FileExtension = String
+type FrameArray = Array String
 type IdX = Int
 type IdY = Int
 type Size = Int
