@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 ## Details:
-Reviewed Date:
+Approved Date:
 Points Spent: 0
 
 ## Background
