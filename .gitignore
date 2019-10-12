@@ -461,3 +461,12 @@
 /Revoked.Web/Client/output/Types
 /Revoked.Web/Client/output/Unsafe.Coerce
 /Revoked.Web/Client/output/Assets.Sprites.Player.Sprite
+/Revoked.Web/Client/output/Test.Main
+/Revoked.Web/Client/output/Test.Parse
+/Revoked.Web/Client/output/Test.Parse.MapSum
+/Revoked.Web/Client/output/Test.Parse.SoundSum
+/Revoked.Web/Client/output/Test.ParseSound
+/Revoked.Web/Client/output/Test.Sprite
+/Revoked.Web/Client/output/Test.Sprite.CurrentFrame
+/Revoked.Web/Client/output/Test.Sprite.IncrementFrame
+/Revoked.Web/Client/output/Test.Sprite.ToScaledImage

@@ -11,18 +11,18 @@ import Emo8.Types (
 
 toScaledImage :: Sprite -> ScaledImage
 toScaledImage sprite = {
-    image: frameFileName sprite,
+    image: currentFrame sprite,
     height: sprite.height,
     width: sprite.width
 }
 
-frameFileName :: Sprite -> String
-frameFileName s = case index s.frames $ frameIndexToCurrentFrame s of
+currentFrame :: Sprite -> String
+currentFrame s = case index s.frames $ frameIndexToCurrentFrame s of
     Nothing -> ""
     Just frame -> frame
 
 incrementFrame :: Sprite -> Sprite
-incrementFrame s = s { frameIndex = nextFrameIndex}
+incrementFrame s = s { frameIndex = nextFrameIndex }
     where 
         nextFrameIndex = mod (s.frameIndex + 1) (frameLimit s)
 
