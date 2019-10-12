@@ -16,28 +16,27 @@ toScaledImageTests =
             let 
                 expectedWidth = 387
                 expectedHeight = 457
-                expectedFileName = "test\\1.png"
+                expectedFrame = "frame1"
                 result = toScaledImage $ buildSprite expectedWidth expectedHeight   
-            equal expectedFileName result.image
+            equal expectedFrame result.image
             equal expectedWidth result.width 
             equal expectedHeight result.height
         test "shouldConvertToScaledImageWhenSpriteIsValid [32423 453453]" do
             let 
                 expectedWidth = 32423
                 expectedHeight = 453453
-                expectedFileName = "test\\1.png"
+                expectedFrame = "frame1"
                 result = toScaledImage $ buildSprite expectedWidth expectedHeight   
-            equal expectedFileName result.image
+            equal expectedFrame result.image
             equal expectedWidth result.width 
             equal expectedHeight result.height   
 
 buildSprite :: Int -> Int -> Sprite
 buildSprite width height = {
-    folderPath: "test",
+    frames: ["frame0", "frame1", "frame2", "frame3", "frame4", "frame5", "frame6", "frame7", "frame8", "frame9"],
     frameCount: 10,
     frameIndex: 1,
     framesPerSecond: 1,
     width: width,
-    height: height,
-    extension: "png"
+    height: height
 }
