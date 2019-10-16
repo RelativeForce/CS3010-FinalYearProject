@@ -3,21 +3,24 @@ module Data.Player where
 import Prelude
 
 import Class.Object (class Object, class ObjectDraw, position)
-import Constants (emoSize)
+import Constants (emoSize, maxPlayerSpeedX, maxPlayerSpeedY)
 import Data.Bullet (Bullet(..))
-import Emo8.Action.Draw (drawRotatedSprite)
-import Emo8.Input (Input)
-import Emo8.Utils (defaultMonitorSize)
-import Emo8.Data.Sprite (incrementFrame)
 import Data.Sprites as S
+import Data.Int (toNumber, floor)
+import Emo8.Action.Draw (drawRotatedSprite)
+import Emo8.Data.Sprite (incrementFrame)
+import Emo8.Input (Input)
+import Emo8.Types (Sprite, Velocity)
+import Emo8.Utils (defaultMonitorSize)
 import Types (Pos)
-import Emo8.Types (Sprite)
 
 data Player = Player { 
     pos :: Pos, 
     energy :: Int, 
     appear :: Appear,
-    sprite :: Sprite
+    sprite :: Sprite,
+    velocity :: Velocity,
+    onFloor :: Boolean
 }
 
 data Appear = Stable | Forword | Backword
@@ -35,13 +38,16 @@ instance objectDrawPlayer :: ObjectDraw Player where
 updatePlayer :: Input -> Player -> Player
 updatePlayer i (Player p) =
     Player $ p { 
-        pos = newPos, 
+        pos = newPosition, 
         energy = newEnergy, 
         appear = newAppear,
-        sprite = incrementFrame p.sprite
+        sprite = incrementFrame p.sprite,
+        velocity = newVelocity,
+        onFloor = p.onFloor
     }
     where
-        newPos = updatePos i p.pos
+        newVelocity = updateVelocity i p.velocity p.onFloor
+        newPosition = updatePosition p.pos newVelocity
         newEnergy = case (canEmit p.energy), (i.isW || i.isS || i.isD) of
             true, true -> 0
             true, false -> p.energy
@@ -52,17 +58,24 @@ updatePlayer i (Player p) =
                 false, true -> Forword
                 _, _ -> Stable 
 
-updatePos :: Input -> Pos -> Pos
-updatePos i p = { x: nx, y: ny }
+updateVelocity :: Input -> Velocity -> Boolean -> Velocity
+updateVelocity i currentVelocity onFloor = { xSpeed: xSpeed, ySpeed: ySpeed }
     where
-        nx = case i.isLeft, i.isRight of
-                true, false -> p.x - 4
-                false, true -> p.x + 4
-                _, _ -> p.x
-        ny = case i.isUp, i.isDown of
-                true, false -> p.y + 4
-                false, true -> p.y - 4
-                _, _ -> p.y
+        xSpeed = case i.isLeft, i.isRight of
+            true, false -> -maxPlayerSpeedX
+            false, true -> maxPlayerSpeedX
+            _, _ -> currentVelocity.xSpeed * 0.9
+        ySpeed = case i.isSpace, onFloor of
+            true, true -> maxPlayerSpeedY
+            _, _ -> case currentVelocity.ySpeed - 0.1 >= -maxPlayerSpeedY of
+                true -> currentVelocity.ySpeed - 0.1
+                false -> -maxPlayerSpeedY
+
+updatePosition :: Pos -> Velocity -> Pos
+updatePosition p v = { x: nx, y: ny }
+    where
+        nx = floor $ (toNumber p.x) + v.xSpeed
+        ny = floor $ (toNumber p.y) + v.ySpeed
 
 addBullet :: Input -> Player -> Array Bullet
 addBullet i (Player p) =
@@ -80,7 +93,12 @@ initialPlayer = Player {
     }, 
     energy: 30, 
     appear: Stable,
-    sprite: S.player
+    sprite: S.player,
+    velocity: {
+        xSpeed: 0.0,
+        ySpeed: 0.0
+    },
+    onFloor: true
 }
 
 canEmit :: Int -> Boolean

@@ -16,6 +16,11 @@ type Position = {
   y :: Y
 }
 
+type Velocity = {
+  xSpeed :: Number,
+  ySpeed :: Number 
+}
+
 -- | Asset type.
 -- | It contains map data and sound data.
 type Asset = { 

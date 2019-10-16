@@ -86,7 +86,7 @@ instance gameState :: Game State where
             true, _ -> ClearState
             false, true -> OverState
             false, false -> PlayState $ s { 
-                distance = s.distance + speed, 
+                distance = s.distance, 
                 player = nnp, 
                 bullets = nnbullets <> newBullets, 
                 enemies = nnenemies <> newEnemies, 
