@@ -1,4 +1,4 @@
-module Test.Parse.SoundSum( 
+module Test.Engine.Emo8.Parse.SoundSum( 
     soundSumTests
 ) where
 

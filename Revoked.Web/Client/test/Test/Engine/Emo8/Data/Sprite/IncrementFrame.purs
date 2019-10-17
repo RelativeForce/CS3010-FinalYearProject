@@ -1,4 +1,4 @@
-module Test.Sprite.IncrementFrame ( 
+module Test.Engine.Emo8.Data.Sprite.IncrementFrame ( 
     incrementFrameTests 
 ) where
 

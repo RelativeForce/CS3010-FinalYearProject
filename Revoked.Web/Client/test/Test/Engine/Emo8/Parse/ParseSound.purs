@@ -1,4 +1,4 @@
-module Test.ParseSound( 
+module Test.Engine.Emo8.Parse.ParseSound( 
     parseSoundTests
 ) where
 

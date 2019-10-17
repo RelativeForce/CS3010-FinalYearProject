@@ -470,3 +470,14 @@
 /Revoked.Web/Client/output/Test.Sprite.CurrentFrame
 /Revoked.Web/Client/output/Test.Sprite.IncrementFrame
 /Revoked.Web/Client/output/Test.Sprite.ToScaledImage
+/Revoked.Web/Client/output/Test.Engine
+/Revoked.Web/Client/output/Test.Engine.Emo8
+/Revoked.Web/Client/output/Test.Engine.Emo8.Data
+/Revoked.Web/Client/output/Test.Engine.Emo8.Data.Sprite
+/Revoked.Web/Client/output/Test.Engine.Emo8.Data.Sprite.CurrentFrame
+/Revoked.Web/Client/output/Test.Engine.Emo8.Data.Sprite.IncrementFrame
+/Revoked.Web/Client/output/Test.Engine.Emo8.Data.Sprite.ToScaledImage
+/Revoked.Web/Client/output/Test.Engine.Emo8.Parse
+/Revoked.Web/Client/output/Test.Engine.Emo8.Parse.MapSum
+/Revoked.Web/Client/output/Test.Engine.Emo8.Parse.ParseSound
+/Revoked.Web/Client/output/Test.Engine.Emo8.Parse.SoundSum

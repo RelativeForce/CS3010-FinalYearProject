@@ -1,4 +1,4 @@
-module Test.Parse( 
+module Test.Engine.Emo8.Parse( 
     parseTests 
 ) where
 
@@ -6,9 +6,9 @@ import Prelude
 
 import Effect (Effect)
 import Test.Unit.Main (runTest)
-import Test.ParseSound (parseSoundTests)
-import Test.Parse.MapSum (mapSumTests)
-import Test.Parse.SoundSum (soundSumTests)
+import Test.Engine.Emo8.Parse.ParseSound (parseSoundTests)
+import Test.Engine.Emo8.Parse.MapSum (mapSumTests)
+import Test.Engine.Emo8.Parse.SoundSum (soundSumTests)
 
 parseTests :: Effect Unit
 parseTests = do

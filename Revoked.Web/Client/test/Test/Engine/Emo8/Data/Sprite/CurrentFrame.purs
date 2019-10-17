@@ -1,4 +1,4 @@
-module Test.Sprite.CurrentFrame ( 
+module Test.Engine.Emo8.Data.Sprite.CurrentFrame ( 
     currentFrameTests 
 ) where
 
