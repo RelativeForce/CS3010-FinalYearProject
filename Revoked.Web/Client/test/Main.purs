@@ -3,8 +3,8 @@ module Test.Main where
 import Prelude
 
 import Effect (Effect)
-import Test.Parse (parseTests)
-import Test.Sprite (spriteTests)
+import Test.Engine (engineTests)
+import Test.Revoked (revokedTests)
 
 main :: Effect Unit
 main =
@@ -12,6 +12,6 @@ main =
     -- Tests
     
     -- Sub Modules
-    parseTests
-    spriteTests
+    engineTests
+    revokedTests
 

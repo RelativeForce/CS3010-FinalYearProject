@@ -1,4 +1,4 @@
-module Test.Parse.MapSum( 
+module Test.Engine.Emo8.Parse.MapSum( 
     mapSumTests
 ) where
 

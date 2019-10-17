@@ -1,4 +1,4 @@
-module Test.Sprite.ToScaledImage ( 
+module Test.Engine.Emo8.Data.Sprite.ToScaledImage ( 
     toScaledImageTests 
 ) where
 
