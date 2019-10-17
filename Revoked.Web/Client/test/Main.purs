@@ -4,6 +4,7 @@ import Prelude
 
 import Effect (Effect)
 import Test.Engine (engineTests)
+import Test.Revoked (revokedTests)
 
 main :: Effect Unit
 main =
@@ -12,4 +13,5 @@ main =
     
     -- Sub Modules
     engineTests
+    revokedTests
 

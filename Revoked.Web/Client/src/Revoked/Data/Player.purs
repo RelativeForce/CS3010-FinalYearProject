@@ -3,7 +3,7 @@ module Data.Player where
 import Prelude
 
 import Class.Object (class Object, class ObjectDraw, position)
-import Constants (emoSize, maxPlayerSpeedX, maxPlayerSpeedY)
+import Constants (emoSize, maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor)
 import Data.Bullet (Bullet(..))
 import Data.Sprites as S
 import Data.Int (toNumber, floor)
@@ -64,11 +64,12 @@ updateVelocity i currentVelocity onFloor = { xSpeed: xSpeed, ySpeed: ySpeed }
         xSpeed = case i.isLeft, i.isRight of
             true, false -> -maxPlayerSpeedX
             false, true -> maxPlayerSpeedX
-            _, _ -> currentVelocity.xSpeed * 0.9
+            _, _ -> currentVelocity.xSpeed * frictionFactor
         ySpeed = case i.isSpace, onFloor of
             true, true -> maxPlayerSpeedY
-            _, _ -> case currentVelocity.ySpeed - 0.1 >= -maxPlayerSpeedY of
-                true -> currentVelocity.ySpeed - 0.1
+            false, true -> 0.0
+            _, false -> case currentVelocity.ySpeed + gravity >= -maxPlayerSpeedY of
+                true -> currentVelocity.ySpeed + gravity
                 false -> -maxPlayerSpeedY
 
 updatePosition :: Pos -> Velocity -> Pos
