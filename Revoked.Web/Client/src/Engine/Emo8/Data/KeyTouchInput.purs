@@ -18,7 +18,8 @@ newtype KeyTouchInput = KeyTouchInput {
   isA :: Boolean, 
   isS :: Boolean, 
   isD :: Boolean,
-  isSpace :: Boolean
+  isSpace :: Boolean,
+  isEnter :: Boolean
 }
 
 instance inputKeyTouchInput :: Input KeyTouchInput where
@@ -37,10 +38,12 @@ mergeInput (KeyInput k) (TouchInput t) = KeyTouchInput {
   isA: k.isA || t.isA, 
   isS: k.isS || t.isS, 
   isD: k.isD || t.isD,
-  isSpace: k.isSpace
+  isSpace: k.isSpace,
+  isEnter: k.isEnter
 }
 
 anyKeyTouch :: KeyTouchInput -> Boolean
 anyKeyTouch (KeyTouchInput i)
   = i.isW || i.isS || i.isA || i.isD
-  || i.isUp || i.isDown || i.isLeft || i.isRight || i.isSpace
+  || i.isUp || i.isDown || i.isLeft || i.isRight 
+  || i.isSpace || i.isEnter

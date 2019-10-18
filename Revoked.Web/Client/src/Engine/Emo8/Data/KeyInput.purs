@@ -16,7 +16,8 @@ newtype KeyInput = KeyInput {
   isA :: Boolean, 
   isS :: Boolean, 
   isD :: Boolean,
-  isSpace :: Boolean
+  isSpace :: Boolean,
+  isEnter :: Boolean
 }
 
 instance inputKeyInput :: Input KeyInput where
@@ -30,6 +31,7 @@ instance inputKeyInput :: Input KeyInput where
     sSig <- mkSignal S
     dSig <- mkSignal D
     spaceSig <- mkSignal Space
+    enterSig <- mkSignal Enter
     pure <<< map KeyInput $ { 
       isLeft: _, 
       isRight: _, 
@@ -39,7 +41,8 @@ instance inputKeyInput :: Input KeyInput where
       isA: _, 
       isS: _, 
       isD: _,
-      isSpace: _
+      isSpace: _,
+      isEnter: _
     } 
       <$> leftSig
       <*> rightSig
@@ -50,12 +53,13 @@ instance inputKeyInput :: Input KeyInput where
       <*> sSig
       <*> dSig
       <*> spaceSig
+      <*> enterSig
       where
         mkSignal = keyPressed <<< keyToCodeNum
 
 data Key
   = Left | Right | Up | Down
-  | W | A | S | D | Space
+  | W | A | S | D | Space | Enter
 
 keyToCodeNum :: Key -> Int 
 keyToCodeNum Left = 37
@@ -67,3 +71,4 @@ keyToCodeNum A = 65
 keyToCodeNum S = 83
 keyToCodeNum D = 68
 keyToCodeNum Space = 32
+keyToCodeNum Enter = 13

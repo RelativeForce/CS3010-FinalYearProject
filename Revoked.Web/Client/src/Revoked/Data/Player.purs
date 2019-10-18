@@ -48,12 +48,12 @@ updatePlayer i (Player p) =
     where
         newVelocity = updateVelocity i p.velocity p.onFloor
         newPosition = updatePosition p.pos newVelocity
-        newEnergy = case (canEmit p.energy), (i.isW || i.isS || i.isD) of
+        newEnergy = case (canEmit p.energy), i.isEnter of
             true, true -> 0
             true, false -> p.energy
             false, _ -> p.energy + 1
         newAppear =
-            case i.isLeft, i.isRight of
+            case i.isA, i.isD of
                 true, false -> Backword 
                 false, true -> Forword
                 _, _ -> Stable 
@@ -61,7 +61,7 @@ updatePlayer i (Player p) =
 updateVelocity :: Input -> Velocity -> Boolean -> Velocity
 updateVelocity i currentVelocity onFloor = { xSpeed: xSpeed, ySpeed: ySpeed }
     where
-        xSpeed = case i.isLeft, i.isRight of
+        xSpeed = case i.isA, i.isD of
             true, false -> -maxPlayerSpeedX
             false, true -> maxPlayerSpeedX
             _, _ -> currentVelocity.xSpeed * frictionFactor
@@ -80,11 +80,9 @@ updatePosition p v = { x: nx, y: ny }
 
 addBullet :: Input -> Player -> Array Bullet
 addBullet i (Player p) =
-    case canEmit p.energy of
-        true | i.isW -> [ Upper { pos: p.pos } ]
-        true | i.isS -> [ Downer { pos: p.pos } ]
-        true | i.isD -> [ Normal { pos: p.pos } ]
-        _ -> []
+    case i.isEnter && (canEmit p.energy) of
+        true -> [ Normal { pos: p.pos } ]
+        false -> []
 
 initialPlayer :: Player
 initialPlayer = Player { 
