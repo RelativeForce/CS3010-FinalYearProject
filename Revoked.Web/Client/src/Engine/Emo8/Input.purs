@@ -22,6 +22,7 @@ type Input =
     isS :: Boolean, 
     isD :: Boolean, 
     isSpace :: Boolean,
+    isEnter :: Boolean,
     catched :: { 
       isLeft :: Boolean, 
       isRight :: Boolean, 
@@ -31,7 +32,8 @@ type Input =
       isA :: Boolean, 
       isS :: Boolean, 
       isD :: Boolean,
-      isSpace :: Boolean
+      isSpace :: Boolean,
+      isEnter :: Boolean
     }, 
     released :: { 
       isLeft :: Boolean, 
@@ -42,7 +44,8 @@ type Input =
       isA :: Boolean, 
       isS :: Boolean, 
       isD :: Boolean,
-      isSpace :: Boolean
+      isSpace :: Boolean,
+      isEnter :: Boolean
     }
   }
 
@@ -56,20 +59,21 @@ type InputState = {
   aState :: PressState, 
   sState :: PressState, 
   dState :: PressState,
-  spaceState :: PressState
+  spaceState :: PressState,
+  enterState :: PressState
 }
 
 isCatchAny :: Input -> Boolean
 isCatchAny i
   = i.catched.isW || i.catched.isS || i.catched.isA || i.catched.isD
   || i.catched.isUp || i.catched.isDown || i.catched.isLeft || i.catched.isRight
-  || i.catched.isSpace
+  || i.catched.isSpace || i.catched.isEnter
 
 isReleaseAny :: Input -> Boolean
 isReleaseAny i
   = i.released.isW || i.released.isS || i.released.isA || i.released.isD
   || i.released.isUp || i.released.isDown || i.released.isLeft || i.released.isRight 
-  || i.released.isSpace
+  || i.released.isSpace || i.released.isEnter
 
 mkInputSig :: Signal KeyTouchInput -> Signal Input
 mkInputSig = map mkInput <<< mkInputStateSig
@@ -87,7 +91,8 @@ initialInputState = {
   aState: Unpressed, 
   sState: Unpressed, 
   dState: Unpressed,
-  spaceState: Unpressed
+  spaceState: Unpressed,
+  enterState: Unpressed
 }
 
 updateInputState :: KeyTouchInput -> InputState -> InputState
@@ -100,7 +105,8 @@ updateInputState (KeyTouchInput i) s = {
   aState: updatePressState i.isA s.aState, 
   sState: updatePressState i.isS s.sState, 
   dState: updatePressState i.isD s.dState,
-  spaceState: updatePressState i.isSpace s.spaceState
+  spaceState: updatePressState i.isSpace s.spaceState,
+  enterState: updatePressState i.isEnter s.enterState
 }
 
 mkInput :: InputState -> Input
@@ -114,6 +120,7 @@ mkInput s = {
   isS: isOn s.sState, 
   isD: isOn s.dState, 
   isSpace: isOn s.spaceState,
+  isEnter: isOn s.enterState,
   catched: { 
     isLeft: isCatched s.leftState, 
     isRight: isCatched s.rightState, 
@@ -123,7 +130,8 @@ mkInput s = {
     isA: isCatched s.aState, 
     isS: isCatched s.sState, 
     isD: isCatched s.dState,
-    isSpace: isCatched s.spaceState
+    isSpace: isCatched s.spaceState,
+    isEnter: isCatched s.enterState
   }, 
   released: { 
     isLeft: isReleased s.leftState, 
@@ -134,7 +142,8 @@ mkInput s = {
     isA: isReleased s.aState, 
     isS: isReleased s.sState, 
     isD: isReleased s.dState,
-    isSpace: isReleased s.spaceState
+    isSpace: isReleased s.spaceState,
+    isEnter: isReleased s.enterState
   }
 }
   where
