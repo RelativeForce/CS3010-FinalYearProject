@@ -84,15 +84,16 @@ updateVelocityTests =
 
 buildInput :: Boolean -> Boolean -> Boolean -> Input
 buildInput pressingJumpButton pressingLeftButton pressingRightButton = { 
-    isLeft: pressingLeftButton, 
-    isRight: pressingRightButton, 
+    isLeft: false, 
+    isRight: false, 
     isUp: false, 
     isDown: false, 
     isW: false, 
-    isA: false, 
+    isA: pressingLeftButton, 
     isS: false, 
-    isD: false, 
+    isD: pressingRightButton, 
     isSpace: pressingJumpButton,
+    isEnter: false,
     catched: { 
       isLeft: false, 
       isRight: false, 
@@ -102,7 +103,8 @@ buildInput pressingJumpButton pressingLeftButton pressingRightButton = {
       isA: false, 
       isS: false, 
       isD: false,
-      isSpace: false
+      isSpace: false,
+      isEnter: false
     }, 
     released: { 
       isLeft: false, 
@@ -113,7 +115,8 @@ buildInput pressingJumpButton pressingLeftButton pressingRightButton = {
       isA: false, 
       isS: false, 
       isD: false,
-      isSpace: false
+      isSpace: false,
+      isEnter: false
     }
 }
 
