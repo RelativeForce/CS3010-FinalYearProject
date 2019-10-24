@@ -5,6 +5,7 @@ import Emo8.Data.Emoji (Emoji)
 import Emo8.Data.Tick (Tick)
 import Emo8.SoundUtil (ChannelSets)
 import Graphics.Canvas (Context2D)
+import Data.Maybe (Maybe(..))
 
 type MonitorSize = { 
   width :: Width, 
@@ -24,16 +25,16 @@ type Velocity = {
 -- | Asset type.
 -- | It contains map data and sound data.
 type Asset = { 
-  mapData :: Array EmojiMap, 
+  mapData :: Array TileMap, 
   soundData :: Array Sound
 }
 
-type EmojiMap = Array (Array Emoji)
+type TileMap = Array (Array (Maybe ScaledImage))
 type Sound = Array Tick
 
 type DrawContext = { 
   ctx :: Context2D, 
-  mapData :: Array EmojiMap, 
+  mapData :: Array TileMap, 
   monitorSize :: MonitorSize
 }
 

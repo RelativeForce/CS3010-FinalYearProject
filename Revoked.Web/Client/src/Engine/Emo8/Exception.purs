@@ -7,13 +7,13 @@ import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
 import Effect (Effect)
 import Effect.Exception (throw)
-import Emo8.Types (EmojiMap, MapId, SoundId, Sound)
+import Emo8.Types (TileMap, MapId, SoundId, Sound)
 
 orErrMsg :: forall a. Either String a -> Effect a
 orErrMsg (Right val) = pure val
 orErrMsg (Left msg) = throw msg
 
-providedMap :: forall a. Array EmojiMap -> MapId -> (EmojiMap -> Effect a) -> Effect a
+providedMap :: forall a. Array TileMap -> MapId -> (TileMap -> Effect a) -> Effect a
 providedMap ms mId op =
   case ms !! mId of
     Nothing -> throw $ "MapId " <> show mId <> " does not exist."
