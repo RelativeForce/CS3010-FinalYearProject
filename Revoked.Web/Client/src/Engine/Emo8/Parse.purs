@@ -9,7 +9,6 @@ import Prelude
 
 import Data.Array (concat, slice, zip)
 import Data.Either (Either(..))
-import Data.Maybe (Maybe(..))
 import Data.Foldable (length)
 import Data.String (Pattern(..), Replacement(..), replace)
 import Data.String.EmojiSplitter (splitEmoji)
@@ -19,10 +18,10 @@ import Data.Tuple (Tuple(..), uncurry)
 import Emo8.Class.Read (read)
 import Emo8.Constants (maxNoteSize)
 import Emo8.Data.Audio (Note, nextOctave, notes)
-import Emo8.Data.Emoji (Emoji(..))
+import Emo8.Data.Emoji (Emoji(..), toScaledImage)
 import Emo8.Data.Emoji as E
 import Emo8.Data.Tick (Tick, mkScale)
-import Emo8.Types (TileMap, Sound, ScaledImage)
+import Emo8.Types (TileMap, Sound)
 
 newtype RawMap = RawMap String
 
@@ -56,12 +55,7 @@ parseTileMap (RawMap s) = propergateError $ rawStringToSingletonArray s
     propergateError (Right matrix) = Right $ stringMatrixToTileMap matrix
 
 stringMatrixToTileMap :: EmojiStringMatrix -> TileMap
-stringMatrixToTileMap m = (map (\line -> map (mapToScaledImage) line) m)
-
-mapToScaledImage :: EmojiString -> Maybe ScaledImage
-mapToScaledImage s = case s of
-  "🈳" -> Nothing
-  _ -> Nothing
+stringMatrixToTileMap m = (map (\line -> map (toScaledImage) line) m)
 
 -- | Convert raw sound string to sound
 parseSound :: RawSound -> Either String Sound

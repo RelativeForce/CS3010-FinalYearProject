@@ -1,11 +1,10 @@
 module Emo8.Types where
 
 import Audio.WebAudio.Types (AudioContext)
-import Emo8.Data.Emoji (Emoji)
 import Emo8.Data.Tick (Tick)
 import Emo8.SoundUtil (ChannelSets)
 import Graphics.Canvas (Context2D)
-import Data.Maybe (Maybe(..))
+import Data.Maybe (Maybe)
 
 type MonitorSize = { 
   width :: Width, 
@@ -47,12 +46,14 @@ type SoundContext = {
 type Image = String
     
 type ScaledImage = {
+  id :: ImageId,
   image :: Image,
   width :: Width,
   height :: Height
 }
 
 type Sprite = {
+  id :: ImageId,
   frames :: FrameArray,
   frameIndex :: Int,
   framesPerSecond :: FramesPerSecond,
@@ -75,5 +76,6 @@ type Size = Int
 type Deg = Int
 type Bpm = Int
 
+type ImageId = Int
 type MapId = Int
 type SoundId = Int

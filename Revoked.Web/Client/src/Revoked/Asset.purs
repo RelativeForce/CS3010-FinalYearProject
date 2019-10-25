@@ -1,20 +1,13 @@
 module Asset where
 
-
-import Emo8.Data.Emoji as E
+import Emo8.Types (ImageId)
+import Assets.AssetIds as Id
 import Emo8.Parse (RawMap(..))
 
-walls :: Array E.Emoji
-walls =
-    [ E.waterWave -- 🌊
-    , E.evergreenTree -- 🌲
-    , E.deciduousTree -- 🌳
-    , E.mountain -- ⛰️
-    , E.mountFuji -- 🗻
-    , E.cloudWithLightning -- 🌩️
-    , E.tornado -- 🌪️
-    , E.fire -- 🔥
-    ]
+walls :: Array ImageId
+walls = [ 
+    Id.playerSpriteId
+]
 
 map0 :: RawMap
 map0 = RawMap """

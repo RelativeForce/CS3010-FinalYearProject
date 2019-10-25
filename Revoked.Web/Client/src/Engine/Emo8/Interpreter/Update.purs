@@ -10,9 +10,8 @@ import Data.Maybe (Maybe(..))
 import Effect (Effect)
 import Emo8.Action.Update (Update, UpdateF(..))
 import Emo8.Class.Game (class Game)
-import Emo8.Data.Emoji (Emoji)
 import Emo8.Excepiton (providedMap)
-import Emo8.Types (Asset, IdX, MapId, X, Y, IdY)
+import Emo8.Types (Asset, IdX, IdY, MapId, X, Y, ScaledImage, ImageId)
 import Random.PseudoRandom (randomREff)
 
 runUpdate :: forall s. Game s => Asset -> Update s -> Effect s
@@ -24,24 +23,30 @@ runUpdate ass = foldFree interpret
     interpret (IsMapCollide mId mSize walls size x y f) = f <$> isMapCollide ass mId mSize walls size x y
 
 -- TODO: large object detection
-isMapCollide :: Asset -> MapId -> Size -> Array Emoji -> Size -> X -> Y -> Effect Boolean
+isMapCollide :: Asset -> MapId -> Size -> Array ImageId -> Size -> X -> Y -> Effect Boolean
 isMapCollide asset mId mSize walls size x y = do
-    lbE <- getMapEmoji asset mId (lx / mSize) (by / mSize)
-    rbE <- getMapEmoji asset mId (rx / mSize) (by / mSize)
-    ltE <- getMapEmoji asset mId (lx / mSize) (ty / mSize)
-    rtE <- getMapEmoji asset mId (rx / mSize) (ty / mSize)
+    lbE <- getMapTile asset mId (lx / mSize) (by / mSize)
+    rbE <- getMapTile asset mId (rx / mSize) (by / mSize)
+    ltE <- getMapTile asset mId (lx / mSize) (ty / mSize)
+    rtE <- getMapTile asset mId (rx / mSize) (ty / mSize)
     pure $ foldr f false [lbE, rbE, ltE, rtE]
     where
         lx = x
         rx = x + size - 1
         by = y
         ty = y + size - 1
-        f :: Maybe Emoji -> Boolean -> Boolean
+        f :: Maybe ScaledImage -> Boolean -> Boolean
         f mE b = case mE of
-            Just e | elem e walls -> true
+            Just e | elem e.id walls -> true
             _ -> b
 
-getMapEmoji :: Asset -> MapId -> IdX -> IdY -> Effect (Maybe Emoji)
-getMapEmoji ass mId xId yId =
-    providedMap ass.mapData mId $ \em ->
-        pure $ reverse em !! yId >>= flip (!!) xId
+getMapTile :: Asset -> MapId -> IdX -> IdY -> Effect (Maybe ScaledImage)
+getMapTile ass mId xId yId =
+    providedMap ass.mapData mId $ \em -> do
+        let 
+            maybeAtIndex = reverse em !! yId >>= flip (!!) xId
+            maybeTile = case maybeAtIndex of
+                Nothing -> Nothing
+                Just e -> e
+        pure $ maybeTile
+                

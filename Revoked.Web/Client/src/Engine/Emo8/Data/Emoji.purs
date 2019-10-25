@@ -1,6 +1,8 @@
 module Emo8.Data.Emoji where
 
 import Prelude
+import Data.Maybe (Maybe(..))
+import Emo8.Types (ScaledImage)
 
 newtype Emoji = Emoji String
 
@@ -8,6 +10,11 @@ instance showEmoji :: Show Emoji where
   show (Emoji s) = s
 
 derive instance eqEmoji :: Eq Emoji
+
+toScaledImage :: String -> Maybe ScaledImage
+toScaledImage s = case s of
+  "🈳" -> Nothing
+  _ -> Nothing
 
 -- | Supported emoji functions
 -- TODO: define type signature all at once

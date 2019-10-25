@@ -12,31 +12,36 @@ import Test.Unit.Assert (equal)
 toScaledImageTests :: TestSuite
 toScaledImageTests =
     suite "Sprite - toScaledImage" do
-        test "shouldConvertToScaledImageWhenSpriteIsValid [387 457]" do
+        test "shouldConvertToScaledImageWhenSpriteIsValid [387 457 5]" do
             let 
                 expectedWidth = 387
                 expectedHeight = 457
                 expectedFrame = "frame1"
-                result = toScaledImage $ buildSprite expectedWidth expectedHeight   
+                expectedId = 5
+                result = toScaledImage $ buildSprite expectedWidth expectedHeight expectedId 
             equal expectedFrame result.image
             equal expectedWidth result.width 
             equal expectedHeight result.height
-        test "shouldConvertToScaledImageWhenSpriteIsValid [32423 453453]" do
+            equal expectedId result.id
+        test "shouldConvertToScaledImageWhenSpriteIsValid [32423 453453 7]" do
             let 
                 expectedWidth = 32423
                 expectedHeight = 453453
                 expectedFrame = "frame1"
-                result = toScaledImage $ buildSprite expectedWidth expectedHeight   
+                expectedId = 8
+                result = toScaledImage $ buildSprite expectedWidth expectedHeight expectedId  
             equal expectedFrame result.image
             equal expectedWidth result.width 
-            equal expectedHeight result.height   
+            equal expectedHeight result.height
+            equal expectedId result.id   
 
-buildSprite :: Int -> Int -> Sprite
-buildSprite width height = {
+buildSprite :: Int -> Int -> Int -> Sprite
+buildSprite width height id = {
     frames: ["frame0", "frame1", "frame2", "frame3", "frame4", "frame5", "frame6", "frame7", "frame8", "frame9"],
     frameCount: 10,
     frameIndex: 1,
     framesPerSecond: 1,
     width: width,
-    height: height
+    height: height,
+    id: id
 }
