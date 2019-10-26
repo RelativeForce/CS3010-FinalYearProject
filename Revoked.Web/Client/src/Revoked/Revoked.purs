@@ -2,7 +2,7 @@ module Revoked where
 
 import Prelude
 
-import Asset (map0, map1, map2, map3)
+import Asset (map0)
 import Class.Object (draw, position)
 import Collision (isCollideObjects, isOutOfWorld)
 import Constants (speed)
@@ -34,7 +34,8 @@ data State
         bullets :: Array Bullet, 
         enemies :: Array Enemy, 
         particles :: Array Particle, 
-        enemyBullets :: Array EnemyBullet
+        enemyBullets :: Array EnemyBullet,
+        mapId :: Int
     }
 
 instance gameState :: Game State where
@@ -53,7 +54,7 @@ instance gameState :: Game State where
             nenemyBullets = map updateEnemyBullet s.enemyBullets
 
         -- player collision
-        isMapColl <- isCollideScrollMap s.distance np
+        isMapColl <- isCollideScrollMap s.mapId s.distance np
         let isEnemyColl = any (isCollideObjects np) nenemies
             isEnemyBulletColl = any (isCollideObjects np) nenemyBullets
 
@@ -91,7 +92,8 @@ instance gameState :: Game State where
                 bullets = nnbullets <> newBullets, 
                 enemies = nnenemies <> newEnemies, 
                 particles = nnparticles <> newParticles, 
-                enemyBullets = nnenemyBullets <> newEnemyBullets
+                enemyBullets = nnenemyBullets <> newEnemyBullets,
+                mapId = s.mapId
             }
 
     draw TitleState = do
@@ -109,7 +111,7 @@ instance gameState :: Game State where
         emo E.thumbsUp 64 100 400
     draw (PlayState s) = do
         drawScaledImage I.blackBackground 0 0
-        drawScrollMap s.distance
+        drawScrollMap s.distance s.mapId
         draw s.player
         traverse_ draw s.bullets
         traverse_ draw s.enemies
@@ -125,7 +127,8 @@ initialPlayState = PlayState {
     bullets: [], 
     enemies: [], 
     particles: [], 
-    enemyBullets : []
+    enemyBullets : [],
+    mapId: 0
 }
 
 initialState :: State
@@ -134,6 +137,6 @@ initialState = TitleState
 main :: Effect Unit
 main = do
     asset <- mkAsset
-        [map0, map1, map2, map3]
+        [map0]
         []
     emo8 initialState asset defaultMonitorSize
