@@ -9,7 +9,7 @@ emoSize :: Int
 emoSize = 32
 
 mapSize :: Int
-mapSize = 32
+mapSize = 128
 
 maxPlayerSpeedX :: Number
 maxPlayerSpeedX = 4.0

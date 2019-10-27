@@ -13,7 +13,8 @@ toScaledImage :: Sprite -> ScaledImage
 toScaledImage sprite = {
     image: currentFrame sprite,
     height: sprite.height,
-    width: sprite.width
+    width: sprite.width,
+    id: sprite.id
 }
 
 currentFrame :: Sprite -> String

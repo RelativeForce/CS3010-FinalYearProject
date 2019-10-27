@@ -53,8 +53,7 @@ runDraw dctx = foldFree interpret
     interpret (Emo Mirrored e size x y n) = const n <$> emo' e size x y dctx
     interpret (Emor Normal deg e size x y n) = const n <$> emor deg e size x y dctx
     interpret (Emor Mirrored deg e size x y n) = const n <$> emor' deg e size x y dctx
-    interpret (Emap Normal mId size x y n) = const n <$> emap mId size x y dctx
-    interpret (Emap Mirrored mId size x y n) = const n <$> emap' mId size x y dctx
+    interpret (DrawMap mId size x y n) = const n <$> drawMap mId size x y dctx
 
 cls :: Color -> RenderOp
 cls c dctx = do
@@ -114,23 +113,22 @@ emor' rot e size x y =
             rotate ctx2d (-degToRad rot)
             scale ctx2d { scaleX: -1.0, scaleY: 1.0 }
 
-emap :: MapId -> Size -> X -> Y -> RenderOp
-emap = emapF emo
+drawMap :: MapId -> Size -> X -> Y -> RenderOp
+drawMap = drawMapWithF drawScaledImage
 
-emap' :: MapId -> Size -> X -> Y -> RenderOp
-emap' = emapF emo'
-
--- REVIEW: refactor
-emapF :: (Emoji -> Size -> X -> Y -> RenderOp) -> MapId -> Size -> X -> Y -> RenderOp
-emapF f mId size x y =
+drawMapWithF :: (ScaledImage -> X -> Y -> RenderOp) -> MapId -> Size -> X -> Y -> RenderOp
+drawMapWithF f mId size x y =
     withLocalDraw \dctx ->
         providedMap dctx.mapData mId \em -> 
             for_ (emapWithIndex em) \(Tuple vertId withIdRow) ->
-                for_ withIdRow \(Tuple horiId e) ->
-                    when (isVisible dctx.monitorSize horiId vertId)
-                        let xx = x + size * horiId
-                            yy = y + size * vertId 
-                        in f e size xx yy dctx
+                for_ withIdRow \(Tuple horiId maybeImage) ->
+                    when ((isVisible dctx.monitorSize horiId vertId) && (notEmpty maybeImage))
+                        let xx = x + (size * horiId)
+                            yy = y + (size * vertId) 
+                            img = case maybeImage of
+                                Nothing -> { image: "", height: 0, width: 0, id: 0 }
+                                Just i -> i
+                        in f img xx yy dctx
     where
         withIndex :: forall a. Array a -> Array (Tuple Int a)
         withIndex arr = zip (0..((length arr) - 1)) arr
@@ -138,6 +136,11 @@ emapF f mId size x y =
         withIndexRev :: forall a. Array a -> Array (Tuple Int a)
         withIndexRev arr = zip (((length arr) - 1)..0) arr
         emapWithIndex = withIndexRev <<< (map withIndex)
+
+        notEmpty :: Maybe ScaledImage -> Boolean
+        notEmpty maybeImage = case maybeImage of
+            Nothing -> false
+            Just img -> true
 
         isVisible :: MonitorSize -> IdX -> IdY -> Boolean
         isVisible ms xId yId =

@@ -2,13 +2,13 @@ module Revoked where
 
 import Prelude
 
-import Asset (map0, map1, map2, map3)
+import Levels (allRawLevels, emergeTable)
 import Class.Object (draw, position)
 import Collision (isCollideObjects, isOutOfWorld)
 import Constants (speed)
 import Data.Array (any, filter, partition)
 import Data.Bullet (Bullet, updateBullet)
-import Data.Enemy (Enemy(..), addEnemyBullet, emergeTable, updateEnemy)
+import Data.Enemy (Enemy(..), addEnemyBullet, updateEnemy)
 import Data.EnemyBullet (EnemyBullet, updateEnemyBullet)
 import Data.Foldable (traverse_)
 import Data.Particle (Particle, initParticle, updateParticle)
@@ -16,9 +16,10 @@ import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
 import Effect (Effect)
 import Emo8 (emo8)
 import Emo8.Action.Draw (cls, emo, emor, drawScaledImage)
-import Data.Images as I
+import Assets.Images as I
 import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
+import Emo8.Types (MapId)
 import Emo8.Data.Emoji as E
 import Emo8.Input (isCatchAny)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
@@ -34,7 +35,8 @@ data State
         bullets :: Array Bullet, 
         enemies :: Array Enemy, 
         particles :: Array Particle, 
-        enemyBullets :: Array EnemyBullet
+        enemyBullets :: Array EnemyBullet,
+        mapId :: MapId
     }
 
 instance gameState :: Game State where
@@ -53,7 +55,7 @@ instance gameState :: Game State where
             nenemyBullets = map updateEnemyBullet s.enemyBullets
 
         -- player collision
-        isMapColl <- isCollideScrollMap s.distance np
+        isMapColl <- isCollideScrollMap s.mapId s.distance np
         let isEnemyColl = any (isCollideObjects np) nenemies
             isEnemyBulletColl = any (isCollideObjects np) nenemyBullets
 
@@ -64,7 +66,7 @@ instance gameState :: Game State where
         -- add new objects
         let newBullets = addBullet input s.player
             newParticles = map (\e -> initParticle (position e)) collidedEnemies
-            newEnemies = emergeTable s.distance
+            newEnemies = emergeTable s.mapId s.distance
             newEnemyBullets = notCollidedEnemies >>= addEnemyBullet s.player
 
         -- fix player position
@@ -91,7 +93,8 @@ instance gameState :: Game State where
                 bullets = nnbullets <> newBullets, 
                 enemies = nnenemies <> newEnemies, 
                 particles = nnparticles <> newParticles, 
-                enemyBullets = nnenemyBullets <> newEnemyBullets
+                enemyBullets = nnenemyBullets <> newEnemyBullets,
+                mapId = s.mapId
             }
 
     draw TitleState = do
@@ -109,7 +112,7 @@ instance gameState :: Game State where
         emo E.thumbsUp 64 100 400
     draw (PlayState s) = do
         drawScaledImage I.blackBackground 0 0
-        drawScrollMap s.distance
+        drawScrollMap s.distance s.mapId
         draw s.player
         traverse_ draw s.bullets
         traverse_ draw s.enemies
@@ -125,7 +128,8 @@ initialPlayState = PlayState {
     bullets: [], 
     enemies: [], 
     particles: [], 
-    enemyBullets : []
+    enemyBullets : [],
+    mapId: 0
 }
 
 initialState :: State
@@ -133,7 +137,5 @@ initialState = TitleState
 
 main :: Effect Unit
 main = do
-    asset <- mkAsset
-        [map0, map1, map2, map3]
-        []
+    asset <- mkAsset allRawLevels []
     emo8 initialState asset defaultMonitorSize

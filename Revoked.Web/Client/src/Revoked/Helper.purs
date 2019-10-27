@@ -4,9 +4,9 @@ import Prelude
 
 import Class.Object (class Object, position, size)
 import Collision (isCollMap, isCollWorld)
-import Constants (mapSize)
+import Constants (mapSize, emoSize)
 import Data.Player (Player(..))
-import Emo8.Action.Draw (Draw, emap)
+import Emo8.Action.Draw (Draw, drawMap)
 import Emo8.Action.Update (Update)
 import Emo8.Types (MapId, X)
 import Emo8.Utils (defaultMonitorSize)
@@ -36,33 +36,22 @@ mapTileInMonitor :: Int
 mapTileInMonitor = defaultMonitorSize.width / mapSize
 
 -- TODO: readable
-drawScrollMap :: X -> Draw Unit
-drawScrollMap distance = do
-    drawCond 0 0 distance
-    drawCond 1 1 distance
-    drawCond 2 2 distance
-    drawCond 3 3 distance
+drawScrollMap :: X -> MapId -> Draw Unit
+drawScrollMap distance mapId = do
+    drawCond mapId distance
     where
-        drawCond :: MapId -> Int -> X -> Draw Unit
-        drawCond mId num d = do
-            when (base - mapSize * mapTileInMonitor <= d && d < base + mapWidth) $
-                emap mId mapSize (base - d) 0
-            where
-                base = num * mapWidth
+        drawCond :: MapId -> X -> Draw Unit
+        drawCond mId d = do
+            when (-mapSize * mapTileInMonitor <= d && d < mapWidth) $
+                drawMap mId emoSize (-d) 0
 
 -- TODO: readable
-isCollideScrollMap :: forall a. Object a => X -> a -> Update Boolean
-isCollideScrollMap distance o =
-    (\a b c d -> a || b || c || d)
-        <$> collCond 0 0 distance
-        <*> collCond 1 1 distance
-        <*> collCond 2 2 distance
-        <*> collCond 3 3 distance
+isCollideScrollMap :: forall a. Object a => MapId -> X -> a -> Update Boolean
+isCollideScrollMap mapId distance o =
+    collCond mapId distance
     where
-        collCond :: MapId -> Int -> X -> Update Boolean
-        collCond mId num d = do
-            if (base - mapSize * mapTileInMonitor <= d && d < base + mapWidth)
-                then isCollMap mId mapSize (size o) { x: (position o).x + (d - base), y: (position o).y }
+        collCond :: MapId -> X -> Update Boolean
+        collCond mId d = do
+            if (-mapSize * mapTileInMonitor <= d && d < mapWidth)
+                then isCollMap mId mapSize (size o) { x: (position o).x + (d), y: (position o).y }
                 else pure false
-            where
-                base = num * mapWidth

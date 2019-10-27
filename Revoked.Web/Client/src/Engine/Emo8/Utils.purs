@@ -13,7 +13,8 @@ import Prelude
 import Data.Traversable (traverse)
 import Effect (Effect)
 import Emo8.Excepiton (orErrMsg)
-import Emo8.Parse (RawMap, RawSound, parseEmojiMap, parseSound)
+import Emo8.Parse (RawMap, RawSound, parseTileMap, parseSound)
+import Assets.AssetMapper (emojiToImage)
 import Emo8.Types (Asset, MonitorSize, Size, X, Y)
 
 -- | Collision detection if an object protrudes out of monitor
@@ -53,7 +54,7 @@ isCollide sizeA xA yA sizeB xB yB
 -- | If there are unparsable strings, exception raised when executing javascript.
 mkAsset :: Array RawMap -> Array RawSound -> Effect Asset
 mkAsset rms rss = do
-    ms <- orErrMsg $ traverse parseEmojiMap rms
+    ms <- orErrMsg $ traverse (\m -> parseTileMap m emojiToImage) rms 
     ss <- orErrMsg $ traverse parseSound rss
     pure { mapData: ms, soundData: ss }
 
