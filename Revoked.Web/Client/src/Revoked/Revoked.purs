@@ -2,13 +2,13 @@ module Revoked where
 
 import Prelude
 
-import Asset (map0)
+import Levels (allRawLevels, emergeTable)
 import Class.Object (draw, position)
 import Collision (isCollideObjects, isOutOfWorld)
 import Constants (speed)
 import Data.Array (any, filter, partition)
 import Data.Bullet (Bullet, updateBullet)
-import Data.Enemy (Enemy(..), addEnemyBullet, emergeTable, updateEnemy)
+import Data.Enemy (Enemy(..), addEnemyBullet, updateEnemy)
 import Data.EnemyBullet (EnemyBullet, updateEnemyBullet)
 import Data.Foldable (traverse_)
 import Data.Particle (Particle, initParticle, updateParticle)
@@ -19,6 +19,7 @@ import Emo8.Action.Draw (cls, emo, emor, drawScaledImage)
 import Assets.Images as I
 import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
+import Emo8.Types (MapId)
 import Emo8.Data.Emoji as E
 import Emo8.Input (isCatchAny)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
@@ -35,7 +36,7 @@ data State
         enemies :: Array Enemy, 
         particles :: Array Particle, 
         enemyBullets :: Array EnemyBullet,
-        mapId :: Int
+        mapId :: MapId
     }
 
 instance gameState :: Game State where
@@ -65,7 +66,7 @@ instance gameState :: Game State where
         -- add new objects
         let newBullets = addBullet input s.player
             newParticles = map (\e -> initParticle (position e)) collidedEnemies
-            newEnemies = emergeTable s.distance
+            newEnemies = emergeTable s.mapId s.distance
             newEnemyBullets = notCollidedEnemies >>= addEnemyBullet s.player
 
         -- fix player position
@@ -136,7 +137,5 @@ initialState = TitleState
 
 main :: Effect Unit
 main = do
-    asset <- mkAsset
-        [map0]
-        []
+    asset <- mkAsset allRawLevels []
     emo8 initialState asset defaultMonitorSize
