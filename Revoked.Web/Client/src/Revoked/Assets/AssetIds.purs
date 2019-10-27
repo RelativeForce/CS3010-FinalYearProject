@@ -10,3 +10,15 @@ blackBackgroundId = 2
 
 playerSpriteId :: ImageId
 playerSpriteId = 3
+
+grassTopId :: ImageId
+grassTopId = 4
+
+grassLeftId :: ImageId
+grassLeftId = 5
+
+grassRightId :: ImageId
+grassRightId = 6
+
+grassCenterId :: ImageId
+grassCenterId = 7

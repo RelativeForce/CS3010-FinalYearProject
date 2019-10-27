@@ -1,10 +1,7 @@
 module Levels.Level01 where
 
-import Prelude
-
 import Data.Enemy (Enemy(..))
 import Emo8.Parse (RawMap(..))
-import Emo8.Types (MapId)
 import Emo8.Utils (defaultMonitorSize)
 import Constants (emoSize)
 

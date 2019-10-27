@@ -18,10 +18,11 @@ import Data.Tuple (Tuple(..), uncurry)
 import Emo8.Class.Read (read)
 import Emo8.Constants (maxNoteSize)
 import Emo8.Data.Audio (Note, nextOctave, notes)
-import Emo8.Data.Emoji (Emoji(..), toScaledImage)
+import Emo8.Data.Emoji (Emoji(..))
 import Emo8.Data.Emoji as E
 import Emo8.Data.Tick (Tick, mkScale)
-import Emo8.Types (TileMap, Sound)
+import Emo8.Types (TileMap, Sound, ScaledImage)
+import Data.Maybe (Maybe)
 
 newtype RawMap = RawMap String
 
@@ -47,15 +48,15 @@ type EmojiStringMatrix = Array EmojiStringArray
 type NoteArray = Array Note
 
 -- | Convert raw map string to tile map
-parseTileMap :: RawMap -> Either String TileMap
-parseTileMap (RawMap s) = propergateError $ rawStringToSingletonArray s
+parseTileMap :: RawMap -> (String -> Maybe ScaledImage) -> Either String TileMap
+parseTileMap (RawMap s) mapper = propergateError $ rawStringToSingletonArray s
   where
     propergateError :: Either String EmojiStringMatrix -> Either String TileMap
     propergateError (Left error) = Left $ error
-    propergateError (Right matrix) = Right $ stringMatrixToTileMap matrix
+    propergateError (Right matrix) = Right $ stringMatrixToTileMap matrix mapper
 
-stringMatrixToTileMap :: EmojiStringMatrix -> TileMap
-stringMatrixToTileMap m = (map (\line -> map (toScaledImage) line) m)
+stringMatrixToTileMap :: EmojiStringMatrix -> (String -> Maybe ScaledImage) -> TileMap
+stringMatrixToTileMap m mapper = (map (\line -> map mapper line) m)
 
 -- | Convert raw sound string to sound
 parseSound :: RawSound -> Either String Sound
