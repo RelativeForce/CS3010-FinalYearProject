@@ -53,7 +53,7 @@ runDraw dctx = foldFree interpret
     interpret (Emo Mirrored e size x y n) = const n <$> emo' e size x y dctx
     interpret (Emor Normal deg e size x y n) = const n <$> emor deg e size x y dctx
     interpret (Emor Mirrored deg e size x y n) = const n <$> emor' deg e size x y dctx
-    interpret (Emap mId size x y n) = const n <$> emap mId size x y dctx
+    interpret (DrawMap mId size x y n) = const n <$> drawMap mId size x y dctx
 
 cls :: Color -> RenderOp
 cls c dctx = do
@@ -113,12 +113,11 @@ emor' rot e size x y =
             rotate ctx2d (-degToRad rot)
             scale ctx2d { scaleX: -1.0, scaleY: 1.0 }
 
-emap :: MapId -> Size -> X -> Y -> RenderOp
-emap = emapF drawScaledImage
+drawMap :: MapId -> Size -> X -> Y -> RenderOp
+drawMap = drawMapWithF drawScaledImage
 
--- REVIEW: refactor
-emapF :: (ScaledImage -> X -> Y -> RenderOp) -> MapId -> Size -> X -> Y -> RenderOp
-emapF f mId size x y =
+drawMapWithF :: (ScaledImage -> X -> Y -> RenderOp) -> MapId -> Size -> X -> Y -> RenderOp
+drawMapWithF f mId size x y =
     withLocalDraw \dctx ->
         providedMap dctx.mapData mId \em -> 
             for_ (emapWithIndex em) \(Tuple vertId withIdRow) ->

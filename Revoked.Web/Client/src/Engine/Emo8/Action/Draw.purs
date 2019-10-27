@@ -19,7 +19,7 @@ data DrawF n
     | DrawRotatedSprite Sprite X Y Deg n
     | Emo Appearance Emoji Size X Y n
     | Emor Appearance Deg Emoji Size X Y n
-    | Emap MapId Size X Y n
+    | DrawMap MapId Size X Y n
 
 data Appearance = Normal | Mirrored
 
@@ -58,6 +58,6 @@ emor deg e size x y = liftF $ Emor Normal deg e size x y unit
 emor' :: Deg -> Emoji -> Size -> X -> Y -> Draw Unit
 emor' deg e size x y = liftF $ Emor Mirrored deg e size x y unit
 
--- | Draw emoji map.
-emap :: MapId -> Size -> X -> Y -> Draw Unit
-emap mId size x y = liftF $ Emap mId size x y unit
+-- | Draw tile map.
+drawMap :: MapId -> Size -> X -> Y -> Draw Unit
+drawMap mId size x y = liftF $ DrawMap mId size x y unit

@@ -6,7 +6,7 @@ import Class.Object (class Object, position, size)
 import Collision (isCollMap, isCollWorld)
 import Constants (mapSize, emoSize)
 import Data.Player (Player(..))
-import Emo8.Action.Draw (Draw, emap)
+import Emo8.Action.Draw (Draw, drawMap)
 import Emo8.Action.Update (Update)
 import Emo8.Types (MapId, X)
 import Emo8.Utils (defaultMonitorSize)
@@ -43,7 +43,7 @@ drawScrollMap distance mapId = do
         drawCond :: MapId -> X -> Draw Unit
         drawCond mId d = do
             when (-mapSize * mapTileInMonitor <= d && d < mapWidth) $
-                emap mId emoSize (-d) 0
+                drawMap mId emoSize (-d) 0
 
 -- TODO: readable
 isCollideScrollMap :: forall a. Object a => MapId -> X -> a -> Update Boolean

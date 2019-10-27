@@ -36,8 +36,8 @@ isMapCollide asset mId mSize walls size x y = do
         by = y
         ty = y + size - 1
         f :: Maybe ScaledImage -> Boolean -> Boolean
-        f mE b = case mE of
-            Just e | elem e.id walls -> true
+        f maybeImage b = case maybeImage of
+            Just img | elem img.id walls -> true
             _ -> b
 
 getMapTile :: Asset -> MapId -> IdX -> IdY -> Effect (Maybe ScaledImage)
