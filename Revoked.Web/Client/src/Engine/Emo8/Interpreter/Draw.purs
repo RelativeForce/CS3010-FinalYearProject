@@ -124,8 +124,8 @@ emapF f mId size x y =
             for_ (emapWithIndex em) \(Tuple vertId withIdRow) ->
                 for_ withIdRow \(Tuple horiId maybeImage) ->
                     when ((isVisible dctx.monitorSize horiId vertId) && (notEmpty maybeImage))
-                        let xx = x + size * horiId
-                            yy = y + size * vertId 
+                        let xx = x + (size * horiId)
+                            yy = y + (size * vertId) 
                             img = case maybeImage of
                                 Nothing -> { image: "", height: 0, width: 0, id: 0 }
                                 Just i -> i

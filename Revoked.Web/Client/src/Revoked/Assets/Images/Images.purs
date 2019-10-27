@@ -25,7 +25,7 @@ blackBackground = {
 grassTop :: ScaledImage
 grassTop = {
     image: grassTopDataData,
-    height: 128,
-    width: 128,
+    height: 32,
+    width: 32,
     id: Id.grassTopId
 }
