@@ -64,7 +64,7 @@ type Sprite = {
 
 type Request = {
   url :: String,
-  data :: String,
+  json :: String,
   method :: String
 }
 
