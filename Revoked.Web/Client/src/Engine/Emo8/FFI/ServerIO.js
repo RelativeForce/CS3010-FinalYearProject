@@ -2,7 +2,12 @@
 
 exports.send = function(requestData){
 
-    var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+    var isNode = new Function("try {return this===global;}catch(e){return false;}");
+
+    if(isNode()){
+        return false;  
+    }
+    
     var request = new XMLHttpRequest();
     request.open(requestData.method, requestData.url, false); 
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
