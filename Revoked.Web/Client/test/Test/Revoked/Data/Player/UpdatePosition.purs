@@ -3,10 +3,8 @@ module Test.Revoked.Data.Player.UpdatePosition (
 ) where
 
 import Prelude
-import Emo8.Input (Input)
 import Data.Player (updatePosition)
 import Test.Unit (TestSuite, suite, test)
-import Constants (gravity, frictionFactor, maxPlayerSpeedY, maxPlayerSpeedX)
 import Test.Unit.Assert (equal)
 
 updatePositionTests :: TestSuite

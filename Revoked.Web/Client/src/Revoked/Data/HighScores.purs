@@ -1,9 +1,4 @@
-module Data.HighScores (
-    PlayerScoreCreateRequestData,
-    PlayerScore,
-    sendPlayerScore,
-    getTopScores
-) where
+module Data.HighScores where
   
 import Prelude
 import Data.Argonaut.Encode (encodeJson)
