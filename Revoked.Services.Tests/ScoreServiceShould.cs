@@ -25,18 +25,20 @@ namespace Revoked.Services.Tests
         {
             const string username = "test username";
             const long points = 5453;
-            var time = new TimeSpan(0, 10, 0);
+            var start = DateTime.Now;
+            var end = DateTime.Now.AddDays(1);
 
-            var score = new PlayerScore
+            var score = new PlayerScoreCreateMessage
             {
                 Username = username,
                 Score = points,
-                Time = time
+                Start = start,
+                End = end
             };
 
             Expression<Func<Core.Entities.PlayerScore, bool>> entityCheck = ps =>
                 ps.Score == points &&
-                ps.Time == time &&
+                ps.Time == end.Subtract(start) &&
                 ps.Username == username;
 
             _repositoryMock
@@ -56,18 +58,20 @@ namespace Revoked.Services.Tests
         {
             const string username = "test username";
             const long points = 5453;
-            var time = new TimeSpan(0, 10, 0);
+            var start = DateTime.Now;
+            var end = DateTime.Now.AddDays(1);
 
-            var score = new PlayerScore
+            var score = new PlayerScoreCreateMessage
             {
                 Username = username,
                 Score = points,
-                Time = time
+                Start = start,
+                End = end
             };
 
             Expression<Func<Core.Entities.PlayerScore, bool>> entityCheck = ps =>
                 ps.Score == points &&
-                ps.Time == time &&
+                ps.Time == end.Subtract(start) &&
                 ps.Username == username;
 
             _repositoryMock
