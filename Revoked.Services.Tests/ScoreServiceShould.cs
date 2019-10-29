@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Moq;
+using Revoked.Core.Entities;
 using Revoked.Core.Interfaces;
 using Revoked.Services.Data;
 using Xunit;
@@ -104,13 +105,13 @@ namespace Revoked.Services.Tests
         [Fact]
         public void ShouldReturnTestScoresInCorrectOrder()
         {
-            var testScores = new List<Core.Entities.PlayerScore>();
+            var testScores = new List<PlayerScore>();
             const int numberOfScores = 10;
             const int topCount = numberOfScores - 2;
 
             for (var i = 0; i < numberOfScores; i++)
             {
-                testScores.Add(new Core.Entities.PlayerScore
+                testScores.Add(new PlayerScore
                 {
                     Score = i,
                     Id = i,
@@ -120,7 +121,7 @@ namespace Revoked.Services.Tests
             }
 
             _repositoryMock
-                .Setup(m => m.Query<Core.Entities.PlayerScore>())
+                .Setup(m => m.Query<PlayerScore>())
                 .Returns(testScores.AsQueryable())
                 .Verifiable();
 
