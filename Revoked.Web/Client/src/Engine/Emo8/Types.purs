@@ -62,6 +62,12 @@ type Sprite = {
   height :: Height
 }
 
+type Request = {
+  url :: String,
+  json :: String,
+  method :: String
+}
+
 type X = Int
 type Y = Int
 type Width = Int

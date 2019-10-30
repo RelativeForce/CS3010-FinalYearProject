@@ -491,3 +491,8 @@
 /Revoked.Web/Client/output/Levels.Level01
 /Revoked.Web/Client/output/Levels
 /Revoked.Web/Client/output/Assets.AssetMapper
+/Revoked.Web/Client/output/Emo8.FFI.ServerIO
+/Revoked.Web/Client/output/Data.HighScores
+/Revoked.Web/Client/output/Test.Revoked.Data.HighScores
+/Revoked.Web/Client/output/Test.Revoked.Data.HighScores.EncodePlayerScore
+/Revoked.Web/Client/package-lock.json

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Moq;
+using Revoked.Core.Entities;
 using Revoked.Core.Interfaces;
 using Revoked.Services.Data;
 using Xunit;
@@ -25,18 +26,20 @@ namespace Revoked.Services.Tests
         {
             const string username = "test username";
             const long points = 5453;
-            var time = new TimeSpan(0, 10, 0);
+            var start = DateTime.Now;
+            var end = DateTime.Now.AddDays(1);
 
-            var score = new PlayerScore
+            var score = new PlayerScoreCreateMessage
             {
                 Username = username,
                 Score = points,
-                Time = time
+                Start = start,
+                End = end
             };
 
             Expression<Func<Core.Entities.PlayerScore, bool>> entityCheck = ps =>
                 ps.Score == points &&
-                ps.Time == time &&
+                ps.Time == end.Subtract(start) &&
                 ps.Username == username;
 
             _repositoryMock
@@ -56,18 +59,20 @@ namespace Revoked.Services.Tests
         {
             const string username = "test username";
             const long points = 5453;
-            var time = new TimeSpan(0, 10, 0);
+            var start = DateTime.Now;
+            var end = DateTime.Now.AddDays(1);
 
-            var score = new PlayerScore
+            var score = new PlayerScoreCreateMessage
             {
                 Username = username,
                 Score = points,
-                Time = time
+                Start = start,
+                End = end
             };
 
             Expression<Func<Core.Entities.PlayerScore, bool>> entityCheck = ps =>
                 ps.Score == points &&
-                ps.Time == time &&
+                ps.Time == end.Subtract(start) &&
                 ps.Username == username;
 
             _repositoryMock
@@ -100,13 +105,13 @@ namespace Revoked.Services.Tests
         [Fact]
         public void ShouldReturnTestScoresInCorrectOrder()
         {
-            var testScores = new List<Core.Entities.PlayerScore>();
+            var testScores = new List<PlayerScore>();
             const int numberOfScores = 10;
             const int topCount = numberOfScores - 2;
 
             for (var i = 0; i < numberOfScores; i++)
             {
-                testScores.Add(new Core.Entities.PlayerScore
+                testScores.Add(new PlayerScore
                 {
                     Score = i,
                     Id = i,
@@ -116,7 +121,7 @@ namespace Revoked.Services.Tests
             }
 
             _repositoryMock
-                .Setup(m => m.Query<Core.Entities.PlayerScore>())
+                .Setup(m => m.Query<PlayerScore>())
                 .Returns(testScores.AsQueryable())
                 .Verifiable();
 

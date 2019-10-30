@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Revoked.Core.Entities;
 using Revoked.Core.Interfaces;
 using Revoked.Services.Data;
 using Revoked.Services.Interfaces;
@@ -17,7 +18,7 @@ namespace Revoked.Services
             _repository = repository;
         }
 
-        public async Task StoreScoreAsync(PlayerScore score)
+        public async Task StoreScoreAsync(PlayerScoreCreateMessage score)
         {
             var entity = score.ToEntity();
 
@@ -27,18 +28,18 @@ namespace Revoked.Services
                 throw new Exception("Failed to add high score");
         }
 
-        public List<PlayerScore> ListTop(int numberOfScores)
+        public List<PlayerScoreMessage> ListTop(int numberOfScores)
         {
             if(numberOfScores <= 0)
                 throw new ArgumentOutOfRangeException($"{nameof(numberOfScores)} cannot be less than or equal to zero");
 
 
             return _repository
-                .Query<Core.Entities.PlayerScore>()
+                .Query<PlayerScore>()
                 .OrderByDescending(hs => hs.Score)
                 .Take(numberOfScores)
                 .AsEnumerable()
-                .Select(ps => new PlayerScore(ps))
+                .Select(ps => new PlayerScoreMessage(ps))
                 .ToList();
         }
     }

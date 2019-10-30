@@ -6,6 +6,7 @@ import Prelude
 
 import Effect (Effect)
 import Test.Revoked.Data.Player (playerTests)
+import Test.Revoked.Data.HighScores (highScoresTests)
 
 dataTests :: Effect Unit
 dataTests = do
@@ -13,3 +14,4 @@ dataTests = do
 
     -- Sub Modules
     playerTests
+    highScoresTests

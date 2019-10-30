@@ -6,8 +6,8 @@ namespace Revoked.Services.Interfaces
 {
     public interface IScoreService
     {
-        Task StoreScoreAsync(PlayerScore score);
+        Task StoreScoreAsync(PlayerScoreCreateMessage score);
 
-        List<PlayerScore> ListTop(int numberOfScores);
+        List<PlayerScoreMessage> ListTop(int numberOfScores);
     }
 }

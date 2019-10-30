@@ -20,12 +20,12 @@ namespace Revoked.Web.Pages
             // Required for page GET
         }
 
-        public async Task OnPostStoreScore([FromBody] PlayerScore score)
+        public async Task OnPostStoreScore([FromBody] PlayerScoreCreateMessage score)
         {
             await _scoreService.StoreScoreAsync(score);
         }
 
-        public JsonResult OnPostTopTen()
+        public JsonResult OnGetTopTen()
         {
             return new JsonResult(_scoreService.ListTop(10));
         }
