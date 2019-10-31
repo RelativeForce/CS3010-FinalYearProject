@@ -84,11 +84,11 @@ checkPlayerCollision (Player old) (Player newPlayer) distance collisionCheck = d
     yCollide <- collisionCheck yChangePlayer
     bothCollide <- collisionCheck (Player newPlayer)
     let newPosition = case xCollide, yCollide, bothCollide of
-            true, false, false -> { 
+            true, false, _ -> { 
                 x: autoCollideX oldPos.x newPos.x distance, 
                 y: newPos.y 
             }
-            false, true, false -> { 
+            false, true, _ -> { 
                 x: newPos.x, 
                 y: autoCollideY oldPos.y newPos.y
             }
@@ -107,13 +107,13 @@ autoCollideY :: Int -> Int -> Int
 autoCollideY oldY newY = 
     if (newY > oldY) -- If moving up
         then newY - (mod newY mapTileWidth)
-        else newY + (mod (newY - mapTileWidth) mapTileWidth)
+        else newY - (mod newY mapTileWidth) + mapTileWidth
         
 autoCollideX :: Int -> Int -> Int -> Int
 autoCollideX oldX newX distance = 
     if (newX > oldX) -- If moving Right
-        then newX - (mod (distance + newX + mapTileWidth) mapTileWidth)
-        else newX + (mod (distance + newX) mapTileWidth)
+        then newX - (mod (distance + newX) mapTileWidth)
+        else newX - (mod (distance + newX) mapTileWidth) + mapTileWidth
 
 replacePosition :: Player -> Pos -> Player
 replacePosition (Player p) pos = Player $ { 
