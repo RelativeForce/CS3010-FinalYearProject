@@ -17,5 +17,8 @@ allRawLevels = [ L1.mapData ]
 
 walls :: Array ImageId
 walls = [ 
-    Id.playerSpriteId
+    Id.grassTopId
 ]
+
+hazards :: Array ImageId
+hazards = []

@@ -30,4 +30,4 @@ randomNumber min max = liftF $ RandomNumber min max identity
 
 -- | Detect map collision.
 isMapCollide :: MapId -> Size -> Array ImageId -> Size -> X -> Y -> Update Boolean
-isMapCollide mId mSize walls size x y = liftF $ IsMapCollide mId mSize walls size x y identity
+isMapCollide mId mSize collidableObjectIds size x y = liftF $ IsMapCollide mId mSize collidableObjectIds size x y identity

@@ -1,19 +1,21 @@
 module Collision where
 
-import Levels (walls)
+import Levels (walls, hazards)
 import Class.Object (class Object, position, size)
 import Control.Monad.Gen (Size)
 import Emo8.Action.Update (Update, isMapCollide)
-import Emo8.Types (MapId)
+import Emo8.Types (MapId, ImageId)
 import Emo8.Utils (defaultMonitorSize, isCollide, isMonitorCollide, isOutOfMonitor)
 import Types (Pos)
 
+isWallsCollide :: MapId -> Size -> Size -> Pos -> Update Boolean
+isWallsCollide mId mSize size pos = isCollMap mId mSize size pos walls
 
-isCollideMap :: forall a. Object a => MapId -> Size -> a -> Update Boolean
-isCollideMap mId mSize o = isCollMap mId mSize (size o) (position o)  
+isHazardCollide :: MapId -> Size -> Size -> Pos -> Update Boolean
+isHazardCollide mId mSize size pos = isCollMap mId mSize size pos hazards
 
-isCollMap :: MapId -> Size -> Size -> Pos -> Update Boolean
-isCollMap mId mSize size {x, y} = isMapCollide mId mSize walls size x y  
+isCollMap :: MapId -> Size -> Size -> Pos -> Array ImageId -> Update Boolean
+isCollMap mId mSize size {x, y} collidableObjectIds = isMapCollide mId mSize collidableObjectIds size x y  
 
 isCollideWorld :: forall a. Object a => a -> Boolean
 isCollideWorld o = isCollWorld (size o) (position o)

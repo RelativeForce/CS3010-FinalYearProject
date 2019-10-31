@@ -23,7 +23,7 @@ import Emo8.Types (MapId)
 import Emo8.Data.Emoji as E
 import Emo8.Input (isCatchAny)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
-import Helper (beInMonitor, drawScrollMap, isCollideScrollMap)
+import Helper (beInMonitor, drawScrollMap, isCollideMapWalls, isCollideMapHazards, checkPlayerCollision)
 
 data State
     = TitleState
@@ -48,14 +48,20 @@ instance gameState :: Game State where
         pure $ if isCatchAny input then initialState else ClearState
     update input (PlayState s) = do
         -- update pos
-        let np = updatePlayer input s.player
+        let newPlayer = updatePlayer input s.player
+
+        np <- checkPlayerCollision s.player newPlayer s.distance (isCollideMapWalls s.mapId s.distance)
+
+        let 
             nbullets = map updateBullet s.bullets
             nenemies = map (updateEnemy s.player) s.enemies
             nparticles = map updateParticle s.particles
             nenemyBullets = map updateEnemyBullet s.enemyBullets
 
         -- player collision
-        isMapColl <- isCollideScrollMap s.mapId s.distance np
+        isHazardColl <- isCollideMapHazards s.mapId s.distance np
+        isMapColl <- isCollideMapWalls s.mapId s.distance np
+
         let isEnemyColl = any (isCollideObjects np) nenemies
             isEnemyBulletColl = any (isCollideObjects np) nenemyBullets
 
@@ -79,7 +85,7 @@ instance gameState :: Game State where
             nnenemyBullets = filter (not <<< isOutOfWorld) nenemyBullets
 
         -- game condition
-        let isGameOver = isMapColl || isEnemyColl || isEnemyBulletColl
+        let isGameOver = isHazardColl || isEnemyColl || isEnemyBulletColl
             isCatchOct (Oct _) = true
             isCatchOct _ = false  
             isGameClear = any isCatchOct collidedEnemies
@@ -88,7 +94,7 @@ instance gameState :: Game State where
             true, _ -> ClearState
             false, true -> OverState
             false, false -> PlayState $ s { 
-                distance = s.distance + speed, 
+                distance = s.distance, 
                 player = nnp, 
                 bullets = nnbullets <> newBullets, 
                 enemies = nnenemies <> newEnemies, 
