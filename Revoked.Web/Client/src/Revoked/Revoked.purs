@@ -12,7 +12,7 @@ import Data.Enemy (Enemy(..), addEnemyBullet, updateEnemy)
 import Data.EnemyBullet (EnemyBullet, updateEnemyBullet)
 import Data.Foldable (traverse_)
 import Data.Particle (Particle, initParticle, updateParticle)
-import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
+import Data.Player (Player, addBullet, initialPlayer, updatePlayer )
 import Effect (Effect)
 import Emo8 (emo8)
 import Emo8.Action.Draw (cls, emo, emor, drawScaledImage)
@@ -23,7 +23,7 @@ import Emo8.Types (MapId)
 import Emo8.Data.Emoji as E
 import Emo8.Input (isCatchAny)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
-import Helper (beInMonitor, drawScrollMap, isCollideMapWalls, isCollideMapHazards, checkPlayerCollision)
+import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards)
 
 data State
     = TitleState
@@ -47,10 +47,9 @@ instance gameState :: Game State where
     update input ClearState =
         pure $ if isCatchAny input then initialState else ClearState
     update input (PlayState s) = do
-        -- update pos
-        let newPlayer = updatePlayer input s.player
 
-        np <- checkPlayerCollision s.player newPlayer s.distance (isCollideMapWalls s.mapId s.distance)
+        -- update player
+        np <- updatePlayer input s.player s.distance (isCollideMapWalls s.mapId s.distance)
 
         let 
             nbullets = map updateBullet s.bullets
@@ -60,7 +59,6 @@ instance gameState :: Game State where
 
         -- player collision
         isHazardColl <- isCollideMapHazards s.mapId s.distance np
-        isMapColl <- isCollideMapWalls s.mapId s.distance np
 
         let isEnemyColl = any (isCollideObjects np) nenemies
             isEnemyBulletColl = any (isCollideObjects np) nenemyBullets
@@ -74,9 +72,6 @@ instance gameState :: Game State where
             newParticles = map (\e -> initParticle (position e)) collidedEnemies
             newEnemies = emergeTable s.mapId s.distance
             newEnemyBullets = notCollidedEnemies >>= addEnemyBullet s.player
-
-        -- fix player position
-        let nnp = beInMonitor s.player np
 
         -- delete objects (out of monitor)
         let nnbullets = filter (not <<< isOutOfWorld) notCollidedBullets
@@ -95,7 +90,7 @@ instance gameState :: Game State where
             false, true -> OverState
             false, false -> PlayState $ s { 
                 distance = s.distance, 
-                player = nnp, 
+                player = np, 
                 bullets = nnbullets <> newBullets, 
                 enemies = nnenemies <> newEnemies, 
                 particles = nnparticles <> newParticles, 

@@ -3,15 +3,17 @@ module Data.Player where
 import Prelude
 
 import Class.Object (class Object, class ObjectDraw, position)
-import Constants (emoSize, maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor)
+import Constants (emoSize, maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor, mapTileWidth)
+import Collision (isCollWorld)
 import Data.Bullet (Bullet(..))
 import Data.Sprites as S
 import Data.Int (toNumber, floor)
 import Emo8.Action.Draw (drawRotatedSprite)
 import Emo8.Data.Sprite (incrementFrame)
 import Emo8.Input (Input)
-import Emo8.Types (Sprite, Velocity)
+import Emo8.Types (Sprite, Velocity, X)
 import Emo8.Utils (defaultMonitorSize)
+import Emo8.Action.Update (Update)
 import Types (Pos)
 
 data Player = Player { 
@@ -35,28 +37,40 @@ instance objectDrawPlayer :: ObjectDraw Player where
             Forword -> drawRotatedSprite p.sprite (position o).x (position o).y (- 30)
             Backword -> drawRotatedSprite p.sprite (position o).x (position o).y 30
 
-updatePlayer :: Input -> Player -> Player
-updatePlayer i (Player p) =
-    Player $ p { 
-        pos = newPosition, 
-        energy = newEnergy, 
-        appear = newAppear,
-        sprite = incrementFrame p.sprite,
-        velocity = newVelocity,
-        onFloor = p.onFloor
-    }
-    where
-        newVelocity = updateVelocity i p.velocity p.onFloor
-        newPosition = updatePosition p.pos newVelocity
-        newEnergy = case (canEmit p.energy), i.isEnter of
+updatePlayer :: Input -> Player -> X -> (Player -> Update Boolean) -> Update Player
+updatePlayer i (Player p) distance collisionCheck = do
+    let 
+        newVelocityBasedOnGravity = updateVelocity i p.velocity p.onFloor
+
+        newPositionBasedOnVelocity = updatePosition p.pos newVelocityBasedOnGravity
+
+        newEnergy = case (canFire p.energy), i.isEnter of
             true, true -> 0
             true, false -> p.energy
             false, _ -> p.energy + 1
+
         newAppear =
             case i.isA, i.isD of
                 true, false -> Backword 
                 false, true -> Forword
                 _, _ -> Stable 
+
+        playerBasedOnVelocity = Player $ p { 
+            pos = newPositionBasedOnVelocity, 
+            energy = newEnergy, 
+            appear = newAppear,
+            sprite = incrementFrame p.sprite,
+            velocity = newVelocityBasedOnGravity,
+            onFloor = p.onFloor
+        }
+
+    playerBasedOnMapCollision <- collide p.pos playerBasedOnVelocity distance collisionCheck
+
+    let
+        playerBasedOnMonitorCollision = beInMonitor p.pos playerBasedOnMapCollision
+        newPlayer = adjustVelocity p.pos playerBasedOnMonitorCollision
+    
+    pure newPlayer
 
 updateVelocity :: Input -> Velocity -> Boolean -> Velocity
 updateVelocity i currentVelocity onFloor = { xSpeed: xSpeed, ySpeed: ySpeed }
@@ -80,7 +94,7 @@ updatePosition p v = { x: nx, y: ny }
 
 addBullet :: Input -> Player -> Array Bullet
 addBullet i (Player p) =
-    case i.isEnter && (canEmit p.energy) of
+    case i.isEnter && (canFire p.energy) of
         true -> [ Normal { pos: p.pos } ]
         false -> []
 
@@ -100,5 +114,90 @@ initialPlayer = Player {
     onFloor: true
 }
 
-canEmit :: Int -> Boolean
-canEmit energy = energy > 29
+canFire :: Int -> Boolean
+canFire energy = energy > 29
+
+adjustVelocity :: Pos -> Player -> Player
+adjustVelocity oldPos (Player new) = Player $ new { 
+    velocity = {
+        xSpeed: xSpeed,
+        ySpeed: ySpeed
+    }   
+} 
+    where
+        currentVelocity = new.velocity
+        newPos = new.pos
+        xSpeed = if oldPos.x == newPos.x
+            then 0.0
+            else currentVelocity.xSpeed
+        ySpeed = if oldPos.y == newPos.y
+            then 0.0
+            else currentVelocity.ySpeed
+
+collide :: Pos -> Player -> X -> (Player -> Update Boolean) -> Update Player
+collide oldPos (Player newPlayer) distance collisionCheck = do
+    let 
+        newPos = newPlayer.pos
+        xChangePlayer = Player $ newPlayer { 
+            pos = { 
+                x: newPos.x, 
+                y: oldPos.y 
+            }
+        }
+        yChangePlayer = Player $ newPlayer { 
+            pos = { 
+                x: oldPos.x, 
+                y: newPos.y 
+            }
+        }
+    xCollide <- collisionCheck xChangePlayer
+    yCollide <- collisionCheck yChangePlayer
+    bothCollide <- collisionCheck (Player newPlayer)
+    let newPosition = case xCollide, yCollide, bothCollide of
+            true, false, _ -> { 
+                x: adjustX oldPos.x newPos.x distance, 
+                y: newPos.y 
+            }
+            false, true, _ -> { 
+                x: newPos.x, 
+                y: adjustY oldPos.y newPos.y
+            }
+            false, false, true -> { 
+                x: adjustX oldPos.x newPos.x distance, 
+                y: adjustY oldPos.y newPos.y 
+            }
+            _, _, _ -> newPos
+        newOnFloor = yCollide
+    pure $ Player $ newPlayer { 
+        pos = newPosition, 
+        onFloor = newOnFloor
+    }
+
+adjustY :: Int -> Int -> Int
+adjustY oldY newY = 
+    if (newY > oldY) -- If moving up
+        then newY - (mod newY mapTileWidth)
+        else newY - (mod newY mapTileWidth) + mapTileWidth
+        
+adjustX :: Int -> Int -> Int -> Int
+adjustX oldX newX distance = 
+    if (newX > oldX) -- If moving Right
+        then newX - (mod (distance + newX) mapTileWidth)
+        else newX - (mod (distance + newX) mapTileWidth) + mapTileWidth
+
+beInMonitor :: Pos -> Player -> Player
+beInMonitor pos (Player np) = Player $ np { pos = { x: npx, y: npy } }
+    where
+        width = np.sprite.width
+        height = np.sprite.height
+        npos = np.pos
+        isCollX = isCollWorld width { x: npos.x, y: pos.y }
+        isCollY = isCollWorld height { x: pos.x, y: npos.y }
+        npx = case isCollX, (npos.x < pos.x) of
+            true, true -> 0
+            true, false -> defaultMonitorSize.width - width
+            _, _ -> npos.x
+        npy = case isCollY, (npos.y < pos.y) of
+            true, true -> 0
+            true, false -> defaultMonitorSize.height - height
+            _, _ -> npos.y

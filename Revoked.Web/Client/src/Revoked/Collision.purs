@@ -1,6 +1,6 @@
 module Collision where
 
-import Levels (walls, hazards)
+import Constants (walls, hazards)
 import Class.Object (class Object, position, size)
 import Control.Monad.Gen (Size)
 import Emo8.Action.Update (Update, isMapCollide)
