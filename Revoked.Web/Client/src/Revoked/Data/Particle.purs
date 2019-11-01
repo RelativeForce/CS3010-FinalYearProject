@@ -21,8 +21,8 @@ instance objectParticle :: Object Particle where
 instance objectDrawParticle :: ObjectDraw Particle where
     draw o = emo E.globeWithMeridians (size o) (position o).x (position o).y
 
-updateParticle :: Particle -> Particle
-updateParticle (Normal s) = Normal $ s { pos { y = s.pos.y - 2 } }
+updateParticle :: Int -> Particle -> Particle
+updateParticle scrollOffset (Normal s) = Normal $ s { pos { x = s.pos.x + scrollOffset, y = s.pos.y - 2 } }
 
 
 initParticle :: Pos -> Particle

@@ -30,8 +30,8 @@ instance objectDrawBullet :: ObjectDraw Bullet where
                 Downer _ -> (emor (- 30))
 
 
-updateBullet :: Bullet -> Bullet
-updateBullet (Normal s) = Normal $ s { pos { x = s.pos.x + 5 } }
-updateBullet (Upper s) = Upper $ s { pos { x = s.pos.x + 5, y = s.pos.y + 5 } }
-updateBullet (Downer s) = Downer $ s { pos { x = s.pos.x + 5, y = s.pos.y - 5 } }
+updateBullet :: Int -> Bullet -> Bullet
+updateBullet scrollOffset (Normal s) = Normal $ s { pos { x = s.pos.x + 5 + scrollOffset } }
+updateBullet scrollOffset (Upper s) = Upper $ s { pos { x = s.pos.x + 5 + scrollOffset, y = s.pos.y + 5 } }
+updateBullet scrollOffset (Downer s) = Downer $ s { pos { x = s.pos.x + 5 + scrollOffset, y = s.pos.y - 5 } }
 

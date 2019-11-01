@@ -54,10 +54,10 @@ instance gameState :: Game State where
             newDistance = adjustMonitorDistance updatedPlayer s.distance
             scrollOffset = (s.distance - newDistance)
             np = adjustPlayerPos updatedPlayer scrollOffset
-            nbullets = map updateBullet s.bullets
-            nenemies = map (updateEnemy s.player) s.enemies
-            nparticles = map updateParticle s.particles
-            nenemyBullets = map updateEnemyBullet s.enemyBullets
+            nbullets = map (updateBullet scrollOffset) s.bullets
+            nenemies = map (updateEnemy scrollOffset s.player) s.enemies
+            nparticles = map (updateParticle scrollOffset) s.particles
+            nenemyBullets = map (updateEnemyBullet scrollOffset) s.enemyBullets
 
         -- player collision
         isHazardColl <- isCollideMapHazards s.mapId s.distance np
