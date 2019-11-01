@@ -35,11 +35,14 @@ mapWidth = mapSize * mapTileWidth
 mapTileInMonitor :: Int
 mapTileInMonitor = defaultMonitorSize.width / mapSize
 
+boundry :: Int
+boundry = 8
+
 leftBoundry :: Int
-leftBoundry = 30 * mapTileInMonitor
+leftBoundry = boundry * mapTileWidth
 
 rightBoundry :: Int
-rightBoundry = defaultMonitorSize.width - (30 * mapTileInMonitor) 
+rightBoundry = defaultMonitorSize.width - (boundry * mapTileWidth) 
 
 walls :: Array ImageId
 walls = [ 
