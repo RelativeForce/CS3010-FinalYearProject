@@ -43,14 +43,14 @@ adjustMonitorDistance (Player player) distance =
     case isLevelAtMinimumDistance distance, isLevelAtMaximumDistance distance, isInLeftBoundry playerPos, isInRightBoundry playerPos of
         true, _, true, _ -> 0
         _, true, _, true -> mapWidth
-        false, _, true, _ -> if(newXIfWithinLeftBoundry < 0) then 0 else newXIfWithinLeftBoundry
-        _, false, _, true -> if(newXIfWithinRightBoundry > mapWidth) then mapWidth else newXIfWithinRightBoundry   
+        false, _, true, _ -> if(newDistanceIfInLeftBoundry < 0) then 0 else newDistanceIfInLeftBoundry
+        _, false, _, true -> if(newDistanceIfInRightBoundry > mapWidth) then mapWidth else newDistanceIfInRightBoundry   
         _, _, _, _ -> distance
     where
         playerPos = player.pos
         playerWidth = player.sprite.width
-        newXIfWithinLeftBoundry = distance + playerPos.x - leftBoundry
-        newXIfWithinRightBoundry = distance + playerPos.x + playerWidth - rightBoundry
+        newDistanceIfInLeftBoundry = distance + playerPos.x - leftBoundry
+        newDistanceIfInRightBoundry = distance + playerPos.x + playerWidth - rightBoundry
 
         isLevelAtMinimumDistance :: X -> Boolean
         isLevelAtMinimumDistance d = d == 0
