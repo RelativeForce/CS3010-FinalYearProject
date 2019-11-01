@@ -20,11 +20,11 @@ runUpdate ass = foldFree interpret
     interpret :: UpdateF ~> Effect
     interpret (RandomInt min max f) = f <$> randomREff min max
     interpret (RandomNumber min max f) = f <$> randomREff min max
-    interpret (IsMapCollide mId mSize walls size x y f) = f <$> isMapCollide ass mId mSize walls size x y
+    interpret (IsMapCollide mId mSize collidableObjectIds size x y f) = f <$> isMapCollide ass mId mSize collidableObjectIds size x y
 
 -- TODO: large object detection
 isMapCollide :: Asset -> MapId -> Size -> Array ImageId -> Size -> X -> Y -> Effect Boolean
-isMapCollide asset mId mSize walls size x y = do
+isMapCollide asset mId mSize collidableObjectIds size x y = do
     lbE <- getMapTile asset mId (lx / mSize) (by / mSize)
     rbE <- getMapTile asset mId (rx / mSize) (by / mSize)
     ltE <- getMapTile asset mId (lx / mSize) (ty / mSize)
@@ -37,7 +37,7 @@ isMapCollide asset mId mSize walls size x y = do
         ty = y + size - 1
         f :: Maybe ScaledImage -> Boolean -> Boolean
         f maybeImage b = case maybeImage of
-            Just img | elem img.id walls -> true
+            Just img | elem img.id collidableObjectIds -> true
             _ -> b
 
 getMapTile :: Asset -> MapId -> IdX -> IdY -> Effect (Maybe ScaledImage)
