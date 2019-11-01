@@ -5,7 +5,6 @@ import Prelude
 import Levels (allRawLevels, emergeTable)
 import Class.Object (draw, position)
 import Collision (isCollideObjects, isOutOfWorld)
-import Constants (speed)
 import Data.Array (any, filter, partition)
 import Data.Bullet (Bullet, updateBullet)
 import Data.Enemy (Enemy(..), addEnemyBullet, updateEnemy)
@@ -23,7 +22,7 @@ import Emo8.Types (MapId)
 import Emo8.Data.Emoji as E
 import Emo8.Input (isCatchAny)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
-import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards)
+import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance, adjustPlayerPos)
 
 data State
     = TitleState
@@ -49,13 +48,16 @@ instance gameState :: Game State where
     update input (PlayState s) = do
 
         -- update player
-        np <- updatePlayer input s.player s.distance (isCollideMapWalls s.mapId s.distance)
+        updatedPlayer <- updatePlayer input s.player s.distance (isCollideMapWalls s.mapId s.distance)
 
         let 
-            nbullets = map updateBullet s.bullets
-            nenemies = map (updateEnemy s.player) s.enemies
-            nparticles = map updateParticle s.particles
-            nenemyBullets = map updateEnemyBullet s.enemyBullets
+            newDistance = adjustMonitorDistance updatedPlayer s.distance
+            scrollOffset = (s.distance - newDistance)
+            np = adjustPlayerPos updatedPlayer scrollOffset
+            nbullets = map (updateBullet scrollOffset) s.bullets
+            nenemies = map (updateEnemy scrollOffset s.player) s.enemies
+            nparticles = map (updateParticle scrollOffset) s.particles
+            nenemyBullets = map (updateEnemyBullet scrollOffset) s.enemyBullets
 
         -- player collision
         isHazardColl <- isCollideMapHazards s.mapId s.distance np
@@ -89,7 +91,7 @@ instance gameState :: Game State where
             true, _ -> ClearState
             false, true -> OverState
             false, false -> PlayState $ s { 
-                distance = s.distance, 
+                distance = newDistance, 
                 player = np, 
                 bullets = nnbullets <> newBullets, 
                 enemies = nnenemies <> newEnemies, 

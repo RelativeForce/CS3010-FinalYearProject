@@ -35,22 +35,22 @@ instance objectDrawEnemy :: ObjectDraw Enemy where
     draw o@(Rex _) = emo E.tRex (size o) (position o).x (position o).y
     draw o@(Oct _) = emo E.octopus (size o) (position o).x (position o).y
 
-updateEnemy :: Player -> Enemy -> Enemy
-updateEnemy p@(Player _) e@(Invader s) = Invader $ s { pos { x = s.pos.x - 3, y = s.pos.y + dy } }
+updateEnemy :: Int -> Player -> Enemy -> Enemy
+updateEnemy scrollOffset p@(Player _) e@(Invader s) = Invader $ s { pos { x = s.pos.x - 3 + scrollOffset, y = s.pos.y + dy } }
     where
         v = diffVec e p
         dy
             | v.y > 0 = -1
             | v.y < 0 = 1
             | otherwise = 0
-updateEnemy _ (Moi s) = Moi $ if mod s.cnt 32 < 16
-        then s { pos { x = s.pos.x - 2, y = s.pos.y - 2 }, cnt = s.cnt + 1 } 
-        else s { pos { x = s.pos.x - 4, y = s.pos.y + 2 } , cnt = s.cnt + 1 }
-updateEnemy _ (Bee s) = Bee $ s { pos { x = s.pos.x - 6 } }
-updateEnemy (Player p) (Rex s) = Rex $ if mod s.cnt 32 < 16
-        then s { pos { x = s.pos.x - speed, y = s.pos.y + 4 }, cnt = s.cnt + 1 } 
-        else s { pos { x = s.pos.x - speed, y = s.pos.y - 4 } , cnt = s.cnt + 1 }
-updateEnemy _ (Oct s) = Oct $ s { pos { x = s.pos.x + dx } }
+updateEnemy scrollOffset _ (Moi s) = Moi $ if mod s.cnt 32 < 16
+        then s { pos { x = s.pos.x - 2 + scrollOffset, y = s.pos.y - 2 }, cnt = s.cnt + 1 } 
+        else s { pos { x = s.pos.x - 4 + scrollOffset, y = s.pos.y + 2 } , cnt = s.cnt + 1 }
+updateEnemy scrollOffset _ (Bee s) = Bee $ s { pos { x = s.pos.x - 6 + scrollOffset } }
+updateEnemy scrollOffset (Player p) (Rex s) = Rex $ if mod s.cnt 32 < 16
+        then s { pos { x = s.pos.x - speed + scrollOffset, y = s.pos.y + 4 }, cnt = s.cnt + 1 } 
+        else s { pos { x = s.pos.x - speed + scrollOffset, y = s.pos.y - 4 } , cnt = s.cnt + 1 }
+updateEnemy scrollOffset _ (Oct s) = Oct $ s { pos { x = s.pos.x + dx + scrollOffset } }
     where
         dx = if s.pos.x > defaultMonitorSize.width / 2 then -speed else 0
 

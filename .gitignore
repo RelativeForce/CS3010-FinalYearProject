@@ -498,3 +498,5 @@
 /Revoked.Web/Client/package-lock.json
 /Revoked.Web/Client/output/Test.Revoked.Data.Player.AdjustY
 /Revoked.Web/Client/output/Test.Revoked.Data.Player.AdjustX
+/Revoked.Web/Client/output/Test.Revoked.Helper
+/Revoked.Web/Client/output/Test.Revoked.Helper.AdjustPlayerPos

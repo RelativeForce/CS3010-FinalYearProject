@@ -35,6 +35,15 @@ mapWidth = mapSize * mapTileWidth
 mapTileInMonitor :: Int
 mapTileInMonitor = defaultMonitorSize.width / mapSize
 
+boundry :: Int
+boundry = 8
+
+leftBoundry :: Int
+leftBoundry = boundry * mapTileWidth
+
+rightBoundry :: Int
+rightBoundry = defaultMonitorSize.width - (boundry * mapTileWidth) 
+
 walls :: Array ImageId
 walls = [ 
     Id.grassTopId
