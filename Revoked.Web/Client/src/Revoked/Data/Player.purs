@@ -8,6 +8,7 @@ import Collision (isCollWorld)
 import Data.Bullet (Bullet(..))
 import Data.Sprites as S
 import Data.Int (toNumber, floor)
+import Math (abs)
 import Emo8.Action.Draw (drawRotatedSprite)
 import Emo8.Data.Sprite (incrementFrame)
 import Emo8.Input (Input)
@@ -78,7 +79,7 @@ updateVelocity i currentVelocity onFloor = { xSpeed: xSpeed, ySpeed: ySpeed }
         xSpeed = case i.isA, i.isD of
             true, false -> -maxPlayerSpeedX
             false, true -> maxPlayerSpeedX
-            _, _ -> currentVelocity.xSpeed * frictionFactor
+            _, _ -> if (abs currentVelocity.xSpeed) >= 1.0 then currentVelocity.xSpeed * frictionFactor else 0.0 
         ySpeed = case i.isSpace, onFloor of
             true, true -> maxPlayerSpeedY
             false, true -> 0.0
@@ -87,10 +88,10 @@ updateVelocity i currentVelocity onFloor = { xSpeed: xSpeed, ySpeed: ySpeed }
                 false -> -maxPlayerSpeedY
 
 updatePosition :: Pos -> Velocity -> Pos
-updatePosition p v = { x: nx, y: ny }
+updatePosition p v = { x: x, y: y }
     where
-        nx = floor $ (toNumber p.x) + v.xSpeed
-        ny = floor $ (toNumber p.y) + v.ySpeed
+        x = floor $ (toNumber p.x) + v.xSpeed
+        y = floor $ (toNumber p.y) + v.ySpeed
 
 addBullet :: Input -> Player -> Array Bullet
 addBullet i (Player p) =

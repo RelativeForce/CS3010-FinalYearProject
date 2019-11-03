@@ -2,7 +2,7 @@ module Test.Revoked.Data.HighScores.EncodePlayerScore (
     encodePlayerScoreTests 
 ) where
 
-import Data.HighScores (encodePlayerScore, PlayerScoreCreateRequestData)
+import Data.HighScores (encodePlayerScore)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 
