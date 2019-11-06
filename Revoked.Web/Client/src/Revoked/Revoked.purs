@@ -23,8 +23,8 @@ import Emo8.Input (isCatchAny)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
 import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance, adjustPlayerPos)
 
-data State
-    = TitleState
+data State = 
+    TitleState
     | OverState
     | ClearState
     | PlayState { 

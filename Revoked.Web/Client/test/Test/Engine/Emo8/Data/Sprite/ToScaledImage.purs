@@ -20,8 +20,8 @@ toScaledImageTests =
                 expectedId = 5
                 result = toScaledImage $ buildSprite expectedWidth expectedHeight expectedId 
             equal expectedFrame result.image
-            equal expectedWidth result.width 
-            equal expectedHeight result.height
+            equal expectedWidth result.size.width 
+            equal expectedHeight result.size.height
             equal expectedId result.id
         test "shouldConvertToScaledImageWhenSpriteIsValid [32423 453453 7]" do
             let 
@@ -31,8 +31,8 @@ toScaledImageTests =
                 expectedId = 8
                 result = toScaledImage $ buildSprite expectedWidth expectedHeight expectedId  
             equal expectedFrame result.image
-            equal expectedWidth result.width 
-            equal expectedHeight result.height
+            equal expectedWidth result.size.width 
+            equal expectedHeight result.size.height
             equal expectedId result.id   
 
 buildSprite :: Int -> Int -> Int -> Sprite
@@ -41,7 +41,9 @@ buildSprite width height id = {
     frameCount: 10,
     frameIndex: 1,
     framesPerSecond: 1,
-    width: width,
-    height: height,
+    size: {
+        width: width,
+        height: height
+    },
     id: id
 }
