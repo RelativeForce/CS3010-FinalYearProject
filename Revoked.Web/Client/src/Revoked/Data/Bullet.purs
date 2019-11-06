@@ -5,22 +5,18 @@ import Prelude
 import Class.Object (class ObjectDraw, class Object)
 import Emo8.Action.Draw (drawSprite)
 import Data.Sprites as S
-import Types (Pos)
-import Emo8.Types (Sprite)
-
-bulletSpeed :: Int
-bulletSpeed = 5
+import Emo8.Types  (Position, Sprite)
 
 data BulletAppear = Forward | Backward
 
 data Bullet = Bullet { 
-    pos :: Pos,
+    pos :: Position,
     appear :: BulletAppear,
     sprite :: Sprite
 }
 
 instance objectBullet :: Object Bullet where
-    size (Bullet s) = s.sprite.width
+    size (Bullet s) = s.sprite.size
     position (Bullet s) = s.pos
 
 instance objectDrawBullet :: ObjectDraw Bullet where
@@ -33,7 +29,7 @@ updateBullet scrollOffset (Bullet s) = Bullet $ s { pos { x = newX } }
             Forward -> s.pos.x + bulletSpeed
             Backward -> s.pos.x - bulletSpeed
 
-newBullet :: BulletAppear -> Pos -> Bullet
+newBullet :: BulletAppear -> Position -> Bullet
 newBullet appear pos = Bullet $ {
     pos: pos,
     appear: appear,
@@ -41,3 +37,6 @@ newBullet appear pos = Bullet $ {
         Forward -> S.bulletRight
         Backward -> S.bulletLeft
 }
+
+bulletSpeed :: Int
+bulletSpeed = 8

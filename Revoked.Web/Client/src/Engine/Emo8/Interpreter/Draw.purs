@@ -73,7 +73,7 @@ drawEmojiWithTrans e size x y op dctx = do
     drawEmoji e size (-halfSize) halfSize dctx.ctx
     where
         y' = toBaseY dctx.monitorSize y
-        halfSize = toNumber size / 2.0
+        halfSize = toNumber size.width / 2.0
 
 drawEmoji :: Emoji -> Size -> Number -> Number -> Context2D -> Effect Unit
 drawEmoji e size x y ctx
@@ -123,10 +123,10 @@ drawMapWithF f mId size x y =
             for_ (emapWithIndex em) \(Tuple vertId withIdRow) ->
                 for_ withIdRow \(Tuple horiId maybeImage) ->
                     when ((isVisible dctx.monitorSize horiId vertId) && (notEmpty maybeImage))
-                        let xx = x + (size * horiId)
-                            yy = y + (size * vertId) 
+                        let xx = x + (size.width * horiId)
+                            yy = y + (size.height * vertId) 
                             img = case maybeImage of
-                                Nothing -> { image: "", height: 0, width: 0, id: 0 }
+                                Nothing -> { image: "", size: { height: 0, width: 0 }, id: 0 }
                                 Just i -> i
                         in f img xx yy dctx
     where
@@ -149,10 +149,10 @@ drawMapWithF f mId size x y =
             && yId >= ybBoundId
             && yId <= ytBoundId ms
             )
-        maxMapElemX ms = ms.width / size
-        maxMapElemY ms = ms.height / size
-        xMapId = x / size
-        yMapId = y / size
+        maxMapElemX ms = ms.width / size.width
+        maxMapElemY ms = ms.height / size.height
+        xMapId = x / size.width
+        yMapId = y / size.height
         xlBoundId = - (xMapId + 1)
         xrBoundId ms = xlBoundId + maxMapElemX ms
         ybBoundId = - (yMapId + 1)
@@ -166,8 +166,8 @@ degToRad :: Deg -> Number
 degToRad d = 2.0 * pi * toNumber d / 360.0
 
 sizeToFont :: Size -> String
-sizeToFont px = joinWith " " [fontSize, fontFamily]
-    where fontSize = show px <> "px"
+sizeToFont size = joinWith " " [fontSize, fontFamily]
+    where fontSize = show size.height <> "px"
 
 drawImageNoScaling :: Image -> X -> Y -> RenderOp
 drawImageNoScaling image x y =
@@ -178,18 +178,20 @@ drawImageNoScaling image x y =
 drawScaledImage :: ScaledImage -> X -> Y -> RenderOp
 drawScaledImage scaledImage x y =
             withLocalDraw \dctx ->
-                let y' = offsetY dctx.monitorSize scaledImage.height y   
-                in loadImage scaledImage.image $ \src -> drawImageScale dctx.ctx src (toNumber x) (toNumber y') (toNumber scaledImage.width) (toNumber scaledImage.height)              
+                let 
+                    size = scaledImage.size
+                    y' = offsetY dctx.monitorSize size.height y   
+                in loadImage scaledImage.image $ \src -> drawImageScale dctx.ctx src (toNumber x) (toNumber y') (toNumber size.width) (toNumber size.height)              
 
 drawRotatedScaledImage :: ScaledImage -> X -> Y -> Deg -> RenderOp
 drawRotatedScaledImage scaledImage x y angle =
             withLocalDraw \dctx ->
-                let y' = offsetY dctx.monitorSize scaledImage.height y     
+                let y' = offsetY dctx.monitorSize scaledImage.size.height y     
                 in loadImage scaledImage.image $ \src -> 
                     do
                         translate dctx.ctx { translateX: toNumber x, translateY: toNumber y' }
                         rotate dctx.ctx (-degToRad angle)
-                        drawImageScale dctx.ctx src 0.0 0.0 (toNumber scaledImage.width) (toNumber scaledImage.height)
+                        drawImageScale dctx.ctx src 0.0 0.0 (toNumber scaledImage.size.width) (toNumber scaledImage.size.height)
                         rotate dctx.ctx (degToRad angle)
                         translate dctx.ctx { translateX: -toNumber x, translateY: -toNumber y' }                                           
 

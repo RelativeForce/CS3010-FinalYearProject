@@ -3,7 +3,7 @@ module Data.Player where
 import Prelude
 
 import Class.Object (class Object, class ObjectDraw, position)
-import Constants (emoSize, maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor, mapTileWidth)
+import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor, mapTileSize)
 import Collision (isCollWorld)
 import Data.Bullet (Bullet, BulletAppear(..), newBullet)
 import Data.Sprites as S
@@ -12,13 +12,12 @@ import Math (abs)
 import Emo8.Action.Draw (drawRotatedSprite)
 import Emo8.Data.Sprite (incrementFrame)
 import Emo8.Input (Input)
-import Emo8.Types (Sprite, Velocity, X)
+import Emo8.Types (Sprite, Velocity, X, Position)
 import Emo8.Utils (defaultMonitorSize)
 import Emo8.Action.Update (Update)
-import Types (Pos)
 
 data Player = Player { 
-    pos :: Pos, 
+    pos :: Position, 
     energy :: Int, 
     appear :: Appear,
     sprite :: Sprite,
@@ -29,8 +28,8 @@ data Player = Player {
 data Appear = Stable | Forword | Backword
 
 instance objectPlayer :: Object Player where
-    size _ = emoSize
-    position (Player s) = s.pos
+    size (Player p) = p.sprite.size
+    position (Player p) = p.pos
 
 instance objectDrawPlayer :: ObjectDraw Player where
     draw o@(Player p) = case p.appear of
@@ -87,7 +86,7 @@ updateVelocity i currentVelocity onFloor = { xSpeed: xSpeed, ySpeed: ySpeed }
                 true -> currentVelocity.ySpeed + gravity
                 false -> -maxPlayerSpeedY
 
-updatePosition :: Pos -> Velocity -> Pos
+updatePosition :: Position -> Velocity -> Position
 updatePosition p v = { x: x, y: y }
     where
         x = floor $ (toNumber p.x) + v.xSpeed
@@ -119,7 +118,7 @@ initialPlayer = Player {
 canFire :: Int -> Boolean
 canFire energy = energy >= 10
 
-adjustVelocity :: Pos -> Player -> Player
+adjustVelocity :: Position -> Player -> Player
 adjustVelocity oldPos (Player new) = Player $ new { 
     velocity = {
         xSpeed: xSpeed,
@@ -136,7 +135,7 @@ adjustVelocity oldPos (Player new) = Player $ new {
             then 0.0
             else currentVelocity.ySpeed
 
-collide :: Pos -> Player -> X -> (Player -> Update Boolean) -> Update Player
+collide :: Position -> Player -> X -> (Player -> Update Boolean) -> Update Player
 collide oldPos (Player newPlayer) distance collisionCheck = do
     let 
         newPos = newPlayer.pos
@@ -178,23 +177,24 @@ collide oldPos (Player newPlayer) distance collisionCheck = do
 adjustY :: Int -> Int -> Int
 adjustY oldY newY = 
     if (newY > oldY) -- If moving up
-        then newY - (mod newY mapTileWidth)
-        else newY - (mod newY mapTileWidth) + mapTileWidth
+        then newY - (mod newY mapTileSize.height)
+        else newY - (mod newY mapTileSize.height) + mapTileSize.height
         
 adjustX :: Int -> Int -> Int -> Int
 adjustX oldX newX distance = 
     if (newX > oldX) -- If moving Right
-        then newX - (mod (distance + newX) mapTileWidth)
-        else newX - (mod (distance + newX) mapTileWidth) + mapTileWidth
+        then newX - (mod (distance + newX) mapTileSize.width)
+        else newX - (mod (distance + newX) mapTileSize.width) + mapTileSize.width
 
-beInMonitor :: Pos -> Player -> Player
+beInMonitor :: Position -> Player -> Player
 beInMonitor pos (Player np) = Player $ np { pos = { x: npx, y: npy } }
     where
-        width = np.sprite.width
-        height = np.sprite.height
+        size = np.sprite.size
+        width = size.width
+        height = size.height
         npos = np.pos
-        isCollX = isCollWorld width { x: npos.x, y: pos.y }
-        isCollY = isCollWorld height { x: pos.x, y: npos.y }
+        isCollX = isCollWorld size { x: npos.x, y: pos.y }
+        isCollY = isCollWorld size { x: pos.x, y: npos.y }
         npx = case isCollX, (npos.x < pos.x) of
             true, true -> 0
             true, false -> defaultMonitorSize.width - width

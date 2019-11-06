@@ -3,10 +3,9 @@ module Emo8.Action.Update where
 import Prelude
 
 import Control.Monad.Free (Free, liftF)
-import Control.Monad.Gen (Size)
 import Data.Array (index, length)
 import Data.Maybe (Maybe)
-import Emo8.Types (X, Y, MapId, ImageId)
+import Emo8.Types (X, Y, MapId, ImageId, Size)
 
 type Update = Free UpdateF
 

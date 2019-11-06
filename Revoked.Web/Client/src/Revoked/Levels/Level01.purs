@@ -68,16 +68,16 @@ emergeTable = case _ of
         Bee { pos: { x: defaultMonitorSize.width, y: 150 } }
     ]
     4000 -> [ 
-        Rex { pos: { x: defaultMonitorSize.width, y: emoSize }, cnt: 0 } 
+        Rex { pos: { x: defaultMonitorSize.width, y: emoSize.height }, cnt: 0 } 
     ]
     4250 -> [ 
-        Rex { pos: { x: defaultMonitorSize.width, y: emoSize }, cnt: 0 } 
+        Rex { pos: { x: defaultMonitorSize.width, y: emoSize.height }, cnt: 0 } 
     ]
     5000 -> [ 
-        Rex { pos: { x: defaultMonitorSize.width, y: emoSize }, cnt: 0 } 
+        Rex { pos: { x: defaultMonitorSize.width, y: emoSize.height }, cnt: 0 } 
     ]
     5250 -> [ 
-        Rex { pos: { x: defaultMonitorSize.width, y: emoSize }, cnt: 0 } 
+        Rex { pos: { x: defaultMonitorSize.width, y: emoSize.height }, cnt: 0 } 
     ]
     6000 -> [ 
         Moi { pos: { x: defaultMonitorSize.width, y: 250 }, cnt: 0 } 

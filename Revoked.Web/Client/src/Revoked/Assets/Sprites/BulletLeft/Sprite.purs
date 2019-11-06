@@ -11,7 +11,9 @@ bulletLeft = {
     frameIndex: 0,
     framesPerSecond: 2,
     frameCount: 2,
-    width: 18,
-    height: 10,
+    size: {
+        width: 18,
+        height: 10
+    },
     id: Id.bulletSpriteBackwardId
 }

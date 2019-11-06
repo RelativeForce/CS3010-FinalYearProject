@@ -6,16 +6,17 @@ import Class.Object (class ObjectDraw, class Object, position, size)
 import Constants (emoSize)
 import Emo8.Action.Draw (emor)
 import Emo8.Data.Emoji as E
-import Types (Pos)
-
+import Emo8.Types  (Position)
 
 data EnemyBullet
-    = NormalBull { pos :: Pos }
-    | ParseBull { pos :: Pos, vec :: Pos, t :: Int }
+    = NormalBull { pos :: Position }
+    | ParseBull { pos :: Position, vec :: Position, t :: Int }
 
 instance objectEnemyBullet :: Object EnemyBullet where
-    size _ = emoSize / 2
-
+    size _ = { 
+        width: emoSize.width / 2, 
+        height: emoSize.height / 2
+    }
     position (NormalBull s) = s.pos
     position (ParseBull s) = s.pos
 

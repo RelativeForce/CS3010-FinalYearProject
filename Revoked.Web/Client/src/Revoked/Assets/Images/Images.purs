@@ -12,47 +12,59 @@ import Assets.Images.GrassCenterData (grassCenterData)
 titleScreen :: ScaledImage
 titleScreen = {
     image: titleScreenData,
-    height: 720,
-    width: 1280,
+    size: {
+        height: 720,
+        width: 1280
+    },    
     id: Id.titleScreenId
 }
 
 blackBackground :: ScaledImage
 blackBackground = {
     image: blackBackgroundData,
-    height: 720,
-    width: 1280,
+    size: {
+        height: 720,
+        width: 1280
+    },
     id: Id.blackBackgroundId
 }
 
 grassTop :: ScaledImage
 grassTop = {
     image: grassTopData,
-    height: 32,
-    width: 32,
+    size: {
+        height: 32,
+        width: 32
+    },
     id: Id.grassTopId
 }
 
 grassLeft :: ScaledImage
 grassLeft = {
     image: grassLeftData,
-    height: 32,
-    width: 32,
+    size: {
+        height: 32,
+        width: 32
+    },
     id: Id.grassLeftId
 }
 
 grassRight :: ScaledImage
 grassRight = {
     image: grassRightData,
-    height: 32,
-    width: 32,
+    size: {
+        height: 32,
+        width: 32
+    },
     id: Id.grassRightId
 }
 
 grassCenter :: ScaledImage
 grassCenter = {
     image: grassCenterData,
-    height: 32,
-    width: 32,
+    size: {
+        height: 32,
+        width: 32
+    },
     id: Id.grassCenterId
 }

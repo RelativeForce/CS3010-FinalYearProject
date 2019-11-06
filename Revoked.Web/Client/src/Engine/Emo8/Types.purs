@@ -6,10 +6,7 @@ import Emo8.SoundUtil (ChannelSets)
 import Graphics.Canvas (Context2D)
 import Data.Maybe (Maybe)
 
-type MonitorSize = { 
-  width :: Width, 
-  height :: Height
-}
+type MonitorSize = Size
 
 type Position = { 
   x :: X, 
@@ -48,8 +45,7 @@ type Image = String
 type ScaledImage = {
   id :: ImageId,
   image :: Image,
-  width :: Width,
-  height :: Height
+  size :: Size
 }
 
 type Sprite = {
@@ -58,14 +54,18 @@ type Sprite = {
   frameIndex :: Int,
   framesPerSecond :: FramesPerSecond,
   frameCount :: FrameCount,
-  width :: Width,
-  height :: Height
+  size :: Size
 }
 
 type Request = {
   url :: String,
   json :: String,
   method :: String
+}
+
+type Size = {
+  width :: Width,
+  height :: Height
 }
 
 type X = Int
@@ -78,10 +78,8 @@ type FolderPath = String
 type FrameArray = Array String
 type IdX = Int
 type IdY = Int
-type Size = Int
 type Deg = Int
 type Bpm = Int
-
 type ImageId = Int
 type MapId = Int
 type SoundId = Int
