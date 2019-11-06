@@ -22,3 +22,9 @@ grassRightId = 6
 
 grassCenterId :: ImageId
 grassCenterId = 7
+
+bulletSpriteForwardId :: ImageId
+bulletSpriteForwardId = 8
+
+bulletSpriteBackwardId :: ImageId
+bulletSpriteBackwardId = 9

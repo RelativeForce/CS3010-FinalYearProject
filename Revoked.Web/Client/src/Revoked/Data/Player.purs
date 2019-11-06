@@ -5,7 +5,7 @@ import Prelude
 import Class.Object (class Object, class ObjectDraw, position)
 import Constants (emoSize, maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor, mapTileWidth)
 import Collision (isCollWorld)
-import Data.Bullet (Bullet(..))
+import Data.Bullet (Bullet, BulletAppear(..), newBullet)
 import Data.Sprites as S
 import Data.Int (toNumber, floor)
 import Math (abs)
@@ -95,9 +95,10 @@ updatePosition p v = { x: x, y: y }
 
 addBullet :: Input -> Player -> Array Bullet
 addBullet i (Player p) =
-    case i.isEnter && (canFire p.energy) of
-        true -> [ Normal { pos: p.pos } ]
-        false -> []
+    case (i.isEnter && (canFire p.energy)), p.appear of
+        true, Backword -> [ newBullet (Backward) p.pos ]
+        true, _ -> [ newBullet (Forward) p.pos ]
+        false, _ -> []
 
 initialPlayer :: Player
 initialPlayer = Player { 
