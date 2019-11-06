@@ -41,4 +41,3 @@ newBullet appear pos = Bullet $ {
         Forward -> S.bulletRight
         Backward -> S.bulletLeft
 }
-

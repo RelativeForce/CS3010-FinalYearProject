@@ -117,7 +117,7 @@ initialPlayer = Player {
 }
 
 canFire :: Int -> Boolean
-canFire energy = energy > 29
+canFire energy = energy >= 10
 
 adjustVelocity :: Pos -> Player -> Player
 adjustVelocity oldPos (Player new) = Player $ new { 
