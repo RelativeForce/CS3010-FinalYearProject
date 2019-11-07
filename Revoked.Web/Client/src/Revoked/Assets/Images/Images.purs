@@ -4,10 +4,11 @@ import Emo8.Types (ScaledImage)
 import Assets.AssetIds as Id
 import Assets.Images.TitleScreen (titleScreenData)
 import Assets.Images.BlackBackground (blackBackgroundData)
-import Assets.Images.GrassTopData (grassTopData)
-import Assets.Images.GrassLeftData (grassLeftData)
-import Assets.Images.GrassRightData (grassRightData)
-import Assets.Images.GrassCenterData (grassCenterData)
+import Assets.Images.ToxicWaste (toxicWasteData)
+import Assets.Images.GrassTop (grassTopData)
+import Assets.Images.GrassLeft (grassLeftData)
+import Assets.Images.GrassRight (grassRightData)
+import Assets.Images.GrassCenter (grassCenterData)
 
 titleScreen :: ScaledImage
 titleScreen = {
@@ -67,4 +68,14 @@ grassCenter = {
         width: 32
     },
     id: Id.grassCenterId
+}
+
+toxicWaste :: ScaledImage
+toxicWaste = {
+    image: toxicWasteData,
+    size: {
+        height: 32,
+        width: 32
+    },
+    id: Id.toxicWasteId
 }

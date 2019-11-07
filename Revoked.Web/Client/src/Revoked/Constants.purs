@@ -62,5 +62,7 @@ walls = [
 ]
 
 hazards :: Array ImageId
-hazards = []
+hazards = [
+    Id.toxicWasteId
+]
 

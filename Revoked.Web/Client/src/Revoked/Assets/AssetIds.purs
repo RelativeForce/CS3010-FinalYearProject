@@ -28,3 +28,6 @@ bulletForwardId = 8
 
 bulletBackwardId :: ImageId
 bulletBackwardId = 9
+
+toxicWasteId :: ImageId
+toxicWasteId = 10
