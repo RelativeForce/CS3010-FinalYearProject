@@ -15,5 +15,5 @@ bulletRight = {
         width: 18,
         height: 10
     },
-    id: Id.bulletSpriteForwardId
+    id: Id.bulletForwardId
 }

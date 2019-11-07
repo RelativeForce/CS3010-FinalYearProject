@@ -15,5 +15,5 @@ bulletLeft = {
         width: 18,
         height: 10
     },
-    id: Id.bulletSpriteBackwardId
+    id: Id.bulletBackwardId
 }
