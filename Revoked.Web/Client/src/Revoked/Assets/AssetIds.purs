@@ -34,3 +34,6 @@ toxicWasteId = 10
 
 chopperId :: ImageId
 chopperId = 11
+
+ladderId :: ImageId
+ladderId = 12
