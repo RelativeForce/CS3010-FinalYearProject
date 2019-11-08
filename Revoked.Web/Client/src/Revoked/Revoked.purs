@@ -12,7 +12,7 @@ import Data.EnemyBullet (EnemyBullet, updateEnemyBullet)
 import Data.Foldable (traverse_)
 import Data.Particle (Particle, initParticle, updateParticle)
 import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
-import Data.Goal (Goal)
+import Data.Goal (Goal, updateGoal)
 import Effect (Effect)
 import Emo8 (emo8)
 import Emo8.Action.Draw (cls, drawScaledImage)
@@ -57,6 +57,7 @@ instance gameState :: Game State where
             np = adjustPlayerPos updatedPlayer scrollOffset
             nbullets = map (updateBullet scrollOffset) s.bullets
             nenemies = map (updateEnemy scrollOffset s.player) s.enemies
+            ngoals = map updateGoal s.goals
             nparticles = map (updateParticle scrollOffset) s.particles
             nenemyBullets = map (updateEnemyBullet scrollOffset) s.enemyBullets
 
@@ -97,6 +98,7 @@ instance gameState :: Game State where
                 enemies = nnenemies <> newEnemies, 
                 particles = nnparticles <> newParticles, 
                 enemyBullets = nnenemyBullets <> newEnemyBullets,
+                goals = ngoals,
                 mapId = s.mapId
             }
 

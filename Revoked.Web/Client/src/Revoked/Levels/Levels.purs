@@ -18,7 +18,7 @@ allRawLevels = [ L1.mapData ]
 goals :: MapId -> Array Goal
 goals mapId  = 
     case mapId of 
-        0 -> [ L1.goal ]
+        0 -> L1.goals 
         _ -> []
 
 levelCount :: Int
