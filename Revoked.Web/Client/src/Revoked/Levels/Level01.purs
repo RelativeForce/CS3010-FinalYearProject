@@ -29,7 +29,16 @@ mapData = RawMap """
 """
 
 goals :: Array Goal
-goals = [ chopper, ladder0, ladder1, ladder2, ladder3, ladder4, ladder5, ladder6 ]
+goals = [ 
+    chopper, 
+    ladder 0, 
+    ladder 36, 
+    ladder 72, 
+    ladder 108, 
+    ladder 144, 
+    ladder 180, 
+    ladder 216 
+]
 
 chopperY :: Int
 chopperY = 370
@@ -43,11 +52,11 @@ ladderY = chopperY - 35
 ladderX :: Int
 ladderX = chopperX + 150
 
-ladder :: Int -> Int -> Goal
-ladder x y = Goal {
+ladder :: Int -> Goal
+ladder yOffset = Goal {
     pos: { 
-        x: x, 
-        y: y
+        x: ladderX, 
+        y: ladderY - yOffset
     },
     sprite: S.ladder
 }
@@ -60,27 +69,6 @@ chopper = Goal {
     },
     sprite: S.chopper
 }
-
-ladder0 :: Goal
-ladder0 = ladder ladderX ladderY
-
-ladder1 :: Goal
-ladder1 = ladder ladderX $ ladderY - 36
-
-ladder2 :: Goal
-ladder2 = ladder ladderX $ ladderY - 72
-
-ladder3 :: Goal
-ladder3 = ladder ladderX $ ladderY - 108
-
-ladder4 :: Goal
-ladder4 = ladder ladderX $ ladderY - 144
-
-ladder5 :: Goal
-ladder5 = ladder ladderX $ ladderY - 180
-
-ladder6 :: Goal
-ladder6 = ladder ladderX $ ladderY - 216
 
 emergeTable :: Int -> Array Enemy
 emergeTable = case _ of
