@@ -163,11 +163,11 @@ collide oldPos (Player newPlayer) distance collisionCheck = do
                 x: newPos.x, 
                 y: adjustY oldPos.y newPos.y
             }
-            false, false, true -> { 
+            false, false, false -> newPos
+            _, _, _ -> { 
                 x: adjustX oldPos.x newPos.x distance, 
                 y: adjustY oldPos.y newPos.y 
             }
-            _, _, _ -> newPos
         newOnFloor = yCollide
     pure $ Player $ newPlayer { 
         pos = newPosition, 

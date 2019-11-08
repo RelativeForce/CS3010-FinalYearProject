@@ -34,7 +34,7 @@ isCollide f mapId distance o =
         collCond :: MapId -> X -> Update Boolean
         collCond mId d = do
             if (-mapSizeInt * mapTileInMonitorSize.width <= d && d < mapSize.width)
-                then f mId mapTileSize (size o) { x: (position o).x + (d), y: (position o).y }
+                then f mId mapTileSize (size o) { x: (position o).x + d, y: (position o).y }
                 else pure false
 
 adjustMonitorDistance :: Player -> X -> X
