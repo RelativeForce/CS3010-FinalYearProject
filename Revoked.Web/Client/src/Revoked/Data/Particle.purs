@@ -6,7 +6,7 @@ import Constants (emoSize)
 import Class.Object (class ObjectDraw, class Object, position, size)
 import Emo8.Action.Draw (emo)
 import Emo8.Data.Emoji as E
-import Emo8.Types  (Position)
+import Emo8.Types (Position)
 
 
 data Particle

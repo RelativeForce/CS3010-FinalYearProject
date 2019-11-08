@@ -2,16 +2,17 @@ module Revoked where
 
 import Prelude
 
-import Levels (allRawLevels, emergeTable)
+import Levels (allRawLevels, emergeTable, goals, levelCount)
 import Class.Object (draw, position)
 import Collision (isCollideObjects, isOutOfWorld)
 import Data.Array (any, filter, partition)
 import Data.Bullet (Bullet, updateBullet)
-import Data.Enemy (Enemy(..), addEnemyBullet, updateEnemy)
+import Data.Enemy (Enemy, addEnemyBullet, updateEnemy)
 import Data.EnemyBullet (EnemyBullet, updateEnemyBullet)
 import Data.Foldable (traverse_)
 import Data.Particle (Particle, initParticle, updateParticle)
-import Data.Player (Player, addBullet, initialPlayer, updatePlayer )
+import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
+import Data.Goal (Goal, updateGoal)
 import Effect (Effect)
 import Emo8 (emo8)
 import Emo8.Action.Draw (cls, drawScaledImage)
@@ -24,27 +25,28 @@ import Emo8.Utils (defaultMonitorSize, mkAsset)
 import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance, adjustPlayerPos)
 
 data State = 
-    TitleState
-    | OverState
-    | ClearState
-    | PlayState { 
+    TitleScreen
+    | GameOver
+    | Victory
+    | Play { 
         distance :: Int, 
         player :: Player, 
         bullets :: Array Bullet, 
         enemies :: Array Enemy, 
         particles :: Array Particle, 
         enemyBullets :: Array EnemyBullet,
+        goals :: Array Goal,
         mapId :: MapId
     }
 
 instance gameState :: Game State where
-    update input TitleState =
-        pure $ if isCatchAny input then initialPlayState else TitleState
-    update input OverState =
-        pure $ if isCatchAny input then initialState else OverState
-    update input ClearState =
-        pure $ if isCatchAny input then initialState else ClearState
-    update input (PlayState s) = do
+    update input TitleScreen =
+        pure $ if isCatchAny input then newLevel 0 else TitleScreen
+    update input GameOver =
+        pure $ if isCatchAny input then initialState else GameOver
+    update input Victory =
+        pure $ if isCatchAny input then initialState else Victory
+    update input (Play s) = do
 
         -- update player
         updatedPlayer <- updatePlayer input s.player s.distance (isCollideMapWalls s.mapId s.distance)
@@ -55,6 +57,7 @@ instance gameState :: Game State where
             np = adjustPlayerPos updatedPlayer scrollOffset
             nbullets = map (updateBullet scrollOffset) s.bullets
             nenemies = map (updateEnemy scrollOffset s.player) s.enemies
+            ngoals = map updateGoal s.goals
             nparticles = map (updateParticle scrollOffset) s.particles
             nenemyBullets = map (updateEnemyBullet scrollOffset) s.enemyBullets
 
@@ -63,6 +66,7 @@ instance gameState :: Game State where
 
         let isEnemyColl = any (isCollideObjects np) nenemies
             isEnemyBulletColl = any (isCollideObjects np) nenemyBullets
+            isGoalColl = any (isCollideObjects np) s.goals
 
         -- separate objects
         let { yes: collidedEnemies, no: notCollidedEnemies } = partition (\e -> any (isCollideObjects e) nbullets) nenemies
@@ -82,30 +86,29 @@ instance gameState :: Game State where
 
         -- game condition
         let isGameOver = isHazardColl || isEnemyColl || isEnemyBulletColl
-            isCatchOct (Oct _) = true
-            isCatchOct _ = false  
-            isGameClear = any isCatchOct collidedEnemies
+            isNextLevel = isGoalColl
 
-        pure $ case isGameClear, isGameOver of
-            true, _ -> ClearState
-            false, true -> OverState
-            false, false -> PlayState $ s { 
+        pure $ case isGameOver, isNextLevel of
+            true, _ -> GameOver
+            false, true -> if s.mapId + 1 >= levelCount then Victory else newLevel (s.mapId + 1)
+            false, false -> Play $ s { 
                 distance = newDistance, 
                 player = np, 
                 bullets = nnbullets <> newBullets, 
                 enemies = nnenemies <> newEnemies, 
                 particles = nnparticles <> newParticles, 
                 enemyBullets = nnenemyBullets <> newEnemyBullets,
+                goals = ngoals,
                 mapId = s.mapId
             }
 
-    draw TitleState = do
+    draw TitleScreen = do
         drawScaledImage I.titleScreen 0 0
-    draw OverState = do
+    draw GameOver = do
         cls Maroon
-    draw ClearState = do
+    draw Victory = do
         cls Lime
-    draw (PlayState s) = do
+    draw (Play s) = do
         drawScaledImage I.blackBackground 0 0
         drawScrollMap s.distance s.mapId
         draw s.player
@@ -113,22 +116,24 @@ instance gameState :: Game State where
         traverse_ draw s.enemies
         traverse_ draw s.particles
         traverse_ draw s.enemyBullets
+        traverse_ draw s.goals
 
     sound _ = pure unit
 
-initialPlayState :: State
-initialPlayState = PlayState { 
+newLevel :: MapId -> State
+newLevel mapId = Play { 
     distance: 0, 
     player: initialPlayer, 
     bullets: [], 
     enemies: [], 
     particles: [], 
     enemyBullets : [],
-    mapId: 0
+    goals: goals mapId,
+    mapId: mapId
 }
 
 initialState :: State
-initialState = TitleState
+initialState = TitleScreen
 
 main :: Effect Unit
 main = do
