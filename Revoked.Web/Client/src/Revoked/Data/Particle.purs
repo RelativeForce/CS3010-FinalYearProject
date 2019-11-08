@@ -6,12 +6,12 @@ import Constants (emoSize)
 import Class.Object (class ObjectDraw, class Object, position, size)
 import Emo8.Action.Draw (emo)
 import Emo8.Data.Emoji as E
-import Types (Pos)
+import Emo8.Types  (Position)
 
 
 data Particle
     = Normal
-        { pos :: Pos
+        { pos :: Position
         }
 
 instance objectParticle :: Object Particle where
@@ -25,5 +25,5 @@ updateParticle :: Int -> Particle -> Particle
 updateParticle scrollOffset (Normal s) = Normal $ s { pos { x = s.pos.x + scrollOffset, y = s.pos.y - 2 } }
 
 
-initParticle :: Pos -> Particle
+initParticle :: Position -> Particle
 initParticle pos = Normal { pos: pos }

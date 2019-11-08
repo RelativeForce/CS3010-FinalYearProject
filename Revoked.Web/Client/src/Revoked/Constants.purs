@@ -1,18 +1,21 @@
 module Constants where
   
 import Prelude
-import Emo8.Types (ImageId)
+import Emo8.Types (ImageId, Size)
 import Emo8.Utils (defaultMonitorSize)
 import Assets.AssetIds as Id
 
 speed :: Int
 speed = 2
 
-emoSize :: Int
-emoSize = 32
+emoSize :: Size
+emoSize = {
+    width: 32,
+    height: 32
+}
 
-mapSize :: Int
-mapSize = 128
+mapSizeInt :: Int
+mapSizeInt = 128
 
 maxPlayerSpeedX :: Number
 maxPlayerSpeedX = 4.0
@@ -26,23 +29,32 @@ gravity = -0.1
 frictionFactor :: Number
 frictionFactor = 0.9
 
-mapTileWidth :: Int
-mapTileWidth = 32
+mapTileSize :: Size
+mapTileSize = {
+    width: 32,
+    height: 32
+}
 
-mapWidth :: Int
-mapWidth = mapSize * mapTileWidth
+mapSize :: Size
+mapSize = {
+    width: mapSizeInt * mapTileSize.width,
+    height: mapSizeInt * mapTileSize.height
+}
 
-mapTileInMonitor :: Int
-mapTileInMonitor = defaultMonitorSize.width / mapSize
+mapTileInMonitorSize :: Size
+mapTileInMonitorSize = {
+    width: defaultMonitorSize.width / mapSize.width,
+    height: defaultMonitorSize.height / mapSize.height
+}
 
 boundry :: Int
 boundry = 8
 
 leftBoundry :: Int
-leftBoundry = boundry * mapTileWidth
+leftBoundry = boundry * mapTileSize.width
 
 rightBoundry :: Int
-rightBoundry = defaultMonitorSize.width - (boundry * mapTileWidth) 
+rightBoundry = defaultMonitorSize.width - (boundry * mapTileSize.width) 
 
 walls :: Array ImageId
 walls = [ 
@@ -50,5 +62,7 @@ walls = [
 ]
 
 hazards :: Array ImageId
-hazards = []
+hazards = [
+    Id.toxicWasteId
+]
 

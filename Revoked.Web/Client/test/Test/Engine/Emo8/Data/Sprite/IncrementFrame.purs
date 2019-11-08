@@ -34,7 +34,9 @@ buildSprite current frameCount framesPerSecond = {
     frameIndex: current,
     framesPerSecond: framesPerSecond,
     frameCount: frameCount,
-    width: 100,
-    height: 100,
+    size: {
+        width: 100,
+        height: 100
+    },
     id: 1
 }

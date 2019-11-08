@@ -12,8 +12,7 @@ import Emo8.Types (
 toScaledImage :: Sprite -> ScaledImage
 toScaledImage sprite = {
     image: currentFrame sprite,
-    height: sprite.height,
-    width: sprite.width,
+    size: sprite.size,
     id: sprite.id
 }
 

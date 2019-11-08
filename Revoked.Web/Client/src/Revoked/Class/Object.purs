@@ -1,13 +1,12 @@
 module Class.Object where
   
 import Prelude
-
 import Emo8.Action.Draw (Draw)
-import Types (Pos)
+import Emo8.Types (Size, Position)
   
 class Object s where
-    size :: s -> Int
-    position :: s -> Pos
+    size :: s -> Size
+    position :: s -> Position
 
 class Object s <= ObjectDraw s where
     draw :: s -> Draw Unit

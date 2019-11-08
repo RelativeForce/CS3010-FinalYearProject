@@ -1,7 +1,9 @@
-module Data.Sprites where
+module Data.Sprites (
+    module Assets.Sprites.Player.Sprite,
+    module Assets.Sprites.BulletLeft.Sprite,
+    module Assets.Sprites.BulletRight.Sprite
+) where
 
-import Emo8.Types (Sprite)
-import Assets.Sprites.Player.Sprite as RawPlayer
-
-player :: Sprite
-player = RawPlayer.player
+import Assets.Sprites.Player.Sprite (player)
+import Assets.Sprites.BulletLeft.Sprite (bulletLeft)
+import Assets.Sprites.BulletRight.Sprite (bulletRight)

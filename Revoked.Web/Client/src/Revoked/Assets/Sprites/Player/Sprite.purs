@@ -10,7 +10,9 @@ player = {
     frameIndex: 0,
     framesPerSecond: 1,
     frameCount: 1,
-    width: 32,
-    height: 32,
+    size: { 
+        width: 32,
+        height: 32
+    },
     id: Id.playerSpriteId
 }

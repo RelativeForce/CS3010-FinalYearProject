@@ -22,3 +22,12 @@ grassRightId = 6
 
 grassCenterId :: ImageId
 grassCenterId = 7
+
+bulletForwardId :: ImageId
+bulletForwardId = 8
+
+bulletBackwardId :: ImageId
+bulletBackwardId = 9
+
+toxicWasteId :: ImageId
+toxicWasteId = 10

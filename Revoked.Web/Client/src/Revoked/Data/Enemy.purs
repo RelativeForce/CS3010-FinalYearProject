@@ -9,15 +9,15 @@ import Data.Player (Player(..))
 import Emo8.Action.Draw (emo)
 import Emo8.Data.Emoji as E
 import Emo8.Utils (defaultMonitorSize)
-import Types (Pos)
+import Emo8.Types (Position)
 
 
 data Enemy
-    = Invader { pos :: Pos }
-    | Bee { pos :: Pos }
-    | Rex { pos :: Pos, cnt :: Int }
-    | Moi { pos :: Pos, cnt :: Int }
-    | Oct { pos :: Pos }
+    = Invader { pos :: Position }
+    | Bee { pos :: Position }
+    | Rex { pos :: Position, cnt :: Int }
+    | Moi { pos :: Position, cnt :: Int }
+    | Oct { pos :: Position }
 
 instance objectEnemy :: Object Enemy where
     size _ = emoSize
@@ -62,56 +62,5 @@ addEnemyBullet p e@(Rex s) = if mod s.cnt 32 == 16 then [ ParseBull { pos: s.pos
         v' = { x: v.x / 128, y: v.y / 128 } 
 addEnemyBullet _ _ = []
 
-diffVec :: forall a b. Object a => Object b => a -> b -> Pos
+diffVec :: forall a b. Object a => Object b => a -> b -> Position
 diffVec a b = { x: (position a).x - (position b).x, y: (position a).y - (position b).y }
-
-emergeTable :: Int -> Array Enemy
-emergeTable = case _ of
-    200 -> [ Invader { pos: { x: defaultMonitorSize.width, y: 250 } } ]
-    250 ->
-        [ Invader { pos: { x: defaultMonitorSize.width, y: 400 } }
-        , Invader { pos: { x: defaultMonitorSize.width, y: 150 } }
-        ]
-    700 -> [ Invader { pos: { x: defaultMonitorSize.width, y: 250 } } ]
-    750 ->
-        [ Invader { pos: { x: defaultMonitorSize.width, y: 400 } }
-        , Invader { pos: { x: defaultMonitorSize.width, y: 150 } }
-        ]
-    1250 ->
-        [ Invader { pos: { x: defaultMonitorSize.width, y: 250 } }
-        , Invader { pos: { x: defaultMonitorSize.width, y: 350 } }
-        , Invader { pos: { x: defaultMonitorSize.width, y: 450 } }
-        , Invader { pos: { x: defaultMonitorSize.width, y: 150 } }
-        , Invader { pos: { x: defaultMonitorSize.width, y: 50 } }
-        ]
-    -- second: 4096
-    2000 -> [ Bee { pos: { x: defaultMonitorSize.width, y: 400 } } ]
-    2250 -> [ Bee { pos: { x: defaultMonitorSize.width, y: 250 } } ]
-    2500 -> [ Bee { pos: { x: defaultMonitorSize.width, y: 100 } } ]
-    3000 ->
-        [ Bee { pos: { x: defaultMonitorSize.width, y: 400 } }
-        , Bee { pos: { x: defaultMonitorSize.width, y: 250 } }
-        , Bee { pos: { x: defaultMonitorSize.width, y: 100 } }
-        ]
-    3250 ->
-        [ Bee { pos: { x: defaultMonitorSize.width, y: 450 } }
-        , Bee { pos: { x: defaultMonitorSize.width, y: 300 } }
-        , Bee { pos: { x: defaultMonitorSize.width, y: 150 } }
-        ]
-    -- third: 8192
-    4000 -> [ Rex { pos: { x: defaultMonitorSize.width, y: emoSize }, cnt: 0 } ]
-    4250 -> [ Rex { pos: { x: defaultMonitorSize.width, y: emoSize }, cnt: 0 } ]
-    5000 -> [ Rex { pos: { x: defaultMonitorSize.width, y: emoSize }, cnt: 0 } ]
-    5250 -> [ Rex { pos: { x: defaultMonitorSize.width, y: emoSize }, cnt: 0 } ]
-    -- forth: 12288
-    6000 -> [ Moi { pos: { x: defaultMonitorSize.width, y: 250 }, cnt: 0 } ]
-    6250 -> [ Moi { pos: { x: defaultMonitorSize.width, y: 400 }, cnt: 0 } ]
-    6500 -> [ Moi { pos: { x: defaultMonitorSize.width, y: 100 }, cnt: 0 } ]
-    7000 ->
-        [ Moi { pos: { x: defaultMonitorSize.width, y: 250 }, cnt: 0 }
-        , Moi { pos: { x: defaultMonitorSize.width, y: 400 }, cnt: 0 }
-        , Moi { pos: { x: defaultMonitorSize.width, y: 100 }, cnt: 0 }
-        ]
-    -- fifth: 16384
-    8000 -> [ Oct { pos: { x: defaultMonitorSize.width, y: 250 } } ]
-    _ -> []

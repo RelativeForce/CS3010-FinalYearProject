@@ -14,18 +14,17 @@ import Data.Particle (Particle, initParticle, updateParticle)
 import Data.Player (Player, addBullet, initialPlayer, updatePlayer )
 import Effect (Effect)
 import Emo8 (emo8)
-import Emo8.Action.Draw (cls, emo, emor, drawScaledImage)
+import Emo8.Action.Draw (cls, drawScaledImage)
 import Assets.Images as I
 import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
 import Emo8.Types (MapId)
-import Emo8.Data.Emoji as E
 import Emo8.Input (isCatchAny)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
 import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance, adjustPlayerPos)
 
-data State
-    = TitleState
+data State = 
+    TitleState
     | OverState
     | ClearState
     | PlayState { 
@@ -104,15 +103,8 @@ instance gameState :: Game State where
         drawScaledImage I.titleScreen 0 0
     draw OverState = do
         cls Maroon
-        emo E.hole 256 125 150
-        emor 160 E.helicopter 128 175 200
-        emo E.recyclingSymbol 128 185 350
     draw ClearState = do
         cls Lime
-        emor 15 E.helicopter 64 350 400
-        emor (-15) E.octopus 128 175 175
-        emo E.globeWithMeridians 256 75 75
-        emo E.thumbsUp 64 100 400
     draw (PlayState s) = do
         drawScaledImage I.blackBackground 0 0
         drawScrollMap s.distance s.mapId
