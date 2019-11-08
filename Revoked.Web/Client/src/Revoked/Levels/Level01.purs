@@ -43,6 +43,15 @@ ladderY = chopperY - 35
 ladderX :: Int
 ladderX = chopperX + 150
 
+ladder :: Int -> Int -> Goal
+ladder x y = Goal {
+    pos: { 
+        x: x, 
+        y: y
+    },
+    sprite: S.ladder
+}
+
 chopper :: Goal
 chopper = Goal {
     pos: { 
@@ -53,67 +62,25 @@ chopper = Goal {
 }
 
 ladder0 :: Goal
-ladder0 = Goal {
-    pos: { 
-        x: ladderX, 
-        y: ladderY
-    },
-    sprite: S.ladder
-}
+ladder0 = ladder ladderX ladderY
 
 ladder1 :: Goal
-ladder1 = Goal {
-    pos: { 
-        x: ladderX, 
-        y: ladderY - 36
-    },
-    sprite: S.ladder
-}
+ladder1 = ladder ladderX $ ladderY - 36
 
 ladder2 :: Goal
-ladder2 = Goal {
-    pos: { 
-        x: ladderX, 
-        y: ladderY - 72
-    },
-    sprite: S.ladder
-}
+ladder2 = ladder ladderX $ ladderY - 72
 
 ladder3 :: Goal
-ladder3 = Goal {
-    pos: { 
-        x: ladderX, 
-        y: ladderY - 108
-    },
-    sprite: S.ladder
-}
+ladder3 = ladder ladderX $ ladderY - 108
 
 ladder4 :: Goal
-ladder4 = Goal {
-    pos: { 
-        x: ladderX, 
-        y: ladderY - 144
-    },
-    sprite: S.ladder
-}
+ladder4 = ladder ladderX $ ladderY - 144
 
 ladder5 :: Goal
-ladder5 = Goal {
-    pos: { 
-        x: ladderX, 
-        y: ladderY - 180
-    },
-    sprite: S.ladder
-}
+ladder5 = ladder ladderX $ ladderY - 180
 
 ladder6 :: Goal
-ladder6 = Goal {
-    pos: { 
-        x: ladderX, 
-        y: ladderY - 216
-    },
-    sprite: S.ladder
-}
+ladder6 = ladder ladderX $ ladderY - 216
 
 emergeTable :: Int -> Array Enemy
 emergeTable = case _ of
