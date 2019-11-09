@@ -28,6 +28,12 @@ instance objectEnemy :: Object Enemy where
     position (Rex s) = s.pos
     position (Oct s) = s.pos
 
+    scroll offset (Invader s) = Invader $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
+    scroll offset (Moi s) = Moi $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
+    scroll offset (Bee s) = Bee $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
+    scroll offset (Rex s) = Rex $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
+    scroll offset (Oct s) = Oct $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
+
 instance objectDrawEnemy :: ObjectDraw Enemy where
     draw o@(Invader _) = emo E.alienMonster (size o) (position o).x (position o).y
     draw o@(Moi _) = emo E.moai (size o) (position o).x (position o).y
@@ -53,6 +59,9 @@ updateEnemy scrollOffset (Player p) (Rex s) = Rex $ if mod s.cnt 32 < 16
 updateEnemy scrollOffset _ (Oct s) = Oct $ s { pos { x = s.pos.x + dx + scrollOffset } }
     where
         dx = if s.pos.x > defaultMonitorSize.width / 2 then -speed else 0
+
+adjustEnemyPos :: Player -> Int -> Player        
+adjustEnemyPos (Player p) offset = Player $ p { pos = { x: p.pos.x + offset, y: p.pos.y }}
 
 addEnemyBullet :: Player -> Enemy -> Array EnemyBullet
 addEnemyBullet _ (Moi s) = if mod s.cnt 16 == 0 then [ NormalBull { pos: s.pos } ] else []

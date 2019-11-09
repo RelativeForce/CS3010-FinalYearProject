@@ -18,6 +18,7 @@ data Bullet = Bullet {
 instance objectBullet :: Object Bullet where
     size (Bullet s) = s.sprite.size
     position (Bullet s) = s.pos
+    scroll offset (Bullet s) = Bullet $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
 
 instance objectDrawBullet :: ObjectDraw Bullet where
     draw (Bullet b) = drawSprite b.sprite b.pos.x b.pos.y

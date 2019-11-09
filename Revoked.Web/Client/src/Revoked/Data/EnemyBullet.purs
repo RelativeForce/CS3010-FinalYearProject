@@ -17,8 +17,12 @@ instance objectEnemyBullet :: Object EnemyBullet where
         width: emoSize.width / 2, 
         height: emoSize.height / 2
     }
+
     position (NormalBull s) = s.pos
     position (ParseBull s) = s.pos
+
+    scroll offset (NormalBull s) = NormalBull $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
+    scroll offset (ParseBull s) = ParseBull $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
 
 instance objectDrawEnemyBullet :: ObjectDraw EnemyBullet where
     draw o@(NormalBull _) = emor (-40) E.pushpin (size o) (position o).x (position o).y

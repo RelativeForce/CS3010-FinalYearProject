@@ -17,13 +17,13 @@ data Particle
 instance objectParticle :: Object Particle where
     size _ = emoSize
     position (Normal s) = s.pos
+    scroll offset (Normal s) = Normal $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
 
 instance objectDrawParticle :: ObjectDraw Particle where
     draw o = emo E.globeWithMeridians (size o) (position o).x (position o).y
 
 updateParticle :: Int -> Particle -> Particle
 updateParticle scrollOffset (Normal s) = Normal $ s { pos { x = s.pos.x + scrollOffset, y = s.pos.y - 2 } }
-
 
 initParticle :: Position -> Particle
 initParticle pos = Normal { pos: pos }

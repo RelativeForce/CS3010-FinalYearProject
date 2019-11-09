@@ -3,7 +3,7 @@ module Revoked where
 import Prelude
 
 import Levels (allRawLevels, enemies, goals, levelCount)
-import Class.Object (draw, position)
+import Class.Object (draw, position, scroll)
 import Collision (isCollideObjects, isOutOfWorld)
 import Data.Array (any, filter, partition)
 import Data.Bullet (Bullet, updateBullet)
@@ -22,7 +22,7 @@ import Emo8.Data.Color (Color(..))
 import Emo8.Types (MapId)
 import Emo8.Input (isCatchAny)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
-import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance, adjustPlayerPos)
+import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance)
 
 data State = 
     TitleScreen
@@ -54,7 +54,7 @@ instance gameState :: Game State where
         -- adjust player and map for scrolling
         let newDistance = adjustMonitorDistance updatedPlayer s.distance
             scrollOffset = (s.distance - newDistance)
-            scrollAdjustedPlayer = adjustPlayerPos updatedPlayer scrollOffset
+            scrollAdjustedPlayer = scroll scrollOffset updatedPlayer
 
         -- updated entities
         let updatedBullets = map (updateBullet scrollOffset) s.bullets
