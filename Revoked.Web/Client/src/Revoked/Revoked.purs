@@ -57,7 +57,7 @@ instance gameState :: Game State where
             np = adjustPlayerPos updatedPlayer scrollOffset
             nbullets = map (updateBullet scrollOffset) s.bullets
             nenemies = map (updateEnemy scrollOffset s.player) s.enemies
-            ngoals = map updateGoal s.goals
+            ngoals = map (updateGoal scrollOffset) s.goals
             nparticles = map (updateParticle scrollOffset) s.particles
             nenemyBullets = map (updateEnemyBullet scrollOffset) s.enemyBullets
 

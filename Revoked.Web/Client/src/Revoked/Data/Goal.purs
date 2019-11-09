@@ -18,7 +18,8 @@ instance objectGoal :: Object Goal where
 instance objectDrawGoal :: ObjectDraw Goal where
     draw (Goal g) = drawSprite g.sprite g.pos.x g.pos.y
 
-updateGoal :: Goal -> Goal
-updateGoal (Goal g) = Goal $ g { 
-    sprite = incrementFrame g.sprite
+updateGoal :: Int -> Goal -> Goal
+updateGoal scrollOffset (Goal g) = Goal $ g { 
+    sprite = incrementFrame g.sprite,
+    pos = g.pos { x = g.pos.x + scrollOffset }
 }
