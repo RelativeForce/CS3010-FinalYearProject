@@ -2,7 +2,7 @@ module Revoked where
 
 import Prelude
 
-import Levels (allRawLevels, emergeTable, goals, levelCount)
+import Levels (allRawLevels, enemies, goals, levelCount)
 import Class.Object (draw, position)
 import Collision (isCollideObjects, isOutOfWorld)
 import Data.Array (any, filter, partition)
@@ -75,12 +75,10 @@ instance gameState :: Game State where
         -- add new objects
         let newBullets = addBullet input s.player
             newParticles = map (\e -> initParticle (position e)) collidedEnemies
-            newEnemies = emergeTable s.mapId s.distance
             newEnemyBullets = notCollidedEnemies >>= addEnemyBullet s.player
 
         -- delete objects (out of monitor)
         let nnbullets = filter (not <<< isOutOfWorld) notCollidedBullets
-            nnenemies = filter (not <<< isOutOfWorld) notCollidedEnemies
             nnparticles = filter (not <<< isOutOfWorld) nparticles
             nnenemyBullets = filter (not <<< isOutOfWorld) nenemyBullets
 
@@ -95,7 +93,7 @@ instance gameState :: Game State where
                 distance = newDistance, 
                 player = np, 
                 bullets = nnbullets <> newBullets, 
-                enemies = nnenemies <> newEnemies, 
+                enemies = notCollidedEnemies, 
                 particles = nnparticles <> newParticles, 
                 enemyBullets = nnenemyBullets <> newEnemyBullets,
                 goals = ngoals,
@@ -125,7 +123,7 @@ newLevel mapId = Play {
     distance: 0, 
     player: initialPlayer, 
     bullets: [], 
-    enemies: [], 
+    enemies: enemies mapId, 
     particles: [], 
     enemyBullets : [],
     goals: goals mapId,

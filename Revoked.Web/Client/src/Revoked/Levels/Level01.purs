@@ -5,8 +5,6 @@ import Data.Enemy (Enemy(..))
 import Emo8.Parse (RawMap(..))
 import Data.Goal (Goal(..))
 import Data.Sprites as S
-import Emo8.Utils (defaultMonitorSize)
-import Constants (emoSize)
 
 mapData :: RawMap
 mapData = RawMap """
@@ -40,6 +38,14 @@ goals = [
     ladder 216 
 ]
 
+enemies :: Array Enemy
+enemies = [
+    Invader { pos: { x: 1480, y: 250 } },
+    Invader { pos: { x: 1830, y: 400 } }, 
+    Invader { pos: { x: 1830, y: 150 } },
+    Invader { pos: { x: 1980, y: 250 } }
+]
+
 chopperY :: Int
 chopperY = 370
 
@@ -69,76 +75,3 @@ chopper = Goal {
     },
     sprite: S.chopper
 }
-
-emergeTable :: Int -> Array Enemy
-emergeTable = case _ of
-    200 -> [ 
-        Invader { pos: { x: defaultMonitorSize.width, y: 250 } } 
-    ]
-    250 -> [ 
-        Invader { pos: { x: defaultMonitorSize.width, y: 400 } }, 
-        Invader { pos: { x: defaultMonitorSize.width, y: 150 } }
-    ]
-    700 -> [ 
-        Invader { pos: { x: defaultMonitorSize.width, y: 250 } } 
-    ]
-    750 -> [ 
-        Invader { pos: { x: defaultMonitorSize.width, y: 400 } }, 
-        Invader { pos: { x: defaultMonitorSize.width, y: 150 } }
-    ]
-    1250 -> [ 
-        Invader { pos: { x: defaultMonitorSize.width, y: 250 } }, 
-        Invader { pos: { x: defaultMonitorSize.width, y: 350 } }, 
-        Invader { pos: { x: defaultMonitorSize.width, y: 450 } }, 
-        Invader { pos: { x: defaultMonitorSize.width, y: 150 } }, 
-        Invader { pos: { x: defaultMonitorSize.width, y: 50 } }
-    ]
-    2000 -> [ 
-        Bee { pos: { x: defaultMonitorSize.width, y: 400 } } 
-    ]
-    2250 -> [ 
-        Bee { pos: { x: defaultMonitorSize.width, y: 250 } } 
-    ]
-    2500 -> [ 
-        Bee { pos: { x: defaultMonitorSize.width, y: 100 } } 
-    ]
-    3000 -> [ 
-        Bee { pos: { x: defaultMonitorSize.width, y: 400 } }, 
-        Bee { pos: { x: defaultMonitorSize.width, y: 250 } }, 
-        Bee { pos: { x: defaultMonitorSize.width, y: 100 } }
-    ]
-    3250 -> [ 
-        Bee { pos: { x: defaultMonitorSize.width, y: 450 } }, 
-        Bee { pos: { x: defaultMonitorSize.width, y: 300 } }, 
-        Bee { pos: { x: defaultMonitorSize.width, y: 150 } }
-    ]
-    4000 -> [ 
-        Rex { pos: { x: defaultMonitorSize.width, y: emoSize.height }, cnt: 0 } 
-    ]
-    4250 -> [ 
-        Rex { pos: { x: defaultMonitorSize.width, y: emoSize.height }, cnt: 0 } 
-    ]
-    5000 -> [ 
-        Rex { pos: { x: defaultMonitorSize.width, y: emoSize.height }, cnt: 0 } 
-    ]
-    5250 -> [ 
-        Rex { pos: { x: defaultMonitorSize.width, y: emoSize.height }, cnt: 0 } 
-    ]
-    6000 -> [ 
-        Moi { pos: { x: defaultMonitorSize.width, y: 250 }, cnt: 0 } 
-    ]
-    6250 -> [ 
-        Moi { pos: { x: defaultMonitorSize.width, y: 400 }, cnt: 0 } 
-    ]
-    6500 -> [ 
-        Moi { pos: { x: defaultMonitorSize.width, y: 100 }, cnt: 0 } 
-    ]
-    7000 -> [ 
-        Moi { pos: { x: defaultMonitorSize.width, y: 250 }, cnt: 0 }, 
-        Moi { pos: { x: defaultMonitorSize.width, y: 400 }, cnt: 0 }, 
-        Moi { pos: { x: defaultMonitorSize.width, y: 100 }, cnt: 0 }
-    ]
-    8000 -> [ 
-        Oct { pos: { x: defaultMonitorSize.width, y: 250 } } 
-    ]
-    _ -> []
