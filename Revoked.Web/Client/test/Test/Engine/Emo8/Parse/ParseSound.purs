@@ -12,7 +12,7 @@ import Test.Unit.Assert (equal)
 
 parseSoundTests :: TestSuite
 parseSoundTests =
-    suite "Parse - parseSound" do
+    suite "Engine.Emo8.Parse - parseSound" do
         test "valid" do
             equal expected $ parseSound validSound
         test "stringArrayToTick: invalid format" do
