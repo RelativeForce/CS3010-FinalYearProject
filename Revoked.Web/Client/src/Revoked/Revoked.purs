@@ -61,9 +61,11 @@ instance gameState :: Game State where
             scrollAdjustedParticles = map (scroll scrollOffset) s.particles
             scrollAdjustedEnemyBullets = map (scroll scrollOffset) s.enemyBullets
 
+        let { yes: enemiesInView, no: enemiesNotInView } = partition (not <<< isOutOfWorld) scrollAdjustedEnemies
+
         -- updated entities
         let updatedBullets = map updateBullet scrollAdjustedBullets
-            updatedEnemies = map (updateEnemy s.player) scrollAdjustedEnemies
+            updatedEnemies = map (updateEnemy s.player) enemiesInView
             updatedGoals = map updateGoal scrollAdjustedGoals
             updatedParticles = map updateParticle scrollAdjustedParticles
             updatedEnemyBullets = map updateEnemyBullet scrollAdjustedEnemyBullets
@@ -76,7 +78,8 @@ instance gameState :: Game State where
             hasCollidedGoal = any (isCollideObjects scrollAdjustedPlayer) s.goals
 
         -- separate entities
-        let { yes: collidedEnemies, no: notCollidedEnemies } = partition (\e -> any (isCollideObjects e) updatedBullets) updatedEnemies
+        let 
+            { yes: collidedEnemies, no: notCollidedEnemies } = partition (\e -> any (isCollideObjects e) updatedBullets) updatedEnemies
             { yes: collidedBullets, no: notCollidedBullets } = partition (\b -> any (isCollideObjects b) updatedEnemies) updatedBullets
 
         -- add new entities
@@ -100,7 +103,7 @@ instance gameState :: Game State where
                 distance = newDistance, 
                 player = scrollAdjustedPlayer, 
                 bullets = updatedBulletsInView <> newBullets, 
-                enemies = notCollidedEnemies, 
+                enemies = notCollidedEnemies <> enemiesNotInView, 
                 particles = updatedParticlesInView <> newParticles, 
                 enemyBullets = updatedEnemyBulletsInView <> newEnemyBullets,
                 goals = updatedGoals,
