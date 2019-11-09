@@ -51,17 +51,22 @@ instance gameState :: Game State where
         -- update player
         updatedPlayer <- updatePlayer input s.player s.distance (isCollideMapWalls s.mapId s.distance)
 
-        -- adjust player and map for scrolling
+        -- adjust entities and map for scrolling
         let newDistance = adjustMonitorDistance updatedPlayer s.distance
             scrollOffset = (s.distance - newDistance)
             scrollAdjustedPlayer = scroll scrollOffset updatedPlayer
+            scrollAdjustedBullets = map (scroll scrollOffset) s.bullets
+            scrollAdjustedEnemies = map (scroll scrollOffset) s.enemies
+            scrollAdjustedGoals = map (scroll scrollOffset) s.goals
+            scrollAdjustedParticles = map (scroll scrollOffset) s.particles
+            scrollAdjustedEnemyBullets = map (scroll scrollOffset) s.enemyBullets
 
         -- updated entities
-        let updatedBullets = map (updateBullet scrollOffset) s.bullets
-            updatedEnemies = map (updateEnemy scrollOffset s.player) s.enemies
-            updatedGoals = map (updateGoal scrollOffset) s.goals
-            updatedParticles = map (updateParticle scrollOffset) s.particles
-            updatedEnemyBullets = map (updateEnemyBullet scrollOffset) s.enemyBullets
+        let updatedBullets = map updateBullet scrollAdjustedBullets
+            updatedEnemies = map (updateEnemy s.player) scrollAdjustedEnemies
+            updatedGoals = map updateGoal scrollAdjustedGoals
+            updatedParticles = map updateParticle scrollAdjustedParticles
+            updatedEnemyBullets = map updateEnemyBullet scrollAdjustedEnemyBullets
 
         -- player collision
         hasCollidedHazard <- isCollideMapHazards s.mapId s.distance scrollAdjustedPlayer

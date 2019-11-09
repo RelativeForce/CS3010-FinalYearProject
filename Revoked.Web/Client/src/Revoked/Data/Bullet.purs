@@ -23,10 +23,10 @@ instance objectBullet :: Object Bullet where
 instance objectDrawBullet :: ObjectDraw Bullet where
     draw (Bullet b) = drawSprite b.sprite b.pos.x b.pos.y
 
-updateBullet :: Int -> Bullet -> Bullet
-updateBullet scrollOffset (Bullet s) = Bullet $ s { pos { x = newX } }
+updateBullet :: Bullet -> Bullet
+updateBullet (Bullet s) = Bullet $ s { pos { x = newX } }
     where
-        newX = scrollOffset + case s.appear of
+        newX = case s.appear of
             Forward -> s.pos.x + bulletSpeed
             Backward -> s.pos.x - bulletSpeed
 
