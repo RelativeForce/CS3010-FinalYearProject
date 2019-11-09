@@ -9,7 +9,7 @@ import Test.Unit.Assert (equal)
 
 adjustXTests :: TestSuite
 adjustXTests =
-    suite "Player - adjustX" do
+    suite "Revoked.Data.Player - adjustX" do
 
         -- Moving Left
         test "shouldAdjustXCorrectlyWhenMovingLeft [12, 64, 0 -> 20]" do

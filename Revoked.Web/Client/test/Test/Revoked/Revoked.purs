@@ -6,7 +6,6 @@ import Prelude
 
 import Effect (Effect)
 import Test.Revoked.Data (dataTests)
-import Test.Revoked.Helper (helperTests)
 
 revokedTests :: Effect Unit
 revokedTests = do
@@ -14,4 +13,3 @@ revokedTests = do
 
     -- Sub Modules
     dataTests
-    helperTests

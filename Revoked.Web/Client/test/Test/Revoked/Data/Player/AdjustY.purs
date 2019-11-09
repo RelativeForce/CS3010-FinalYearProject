@@ -9,7 +9,7 @@ import Test.Unit.Assert (equal)
 
 adjustYTests :: TestSuite
 adjustYTests =
-    suite "Player - adjustY" do
+    suite "Revoked.Data.Player - adjustY" do
 
         -- Moving Up
         test "shouldAdjustYCorrectlyWhenMovingUp [0, 64 -> 64]" do
