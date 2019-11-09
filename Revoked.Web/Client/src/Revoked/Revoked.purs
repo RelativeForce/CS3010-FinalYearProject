@@ -113,7 +113,7 @@ instance gameState :: Game State where
     draw TitleScreen = do
         drawScaledImage I.titleScreen 0 0
     draw GameOver = do
-        cls Maroon
+        drawScaledImage I.gameOverScreen 0 0
     draw Victory = do
         cls Lime
     draw (Play s) = do
