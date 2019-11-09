@@ -51,52 +51,54 @@ instance gameState :: Game State where
         -- update player
         updatedPlayer <- updatePlayer input s.player s.distance (isCollideMapWalls s.mapId s.distance)
 
-        let 
-            newDistance = adjustMonitorDistance updatedPlayer s.distance
+        -- adjust player and map for scrolling
+        let newDistance = adjustMonitorDistance updatedPlayer s.distance
             scrollOffset = (s.distance - newDistance)
-            np = adjustPlayerPos updatedPlayer scrollOffset
-            nbullets = map (updateBullet scrollOffset) s.bullets
-            nenemies = map (updateEnemy scrollOffset s.player) s.enemies
-            ngoals = map (updateGoal scrollOffset) s.goals
-            nparticles = map (updateParticle scrollOffset) s.particles
-            nenemyBullets = map (updateEnemyBullet scrollOffset) s.enemyBullets
+            scrollAdjustedPlayer = adjustPlayerPos updatedPlayer scrollOffset
+
+        -- updated entities
+        let updatedBullets = map (updateBullet scrollOffset) s.bullets
+            updatedEnemies = map (updateEnemy scrollOffset s.player) s.enemies
+            updatedGoals = map (updateGoal scrollOffset) s.goals
+            updatedParticles = map (updateParticle scrollOffset) s.particles
+            updatedEnemyBullets = map (updateEnemyBullet scrollOffset) s.enemyBullets
 
         -- player collision
-        isHazardColl <- isCollideMapHazards s.mapId s.distance np
+        hasCollidedHazard <- isCollideMapHazards s.mapId s.distance scrollAdjustedPlayer
 
-        let isEnemyColl = any (isCollideObjects np) nenemies
-            isEnemyBulletColl = any (isCollideObjects np) nenemyBullets
-            isGoalColl = any (isCollideObjects np) s.goals
+        let hasCollidedEnemy = any (isCollideObjects scrollAdjustedPlayer) updatedEnemies
+            hasCollidedEnemyBullet = any (isCollideObjects scrollAdjustedPlayer) updatedEnemyBullets
+            hasCollidedGoal = any (isCollideObjects scrollAdjustedPlayer) s.goals
 
-        -- separate objects
-        let { yes: collidedEnemies, no: notCollidedEnemies } = partition (\e -> any (isCollideObjects e) nbullets) nenemies
-            { yes: collidedBullets, no: notCollidedBullets } = partition (\b -> any (isCollideObjects b) nenemies) nbullets
+        -- separate entities
+        let { yes: collidedEnemies, no: notCollidedEnemies } = partition (\e -> any (isCollideObjects e) updatedBullets) updatedEnemies
+            { yes: collidedBullets, no: notCollidedBullets } = partition (\b -> any (isCollideObjects b) updatedEnemies) updatedBullets
 
-        -- add new objects
+        -- add new entities
         let newBullets = addBullet input s.player
             newParticles = map (\e -> initParticle (position e)) collidedEnemies
             newEnemyBullets = notCollidedEnemies >>= addEnemyBullet s.player
 
-        -- delete objects (out of monitor)
-        let nnbullets = filter (not <<< isOutOfWorld) notCollidedBullets
-            nnparticles = filter (not <<< isOutOfWorld) nparticles
-            nnenemyBullets = filter (not <<< isOutOfWorld) nenemyBullets
+        -- delete entities (out of monitor)
+        let updatedBulletsInView = filter (not <<< isOutOfWorld) notCollidedBullets
+            updatedParticlesInView = filter (not <<< isOutOfWorld) updatedParticles
+            updatedEnemyBulletsInView = filter (not <<< isOutOfWorld) updatedEnemyBullets
 
-        -- game condition
-        let isGameOver = isHazardColl || isEnemyColl || isEnemyBulletColl
-            isNextLevel = isGoalColl
+        -- evaluate game condition
+        let isGameOver = hasCollidedHazard || hasCollidedEnemy || hasCollidedEnemyBullet
+            isNextLevel = hasCollidedGoal
 
         pure $ case isGameOver, isNextLevel of
             true, _ -> GameOver
             false, true -> if s.mapId + 1 >= levelCount then Victory else newLevel (s.mapId + 1)
             false, false -> Play $ s { 
                 distance = newDistance, 
-                player = np, 
-                bullets = nnbullets <> newBullets, 
+                player = scrollAdjustedPlayer, 
+                bullets = updatedBulletsInView <> newBullets, 
                 enemies = notCollidedEnemies, 
-                particles = nnparticles <> newParticles, 
-                enemyBullets = nnenemyBullets <> newEnemyBullets,
-                goals = ngoals,
+                particles = updatedParticlesInView <> newParticles, 
+                enemyBullets = updatedEnemyBulletsInView <> newEnemyBullets,
+                goals = updatedGoals,
                 mapId = s.mapId
             }
 
