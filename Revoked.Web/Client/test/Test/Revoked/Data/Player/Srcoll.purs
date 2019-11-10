@@ -1,24 +1,24 @@
-module Test.Revoked.Helper.AdjustPlayerPos ( 
-    adjustPlayerPosTests 
+module Test.Revoked.Data.Player.Srcoll ( 
+    scrollTests 
 ) where
 
 import Prelude
+import Class.Object (scroll)
 import Data.Player (Player(..), Appear(..))
 import Data.Sprites as S
-import Helper (adjustPlayerPos)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 
-adjustPlayerPosTests :: TestSuite
-adjustPlayerPosTests =
-    suite "Helper - adjustPlayerPos" do
+scrollTests :: TestSuite
+scrollTests =
+    suite "Revoked.Data.Player - scroll" do
         test "shouldAdjustXCorrectlyWhenOffsetIsPositive" do
             let 
                 offset = 32
                 playerX = 12
 
                 expectedResult = offset + playerX
-                (Player result) = adjustPlayerPos (buildPlayer playerX) offset
+                (Player result) = scroll offset (buildPlayer playerX)
             equal expectedResult result.pos.x
         test "shouldAdjustXCorrectlyWhenOffsetIsNegative" do
             let 
@@ -26,7 +26,7 @@ adjustPlayerPosTests =
                 playerX = -24
 
                 expectedResult = offset + playerX
-                (Player result) = adjustPlayerPos (buildPlayer playerX) offset
+                (Player result) = scroll offset (buildPlayer playerX)
             equal expectedResult result.pos.x
 
 buildPlayer :: Int -> Player

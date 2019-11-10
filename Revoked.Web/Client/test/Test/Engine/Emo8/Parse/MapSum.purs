@@ -10,7 +10,7 @@ import Emo8.Parse (RawMap(..))
 
 mapSumTests :: TestSuite
 mapSumTests =
-    suite "Parse - mapSum" do
+    suite "Engine.Emo8.Parse - mapSum" do
         test "map" do
             equal mapSum $ mapA <> mapB
 

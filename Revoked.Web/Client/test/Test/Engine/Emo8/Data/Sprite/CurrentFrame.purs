@@ -11,7 +11,7 @@ import Test.Unit.Assert (equal)
 
 currentFrameTests :: TestSuite
 currentFrameTests =
-    suite "Sprite - currentFrame" do
+    suite "Engine.Emo8.Data.Sprite - currentFrame" do
         test "shouldReturnFrame0WhenSpriteIsOnIndex1" do
             equal "frame0" $ currentFrame $ buildSprite 1
         test "shouldReturnFrame1WhenSpriteIsOnIndex2" do

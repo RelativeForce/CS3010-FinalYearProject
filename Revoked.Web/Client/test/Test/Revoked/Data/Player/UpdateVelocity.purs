@@ -11,7 +11,7 @@ import Test.Unit.Assert (equal)
 
 updateVelocityTests :: TestSuite
 updateVelocityTests =
-    suite "Player - updateVelocity" do
+    suite "Revoked.Data.Player - updateVelocity" do
         test "shouldApplyGravityWhenNotOnFloor" do
             let 
                 velocity = { xSpeed: still, ySpeed: still }

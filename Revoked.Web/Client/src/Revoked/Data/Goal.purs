@@ -14,6 +14,7 @@ data Goal = Goal {
 instance objectGoal :: Object Goal where
     size (Goal g) = g.sprite.size
     position (Goal g) = g.pos
+    scroll offset (Goal s) = Goal $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
 
 instance objectDrawGoal :: ObjectDraw Goal where
     draw (Goal g) = drawSprite g.sprite g.pos.x g.pos.y

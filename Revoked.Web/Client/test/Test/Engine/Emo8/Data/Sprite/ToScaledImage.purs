@@ -11,7 +11,7 @@ import Test.Unit.Assert (equal)
 
 toScaledImageTests :: TestSuite
 toScaledImageTests =
-    suite "Sprite - toScaledImage" do
+    suite "Engine.Emo8.Data.Sprite - toScaledImage" do
         test "shouldConvertToScaledImageWhenSpriteIsValid [387 457 5]" do
             let 
                 expectedWidth = 387

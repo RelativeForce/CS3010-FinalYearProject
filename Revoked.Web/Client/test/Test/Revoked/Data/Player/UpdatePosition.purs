@@ -9,7 +9,7 @@ import Test.Unit.Assert (equal)
 
 updatePositionTests :: TestSuite
 updatePositionTests =
-    suite "Player - updatePosition" do
+    suite "Revoked.Data.Player - updatePosition" do
         test "shouldSumXSpeedAndXPosition" do
             let 
                 velocity = { xSpeed: 5.0, ySpeed: 3.0 }

@@ -62,6 +62,3 @@ adjustMonitorDistance (Player player) distance =
 
         isInRightBoundry :: Position -> Boolean
         isInRightBoundry p = p.x + playerWidth > rightBoundry
-
-adjustPlayerPos :: Player -> Int -> Player        
-adjustPlayerPos (Player p) offset = Player $ p { pos = { x: p.pos.x + offset, y: p.pos.y }}

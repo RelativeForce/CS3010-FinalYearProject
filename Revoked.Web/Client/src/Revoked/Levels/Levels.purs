@@ -6,10 +6,10 @@ import Emo8.Parse (RawMap)
 import Emo8.Types (MapId)
 import Levels.Level01 as L1
 
-emergeTable :: MapId -> Int -> Array Enemy
-emergeTable mapId distance = 
+enemies :: MapId -> Array Enemy
+enemies mapId = 
     case mapId of 
-        0 -> L1.emergeTable distance
+        0 -> L1.enemies
         _ -> []
 
 allRawLevels :: Array RawMap

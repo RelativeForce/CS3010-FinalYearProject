@@ -28,6 +28,12 @@ instance objectEnemy :: Object Enemy where
     position (Rex s) = s.pos
     position (Oct s) = s.pos
 
+    scroll offset (Invader s) = Invader $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
+    scroll offset (Moi s) = Moi $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
+    scroll offset (Bee s) = Bee $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
+    scroll offset (Rex s) = Rex $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
+    scroll offset (Oct s) = Oct $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
+
 instance objectDrawEnemy :: ObjectDraw Enemy where
     draw o@(Invader _) = emo E.alienMonster (size o) (position o).x (position o).y
     draw o@(Moi _) = emo E.moai (size o) (position o).x (position o).y
@@ -35,24 +41,27 @@ instance objectDrawEnemy :: ObjectDraw Enemy where
     draw o@(Rex _) = emo E.tRex (size o) (position o).x (position o).y
     draw o@(Oct _) = emo E.octopus (size o) (position o).x (position o).y
 
-updateEnemy :: Int -> Player -> Enemy -> Enemy
-updateEnemy scrollOffset p@(Player _) e@(Invader s) = Invader $ s { pos { x = s.pos.x - 3 + scrollOffset, y = s.pos.y + dy } }
+updateEnemy :: Player -> Enemy -> Enemy
+updateEnemy p@(Player _) e@(Invader s) = Invader $ s { pos { x = s.pos.x - 3, y = s.pos.y + dy } }
     where
         v = diffVec e p
         dy
             | v.y > 0 = -1
             | v.y < 0 = 1
             | otherwise = 0
-updateEnemy scrollOffset _ (Moi s) = Moi $ if mod s.cnt 32 < 16
-        then s { pos { x = s.pos.x - 2 + scrollOffset, y = s.pos.y - 2 }, cnt = s.cnt + 1 } 
-        else s { pos { x = s.pos.x - 4 + scrollOffset, y = s.pos.y + 2 } , cnt = s.cnt + 1 }
-updateEnemy scrollOffset _ (Bee s) = Bee $ s { pos { x = s.pos.x - 6 + scrollOffset } }
-updateEnemy scrollOffset (Player p) (Rex s) = Rex $ if mod s.cnt 32 < 16
-        then s { pos { x = s.pos.x - speed + scrollOffset, y = s.pos.y + 4 }, cnt = s.cnt + 1 } 
-        else s { pos { x = s.pos.x - speed + scrollOffset, y = s.pos.y - 4 } , cnt = s.cnt + 1 }
-updateEnemy scrollOffset _ (Oct s) = Oct $ s { pos { x = s.pos.x + dx + scrollOffset } }
+updateEnemy _ (Moi s) = Moi $ if mod s.cnt 32 < 16
+        then s { pos { x = s.pos.x - 2, y = s.pos.y - 2 }, cnt = s.cnt + 1 } 
+        else s { pos { x = s.pos.x - 4, y = s.pos.y + 2 } , cnt = s.cnt + 1 }
+updateEnemy _ (Bee s) = Bee $ s { pos { x = s.pos.x - 6 } }
+updateEnemy (Player p) (Rex s) = Rex $ if mod s.cnt 32 < 16
+        then s { pos { x = s.pos.x - speed, y = s.pos.y + 4 }, cnt = s.cnt + 1 } 
+        else s { pos { x = s.pos.x - speed, y = s.pos.y - 4 } , cnt = s.cnt + 1 }
+updateEnemy _ (Oct s) = Oct $ s { pos { x = s.pos.x + dx } }
     where
         dx = if s.pos.x > defaultMonitorSize.width / 2 then -speed else 0
+
+adjustEnemyPos :: Player -> Int -> Player        
+adjustEnemyPos (Player p) offset = Player $ p { pos = { x: p.pos.x + offset, y: p.pos.y }}
 
 addEnemyBullet :: Player -> Enemy -> Array EnemyBullet
 addEnemyBullet _ (Moi s) = if mod s.cnt 16 == 0 then [ NormalBull { pos: s.pos } ] else []

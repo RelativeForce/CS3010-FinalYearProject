@@ -10,7 +10,7 @@ import Emo8.Parse (RawSound(..))
 
 soundSumTests :: TestSuite
 soundSumTests =
-    suite "Parse - soundSum" do
+    suite "Engine.Emo8.Parse - soundSum" do
         test "shouldConcatinateTwoSounds" do
             equal soundSum $ soundA <> soundB
 

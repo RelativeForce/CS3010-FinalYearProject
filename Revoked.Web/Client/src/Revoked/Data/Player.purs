@@ -30,6 +30,7 @@ data Appear = Stable | Forword | Backword
 instance objectPlayer :: Object Player where
     size (Player p) = p.sprite.size
     position (Player p) = p.pos
+    scroll offset (Player p) = Player $ p { pos = { x: p.pos.x + offset, y: p.pos.y }}
 
 instance objectDrawPlayer :: ObjectDraw Player where
     draw o@(Player p) = case p.appear of

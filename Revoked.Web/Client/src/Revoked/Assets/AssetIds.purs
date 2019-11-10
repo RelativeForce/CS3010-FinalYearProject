@@ -37,3 +37,6 @@ chopperId = 11
 
 ladderId :: ImageId
 ladderId = 12
+
+gameOverScreenId :: ImageId
+gameOverScreenId = 13
