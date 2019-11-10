@@ -60,7 +60,7 @@ walls :: Array ImageId
 walls = [ 
     Id.grassTopId,
     Id.grassLeftCornerId,
-    Id.grassRightId,
+    Id.grassRightCornerId,
     Id.grassCenterId
 ]
 

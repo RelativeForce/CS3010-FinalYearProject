@@ -17,8 +17,8 @@ grassTopId = 4
 grassLeftCornerId :: ImageId
 grassLeftCornerId = 5
 
-grassRightId :: ImageId
-grassRightId = 6
+grassRightCornerId :: ImageId
+grassRightCornerId = 6
 
 grassCenterId :: ImageId
 grassCenterId = 7

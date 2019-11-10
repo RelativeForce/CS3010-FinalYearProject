@@ -8,7 +8,7 @@ emojiToImage :: String -> Maybe ScaledImage
 emojiToImage s = case s of
     "🈷️" -> Just I.grassLeftCorner
     "🈚️" -> Just I.grassTop
-    "🈸️" -> Just I.grassRight
+    "🈸️" -> Just I.grassRightCorner
     "🈵️" -> Just I.toxicWaste
     "🈯️" -> Just I.grassCenter
     "🈳" -> Nothing
