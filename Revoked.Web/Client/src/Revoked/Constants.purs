@@ -58,7 +58,10 @@ rightBoundry = defaultMonitorSize.width - (boundry * mapTileSize.width)
 
 walls :: Array ImageId
 walls = [ 
-    Id.grassTopId
+    Id.grassTopId,
+    Id.grassLeftCornerId,
+    Id.grassRightId,
+    Id.grassCenterId
 ]
 
 hazards :: Array ImageId

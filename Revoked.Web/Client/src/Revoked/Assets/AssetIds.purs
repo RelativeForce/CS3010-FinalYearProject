@@ -14,8 +14,8 @@ playerSpriteId = 3
 grassTopId :: ImageId
 grassTopId = 4
 
-grassLeftId :: ImageId
-grassLeftId = 5
+grassLeftCornerId :: ImageId
+grassLeftCornerId = 5
 
 grassRightId :: ImageId
 grassRightId = 6

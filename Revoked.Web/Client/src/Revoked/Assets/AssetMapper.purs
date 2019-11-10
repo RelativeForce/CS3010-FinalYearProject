@@ -6,7 +6,10 @@ import Emo8.Types (ScaledImage)
 
 emojiToImage :: String -> Maybe ScaledImage
 emojiToImage s = case s of
+    "🈷️" -> Just I.grassLeftCorner
     "🈚️" -> Just I.grassTop
-    "🈯️" -> Just I.toxicWaste
+    "🈸️" -> Just I.grassRight
+    "🈵️" -> Just I.toxicWaste
+    "🈯️" -> Just I.grassCenter
     "🈳" -> Nothing
     _ -> Nothing

@@ -6,7 +6,7 @@ import Assets.Images.TitleScreen (titleScreenData)
 import Assets.Images.BlackBackground (blackBackgroundData)
 import Assets.Images.ToxicWaste (toxicWasteData)
 import Assets.Images.GrassTop (grassTopData)
-import Assets.Images.GrassLeft (grassLeftData)
+import Assets.Images.GrassLeftCorner (grassLeftCornerData)
 import Assets.Images.GrassRight (grassRightData)
 import Assets.Images.GrassCenter (grassCenterData)
 import Assets.Images.GameOverScreen (gameOverScreenData)
@@ -51,14 +51,14 @@ grassTop = {
     id: Id.grassTopId
 }
 
-grassLeft :: ScaledImage
-grassLeft = {
-    image: grassLeftData,
+grassLeftCorner :: ScaledImage
+grassLeftCorner = {
+    image: grassLeftCornerData,
     size: {
         height: 32,
         width: 32
     },
-    id: Id.grassLeftId
+    id: Id.grassLeftCornerId
 }
 
 grassRight :: ScaledImage
