@@ -14,29 +14,35 @@ playerSpriteId = 3
 grassTopId :: ImageId
 grassTopId = 4
 
+grassLeftId :: ImageId
+grassLeftId = 5
+
+grassRightId :: ImageId
+grassRightId = 6
+
 grassLeftCornerId :: ImageId
-grassLeftCornerId = 5
+grassLeftCornerId = 7
 
 grassRightCornerId :: ImageId
-grassRightCornerId = 6
+grassRightCornerId = 8
 
 grassCenterId :: ImageId
-grassCenterId = 7
+grassCenterId = 9
 
 bulletForwardId :: ImageId
-bulletForwardId = 8
+bulletForwardId = 10
 
 bulletBackwardId :: ImageId
-bulletBackwardId = 9
+bulletBackwardId = 11
 
 toxicWasteId :: ImageId
-toxicWasteId = 10
+toxicWasteId = 12
 
 chopperId :: ImageId
-chopperId = 11
+chopperId = 13
 
 ladderId :: ImageId
-ladderId = 12
+ladderId = 14
 
 gameOverScreenId :: ImageId
-gameOverScreenId = 13
+gameOverScreenId = 15

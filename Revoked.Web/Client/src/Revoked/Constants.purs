@@ -61,6 +61,8 @@ walls = [
     Id.grassTopId,
     Id.grassLeftCornerId,
     Id.grassRightCornerId,
+    Id.grassLeftId,
+    Id.grassRightId,
     Id.grassCenterId
 ]
 
