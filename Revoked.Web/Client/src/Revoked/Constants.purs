@@ -15,7 +15,7 @@ emoSize = {
 }
 
 mapSizeInt :: Int
-mapSizeInt = 128
+mapSizeInt = 207
 
 maxPlayerSpeedX :: Number
 maxPlayerSpeedX = 4.0
@@ -62,8 +62,7 @@ walls = [
     Id.grassLeftCornerId,
     Id.grassRightCornerId,
     Id.grassLeftId,
-    Id.grassRightId,
-    Id.grassCenterId
+    Id.grassRightId
 ]
 
 hazards :: Array ImageId
