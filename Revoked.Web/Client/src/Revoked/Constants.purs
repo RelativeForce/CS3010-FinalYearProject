@@ -15,7 +15,7 @@ emoSize = {
 }
 
 mapSizeInt :: Int
-mapSizeInt = 128
+mapSizeInt = 207
 
 maxPlayerSpeedX :: Number
 maxPlayerSpeedX = 4.0
@@ -58,7 +58,11 @@ rightBoundry = defaultMonitorSize.width - (boundry * mapTileSize.width)
 
 walls :: Array ImageId
 walls = [ 
-    Id.grassTopId
+    Id.grassTopId,
+    Id.grassLeftCornerId,
+    Id.grassRightCornerId,
+    Id.grassLeftId,
+    Id.grassRightId
 ]
 
 hazards :: Array ImageId

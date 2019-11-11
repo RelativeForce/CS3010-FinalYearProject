@@ -5,6 +5,7 @@ import Prelude
 import Class.Object (class Object, position, size)
 import Collision (isWallsCollide, isHazardCollide)
 import Constants (leftBoundry, mapSizeInt, mapTileInMonitorSize, mapTileSize, mapSize, rightBoundry)
+import Emo8.Utils (defaultMonitorSize)
 import Data.Player (Player(..))
 import Emo8.Action.Draw (Draw, drawMap)
 import Emo8.Action.Update (Update)
@@ -43,7 +44,7 @@ adjustMonitorDistance (Player player) distance =
         true, _, true, _ -> 0
         _, true, _, true -> mapSize.width
         false, _, true, _ -> if(newDistanceIfInLeftBoundry < 0) then 0 else newDistanceIfInLeftBoundry
-        _, false, _, true -> if(newDistanceIfInRightBoundry > mapSize.width) then mapSize.width else newDistanceIfInRightBoundry   
+        _, false, _, true -> if(newDistanceIfInRightBoundry > mapSize.width - defaultMonitorSize.width) then mapSize.width - defaultMonitorSize.width else newDistanceIfInRightBoundry   
         _, _, _, _ -> distance
     where
         playerPos = player.pos

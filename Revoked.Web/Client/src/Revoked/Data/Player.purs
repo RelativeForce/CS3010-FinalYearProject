@@ -104,7 +104,7 @@ initialPlayer :: Player
 initialPlayer = Player { 
     pos: { 
         x: 0, 
-        y: defaultMonitorSize.height / 2
+        y: 40
     }, 
     energy: 30, 
     appear: Stable,
