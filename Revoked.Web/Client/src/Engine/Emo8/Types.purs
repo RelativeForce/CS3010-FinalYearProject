@@ -83,3 +83,4 @@ type Bpm = Int
 type ImageId = Int
 type MapId = Int
 type SoundId = Int
+type Score = Int

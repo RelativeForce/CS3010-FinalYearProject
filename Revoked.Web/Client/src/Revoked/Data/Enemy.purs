@@ -9,7 +9,7 @@ import Data.Player (Player(..))
 import Emo8.Action.Draw (emo)
 import Emo8.Data.Emoji as E
 import Emo8.Utils (defaultMonitorSize)
-import Emo8.Types (Position)
+import Emo8.Types (Position, Score)
 
 
 data Enemy
@@ -73,3 +73,10 @@ addEnemyBullet _ _ = []
 
 diffVec :: forall a b. Object a => Object b => a -> b -> Position
 diffVec a b = { x: (position a).x - (position b).x, y: (position a).y - (position b).y }
+
+enemyToScore :: Enemy -> Score
+enemyToScore (Invader e) = 9
+enemyToScore (Moi e) = 10
+enemyToScore (Bee e) = 12
+enemyToScore (Rex e) = 20
+enemyToScore (Oct e) = 15
