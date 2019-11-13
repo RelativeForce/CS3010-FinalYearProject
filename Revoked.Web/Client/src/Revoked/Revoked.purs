@@ -15,7 +15,7 @@ import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
 import Data.Goal (Goal, updateGoal)
 import Effect (Effect)
 import Emo8 (emo8)
-import Emo8.Action.Draw (cls, drawScaledImage)
+import Emo8.Action.Draw (cls, drawScaledImage, drawText)
 import Assets.Images as I
 import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
@@ -128,6 +128,7 @@ instance gameState :: Game State where
         traverse_ draw s.particles
         traverse_ draw s.enemyBullets
         traverse_ draw s.goals
+        drawText (show s.score) 32 (defaultMonitorSize.width - 100) (defaultMonitorSize.height - 50)
 
     sound _ = pure unit
 

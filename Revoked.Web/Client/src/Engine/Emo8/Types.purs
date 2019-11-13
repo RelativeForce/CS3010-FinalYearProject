@@ -39,8 +39,6 @@ type SoundContext = {
   soundData :: Array Sound, 
   channelSets :: ChannelSets
 }
-
-type Image = String
     
 type ScaledImage = {
   id :: ImageId,
@@ -68,6 +66,7 @@ type Size = {
   height :: Height
 }
 
+type Image = String
 type X = Int
 type Y = Int
 type Width = Int
@@ -84,3 +83,4 @@ type ImageId = Int
 type MapId = Int
 type SoundId = Int
 type Score = Int
+type TextHeight = Int

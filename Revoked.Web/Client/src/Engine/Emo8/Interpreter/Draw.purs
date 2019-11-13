@@ -17,7 +17,22 @@ import Emo8.Data.Color (Color(..), colorToCode)
 import Emo8.Data.Emoji (Emoji, japaneseVacancyButton)
 import Emo8.Excepiton (providedMap)
 import Emo8.FFI.TextBaseline (TextBaseline(..), setTextBaseline)
-import Emo8.Types (Deg, IdX, IdY, MapId, MonitorSize, Size, X, Y, DrawContext, Image, ScaledImage, Sprite, Height)
+import Emo8.Types (
+    Deg, 
+    IdX, 
+    IdY, 
+    MapId, 
+    MonitorSize, 
+    Size, 
+    X, 
+    Y, 
+    DrawContext, 
+    Image, 
+    ScaledImage, 
+    Sprite, 
+    Height,
+    TextHeight
+)
 import Emo8.Data.Sprite (toScaledImage)
 import Graphics.Canvas (
     Context2D, 
@@ -49,6 +64,7 @@ runDraw dctx = foldFree interpret
     interpret (DrawRotatedScaledImage image x y angle n) = const n <$> drawRotatedScaledImage image x y angle dctx
     interpret (DrawSprite sprite x y n) = const n <$> drawSprite sprite x y dctx
     interpret (DrawRotatedSprite sprite x y angle n) = const n <$> drawRotatedSprite sprite x y angle dctx
+    interpret (DrawText text height x y n) = const n <$> drawText text height x y dctx
     interpret (Emo Normal e size x y n) = const n <$> emo e size x y dctx
     interpret (Emo Mirrored e size x y n) = const n <$> emo' e size x y dctx
     interpret (Emor Normal deg e size x y n) = const n <$> emor deg e size x y dctx
@@ -85,6 +101,18 @@ drawEmoji e size x y ctx
         fillText ctx (show e) x y
         where
             font = sizeToFont size
+
+drawText :: String -> TextHeight -> X -> Y -> RenderOp
+drawText e size x y =
+    withLocalDraw \dctx -> do
+        let 
+            font = joinWith " " [show size <> "px", fontFamily]
+            y' = toBaseY dctx.monitorSize y
+
+        setFont dctx.ctx font
+        setTextBaseline dctx.ctx BaselineIdeographic
+        setFillStyle dctx.ctx (colorToCode Lime)
+        fillText dctx.ctx e (toNumber x) (toNumber y')             
 
 emo :: Emoji -> Size -> X -> Y -> RenderOp
 emo e size x y =
