@@ -1,7 +1,7 @@
 module Constants where
   
 import Prelude
-import Emo8.Types (ImageId, Size)
+import Emo8.Types (ImageId, Size, TextHeight, X, Y)
 import Emo8.Utils (defaultMonitorSize)
 import Assets.AssetIds as Id
 
@@ -13,6 +13,15 @@ emoSize = {
     width: 32,
     height: 32
 }
+
+scoreDisplayX :: X
+scoreDisplayX = (defaultMonitorSize.width - 200)
+
+scoreDisplayY :: Y
+scoreDisplayY = (defaultMonitorSize.height - 50)
+
+scoreDisplayTextHeight :: TextHeight
+scoreDisplayTextHeight = 32
 
 mapSizeInt :: Int
 mapSizeInt = 207

@@ -22,6 +22,7 @@ import Emo8.Data.Color (Color(..))
 import Emo8.Types (MapId, Score)
 import Emo8.Input (isCatchAny)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
+import Constants (scoreDisplayX, scoreDisplayY, scoreDisplayTextHeight)
 import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance)
 
 data State = 
@@ -42,7 +43,7 @@ data State =
 
 instance gameState :: Game State where
     update input TitleScreen =
-        pure $ if isCatchAny input then newLevel 0 0 else TitleScreen
+        pure $ if isCatchAny input then initialPlayState else TitleScreen
     update input GameOver =
         pure $ if isCatchAny input then initialState else GameOver
     update input Victory =
@@ -128,7 +129,7 @@ instance gameState :: Game State where
         traverse_ draw s.particles
         traverse_ draw s.enemyBullets
         traverse_ draw s.goals
-        drawText (show s.score) 32 (defaultMonitorSize.width - 100) (defaultMonitorSize.height - 50)
+        drawText ("Score: " <> show s.score) scoreDisplayTextHeight scoreDisplayX scoreDisplayY
 
     sound _ = pure unit
 
@@ -144,6 +145,9 @@ newLevel mapId score = Play {
     mapId: mapId,
     score: score
 }
+
+initialPlayState :: State
+initialPlayState = newLevel 0 0
 
 initialState :: State
 initialState = TitleScreen
