@@ -1,19 +1,18 @@
-module Emo8.Utils
-    ( 
-        mkAsset, 
-        emptyAsset, 
-        defaultMonitorSize, 
-        isMonitorCollide, 
-        isOutOfMonitor, 
-        isCollide
-    ) where
+module Emo8.Utils ( 
+    mkAsset, 
+    emptyAsset, 
+    defaultMonitorSize, 
+    isMonitorCollide, 
+    isOutOfMonitor, 
+    isCollide
+) where
 
 import Prelude
 
 import Data.Traversable (traverse)
 import Effect (Effect)
 import Emo8.Excepiton (orErrMsg)
-import Emo8.Parse (RawMap, RawSound, parseTileMap, parseSound)
+import Emo8.Parse (RawMap, parseTileMap)
 import Assets.AssetMapper (emojiToImage)
 import Emo8.Types (Asset, MonitorSize, Size, X, Y)
 
@@ -50,19 +49,17 @@ isCollide objectSizeA xA yA objectSizeB xB yB
         pBby = yB
         pBty = yB + objectSizeB.height - 1 
 
--- | Make asset data from raw maps and raw sounds.
+-- | Make asset data from raw maps.
 -- | If there are unparsable strings, exception raised when executing javascript.
-mkAsset :: Array RawMap -> Array RawSound -> Effect Asset
-mkAsset rms rss = do
+mkAsset :: Array RawMap -> Effect Asset
+mkAsset rms = do
     ms <- orErrMsg $ traverse (\m -> parseTileMap m emojiToImage) rms 
-    ss <- orErrMsg $ traverse parseSound rss
-    pure { mapData: ms, soundData: ss }
+    pure { mapData: ms}
 
 -- | Empty asset for convenience. 
 emptyAsset :: Asset
 emptyAsset = { 
-    mapData: [], 
-    soundData: [] 
+    mapData: []
 }
 
 defaultMonitorSize :: MonitorSize

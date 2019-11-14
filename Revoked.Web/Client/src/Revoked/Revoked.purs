@@ -139,8 +139,6 @@ instance gameState :: Game State where
         traverse_ draw s.goals
         drawText ("Score: " <> show s.score) scoreDisplayTextHeight scoreDisplayX scoreDisplayY
 
-    sound _ = pure unit
-
 newLevel :: MapId -> Score -> AudioController -> State
 newLevel mapId score audioController = Play { 
     distance: 0, 
@@ -163,5 +161,5 @@ initialState = TitleScreen
 
 main :: Effect Unit
 main = do
-    asset <- mkAsset allRawLevels []
+    asset <- mkAsset allRawLevels
     emo8 initialState asset defaultMonitorSize

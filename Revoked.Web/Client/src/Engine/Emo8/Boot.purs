@@ -1,8 +1,7 @@
-module Emo8.Boot
-  ( State
-  , initialState
-  , bootRawSound
-  ) where
+module Emo8.Boot ( 
+  State, 
+  initialState
+) where
 
 import Prelude
 
@@ -11,17 +10,13 @@ import Data.Foldable (for_)
 import Data.Int (floor, toNumber)
 import Data.Maybe (fromMaybe)
 import Emo8.Action.Draw (cls, emo)
-import Emo8.Action.Sound (play)
 import Emo8.Action.Update (randomElement, randomInt)
 import Emo8.Class.Game (class Game)
 import Emo8.Class.GameBoot (class GameBoot)
-import Emo8.Data.Channel (Channel(..))
 import Emo8.Data.Color (Color(..), colors)
 import Emo8.Data.Emoji (Emoji)
 import Emo8.Data.Emoji as E
-import Emo8.Data.Tone (Tone(..))
 import Emo8.Input (isCatchAny)
-import Emo8.Parse (RawSound(..))
 import Emo8.Types (MonitorSize, Position, Size)
 import Math (cos, pi, sin)
 
@@ -71,8 +66,6 @@ instance gameState :: Game State where
         pols = (\rot -> fromPolar { radius: toNumber s.titleSize.width, theta: toNumber rot }) <$> rots
     for_ pols \pol -> emo E.roastedSweetPotato s.emoSize (s.emoPos.x + pol.x) (s.emoPos.y + pol.y)
 
-  sound (State s) = when (s.wait == initialWait - 1) $ play CH1 0 Saw 1024
-
 instance gameBootState :: GameBoot State where
   finished = isFinish
 
@@ -120,11 +113,3 @@ fromPolar pol = {
 }
   where
     toRadian = (*) pi <<< flip (/) 180.0
-
-bootRawSound :: RawSound
-bootRawSound = RawSound """
-🎼🔈5️⃣🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳
-🎼🔈6️⃣🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳
-🎼🔈6️⃣🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳
-🎼🔈6️⃣🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳
-"""
