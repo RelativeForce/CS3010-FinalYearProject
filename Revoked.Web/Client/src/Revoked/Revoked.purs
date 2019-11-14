@@ -7,21 +7,22 @@ import Class.Object (draw, position, scroll)
 import Collision (isCollideObjects, isOutOfWorld)
 import Data.Array (any, filter, partition)
 import Data.Bullet (Bullet, updateBullet)
-import Data.Enemy (Enemy, addEnemyBullet, updateEnemy)
+import Data.Enemy (Enemy, addEnemyBullet, updateEnemy, enemyToScore)
 import Data.EnemyBullet (EnemyBullet, updateEnemyBullet)
-import Data.Foldable (traverse_)
+import Data.Foldable (traverse_, sum)
 import Data.Particle (Particle, initParticle, updateParticle)
 import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
 import Data.Goal (Goal, updateGoal)
 import Effect (Effect)
 import Emo8 (emo8)
-import Emo8.Action.Draw (cls, drawScaledImage)
+import Emo8.Action.Draw (cls, drawScaledImage, drawText)
 import Assets.Images as I
 import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
-import Emo8.Types (MapId)
+import Emo8.Types (MapId, Score)
 import Emo8.Input (isCatchAny)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
+import Constants (scoreDisplayX, scoreDisplayY, scoreDisplayTextHeight)
 import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance)
 
 data State = 
@@ -32,16 +33,17 @@ data State =
         distance :: Int, 
         player :: Player, 
         bullets :: Array Bullet, 
-        enemies :: Array Enemy, 
+        enemies :: Array Enemy,
         particles :: Array Particle, 
         enemyBullets :: Array EnemyBullet,
         goals :: Array Goal,
-        mapId :: MapId
+        mapId :: MapId,
+        score :: Score
     }
 
 instance gameState :: Game State where
     update input TitleScreen =
-        pure $ if isCatchAny input then newLevel 0 else TitleScreen
+        pure $ if isCatchAny input then initialPlayState else TitleScreen
     update input GameOver =
         pure $ if isCatchAny input then initialState else GameOver
     update input Victory =
@@ -86,6 +88,7 @@ instance gameState :: Game State where
         let newBullets = addBullet input s.player
             newParticles = map (\e -> initParticle (position e)) collidedEnemies
             newEnemyBullets = notCollidedEnemies >>= addEnemyBullet s.player
+            newScore = sum $ map enemyToScore collidedEnemies
 
         -- delete entities (out of monitor)
         let updatedBulletsInView = filter (not <<< isOutOfWorld) notCollidedBullets
@@ -98,7 +101,7 @@ instance gameState :: Game State where
 
         pure $ case isGameOver, isNextLevel of
             true, _ -> GameOver
-            false, true -> if s.mapId + 1 >= levelCount then Victory else newLevel (s.mapId + 1)
+            false, true -> if s.mapId + 1 >= levelCount then Victory else newLevel (s.mapId + 1) s.score
             false, false -> Play $ s { 
                 distance = newDistance, 
                 player = scrollAdjustedPlayer, 
@@ -107,7 +110,8 @@ instance gameState :: Game State where
                 particles = updatedParticlesInView <> newParticles, 
                 enemyBullets = updatedEnemyBulletsInView <> newEnemyBullets,
                 goals = updatedGoals,
-                mapId = s.mapId
+                mapId = s.mapId,
+                score = s.score + newScore
             }
 
     draw TitleScreen = do
@@ -125,11 +129,12 @@ instance gameState :: Game State where
         traverse_ draw s.particles
         traverse_ draw s.enemyBullets
         traverse_ draw s.goals
+        drawText ("Score: " <> show s.score) scoreDisplayTextHeight scoreDisplayX scoreDisplayY
 
     sound _ = pure unit
 
-newLevel :: MapId -> State
-newLevel mapId = Play { 
+newLevel :: MapId -> Score -> State
+newLevel mapId score = Play { 
     distance: 0, 
     player: initialPlayer, 
     bullets: [], 
@@ -137,8 +142,12 @@ newLevel mapId = Play {
     particles: [], 
     enemyBullets : [],
     goals: goals mapId,
-    mapId: mapId
+    mapId: mapId,
+    score: score
 }
+
+initialPlayState :: State
+initialPlayState = newLevel 0 0
 
 initialState :: State
 initialState = TitleScreen
