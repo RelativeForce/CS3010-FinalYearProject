@@ -11,8 +11,8 @@ module Emo8.FFI.AudioController (
 ) where
 
 import Prelude
-import Data.Foldable (find)
 import Data.Maybe (Maybe(..))
+import Data.Array (filter, find)
 
 type AudioController = {
     id :: String,
@@ -38,12 +38,15 @@ newAudioController controllerId = {
 findStreamBySource :: AudioController -> String -> Maybe AudioStream
 findStreamBySource controller src = find (\a -> a.src == src) controller.audioStreams
 
+filterOutStreamsBySource :: AudioController -> String -> Array AudioStream
+filterOutStreamsBySource controller src = filter (\a -> a.src /= src) controller.audioStreams
+
 addAudioStream :: (String -> Maybe AudioStream) -> AudioController -> String -> AudioController
 addAudioStream player controller src = controller { audioStreams = newAudioStreams }
     where 
         maybeAudioStream = player src
         newAudioStreams = case maybeAudioStream of 
-            Just newAudio -> controller.audioStreams <> [ newAudio ]
+            Just newAudio -> [ newAudio ] <> filterOutStreamsBySource controller src
             Nothing -> controller.audioStreams
 
 _addAudioStream :: AudioController -> String -> AudioController
