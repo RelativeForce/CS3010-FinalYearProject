@@ -512,3 +512,4 @@
 /Revoked.Web/Client/output/Test.Engine.Emo8.FFI.AudioController
 /Revoked.Web/Client/output/Test.Engine.Emo8.FFI.AudioController.AddAudioStream
 /Revoked.Web/Client/output/Test.Engine.Emo8.FFI.AudioController.StopAudioStream
+/Revoked.Web/Client/output/Test.Engine.Emo8.FFI.AudioController.IsAudioStreamPlaying
