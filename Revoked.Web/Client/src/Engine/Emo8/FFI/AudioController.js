@@ -1,54 +1,33 @@
 "use strict";
 
-exports.newAudioController = function(controllerId){
-  var sounds = [];
+exports.stop = function(audio){
+  try {
+    audio.stop();
+    return true;
+  }
+  catch(e){
+    return false;
+  }
+};
 
-  function find(src){
-    for (var index = 0; index < sounds.length; index++) {
-      const element = sounds[index];
-      if(element.src === src){
-        return element;
+exports.isPlaying = function(audio){
+  return audio.isPlaying();
+};
+
+exports.play = function(just){
+  return function(nothing){
+    return function(src){
+      try {
+        var audio = new sound(src);
+        audio.play();
+        return just(audio);
+      }
+      catch(e){
+        return nothing;
       }
     }
-
-    return undefined;
   }
-
-  var stop = function(src){
-    var sound = find(src);
-
-    if(sound){
-      sound.stop();
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  var isPlaying = function(src){
-    var sound = find(src);
-    return sound ? sound.isPlaying() : false;
-  };
-
-  var play = function(src){
-    try{
-      var audio = new sound(src);
-      audio.play();
-      sounds.push(audio);
-      return true;
-    }
-    catch(e){
-      return false;
-    }
-  };
-
-  return {
-    id: controllerId,
-    stop: stop,
-    isPlaying: isPlaying,
-    play: play
-  };
-};
+}
 
 function sound(src) {
   this.sound = document.createElement("audio");

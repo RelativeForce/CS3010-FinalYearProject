@@ -18,7 +18,7 @@ import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
 import Effect (Effect)
 import Emo8 (emo8)
 import Emo8.Action.Draw (cls, drawScaledImage, drawText)
-import Emo8.FFI.AudioController (AudioController, newAudioController)
+import Emo8.FFI.AudioController (AudioController, newAudioController, _addAudioStream, _isAudioStreamPlaying)
 import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
 import Emo8.Input (isCatchAny)
@@ -53,7 +53,9 @@ instance gameState :: Game State where
         pure $ if isCatchAny input then initialState else Victory
     update input (Play s) = do
         -- update music
-        let validMusic = if s.audioController.isPlaying backgroundMusicId then true else s.audioController.play backgroundMusicId
+        let newAudioController = case _isAudioStreamPlaying s.audioController backgroundMusicId of
+                true -> s.audioController
+                false ->  _addAudioStream s.audioController backgroundMusicId
 
         -- update player
         updatedPlayer <- updatePlayer input s.player s.distance (isCollideMapWalls s.mapId s.distance)
@@ -117,7 +119,7 @@ instance gameState :: Game State where
                 goals = updatedGoals,
                 mapId = s.mapId,
                 score = s.score + newScore,
-                audioController = s.audioController
+                audioController = newAudioController
             }
 
     draw TitleScreen = do
