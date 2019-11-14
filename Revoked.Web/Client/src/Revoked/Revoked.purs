@@ -2,28 +2,30 @@ module Revoked where
 
 import Prelude
 
-import Levels (allRawLevels, enemies, goals, levelCount)
+import Assets.Audio (backgroundMusicId)
+import Assets.Images as I
 import Class.Object (draw, position, scroll)
 import Collision (isCollideObjects, isOutOfWorld)
+import Constants (scoreDisplayX, scoreDisplayY, scoreDisplayTextHeight)
 import Data.Array (any, filter, partition)
 import Data.Bullet (Bullet, updateBullet)
 import Data.Enemy (Enemy, addEnemyBullet, updateEnemy, enemyToScore)
 import Data.EnemyBullet (EnemyBullet, updateEnemyBullet)
 import Data.Foldable (traverse_, sum)
+import Data.Goal (Goal, updateGoal)
 import Data.Particle (Particle, initParticle, updateParticle)
 import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
-import Data.Goal (Goal, updateGoal)
 import Effect (Effect)
 import Emo8 (emo8)
 import Emo8.Action.Draw (cls, drawScaledImage, drawText)
-import Assets.Images as I
+import Emo8.FFI.AudioController (playAudio)
 import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
-import Emo8.Types (MapId, Score)
 import Emo8.Input (isCatchAny)
+import Emo8.Types (MapId, Score)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
-import Constants (scoreDisplayX, scoreDisplayY, scoreDisplayTextHeight)
 import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance)
+import Levels (allRawLevels, enemies, goals, levelCount)
 
 data State = 
     TitleScreen
@@ -42,8 +44,10 @@ data State =
     }
 
 instance gameState :: Game State where
-    update input TitleScreen =
-        pure $ if isCatchAny input then initialPlayState else TitleScreen
+    update input TitleScreen = do
+        let pressedAny = isCatchAny input 
+            _ = if pressedAny then playAudio backgroundMusicId else false
+        pure $ if pressedAny then initialPlayState else TitleScreen
     update input GameOver =
         pure $ if isCatchAny input then initialState else GameOver
     update input Victory =
