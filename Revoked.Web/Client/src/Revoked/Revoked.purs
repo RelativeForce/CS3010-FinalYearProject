@@ -2,7 +2,7 @@ module Revoked where
 
 import Prelude
 
-import Assets.Audio (backgroundMusicId)
+import Assets.Audio as A
 import Assets.Images as I
 import Class.Object (draw, position, scroll)
 import Collision (isCollideObjects, isOutOfWorld)
@@ -18,9 +18,9 @@ import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
 import Effect (Effect)
 import Emo8 (emo8)
 import Emo8.Action.Draw (cls, drawScaledImage, drawText)
-import Emo8.FFI.AudioController (AudioController, newAudioController, _addAudioStream, _isAudioStreamPlaying)
 import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
+import Emo8.FFI.AudioController (AudioController, _addAudioStream, _isAudioStreamPlaying, _stopAudioStream, newAudioController)
 import Emo8.Input (isCatchAny)
 import Emo8.Types (MapId, Score)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
@@ -52,10 +52,6 @@ instance gameState :: Game State where
     update input Victory =
         pure $ if isCatchAny input then initialState else Victory
     update input (Play s) = do
-        -- update music
-        let newAudioController = case _isAudioStreamPlaying s.audioController backgroundMusicId of
-                true -> s.audioController
-                false ->  _addAudioStream s.audioController backgroundMusicId
 
         -- update player
         updatedPlayer <- updatePlayer input s.player s.distance (isCollideMapWalls s.mapId s.distance)
@@ -105,6 +101,13 @@ instance gameState :: Game State where
         -- evaluate game condition
         let isGameOver = hasCollidedHazard || hasCollidedEnemy || hasCollidedEnemyBullet
             isNextLevel = hasCollidedGoal
+            isBackgroundMusicPlaying = _isAudioStreamPlaying s.audioController A.backgroundMusicId
+
+        -- update music
+        let newAudioController = case isBackgroundMusicPlaying, isGameOver of
+                true, true -> _stopAudioStream s.audioController A.backgroundMusicId
+                false, false ->  _addAudioStream s.audioController A.backgroundMusicId
+                _, _ -> s.audioController
 
         pure $ case isGameOver, isNextLevel of
             true, _ -> GameOver

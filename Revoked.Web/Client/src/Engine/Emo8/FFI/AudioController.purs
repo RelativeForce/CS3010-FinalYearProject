@@ -63,13 +63,13 @@ isAudioStreamPlaying checker controller src = result
 _isAudioStreamPlaying :: AudioController -> String -> Boolean
 _isAudioStreamPlaying = isAudioStreamPlaying isPlaying
 
-stopAudioStream :: (AudioStream -> Boolean) -> AudioController -> String -> Boolean
-stopAudioStream stopper controller src = result
+stopAudioStream :: (AudioStream -> Boolean) -> AudioController -> String -> AudioController
+stopAudioStream stopper controller src = controller { audioStreams = newAudioStreams }
     where
         maybeAudioStream = findStreamBySource controller src
-        result = case maybeAudioStream of
-            Nothing -> false
-            Just audioStream -> stopper audioStream
+        newAudioStreams = case maybeAudioStream of
+            Nothing -> controller.audioStreams
+            Just audioStream -> if stopper audioStream then filterOutStreamsBySource controller src else controller.audioStreams
 
-_stopAudioStream :: AudioController -> String -> Boolean
+_stopAudioStream :: AudioController -> String -> AudioController
 _stopAudioStream = stopAudioStream stop
