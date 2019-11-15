@@ -6,8 +6,8 @@ import Assets.Audio as A
 import Assets.Images as I
 import Class.Object (draw, position, scroll)
 import Collision (isCollideObjects, isOutOfWorld)
-import Constants (scoreDisplayX, scoreDisplayY, scoreDisplayTextHeight)
-import Data.Array (any, filter, partition)
+import Constants (scoreDisplayX, scoreDisplayY, scoreDisplayTextHeight, maxUsernameLength)
+import Data.Array (any, filter, partition, length)
 import Data.Bullet (Bullet, updateBullet)
 import Data.Enemy (Enemy, addEnemyBullet, updateEnemy, enemyToScore)
 import Data.EnemyBullet (EnemyBullet, updateEnemyBullet)
@@ -21,16 +21,20 @@ import Emo8.Action.Draw (cls, drawScaledImage, drawText)
 import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
 import Emo8.FFI.AudioController (AudioController, _addAudioStream, _isAudioStreamPlaying, _stopAudioStream, newAudioController)
-import Emo8.Input (isCatchAny)
+import Emo8.Input (isCatchAny, mapToCharacter)
 import Emo8.Types (MapId, Score)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
-import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance)
+import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance, drawUsername)
 import Levels (allRawLevels, enemies, goals, levelCount)
 
 data State = 
     TitleScreen 
     | GameOver
-    | Victory
+    | Victory {
+        username :: Array String,
+        score :: Int,
+        inputInterval :: Int
+    }
     | Play { 
         distance :: Int, 
         player :: Player, 
@@ -49,8 +53,22 @@ instance gameState :: Game State where
         pure $ if isCatchAny input  then initialPlayState else TitleScreen
     update input GameOver =
         pure $ if isCatchAny input then initialState else GameOver
-    update input Victory =
-        pure $ if isCatchAny input then initialState else Victory
+    update input (Victory s) = do
+        let 
+            isMaxUsernameLength = maxUsernameLength == length s.username
+            character = mapToCharacter input
+            isInvaildCharacter = character == ""
+            enterPressed = input.active.isEnter
+            addCharacter = not isMaxUsernameLength && not isInvaildCharacter && s.inputInterval == 0
+            newUsername = if addCharacter then s.username <> [ character ] else s.username 
+            newInputInterval = if addCharacter then 10 else if s.inputInterval == 0 then 0 else s.inputInterval - 1
+
+        pure $ case enterPressed, isMaxUsernameLength of
+            true, true -> initialState
+            _, _ -> Victory $ s {
+                username = newUsername,
+                inputInterval = newInputInterval
+            }
     update input (Play s) = do
 
         -- update player
@@ -111,7 +129,7 @@ instance gameState :: Game State where
 
         pure $ case isGameOver, isNextLevel of
             true, _ -> GameOver
-            false, true -> if s.mapId + 1 >= levelCount then Victory else newLevel (s.mapId + 1) s.score s.audioController
+            false, true -> if s.mapId + 1 >= levelCount then initialVictoryState s.score else newLevel (s.mapId + 1) s.score s.audioController
             false, false -> Play $ s { 
                 distance = newDistance, 
                 player = scrollAdjustedPlayer, 
@@ -129,8 +147,9 @@ instance gameState :: Game State where
         drawScaledImage I.titleScreen 0 0
     draw GameOver = do
         drawScaledImage I.gameOverScreen 0 0
-    draw Victory = do
-        cls Lime
+    draw (Victory s) = do
+        drawScaledImage I.blackBackground 0 0
+        drawUsername s.username
     draw (Play s) = do
         drawScaledImage I.blackBackground 0 0
         drawScrollMap s.distance s.mapId
@@ -158,6 +177,13 @@ newLevel mapId score audioController = Play {
 
 initialPlayState :: State
 initialPlayState = newLevel 0 0 $ newAudioController "Play"
+
+initialVictoryState :: Score -> State
+initialVictoryState score = Victory {
+    username: [],
+    score: score,
+    inputInterval: 0
+} 
 
 initialState :: State
 initialState = TitleScreen

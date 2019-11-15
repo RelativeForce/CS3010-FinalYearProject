@@ -7,7 +7,9 @@ import Collision (isWallsCollide, isHazardCollide)
 import Constants (leftBoundry, mapSizeInt, mapTileInMonitorSize, mapTileSize, mapSize, rightBoundry)
 import Emo8.Utils (defaultMonitorSize)
 import Data.Player (Player(..))
-import Emo8.Action.Draw (Draw, drawMap)
+import Data.Array ((!!))
+import Data.Maybe (Maybe(..))
+import Emo8.Action.Draw (Draw, drawMap, drawText)
 import Emo8.Action.Update (Update)
 import Emo8.Types (MapId, X, Size, Position)
 
@@ -63,3 +65,19 @@ adjustMonitorDistance (Player player) distance =
 
         isInRightBoundry :: Position -> Boolean
         isInRightBoundry p = p.x + playerWidth > rightBoundry
+
+drawUsername :: (Array String) -> Draw Unit
+drawUsername username = do
+    drawText char0 textHeight 500 400
+    drawText char1 textHeight 555 400
+    drawText char2 textHeight 610 400
+    where
+        char0 = character username 0 
+        char1 = character username 1 
+        char2 = character username 2 
+        textHeight = 70
+
+        character :: (Array String) -> Int -> String
+        character u index = case u !! index of
+            Nothing -> "_"
+            Just char -> char

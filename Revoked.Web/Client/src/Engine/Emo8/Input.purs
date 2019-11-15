@@ -3,7 +3,8 @@ module Emo8.Input(
   InputFlags,
   mkInputSig,
   isCatchAny, 
-  isReleaseAny
+  isReleaseAny,
+  mapToCharacter
 ) where
 
 import Prelude
@@ -225,3 +226,59 @@ mkInput s = {
     isOn ps = ps == Catched || ps == Pressed
     isCatched ps = ps == Catched
     isReleased ps = ps == Released
+
+mapToCharacter :: Input -> String
+mapToCharacter i = 
+  if i.active.isA 
+    then "A" 
+    else if i.active.isB 
+      then "B" 
+      else if i.active.isC 
+        then "C" 
+        else if i.active.isD 
+          then "D" 
+          else if i.active.isE 
+            then "E" 
+            else if i.active.isF 
+              then "F" 
+              else if i.active.isG 
+                then "G" 
+                else if i.active.isH 
+                  then "H" 
+                  else if i.active.isI 
+                    then "I" 
+                    else if i.active.isJ 
+                      then "J" 
+                      else if i.active.isK 
+                        then "K" 
+                        else if i.active.isL 
+                          then "L" 
+                          else if i.active.isM
+                            then "M" 
+                            else if i.active.isN 
+                              then "N" 
+                              else if i.active.isO
+                                then "O" 
+                                else if i.active.isP 
+                                  then "P" 
+                                  else if i.active.isQ 
+                                    then "Q" 
+                                    else if i.active.isR 
+                                      then "R" 
+                                      else if i.active.isS 
+                                        then "S" 
+                                        else if i.active.isT 
+                                          then "T" 
+                                          else if i.active.isU 
+                                            then "U" 
+                                            else if i.active.isV 
+                                              then "V" 
+                                              else if i.active.isW
+                                                then "W" 
+                                                else if i.active.isX 
+                                                  then "X" 
+                                                  else if i.active.isY 
+                                                    then "Y" 
+                                                    else if i.active.isZ 
+                                                      then "Z" 
+                                                      else ""
