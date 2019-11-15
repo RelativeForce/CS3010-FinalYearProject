@@ -1,5 +1,6 @@
 module Emo8.Input( 
   Input, 
+  InputFlags,
   mkInputSig,
   isCatchAny, 
   isReleaseAny
@@ -11,43 +12,24 @@ import Emo8.Data.KeyTouchInput (KeyTouchInput(..))
 import Emo8.Data.PressState (PressState(..), updatePressState)
 import Signal (Signal, foldp)
 
-type Input =
-  { 
-    isLeft :: Boolean, 
-    isRight :: Boolean, 
-    isUp :: Boolean, 
-    isDown :: Boolean, 
-    isW :: Boolean, 
-    isA :: Boolean, 
-    isS :: Boolean, 
-    isD :: Boolean, 
-    isSpace :: Boolean,
-    isEnter :: Boolean,
-    catched :: { 
-      isLeft :: Boolean, 
-      isRight :: Boolean, 
-      isUp :: Boolean, 
-      isDown :: Boolean, 
-      isW :: Boolean, 
-      isA :: Boolean, 
-      isS :: Boolean, 
-      isD :: Boolean,
-      isSpace :: Boolean,
-      isEnter :: Boolean
-    }, 
-    released :: { 
-      isLeft :: Boolean, 
-      isRight :: Boolean, 
-      isUp :: Boolean, 
-      isDown :: Boolean, 
-      isW :: Boolean, 
-      isA :: Boolean, 
-      isS :: Boolean, 
-      isD :: Boolean,
-      isSpace :: Boolean,
-      isEnter :: Boolean
-    }
-  }
+type InputFlags = {
+  isLeft :: Boolean, 
+  isRight :: Boolean, 
+  isUp :: Boolean, 
+  isDown :: Boolean, 
+  isW :: Boolean, 
+  isA :: Boolean, 
+  isS :: Boolean, 
+  isD :: Boolean, 
+  isSpace :: Boolean,
+  isEnter :: Boolean
+}
+
+type Input = { 
+  active :: InputFlags,
+  catched :: InputFlags, 
+  released :: InputFlags
+}
 
 -- NOTE: update after sampleOn not to miss catch and release state
 type InputState = { 
@@ -111,16 +93,18 @@ updateInputState (KeyTouchInput i) s = {
 
 mkInput :: InputState -> Input
 mkInput s = { 
-  isLeft: isOn s.leftState, 
-  isRight: isOn s.rightState, 
-  isUp: isOn s.upState, 
-  isDown: isOn s.downState, 
-  isW: isOn s.wState, 
-  isA: isOn s.aState, 
-  isS: isOn s.sState, 
-  isD: isOn s.dState, 
-  isSpace: isOn s.spaceState,
-  isEnter: isOn s.enterState,
+  active : {
+    isLeft: isOn s.leftState, 
+    isRight: isOn s.rightState, 
+    isUp: isOn s.upState, 
+    isDown: isOn s.downState, 
+    isW: isOn s.wState, 
+    isA: isOn s.aState, 
+    isS: isOn s.sState, 
+    isD: isOn s.dState, 
+    isSpace: isOn s.spaceState,
+    isEnter: isOn s.enterState
+  },
   catched: { 
     isLeft: isCatched s.leftState, 
     isRight: isCatched s.rightState, 
@@ -148,5 +132,5 @@ mkInput s = {
 }
   where
     isOn ps = ps == Catched || ps == Pressed
-    isCatched = (==) Catched
-    isReleased = (==) Released
+    isCatched ps = ps == Catched
+    isReleased ps = ps == Released

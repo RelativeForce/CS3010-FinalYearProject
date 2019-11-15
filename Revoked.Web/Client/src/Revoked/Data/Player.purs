@@ -45,13 +45,13 @@ updatePlayer i (Player p) distance collisionCheck = do
 
         newPositionBasedOnVelocity = updatePosition p.pos newVelocityBasedOnGravity
 
-        newEnergy = case (canFire p.energy), i.isEnter of
+        newEnergy = case (canFire p.energy), i.active.isEnter of
             true, true -> 0
             true, false -> p.energy
             false, _ -> p.energy + 1
 
         newAppear =
-            case i.isA, i.isD of
+            case i.active.isA, i.active.isD of
                 true, false -> Backword 
                 false, true -> Forword
                 _, _ -> Stable 
@@ -76,11 +76,11 @@ updatePlayer i (Player p) distance collisionCheck = do
 updateVelocity :: Input -> Velocity -> Boolean -> Velocity
 updateVelocity i currentVelocity onFloor = { xSpeed: xSpeed, ySpeed: ySpeed }
     where
-        xSpeed = case i.isA, i.isD of
+        xSpeed = case i.active.isA, i.active.isD of
             true, false -> -maxPlayerSpeedX
             false, true -> maxPlayerSpeedX
             _, _ -> if (abs currentVelocity.xSpeed) >= 1.0 then currentVelocity.xSpeed * frictionFactor else 0.0 
-        ySpeed = case i.isSpace, onFloor of
+        ySpeed = case i.active.isSpace, onFloor of
             true, true -> maxPlayerSpeedY
             false, true -> 0.0
             _, false -> case currentVelocity.ySpeed + gravity >= -maxPlayerSpeedY of
@@ -95,7 +95,7 @@ updatePosition p v = { x: x, y: y }
 
 addBullet :: Input -> Player -> Array Bullet
 addBullet i (Player p) =
-    case (i.isEnter && (canFire p.energy)), p.appear of
+    case (i.active.isEnter && (canFire p.energy)), p.appear of
         true, Backword -> [ newBullet (Backward) p.pos ]
         true, _ -> [ newBullet (Forward) p.pos ]
         false, _ -> []
