@@ -14,6 +14,7 @@ newtype KeyInput = KeyInput {
   isDown :: Boolean, 
   isSpace :: Boolean,
   isEnter :: Boolean,
+  isBackspace :: Boolean,
   isA :: Boolean,
   isB :: Boolean,  
   isC :: Boolean, 
@@ -50,6 +51,7 @@ instance inputKeyInput :: Input KeyInput where
     downSig <- mkSignal Down
     spaceSig <- mkSignal Space
     enterSig <- mkSignal Enter
+    backspaceSig <- mkSignal Backspace
     aSig <- mkSignal A
     bSig <- mkSignal B  
     cSig <- mkSignal C 
@@ -83,6 +85,7 @@ instance inputKeyInput :: Input KeyInput where
       isDown: _, 
       isSpace: _,
       isEnter: _,
+      isBackspace: _,
       isA: _,
       isB: _,  
       isC: _, 
@@ -116,6 +119,7 @@ instance inputKeyInput :: Input KeyInput where
       <*> downSig
       <*> spaceSig
       <*> enterSig
+      <*> backspaceSig
       <*> aSig
       <*> bSig  
       <*> cSig 
@@ -152,6 +156,7 @@ data Key =
   | Down 
   | Space 
   | Enter
+  | Backspace
   | A  
   | B    
   | C   
@@ -186,6 +191,7 @@ keyToCodeNum Up = 38
 keyToCodeNum Down = 40
 keyToCodeNum Space = 32
 keyToCodeNum Enter = 13
+keyToCodeNum Backspace = 8
 keyToCodeNum A = 65
 keyToCodeNum B = 66  
 keyToCodeNum C = 67 

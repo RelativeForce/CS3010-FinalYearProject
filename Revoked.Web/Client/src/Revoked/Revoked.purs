@@ -7,12 +7,13 @@ import Assets.Images as I
 import Class.Object (draw, position, scroll)
 import Collision (isCollideObjects, isOutOfWorld)
 import Constants (scoreDisplayX, scoreDisplayY, scoreDisplayTextHeight, maxUsernameLength)
-import Data.Array (any, filter, partition, length)
+import Data.Array (any, filter, partition, length, init)
 import Data.Bullet (Bullet, updateBullet)
 import Data.Enemy (Enemy, addEnemyBullet, updateEnemy, enemyToScore)
 import Data.EnemyBullet (EnemyBullet, updateEnemyBullet)
 import Data.Foldable (traverse_, sum)
 import Data.Goal (Goal, updateGoal)
+import Data.Maybe (Maybe(..))
 import Data.Particle (Particle, initParticle, updateParticle)
 import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
 import Effect (Effect)
@@ -56,12 +57,19 @@ instance gameState :: Game State where
     update input (Victory s) = do
         let 
             isMaxUsernameLength = maxUsernameLength == length s.username
+            backSpacePressed = input.active.isBackspace
             character = mapToCharacter input
             isInvaildCharacter = character == ""
             enterPressed = input.active.isEnter
+            removeCharacter = 0 < length s.username && backSpacePressed && s.inputInterval == 0
             addCharacter = not isMaxUsernameLength && not isInvaildCharacter && s.inputInterval == 0
-            newUsername = if addCharacter then s.username <> [ character ] else s.username 
-            newInputInterval = if addCharacter then 10 else if s.inputInterval == 0 then 0 else s.inputInterval - 1
+            newUsername = case addCharacter, removeCharacter of 
+                true, false -> s.username <> [ character ]
+                false, true -> case init s.username of
+                    Just username -> username
+                    Nothing -> s.username
+                _, _ -> s.username 
+            newInputInterval = if addCharacter || removeCharacter then 10 else if s.inputInterval == 0 then 0 else s.inputInterval - 1
 
         pure $ case enterPressed, isMaxUsernameLength of
             true, true -> initialState

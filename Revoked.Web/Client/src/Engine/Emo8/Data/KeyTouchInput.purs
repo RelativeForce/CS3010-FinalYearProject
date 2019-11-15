@@ -16,6 +16,7 @@ newtype KeyTouchInput = KeyTouchInput {
   isDown :: Boolean, 
   isSpace :: Boolean,
   isEnter :: Boolean,
+  isBackspace :: Boolean,
   isA :: Boolean,
   isB :: Boolean,  
   isC :: Boolean, 
@@ -58,6 +59,7 @@ mergeInput (KeyInput k) (TouchInput t) = KeyTouchInput {
   isDown: k.isDown || t.isDown, 
   isSpace: k.isSpace,
   isEnter: k.isEnter,
+  isBackspace: k.isBackspace,
   isA: k.isA,
   isB: k.isB,  
   isC: k.isC, 
@@ -94,6 +96,7 @@ anyKeyTouch (KeyTouchInput i) =
   || i.isRight 
   || i.isSpace 
   || i.isEnter
+  || i.isBackspace
   || i.isA
   || i.isB  
   || i.isC 
