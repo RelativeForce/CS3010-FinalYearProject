@@ -1,8 +1,5 @@
 module Emo8.Types where
 
-import Audio.WebAudio.Types (AudioContext)
-import Emo8.Data.Tick (Tick)
-import Emo8.SoundUtil (ChannelSets)
 import Graphics.Canvas (Context2D)
 import Data.Maybe (Maybe)
 
@@ -19,25 +16,17 @@ type Velocity = {
 }
 
 -- | Asset type.
--- | It contains map data and sound data.
+-- | It contains map data.
 type Asset = { 
-  mapData :: Array TileMap, 
-  soundData :: Array Sound
+  mapData :: Array TileMap
 }
 
 type TileMap = Array (Array (Maybe ScaledImage))
-type Sound = Array Tick
 
 type DrawContext = { 
   ctx :: Context2D, 
   mapData :: Array TileMap, 
   monitorSize :: MonitorSize
-}
-
-type SoundContext = { 
-  ctx :: AudioContext, 
-  soundData :: Array Sound, 
-  channelSets :: ChannelSets
 }
     
 type ScaledImage = {
@@ -81,6 +70,5 @@ type Deg = Int
 type Bpm = Int
 type ImageId = Int
 type MapId = Int
-type SoundId = Int
 type Score = Int
 type TextHeight = Int

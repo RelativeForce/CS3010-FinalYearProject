@@ -36,9 +36,10 @@
     <canvas id="scene" width="512" height="512" style="width: 512px; height: 512px;"></canvas>
 </div>
 
+<audio hidden id="backgroundMusic" src="/audio/backgroundMusic.mp3"></audio>
+
 @section Scripts{
     <script src="js/app.js"></script>
-    <!-- half size for retina -->
     <script>
         const canvas = document.getElementById('scene');
         canvas.style.width = (canvas.width / devicePixelRatio).toString() + 'px';

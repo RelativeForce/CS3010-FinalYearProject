@@ -40,4 +40,4 @@ newBullet appear pos = Bullet $ {
 }
 
 bulletSpeed :: Int
-bulletSpeed = 8
+bulletSpeed = 12

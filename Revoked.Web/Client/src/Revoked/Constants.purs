@@ -27,16 +27,16 @@ mapSizeInt :: Int
 mapSizeInt = 207
 
 maxPlayerSpeedX :: Number
-maxPlayerSpeedX = 4.0
+maxPlayerSpeedX = 8.0
 
 maxPlayerSpeedY :: Number
-maxPlayerSpeedY = 4.0
+maxPlayerSpeedY = 8.0
 
 gravity :: Number
-gravity = -0.1
+gravity = -0.5
 
 frictionFactor :: Number
-frictionFactor = 0.9
+frictionFactor = 0.7
 
 mapTileSize :: Size
 mapTileSize = {

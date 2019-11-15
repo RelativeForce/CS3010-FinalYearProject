@@ -2,31 +2,33 @@ module Revoked where
 
 import Prelude
 
-import Levels (allRawLevels, enemies, goals, levelCount)
+import Assets.Audio as A
+import Assets.Images as I
 import Class.Object (draw, position, scroll)
 import Collision (isCollideObjects, isOutOfWorld)
+import Constants (scoreDisplayX, scoreDisplayY, scoreDisplayTextHeight)
 import Data.Array (any, filter, partition)
 import Data.Bullet (Bullet, updateBullet)
 import Data.Enemy (Enemy, addEnemyBullet, updateEnemy, enemyToScore)
 import Data.EnemyBullet (EnemyBullet, updateEnemyBullet)
 import Data.Foldable (traverse_, sum)
+import Data.Goal (Goal, updateGoal)
 import Data.Particle (Particle, initParticle, updateParticle)
 import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
-import Data.Goal (Goal, updateGoal)
 import Effect (Effect)
 import Emo8 (emo8)
 import Emo8.Action.Draw (cls, drawScaledImage, drawText)
-import Assets.Images as I
 import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
-import Emo8.Types (MapId, Score)
+import Emo8.FFI.AudioController (AudioController, _addAudioStream, _isAudioStreamPlaying, _stopAudioStream, newAudioController)
 import Emo8.Input (isCatchAny)
+import Emo8.Types (MapId, Score)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
-import Constants (scoreDisplayX, scoreDisplayY, scoreDisplayTextHeight)
 import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance)
+import Levels (allRawLevels, enemies, goals, levelCount)
 
 data State = 
-    TitleScreen
+    TitleScreen 
     | GameOver
     | Victory
     | Play { 
@@ -38,12 +40,13 @@ data State =
         enemyBullets :: Array EnemyBullet,
         goals :: Array Goal,
         mapId :: MapId,
-        score :: Score
+        score :: Score,
+        audioController :: AudioController
     }
 
 instance gameState :: Game State where
-    update input TitleScreen =
-        pure $ if isCatchAny input then initialPlayState else TitleScreen
+    update input TitleScreen = do
+        pure $ if isCatchAny input  then initialPlayState else TitleScreen
     update input GameOver =
         pure $ if isCatchAny input then initialState else GameOver
     update input Victory =
@@ -98,10 +101,17 @@ instance gameState :: Game State where
         -- evaluate game condition
         let isGameOver = hasCollidedHazard || hasCollidedEnemy || hasCollidedEnemyBullet
             isNextLevel = hasCollidedGoal
+            isBackgroundMusicPlaying = _isAudioStreamPlaying s.audioController A.backgroundMusicId
+
+        -- update music
+        let newAudioController = case isBackgroundMusicPlaying, isGameOver of
+                true, true -> _stopAudioStream s.audioController A.backgroundMusicId
+                false, false ->  _addAudioStream s.audioController A.backgroundMusicId
+                _, _ -> s.audioController
 
         pure $ case isGameOver, isNextLevel of
             true, _ -> GameOver
-            false, true -> if s.mapId + 1 >= levelCount then Victory else newLevel (s.mapId + 1) s.score
+            false, true -> if s.mapId + 1 >= levelCount then Victory else newLevel (s.mapId + 1) s.score s.audioController
             false, false -> Play $ s { 
                 distance = newDistance, 
                 player = scrollAdjustedPlayer, 
@@ -111,7 +121,8 @@ instance gameState :: Game State where
                 enemyBullets = updatedEnemyBulletsInView <> newEnemyBullets,
                 goals = updatedGoals,
                 mapId = s.mapId,
-                score = s.score + newScore
+                score = s.score + newScore,
+                audioController = newAudioController
             }
 
     draw TitleScreen = do
@@ -131,10 +142,8 @@ instance gameState :: Game State where
         traverse_ draw s.goals
         drawText ("Score: " <> show s.score) scoreDisplayTextHeight scoreDisplayX scoreDisplayY
 
-    sound _ = pure unit
-
-newLevel :: MapId -> Score -> State
-newLevel mapId score = Play { 
+newLevel :: MapId -> Score -> AudioController -> State
+newLevel mapId score audioController = Play { 
     distance: 0, 
     player: initialPlayer, 
     bullets: [], 
@@ -143,16 +152,17 @@ newLevel mapId score = Play {
     enemyBullets : [],
     goals: goals mapId,
     mapId: mapId,
-    score: score
+    score: score,
+    audioController: audioController
 }
 
 initialPlayState :: State
-initialPlayState = newLevel 0 0
+initialPlayState = newLevel 0 0 $ newAudioController "Play"
 
 initialState :: State
 initialState = TitleScreen
 
 main :: Effect Unit
 main = do
-    asset <- mkAsset allRawLevels []
+    asset <- mkAsset allRawLevels
     emo8 initialState asset defaultMonitorSize
