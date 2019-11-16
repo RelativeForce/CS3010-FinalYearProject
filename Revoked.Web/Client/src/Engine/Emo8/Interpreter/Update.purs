@@ -12,6 +12,7 @@ import Emo8.Class.Game (class Game)
 import Emo8.Excepiton (providedMap)
 import Emo8.Types (Asset, IdX, IdY, MapId, X, Y, ScaledImage, ImageId, Size)
 import Random.PseudoRandom (randomREff)
+import Effect.Now (nowDateTime)
 
 runUpdate :: forall s. Game s => Asset -> Update s -> Effect s
 runUpdate ass = foldFree interpret
@@ -20,6 +21,7 @@ runUpdate ass = foldFree interpret
     interpret (RandomInt min max f) = f <$> randomREff min max
     interpret (RandomNumber min max f) = f <$> randomREff min max
     interpret (IsMapCollide mId mSize collidableObjectIds size x y f) = f <$> isMapCollide ass mId mSize collidableObjectIds size x y
+    interpret (NowDateTime f) = f <$> nowDateTime
 
 -- TODO: large object detection
 isMapCollide :: Asset -> MapId -> Size -> Array ImageId -> Size -> X -> Y -> Effect Boolean

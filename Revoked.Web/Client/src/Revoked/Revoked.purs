@@ -12,6 +12,8 @@ import Data.Bullet (Bullet, updateBullet)
 import Data.Enemy (Enemy, addEnemyBullet, updateEnemy, enemyToScore)
 import Data.EnemyBullet (EnemyBullet, updateEnemyBullet)
 import Data.Foldable (traverse_, sum)
+import Data.HighScores (sendPlayerScore)
+import Data.String (joinWith)
 import Data.Goal (Goal, updateGoal)
 import Data.Maybe (Maybe(..))
 import Data.Particle (Particle, initParticle, updateParticle)
@@ -19,13 +21,15 @@ import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
 import Effect (Effect)
 import Emo8 (emo8)
 import Emo8.Action.Draw (cls, drawScaledImage, drawText)
+import Emo8.Action.Update (nowDateTime)
 import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
+import Data.DateTime (DateTime)
 import Emo8.FFI.AudioController (AudioController, _addAudioStream, _isAudioStreamPlaying, _stopAudioStream, newAudioController)
 import Emo8.Input (isCatchAny, mapToCharacter)
 import Emo8.Types (MapId, Score)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
-import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance, drawUsername)
+import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance, drawUsername, formatDateTime)
 import Levels (allRawLevels, enemies, goals, levelCount)
 
 data State = 
@@ -34,7 +38,9 @@ data State =
     | Victory {
         username :: Array String,
         score :: Int,
-        inputInterval :: Int
+        inputInterval :: Int,
+        start :: DateTime,
+        end :: DateTime
     }
     | Play { 
         distance :: Int, 
@@ -46,12 +52,16 @@ data State =
         goals :: Array Goal,
         mapId :: MapId,
         score :: Score,
-        audioController :: AudioController
+        audioController :: AudioController,
+        start :: DateTime
     }
 
 instance gameState :: Game State where
     update input TitleScreen = do
-        pure $ if isCatchAny input  then initialPlayState else TitleScreen
+
+        startDateTime <- nowDateTime
+
+        pure $ if isCatchAny input then initialPlayState startDateTime else TitleScreen
     update input GameOver =
         pure $ if isCatchAny input then initialState else GameOver
     update input (Victory s) = do
@@ -69,11 +79,20 @@ instance gameState :: Game State where
                     Just username -> username
                     Nothing -> s.username
                 _, _ -> s.username 
-            newInputInterval = if addCharacter || removeCharacter then 10 else if s.inputInterval == 0 then 0 else s.inputInterval - 1
+            newInputInterval = if addCharacter || removeCharacter then 15 else if s.inputInterval == 0 then 0 else s.inputInterval - 1
 
-        pure $ case enterPressed, isMaxUsernameLength of
-            true, true -> initialState
-            _, _ -> Victory $ s {
+            submissionSuccess = if enterPressed && isMaxUsernameLength 
+                then sendPlayerScore $ {
+                    username: joinWith "" s.username,
+                    score: s.score,
+                    start: formatDateTime s.start,
+                    end: formatDateTime s.end
+                }
+                else false
+
+        pure $ case submissionSuccess of
+            true -> initialState
+            false -> Victory $ s {
                 username = newUsername,
                 inputInterval = newInputInterval
             }
@@ -135,9 +154,11 @@ instance gameState :: Game State where
                 false, false ->  _addAudioStream s.audioController A.backgroundMusicId
                 _, _ -> s.audioController
 
+        now <- nowDateTime
+
         pure $ case isGameOver, isNextLevel of
             true, _ -> GameOver
-            false, true -> if s.mapId + 1 >= levelCount then initialVictoryState s.score else newLevel (s.mapId + 1) s.score s.audioController
+            false, true -> if s.mapId + 1 >= levelCount then initialVictoryState s.score s.start now else newLevel (s.mapId + 1) s.score s.audioController s.start
             false, false -> Play $ s { 
                 distance = newDistance, 
                 player = scrollAdjustedPlayer, 
@@ -148,7 +169,8 @@ instance gameState :: Game State where
                 goals = updatedGoals,
                 mapId = s.mapId,
                 score = s.score + newScore,
-                audioController = newAudioController
+                audioController = newAudioController,
+                start = s.start
             }
 
     draw TitleScreen = do
@@ -169,8 +191,8 @@ instance gameState :: Game State where
         traverse_ draw s.goals
         drawText ("Score: " <> show s.score) scoreDisplayTextHeight scoreDisplayX scoreDisplayY
 
-newLevel :: MapId -> Score -> AudioController -> State
-newLevel mapId score audioController = Play { 
+newLevel :: MapId -> Score -> AudioController -> DateTime -> State
+newLevel mapId score audioController start = Play { 
     distance: 0, 
     player: initialPlayer, 
     bullets: [], 
@@ -180,17 +202,20 @@ newLevel mapId score audioController = Play {
     goals: goals mapId,
     mapId: mapId,
     score: score,
-    audioController: audioController
+    audioController: audioController,
+    start: start
 }
 
-initialPlayState :: State
+initialPlayState :: DateTime -> State
 initialPlayState = newLevel 0 0 $ newAudioController "Play"
 
-initialVictoryState :: Score -> State
-initialVictoryState score = Victory {
+initialVictoryState :: Score -> DateTime -> DateTime -> State
+initialVictoryState score start end = Victory {
     username: [],
     score: score,
-    inputInterval: 0
+    inputInterval: 0,
+    start: start,
+    end: end
 } 
 
 initialState :: State

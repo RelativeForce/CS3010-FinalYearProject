@@ -9,9 +9,12 @@ import Emo8.Utils (defaultMonitorSize)
 import Data.Player (Player(..))
 import Data.Array ((!!))
 import Data.Maybe (Maybe(..))
+import Data.Either (Either(..))
 import Emo8.Action.Draw (Draw, drawMap, drawText)
 import Emo8.Action.Update (Update)
 import Emo8.Types (MapId, X, Size, Position)
+import Data.Formatter.DateTime as F
+import Data.DateTime (DateTime)
 
 -- TODO: readable
 drawScrollMap :: X -> MapId -> Draw Unit
@@ -65,6 +68,11 @@ adjustMonitorDistance (Player player) distance =
 
         isInRightBoundry :: Position -> Boolean
         isInRightBoundry p = p.x + playerWidth > rightBoundry
+
+formatDateTime :: DateTime -> String
+formatDateTime dt = case F.formatDateTime "YYYY/MM/DD hh:mm:ss" dt of
+    Left error -> ""
+    Right dateString -> dateString
 
 drawUsername :: (Array String) -> Draw Unit
 drawUsername username = do

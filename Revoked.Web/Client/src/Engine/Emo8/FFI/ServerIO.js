@@ -7,10 +7,13 @@ exports.send = function(requestData){
     if(isNode()){
         return false;  
     }
+
+    var token = document.getElementsByName("__RequestVerificationToken")[0].value;
     
     var request = new XMLHttpRequest();
     request.open(requestData.method, requestData.url, false); 
-    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    request.setRequestHeader("Content-Type", "application/json");
+    request.setRequestHeader("RequestVerificationToken", token);
     request.send(requestData.json);
 
     if (request.status !== 200) {

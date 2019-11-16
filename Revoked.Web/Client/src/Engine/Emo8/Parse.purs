@@ -5,18 +5,13 @@ module Emo8.Parse(
 
 import Prelude
 
-import Data.Array (concat, slice, zip)
+import Data.Array (slice)
 import Data.Either (Either(..))
 import Data.Foldable (length)
 import Data.String (Pattern(..), Replacement(..), replace)
 import Data.String.EmojiSplitter (splitEmoji)
 import Data.String.Utils (lines)
 import Data.Traversable (traverse)
-import Data.Tuple (Tuple(..), uncurry)
-import Emo8.Class.Read (read)
-import Emo8.Constants (maxNoteSize)
-import Emo8.Data.Emoji (Emoji(..))
-import Emo8.Data.Emoji as E
 import Emo8.Types (TileMap, ScaledImage)
 import Data.Maybe (Maybe)
 
