@@ -26,7 +26,7 @@ namespace Revoked.Services.Tests
         [Fact]
         public async void ShouldAddScoreToRepositoryWhenScoreIsValid()
         {
-            const string username = "test username";
+            const string username = "TES";
             const long points = 5453;
             var start = DateTime.Now.ToString(ClientDateFormat);
             var end = DateTime.Now.AddDays(1).ToString(ClientDateFormat);
@@ -59,7 +59,7 @@ namespace Revoked.Services.Tests
         [Fact]
         public async void ShouldThrowExceptionWhenScoreIsValid()
         {
-            const string username = "test username";
+            const string username = "TES";
             const long points = 5453;
             var start = DateTime.Now.ToString(ClientDateFormat);
             var end = DateTime.Now.AddDays(1).ToString(ClientDateFormat);

@@ -15,6 +15,9 @@ namespace Revoked.Services.Data
         {
             try
             {
+                if(Username.Length != 3)
+                    throw new ArgumentException($"Invalid {nameof(Username)} length");
+
                 return new PlayerScore
                 {
                     Username = Username,
