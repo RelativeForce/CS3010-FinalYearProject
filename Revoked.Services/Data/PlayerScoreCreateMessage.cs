@@ -6,6 +6,8 @@ namespace Revoked.Services.Data
 {
     public sealed class PlayerScoreCreateMessage
     {
+        private const int UsernameLength = 3;
+
         public string Username { get; set; }
         public long Score { get; set; }
         public string Start { get; set; }
@@ -15,7 +17,7 @@ namespace Revoked.Services.Data
         {
             try
             {
-                if(Username.Length != 3)
+                if(Username.Length != UsernameLength)
                     throw new ArgumentException($"Invalid {nameof(Username)} length");
 
                 return new PlayerScore
@@ -31,10 +33,6 @@ namespace Revoked.Services.Data
                 throw new ArgumentException($"Failed to parse {nameof(PlayerScore)}");
             }
             
-        }
-
-        public PlayerScoreCreateMessage()
-        {
         }
     }
 }
