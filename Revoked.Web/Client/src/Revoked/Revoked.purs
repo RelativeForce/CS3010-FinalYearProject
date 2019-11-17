@@ -41,7 +41,8 @@ data State =
         score :: Int,
         inputInterval :: Int,
         start :: DateTime,
-        end :: DateTime
+        end :: DateTime,
+        isWaiting :: Boolean
     }
     | Play { 
         distance :: Int, 
@@ -88,17 +89,24 @@ instance gameState :: Game State where
                 end: formatDateTime s.end
             }
 
-            submissionSuccess = if enterPressed && isMaxUsernameLength 
-                then case sendPlayerScore request of
-                    Left status -> false
-                    Right result -> result
-                else false
+            result = if s.isWaiting || (enterPressed && isMaxUsernameLength) 
+                then sendPlayerScore request 
+                else Left "AllowInput"
 
+            isWaiting = case result of
+                Left "Waiting" -> true
+                _-> false
+
+            submissionSuccess = case result of
+                Right response -> response
+                _-> false
+            
         pure $ case submissionSuccess of
             true -> initialState
             false -> Victory $ s {
                 username = newUsername,
-                inputInterval = newInputInterval
+                inputInterval = newInputInterval,
+                isWaiting = isWaiting
             }
     update input (Play s) = do
 
@@ -184,6 +192,7 @@ instance gameState :: Game State where
     draw (Victory s) = do
         drawScaledImage I.blackBackground 0 0
         drawUsername s.username
+        drawText (if s.isWaiting then "Sending..." else "") 70 500 500
     draw (Play s) = do
         drawScaledImage I.blackBackground 0 0
         drawScrollMap s.distance s.mapId
@@ -219,7 +228,8 @@ initialVictoryState score start end = Victory {
     score: score,
     inputInterval: 0,
     start: start,
-    end: end
+    end: end,
+    isWaiting: false
 } 
 
 initialState :: State

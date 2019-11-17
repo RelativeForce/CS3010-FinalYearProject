@@ -33,7 +33,6 @@ namespace Revoked.Services
             if(numberOfScores <= 0)
                 throw new ArgumentOutOfRangeException($"{nameof(numberOfScores)} cannot be less than or equal to zero");
 
-
             return _repository
                 .Query<PlayerScore>()
                 .OrderByDescending(hs => hs.Score)

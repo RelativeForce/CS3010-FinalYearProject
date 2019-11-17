@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Revoked.Core.Entities;
 using Revoked.Services.Data;
 using Revoked.Services.Interfaces;
 
