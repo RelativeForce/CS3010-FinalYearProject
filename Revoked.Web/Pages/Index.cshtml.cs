@@ -1,6 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Revoked.Core.Entities;
 using Revoked.Services.Data;
 using Revoked.Services.Interfaces;
 
@@ -22,7 +25,15 @@ namespace Revoked.Web.Pages
 
         public async Task OnPostStoreScore([FromBody] PlayerScoreCreateMessage createMessage)
         {
-            await _scoreService.StoreScoreAsync(createMessage);
+            try
+            {
+                await _scoreService.StoreScoreAsync(createMessage);
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.ToString());
+                throw new ArgumentException($"Failed to store {nameof(PlayerScore)}");
+            }
         }
 
         public JsonResult OnGetTopTen()
