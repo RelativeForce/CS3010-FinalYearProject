@@ -23,16 +23,19 @@ namespace Revoked.Web.Pages
             // Required for page GET
         }
 
-        public async Task OnPostStoreScore([FromBody] PlayerScoreCreateMessage createMessage)
+        public async Task<JsonResult> OnPostStoreScore([FromBody] PlayerScoreCreateMessage createMessage)
         {
             try
             {
                 await _scoreService.StoreScoreAsync(createMessage);
+
+                return new JsonResult(true);
             }
             catch (Exception e)
             {
                 Trace.TraceError(e.ToString());
-                throw new ArgumentException($"Failed to store {nameof(PlayerScore)}");
+
+                return new JsonResult(false);
             }
         }
 

@@ -14,9 +14,11 @@ exports.sendRequest = function(left){
             if(localRequest){
 
                 if(localRequest.isWaiting){
+                    console.log("Waiting");
                     return left("Waiting");
                 }
 
+                console.log("Removed");
                 remove(localRequest);
 
                 return right(localRequest.result);
@@ -42,16 +44,17 @@ function send(requestData){
         headers: {
             'RequestVerificationToken': token,
         },
-        success : function(result, status) {
-            
+        success : function(result, status, xhr) {
+        
             var localRequest = findInLocalStore(requestData);
 
-            if (status !== 200) {
+            if (status !== "success") {
                 console.log("Request Failed");
                 remove(requestData);
                 return;
             }
 
+            console.log("Request Success");
             localRequest.isWaiting = false;
 
             if(result){
@@ -63,6 +66,7 @@ function send(requestData){
         }
     });
 
+    console.log("Sent");
     requestData.isWaiting = true;
     serverLocalStore[serverLocalStore.length] = requestData;
 }
