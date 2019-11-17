@@ -21,7 +21,7 @@ import Data.Particle (Particle, initParticle, updateParticle)
 import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
 import Effect (Effect)
 import Emo8 (emo8)
-import Emo8.Action.Draw (cls, drawScaledImage, drawText)
+import Emo8.Action.Draw (drawScaledImage, drawText)
 import Emo8.Action.Update (nowDateTime)
 import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
@@ -159,9 +159,10 @@ instance gameState :: Game State where
         let isGameOver = hasCollidedHazard || hasCollidedEnemy || hasCollidedEnemyBullet
             isNextLevel = hasCollidedGoal
             isBackgroundMusicPlaying = _isAudioStreamPlaying s.audioController A.backgroundMusicId
+            isLastLevel = s.mapId + 1 >= levelCount
 
         -- update music
-        let newAudioController = case isBackgroundMusicPlaying, isGameOver of
+        let newAudioController = case isBackgroundMusicPlaying, (isGameOver || (isNextLevel && isLastLevel)) of
                 true, true -> _stopAudioStream s.audioController A.backgroundMusicId
                 false, false ->  _addAudioStream s.audioController A.backgroundMusicId
                 _, _ -> s.audioController
@@ -170,7 +171,9 @@ instance gameState :: Game State where
 
         pure $ case isGameOver, isNextLevel of
             true, _ -> GameOver
-            false, true -> if s.mapId + 1 >= levelCount then initialVictoryState s.score s.start now else newLevel (s.mapId + 1) s.score s.audioController s.start
+            false, true -> if isLastLevel 
+                then initialVictoryState s.score s.start now 
+                else newLevel (s.mapId + 1) s.score s.audioController s.start
             false, false -> Play $ s { 
                 distance = newDistance, 
                 player = scrollAdjustedPlayer, 
@@ -190,9 +193,10 @@ instance gameState :: Game State where
     draw GameOver = do
         drawScaledImage I.gameOverScreen 0 0
     draw (Victory s) = do
-        drawScaledImage I.blackBackground 0 0
+        drawScaledImage I.victoryScreen 0 0
         drawUsername s.username
-        drawText (if s.isWaiting then "Sending..." else "") 70 500 500
+        drawText (show s.score) 27 635 187 White
+        drawText (if s.isWaiting then "Sending..." else "") 27 570 80 White
     draw (Play s) = do
         drawScaledImage I.blackBackground 0 0
         drawScrollMap s.distance s.mapId
@@ -202,7 +206,7 @@ instance gameState :: Game State where
         traverse_ draw s.particles
         traverse_ draw s.enemyBullets
         traverse_ draw s.goals
-        drawText ("Score: " <> show s.score) scoreDisplayTextHeight scoreDisplayX scoreDisplayY
+        drawText ("Score: " <> show s.score) scoreDisplayTextHeight scoreDisplayX scoreDisplayY Lime
 
 newLevel :: MapId -> Score -> AudioController -> DateTime -> State
 newLevel mapId score audioController start = Play { 

@@ -9,23 +9,22 @@ exports.sendRequest = function(left){
                 return right(false);  
             }
 
+            // Check if request is in local store
             var localRequest = findInLocalStore(requestData);
 
             if(localRequest){
 
                 if(localRequest.isWaiting){
-                    console.log("Waiting");
                     return left("Waiting");
                 }
 
-                console.log("Removed");
-                remove(localRequest);
-
+                // Remove from local store and return response
+                removeFromLocalStore(localRequest);
                 return right(localRequest.result);
             }
 
+            // Send request
             send(requestData);
-
             return left("Waiting");
         }
     }
@@ -49,14 +48,11 @@ function send(requestData){
             var localRequest = findInLocalStore(requestData);
 
             if (status !== "success") {
-                console.log("Request Failed");
-                remove(requestData);
+                removeFromLocalStore(requestData);
                 return;
             }
 
-            console.log("Request Success");
             localRequest.isWaiting = false;
-
             if(result){
                 localRequest.result = JSON.parse(result);
             }
@@ -66,7 +62,7 @@ function send(requestData){
         }
     });
 
-    console.log("Sent");
+    // Add request to local store
     requestData.isWaiting = true;
     serverLocalStore[serverLocalStore.length] = requestData;
 }
@@ -84,7 +80,7 @@ function findInLocalStore(requestData){
     return null;
 }
 
-function remove(requestData){
+function removeFromLocalStore(requestData){
 
     var indexToRemove = undefined;
 

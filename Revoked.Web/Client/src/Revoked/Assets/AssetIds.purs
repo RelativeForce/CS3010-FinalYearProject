@@ -46,3 +46,6 @@ ladderId = 14
 
 gameOverScreenId :: ImageId
 gameOverScreenId = 15
+
+victoryScreenId :: ImageId
+victoryScreenId = 16

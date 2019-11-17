@@ -16,7 +16,7 @@ data DrawF n
     | DrawRotatedScaledImage ScaledImage X Y Deg n
     | DrawSprite Sprite X Y n
     | DrawRotatedSprite Sprite X Y Deg n
-    | DrawText String TextHeight X Y n
+    | DrawText String TextHeight X Y Color n
     | Emo Appearance Emoji Size X Y n
     | Emor Appearance Deg Emoji Size X Y n
     | DrawMap MapId Size X Y n
@@ -42,8 +42,8 @@ drawSprite sprite x y = liftF $ DrawSprite sprite x y unit
 drawRotatedSprite :: Sprite -> X -> Y -> Deg -> Draw Unit
 drawRotatedSprite sprite x y angle = liftF $ DrawRotatedSprite sprite x y angle unit
 
-drawText :: String -> TextHeight -> X -> Y -> Draw Unit
-drawText text height x y = liftF $ DrawText text height x y unit
+drawText :: String -> TextHeight -> X -> Y -> Color -> Draw Unit
+drawText text height x y color = liftF $ DrawText text height x y color unit
 
 -- | Draw emoji.
 emo :: Emoji -> Size -> X -> Y -> Draw Unit
