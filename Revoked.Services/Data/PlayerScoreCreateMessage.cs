@@ -7,8 +7,8 @@ namespace Revoked.Services.Data
     {
         public string Username { get; set; }
         public long Score { get; set; }
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
+        public string Start { get; set; }
+        public string End { get; set; }
 
         public PlayerScore ToEntity()
         {
@@ -16,7 +16,7 @@ namespace Revoked.Services.Data
             {
                 Username = Username,
                 Score = Score,
-                Time = End.Subtract(Start)
+                Time = DateTime.Parse(End).Subtract(DateTime.Parse(Start))
             };
         }
 

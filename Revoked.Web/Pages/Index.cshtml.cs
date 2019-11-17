@@ -21,17 +21,8 @@ namespace Revoked.Web.Pages
             // Required for page GET
         }
 
-        public async Task OnPostStoreScore([FromBody] string username, [FromBody] long score, [FromBody] DateTime start, [FromBody] DateTime end)
+        public async Task OnPostStoreScore([FromBody] PlayerScoreCreateMessage createMessage)
         {
-            
-            var createMessage = new PlayerScoreCreateMessage
-            {
-                Username = username,
-                Score = score,
-                Start = start,
-                End = end
-            };
-
             await _scoreService.StoreScoreAsync(createMessage);
         }
 
