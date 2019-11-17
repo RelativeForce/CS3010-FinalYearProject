@@ -13,6 +13,7 @@ import Data.Enemy (Enemy, addEnemyBullet, updateEnemy, enemyToScore)
 import Data.EnemyBullet (EnemyBullet, updateEnemyBullet)
 import Data.Foldable (traverse_, sum)
 import Data.HighScores (sendPlayerScore)
+import Data.Either (Either(..))
 import Data.String (joinWith)
 import Data.Goal (Goal, updateGoal)
 import Data.Maybe (Maybe(..))
@@ -80,14 +81,17 @@ instance gameState :: Game State where
                     Nothing -> s.username
                 _, _ -> s.username 
             newInputInterval = if addCharacter || removeCharacter then 15 else if s.inputInterval == 0 then 0 else s.inputInterval - 1
+            request = {
+                username: joinWith "" s.username,
+                score: s.score,
+                start: formatDateTime s.start,
+                end: formatDateTime s.end
+            }
 
             submissionSuccess = if enterPressed && isMaxUsernameLength 
-                then sendPlayerScore $ {
-                    username: joinWith "" s.username,
-                    score: s.score,
-                    start: formatDateTime s.start,
-                    end: formatDateTime s.end
-                }
+                then case sendPlayerScore request of
+                    Left status -> false
+                    Right result -> result
                 else false
 
         pure $ case submissionSuccess of

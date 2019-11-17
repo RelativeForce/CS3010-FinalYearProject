@@ -1,5 +1,6 @@
 ﻿using Revoked.Core.Entities;
 using System;
+using System.Diagnostics;
 
 namespace Revoked.Services.Data
 {
@@ -12,12 +13,21 @@ namespace Revoked.Services.Data
 
         public PlayerScore ToEntity()
         {
-            return new PlayerScore
+            try
             {
-                Username = Username,
-                Score = Score,
-                Time = DateTime.Parse(End).Subtract(DateTime.Parse(Start))
-            };
+                return new PlayerScore
+                {
+                    Username = Username,
+                    Score = Score,
+                    Time = DateTime.Parse(End).Subtract(DateTime.Parse(Start))
+                };
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.ToString());
+                throw new ArgumentException($"Failed to parse {nameof(PlayerScore)}");
+            }
+            
         }
 
         public PlayerScoreCreateMessage()

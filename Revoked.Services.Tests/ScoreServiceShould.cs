@@ -12,6 +12,8 @@ namespace Revoked.Services.Tests
 {
     public class ScoreServiceShould
     {
+        private const string ClientDateFormat = "yyyy/MM/dd hh:mm:ss";
+
         private readonly Mock<IRepository> _repositoryMock;
 
         public ScoreServiceShould()
@@ -26,8 +28,8 @@ namespace Revoked.Services.Tests
         {
             const string username = "test username";
             const long points = 5453;
-            var start = DateTime.Now;
-            var end = DateTime.Now.AddDays(1);
+            var start = DateTime.Now.ToString(ClientDateFormat);
+            var end = DateTime.Now.AddDays(1).ToString(ClientDateFormat);
 
             var score = new PlayerScoreCreateMessage
             {
@@ -37,14 +39,14 @@ namespace Revoked.Services.Tests
                 End = end
             };
 
-            Expression<Func<Core.Entities.PlayerScore, bool>> entityCheck = ps =>
+            Expression<Func<PlayerScore, bool>> entityCheck = ps =>
                 ps.Score == points &&
-                ps.Time == end.Subtract(start) &&
+                ps.Time == DateTime.Parse(end).Subtract(DateTime.Parse(start)) &&
                 ps.Username == username;
 
             _repositoryMock
                 .Setup(m => m.AddAsync(It.Is(entityCheck)))
-                .ReturnsAsync(new Core.Entities.PlayerScore())
+                .ReturnsAsync(new PlayerScore())
                 .Verifiable();
 
             var service = NewService();
@@ -59,8 +61,8 @@ namespace Revoked.Services.Tests
         {
             const string username = "test username";
             const long points = 5453;
-            var start = DateTime.Now;
-            var end = DateTime.Now.AddDays(1);
+            var start = DateTime.Now.ToString(ClientDateFormat);
+            var end = DateTime.Now.AddDays(1).ToString(ClientDateFormat);
 
             var score = new PlayerScoreCreateMessage
             {
@@ -70,14 +72,14 @@ namespace Revoked.Services.Tests
                 End = end
             };
 
-            Expression<Func<Core.Entities.PlayerScore, bool>> entityCheck = ps =>
+            Expression<Func<PlayerScore, bool>> entityCheck = ps =>
                 ps.Score == points &&
-                ps.Time == end.Subtract(start) &&
+                ps.Time == DateTime.Parse(end).Subtract(DateTime.Parse(start)) &&
                 ps.Username == username;
 
             _repositoryMock
                 .Setup(m => m.AddAsync(It.Is(entityCheck)))
-                .ReturnsAsync((Core.Entities.PlayerScore)null)
+                .ReturnsAsync((PlayerScore)null)
                 .Verifiable();
 
             var service = NewService();

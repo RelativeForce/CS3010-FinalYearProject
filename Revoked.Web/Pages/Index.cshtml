@@ -6,6 +6,7 @@
 
 @section HeaderScripts{
     <script src="js/inobounce.js"></script>
+    <script src="lib/jquery/dist/jquery.min.js"></script>
 }
 
 @Html.AntiForgeryToken()
@@ -41,6 +42,10 @@
 <audio hidden id="backgroundMusic" src="/audio/backgroundMusic.mp3"></audio>
 
 @section Scripts{
+    
+    <script> 
+        var serverLocalStore = [];
+    </script>
     <script src="js/app.js"></script>
     <script>
         const canvas = document.getElementById('scene');
