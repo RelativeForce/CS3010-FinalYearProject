@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Revoked.Services.Data;
@@ -20,9 +22,20 @@ namespace Revoked.Web.Pages
             // Required for page GET
         }
 
-        public async Task OnPostStoreScore([FromBody] PlayerScoreCreateMessage score)
+        public async Task<JsonResult> OnPostStoreScore([FromBody] PlayerScoreCreateMessage createMessage)
         {
-            await _scoreService.StoreScoreAsync(score);
+            try
+            {
+                await _scoreService.StoreScoreAsync(createMessage);
+
+                return new JsonResult(true);
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.ToString());
+
+                return new JsonResult(false);
+            }
         }
 
         public JsonResult OnGetTopTen()

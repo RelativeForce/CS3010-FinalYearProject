@@ -6,31 +6,44 @@ import Assets.Audio as A
 import Assets.Images as I
 import Class.Object (draw, position, scroll)
 import Collision (isCollideObjects, isOutOfWorld)
-import Constants (scoreDisplayX, scoreDisplayY, scoreDisplayTextHeight)
-import Data.Array (any, filter, partition)
+import Constants (scoreDisplayX, scoreDisplayY, scoreDisplayTextHeight, maxUsernameLength)
+import Data.Array (any, filter, partition, length, init)
 import Data.Bullet (Bullet, updateBullet)
 import Data.Enemy (Enemy, addEnemyBullet, updateEnemy, enemyToScore)
 import Data.EnemyBullet (EnemyBullet, updateEnemyBullet)
 import Data.Foldable (traverse_, sum)
+import Data.HighScores (sendPlayerScore)
+import Data.Either (Either(..))
+import Data.String (joinWith)
 import Data.Goal (Goal, updateGoal)
+import Data.Maybe (Maybe(..))
 import Data.Particle (Particle, initParticle, updateParticle)
 import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
 import Effect (Effect)
 import Emo8 (emo8)
-import Emo8.Action.Draw (cls, drawScaledImage, drawText)
+import Emo8.Action.Draw (drawScaledImage, drawText)
+import Emo8.Action.Update (nowDateTime)
 import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
+import Data.DateTime (DateTime)
 import Emo8.FFI.AudioController (AudioController, _addAudioStream, _isAudioStreamPlaying, _stopAudioStream, newAudioController)
-import Emo8.Input (isCatchAny)
+import Emo8.Input (isCatchAny, mapToCharacter)
 import Emo8.Types (MapId, Score)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
-import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance)
+import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance, drawUsername, formatDateTime)
 import Levels (allRawLevels, enemies, goals, levelCount)
 
 data State = 
     TitleScreen 
     | GameOver
-    | Victory
+    | Victory {
+        username :: Array String,
+        score :: Int,
+        inputInterval :: Int,
+        start :: DateTime,
+        end :: DateTime,
+        isWaiting :: Boolean
+    }
     | Play { 
         distance :: Int, 
         player :: Player, 
@@ -41,16 +54,60 @@ data State =
         goals :: Array Goal,
         mapId :: MapId,
         score :: Score,
-        audioController :: AudioController
+        audioController :: AudioController,
+        start :: DateTime
     }
 
 instance gameState :: Game State where
     update input TitleScreen = do
-        pure $ if isCatchAny input  then initialPlayState else TitleScreen
+
+        startDateTime <- nowDateTime
+
+        pure $ if isCatchAny input then initialPlayState startDateTime else TitleScreen
     update input GameOver =
         pure $ if isCatchAny input then initialState else GameOver
-    update input Victory =
-        pure $ if isCatchAny input then initialState else Victory
+    update input (Victory s) = do
+        let 
+            isMaxUsernameLength = maxUsernameLength == length s.username
+            backSpacePressed = input.active.isBackspace
+            character = mapToCharacter input
+            isInvaildCharacter = character == ""
+            enterPressed = input.active.isEnter
+            removeCharacter = 0 < length s.username && backSpacePressed && s.inputInterval == 0
+            addCharacter = not isMaxUsernameLength && not isInvaildCharacter && s.inputInterval == 0
+            newUsername = case addCharacter, removeCharacter of 
+                true, false -> s.username <> [ character ]
+                false, true -> case init s.username of
+                    Just username -> username
+                    Nothing -> s.username
+                _, _ -> s.username 
+            newInputInterval = if addCharacter || removeCharacter then 15 else if s.inputInterval == 0 then 0 else s.inputInterval - 1
+            request = {
+                username: joinWith "" s.username,
+                score: s.score,
+                start: formatDateTime s.start,
+                end: formatDateTime s.end
+            }
+
+            result = if s.isWaiting || (enterPressed && isMaxUsernameLength) 
+                then sendPlayerScore request 
+                else Left "AllowInput"
+
+            isWaiting = case result of
+                Left "Waiting" -> true
+                _-> false
+
+            submissionSuccess = case result of
+                Right response -> response
+                _-> false
+            
+        pure $ case submissionSuccess of
+            true -> initialState
+            false -> Victory $ s {
+                username = newUsername,
+                inputInterval = newInputInterval,
+                isWaiting = isWaiting
+            }
     update input (Play s) = do
 
         -- update player
@@ -102,16 +159,21 @@ instance gameState :: Game State where
         let isGameOver = hasCollidedHazard || hasCollidedEnemy || hasCollidedEnemyBullet
             isNextLevel = hasCollidedGoal
             isBackgroundMusicPlaying = _isAudioStreamPlaying s.audioController A.backgroundMusicId
+            isLastLevel = s.mapId + 1 >= levelCount
 
         -- update music
-        let newAudioController = case isBackgroundMusicPlaying, isGameOver of
+        let newAudioController = case isBackgroundMusicPlaying, (isGameOver || (isNextLevel && isLastLevel)) of
                 true, true -> _stopAudioStream s.audioController A.backgroundMusicId
                 false, false ->  _addAudioStream s.audioController A.backgroundMusicId
                 _, _ -> s.audioController
 
+        now <- nowDateTime
+
         pure $ case isGameOver, isNextLevel of
             true, _ -> GameOver
-            false, true -> if s.mapId + 1 >= levelCount then Victory else newLevel (s.mapId + 1) s.score s.audioController
+            false, true -> if isLastLevel 
+                then initialVictoryState s.score s.start now 
+                else newLevel (s.mapId + 1) s.score s.audioController s.start
             false, false -> Play $ s { 
                 distance = newDistance, 
                 player = scrollAdjustedPlayer, 
@@ -122,15 +184,19 @@ instance gameState :: Game State where
                 goals = updatedGoals,
                 mapId = s.mapId,
                 score = s.score + newScore,
-                audioController = newAudioController
+                audioController = newAudioController,
+                start = s.start
             }
 
     draw TitleScreen = do
         drawScaledImage I.titleScreen 0 0
     draw GameOver = do
         drawScaledImage I.gameOverScreen 0 0
-    draw Victory = do
-        cls Lime
+    draw (Victory s) = do
+        drawScaledImage I.victoryScreen 0 0
+        drawUsername s.username
+        drawText (show s.score) 27 635 187 White
+        drawText (if s.isWaiting then "Sending..." else "") 27 570 80 White
     draw (Play s) = do
         drawScaledImage I.blackBackground 0 0
         drawScrollMap s.distance s.mapId
@@ -140,10 +206,10 @@ instance gameState :: Game State where
         traverse_ draw s.particles
         traverse_ draw s.enemyBullets
         traverse_ draw s.goals
-        drawText ("Score: " <> show s.score) scoreDisplayTextHeight scoreDisplayX scoreDisplayY
+        drawText ("Score: " <> show s.score) scoreDisplayTextHeight scoreDisplayX scoreDisplayY Lime
 
-newLevel :: MapId -> Score -> AudioController -> State
-newLevel mapId score audioController = Play { 
+newLevel :: MapId -> Score -> AudioController -> DateTime -> State
+newLevel mapId score audioController start = Play { 
     distance: 0, 
     player: initialPlayer, 
     bullets: [], 
@@ -153,11 +219,22 @@ newLevel mapId score audioController = Play {
     goals: goals mapId,
     mapId: mapId,
     score: score,
-    audioController: audioController
+    audioController: audioController,
+    start: start
 }
 
-initialPlayState :: State
+initialPlayState :: DateTime -> State
 initialPlayState = newLevel 0 0 $ newAudioController "Play"
+
+initialVictoryState :: Score -> DateTime -> DateTime -> State
+initialVictoryState score start end = Victory {
+    username: [],
+    score: score,
+    inputInterval: 0,
+    start: start,
+    end: end,
+    isWaiting: false
+} 
 
 initialState :: State
 initialState = TitleScreen

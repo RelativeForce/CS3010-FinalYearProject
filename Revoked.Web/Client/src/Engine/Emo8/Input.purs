@@ -1,8 +1,10 @@
 module Emo8.Input( 
   Input, 
+  InputFlags,
   mkInputSig,
   isCatchAny, 
-  isReleaseAny
+  isReleaseAny,
+  mapToCharacter
 ) where
 
 import Prelude
@@ -11,43 +13,47 @@ import Emo8.Data.KeyTouchInput (KeyTouchInput(..))
 import Emo8.Data.PressState (PressState(..), updatePressState)
 import Signal (Signal, foldp)
 
-type Input =
-  { 
-    isLeft :: Boolean, 
-    isRight :: Boolean, 
-    isUp :: Boolean, 
-    isDown :: Boolean, 
-    isW :: Boolean, 
-    isA :: Boolean, 
-    isS :: Boolean, 
-    isD :: Boolean, 
-    isSpace :: Boolean,
-    isEnter :: Boolean,
-    catched :: { 
-      isLeft :: Boolean, 
-      isRight :: Boolean, 
-      isUp :: Boolean, 
-      isDown :: Boolean, 
-      isW :: Boolean, 
-      isA :: Boolean, 
-      isS :: Boolean, 
-      isD :: Boolean,
-      isSpace :: Boolean,
-      isEnter :: Boolean
-    }, 
-    released :: { 
-      isLeft :: Boolean, 
-      isRight :: Boolean, 
-      isUp :: Boolean, 
-      isDown :: Boolean, 
-      isW :: Boolean, 
-      isA :: Boolean, 
-      isS :: Boolean, 
-      isD :: Boolean,
-      isSpace :: Boolean,
-      isEnter :: Boolean
-    }
-  }
+type InputFlags = {
+  isLeft :: Boolean, 
+  isRight :: Boolean, 
+  isUp :: Boolean, 
+  isDown :: Boolean,  
+  isSpace :: Boolean,
+  isEnter :: Boolean,
+  isBackspace :: Boolean,
+  isA :: Boolean,
+  isB :: Boolean,  
+  isC :: Boolean, 
+  isD :: Boolean,
+  isE :: Boolean, 
+  isF :: Boolean, 
+  isG :: Boolean, 
+  isH :: Boolean, 
+  isI :: Boolean, 
+  isJ :: Boolean, 
+  isK :: Boolean, 
+  isL :: Boolean, 
+  isM :: Boolean, 
+  isN :: Boolean, 
+  isO :: Boolean, 
+  isP :: Boolean, 
+  isQ :: Boolean, 
+  isR :: Boolean, 
+  isS :: Boolean,
+  isT :: Boolean, 
+  isU :: Boolean,  
+  isV :: Boolean, 
+  isW :: Boolean,
+  isX :: Boolean, 
+  isY :: Boolean, 
+  isZ :: Boolean
+}
+
+type Input = { 
+  active :: InputFlags,
+  catched :: InputFlags, 
+  released :: InputFlags
+}
 
 -- NOTE: update after sampleOn not to miss catch and release state
 type InputState = { 
@@ -55,12 +61,35 @@ type InputState = {
   rightState :: PressState, 
   upState :: PressState, 
   downState :: PressState, 
-  wState :: PressState, 
-  aState :: PressState, 
-  sState :: PressState, 
-  dState :: PressState,
   spaceState :: PressState,
-  enterState :: PressState
+  enterState :: PressState,
+  backspaceState :: PressState,
+  aState :: PressState,
+  bState :: PressState,  
+  cState :: PressState, 
+  dState :: PressState,
+  eState :: PressState, 
+  fState :: PressState, 
+  gState :: PressState, 
+  hState :: PressState, 
+  iState :: PressState, 
+  jState :: PressState, 
+  kState :: PressState, 
+  lState :: PressState, 
+  mState :: PressState, 
+  nState :: PressState, 
+  oState :: PressState, 
+  pState :: PressState, 
+  qState :: PressState, 
+  rState :: PressState, 
+  sState :: PressState,
+  tState :: PressState, 
+  uState :: PressState,  
+  vState :: PressState, 
+  wState :: PressState,
+  xState :: PressState, 
+  yState :: PressState, 
+  zState :: PressState
 }
 
 isCatchAny :: Input -> Boolean
@@ -86,13 +115,36 @@ initialInputState = {
   leftState: Unpressed, 
   rightState: Unpressed, 
   upState: Unpressed, 
-  downState: Unpressed, 
-  wState: Unpressed, 
-  aState: Unpressed, 
-  sState: Unpressed, 
-  dState: Unpressed,
+  downState: Unpressed,
   spaceState: Unpressed,
-  enterState: Unpressed
+  enterState: Unpressed,
+  backspaceState: Unpressed,
+  aState : Unpressed,
+  bState : Unpressed,  
+  cState : Unpressed, 
+  dState : Unpressed,
+  eState : Unpressed, 
+  fState : Unpressed, 
+  gState : Unpressed, 
+  hState : Unpressed, 
+  iState : Unpressed, 
+  jState : Unpressed, 
+  kState : Unpressed, 
+  lState : Unpressed, 
+  mState : Unpressed, 
+  nState : Unpressed, 
+  oState : Unpressed, 
+  pState : Unpressed, 
+  qState : Unpressed, 
+  rState : Unpressed, 
+  sState : Unpressed,
+  tState : Unpressed, 
+  uState : Unpressed,  
+  vState : Unpressed, 
+  wState : Unpressed,
+  xState : Unpressed, 
+  yState : Unpressed, 
+  zState : Unpressed
 }
 
 updateInputState :: KeyTouchInput -> InputState -> InputState
@@ -100,53 +152,138 @@ updateInputState (KeyTouchInput i) s = {
   leftState: updatePressState i.isLeft s.leftState, 
   rightState: updatePressState i.isRight s.rightState, 
   upState: updatePressState i.isUp s.upState, 
-  downState: updatePressState i.isDown s.downState, 
-  wState: updatePressState i.isW s.wState, 
-  aState: updatePressState i.isA s.aState, 
-  sState: updatePressState i.isS s.sState, 
-  dState: updatePressState i.isD s.dState,
+  downState: updatePressState i.isDown s.downState,
   spaceState: updatePressState i.isSpace s.spaceState,
-  enterState: updatePressState i.isEnter s.enterState
+  enterState: updatePressState i.isEnter s.enterState,
+  backspaceState: updatePressState i.isBackspace s.backspaceState,
+  aState : updatePressState i.isA s.aState,
+  bState : updatePressState i.isB s.bState,  
+  cState : updatePressState i.isC s.cState, 
+  dState : updatePressState i.isD s.dState,
+  eState : updatePressState i.isE s.eState, 
+  fState : updatePressState i.isF s.fState, 
+  gState : updatePressState i.isG s.gState, 
+  hState : updatePressState i.isH s.hState, 
+  iState : updatePressState i.isI s.iState, 
+  jState : updatePressState i.isJ s.jState, 
+  kState : updatePressState i.isK s.kState, 
+  lState : updatePressState i.isL s.lState, 
+  mState : updatePressState i.isM s.mState, 
+  nState : updatePressState i.isN s.nState, 
+  oState : updatePressState i.isO s.oState, 
+  pState : updatePressState i.isP s.pState, 
+  qState : updatePressState i.isQ s.qState, 
+  rState : updatePressState i.isR s.rState, 
+  sState : updatePressState i.isS s.sState,
+  tState : updatePressState i.isT s.tState, 
+  uState : updatePressState i.isU s.uState,  
+  vState : updatePressState i.isV s.vState, 
+  wState : updatePressState i.isW s.wState,
+  xState : updatePressState i.isX s.xState, 
+  yState : updatePressState i.isY s.yState, 
+  zState : updatePressState i.isZ s.zState
+}
+
+mkSubInput :: InputState -> (PressState -> Boolean) -> InputFlags
+mkSubInput s f = {
+  isLeft: f s.leftState, 
+  isRight: f s.rightState, 
+  isUp: f s.upState, 
+  isDown: f s.downState, 
+  isSpace: f s.spaceState,
+  isEnter: f s.enterState,
+  isBackspace: f s.backspaceState,
+  isA : f s.aState,
+  isB : f s.bState,  
+  isC : f s.cState, 
+  isD : f s.dState,
+  isE : f s.eState, 
+  isF : f s.fState, 
+  isG : f s.gState, 
+  isH : f s.hState, 
+  isI : f s.iState, 
+  isJ : f s.jState, 
+  isK : f s.kState, 
+  isL : f s.lState, 
+  isM : f s.mState, 
+  isN : f s.nState, 
+  isO : f s.oState, 
+  isP : f s.pState, 
+  isQ : f s.qState, 
+  isR : f s.rState, 
+  isS : f s.sState,
+  isT : f s.tState, 
+  isU : f s.uState,  
+  isV : f s.vState, 
+  isW : f s.wState,
+  isX : f s.xState, 
+  isY : f s.yState, 
+  isZ : f s.zState
 }
 
 mkInput :: InputState -> Input
 mkInput s = { 
-  isLeft: isOn s.leftState, 
-  isRight: isOn s.rightState, 
-  isUp: isOn s.upState, 
-  isDown: isOn s.downState, 
-  isW: isOn s.wState, 
-  isA: isOn s.aState, 
-  isS: isOn s.sState, 
-  isD: isOn s.dState, 
-  isSpace: isOn s.spaceState,
-  isEnter: isOn s.enterState,
-  catched: { 
-    isLeft: isCatched s.leftState, 
-    isRight: isCatched s.rightState, 
-    isUp: isCatched s.upState, 
-    isDown: isCatched s.downState,
-    isW: isCatched s.wState, 
-    isA: isCatched s.aState, 
-    isS: isCatched s.sState, 
-    isD: isCatched s.dState,
-    isSpace: isCatched s.spaceState,
-    isEnter: isCatched s.enterState
-  }, 
-  released: { 
-    isLeft: isReleased s.leftState, 
-    isRight: isReleased s.rightState, 
-    isUp: isReleased s.upState, 
-    isDown: isReleased s.downState, 
-    isW: isReleased s.wState, 
-    isA: isReleased s.aState, 
-    isS: isReleased s.sState, 
-    isD: isReleased s.dState,
-    isSpace: isReleased s.spaceState,
-    isEnter: isReleased s.enterState
-  }
+  active : mkSubInput s isOn,
+  catched: mkSubInput s isCatched, 
+  released: mkSubInput s isReleased
 }
   where
     isOn ps = ps == Catched || ps == Pressed
-    isCatched = (==) Catched
-    isReleased = (==) Released
+    isCatched ps = ps == Catched
+    isReleased ps = ps == Released
+
+mapToCharacter :: Input -> String
+mapToCharacter i = 
+  if i.active.isA 
+    then "A" 
+    else if i.active.isB 
+      then "B" 
+      else if i.active.isC 
+        then "C" 
+        else if i.active.isD 
+          then "D" 
+          else if i.active.isE 
+            then "E" 
+            else if i.active.isF 
+              then "F" 
+              else if i.active.isG 
+                then "G" 
+                else if i.active.isH 
+                  then "H" 
+                  else if i.active.isI 
+                    then "I" 
+                    else if i.active.isJ 
+                      then "J" 
+                      else if i.active.isK 
+                        then "K" 
+                        else if i.active.isL 
+                          then "L" 
+                          else if i.active.isM
+                            then "M" 
+                            else if i.active.isN 
+                              then "N" 
+                              else if i.active.isO
+                                then "O" 
+                                else if i.active.isP 
+                                  then "P" 
+                                  else if i.active.isQ 
+                                    then "Q" 
+                                    else if i.active.isR 
+                                      then "R" 
+                                      else if i.active.isS 
+                                        then "S" 
+                                        else if i.active.isT 
+                                          then "T" 
+                                          else if i.active.isU 
+                                            then "U" 
+                                            else if i.active.isV 
+                                              then "V" 
+                                              else if i.active.isW
+                                                then "W" 
+                                                else if i.active.isX 
+                                                  then "X" 
+                                                  else if i.active.isY 
+                                                    then "Y" 
+                                                    else if i.active.isZ 
+                                                      then "Z" 
+                                                      else ""

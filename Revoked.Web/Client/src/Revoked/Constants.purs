@@ -79,3 +79,5 @@ hazards = [
     Id.toxicWasteId
 ]
 
+maxUsernameLength :: Int
+maxUsernameLength = 3

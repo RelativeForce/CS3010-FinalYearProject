@@ -1,24 +1,98 @@
 "use strict";
 
-exports.send = function(requestData){
+exports.sendRequest = function(left){
+    return function(right){
+        return function(requestData){
+            var isNode = new Function("try {return this===global;}catch(e){return false;}");
 
-    var isNode = new Function("try {return this===global;}catch(e){return false;}");
+            if(isNode()){
+                return right(false);  
+            }
 
-    if(isNode()){
-        return false;  
+            // Check if request is in local store
+            var localRequest = findInLocalStore(requestData);
+
+            if(localRequest){
+
+                if(localRequest.isWaiting){
+                    return left("Waiting");
+                }
+
+                // Remove from local store and return response
+                removeFromLocalStore(localRequest);
+                return right(localRequest.result);
+            }
+
+            // Send request
+            send(requestData);
+            return left("Waiting");
+        }
     }
-    
-    var request = new XMLHttpRequest();
-    request.open(requestData.method, requestData.url, false); 
-    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    request.send(requestData.json);
-
-    if (request.status !== 200) {
-        console.log("Request Failed");
-    }
-
-    if(request.responseText === undefined)
-        return true;
-
-    return JSON.parse(request.responseText);
 };
+
+function send(requestData){
+
+    var token = document.getElementsByName("__RequestVerificationToken")[0].value;
+
+    $.ajax({
+        type: requestData.method,
+        url: requestData.url,
+        contentType: "application/json",
+        dataType: "json",
+        data: requestData.json,
+        headers: {
+            'RequestVerificationToken': token,
+        },
+        success : function(result, status, xhr) {
+        
+            var localRequest = findInLocalStore(requestData);
+
+            if (status !== "success") {
+                removeFromLocalStore(requestData);
+                return;
+            }
+
+            localRequest.isWaiting = false;
+            if(result){
+                localRequest.result = JSON.parse(result);
+            }
+            else{
+                localRequest.result = true;
+            }
+        }
+    });
+
+    // Add request to local store
+    requestData.isWaiting = true;
+    serverLocalStore[serverLocalStore.length] = requestData;
+}
+
+function findInLocalStore(requestData){
+
+    for (var index = 0; index < serverLocalStore.length; index++) {
+        const element = serverLocalStore[index];
+        
+        if(requestData.url === element.url){
+            return element;
+        }
+    }
+
+    return null;
+}
+
+function removeFromLocalStore(requestData){
+
+    var indexToRemove = undefined;
+
+    for (var index = 0; index < serverLocalStore.length; index++) {
+        const element = serverLocalStore[index];
+        
+        if(requestData.url === element.url){
+            indexToRemove = index;
+        }
+    }
+
+    if(indexToRemove){
+        serverLocalStore = serverLocalStore.splice(indexToRemove, 1);
+    }
+}

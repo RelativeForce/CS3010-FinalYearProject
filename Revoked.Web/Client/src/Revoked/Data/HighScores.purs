@@ -5,6 +5,7 @@ import Data.Argonaut.Encode (encodeJson)
 import Data.Argonaut.Core (stringify)
 import Emo8.FFI.ServerIO (send)
 import Emo8.Types(Request)
+import Data.Either (Either)
 
 type PlayerScoreCreateRequestData = {
     username :: String,
@@ -29,7 +30,7 @@ buildSendPlayerScoreRequest ps = {
 encodePlayerScore :: PlayerScoreCreateRequestData -> String
 encodePlayerScore ps = stringify $ encodeJson ps
 
-sendPlayerScore :: PlayerScoreCreateRequestData -> Boolean
+sendPlayerScore :: PlayerScoreCreateRequestData -> Either String Boolean
 sendPlayerScore ps = send $ buildSendPlayerScoreRequest ps
 
 getTopScoresRequest :: Request
@@ -39,5 +40,5 @@ getTopScoresRequest = {
     method: "GET"
 }
 
-getTopScores :: Array PlayerScore
+getTopScores :: Either String (Array PlayerScore)
 getTopScores = send getTopScoresRequest

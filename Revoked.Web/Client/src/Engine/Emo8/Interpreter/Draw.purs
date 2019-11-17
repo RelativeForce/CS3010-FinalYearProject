@@ -64,7 +64,7 @@ runDraw dctx = foldFree interpret
     interpret (DrawRotatedScaledImage image x y angle n) = const n <$> drawRotatedScaledImage image x y angle dctx
     interpret (DrawSprite sprite x y n) = const n <$> drawSprite sprite x y dctx
     interpret (DrawRotatedSprite sprite x y angle n) = const n <$> drawRotatedSprite sprite x y angle dctx
-    interpret (DrawText text height x y n) = const n <$> drawText text height x y dctx
+    interpret (DrawText text height x y color n) = const n <$> drawText text height x y color dctx
     interpret (Emo Normal e size x y n) = const n <$> emo e size x y dctx
     interpret (Emo Mirrored e size x y n) = const n <$> emo' e size x y dctx
     interpret (Emor Normal deg e size x y n) = const n <$> emor deg e size x y dctx
@@ -102,8 +102,8 @@ drawEmoji e size x y ctx
         where
             font = sizeToFont size
 
-drawText :: String -> TextHeight -> X -> Y -> RenderOp
-drawText e size x y =
+drawText :: String -> TextHeight -> X -> Y -> Color -> RenderOp
+drawText e size x y color =
     withLocalDraw \dctx -> do
         let 
             font = joinWith " " [show size <> "px", fontFamily]
@@ -111,7 +111,7 @@ drawText e size x y =
 
         setFont dctx.ctx font
         setTextBaseline dctx.ctx BaselineIdeographic
-        setFillStyle dctx.ctx (colorToCode Lime)
+        setFillStyle dctx.ctx (colorToCode color)
         fillText dctx.ctx e (toNumber x) (toNumber y')             
 
 emo :: Emoji -> Size -> X -> Y -> RenderOp
