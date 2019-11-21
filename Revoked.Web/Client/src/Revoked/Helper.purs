@@ -95,18 +95,12 @@ drawUsername username = do
             Nothing -> "_"
             Just char -> char
 
-drawLeaderboard :: Array PlayerScore -> Draw Unit
-drawLeaderboard scores = do
-    if 0 < length scores then do drawScore scores 0 else pure unit
-    if 1 < length scores then do drawScore scores 1 else pure unit
-    if 2 < length scores then do drawScore scores 2 else pure unit
-    if 3 < length scores then do drawScore scores 3 else pure unit
-    if 4 < length scores then do drawScore scores 4 else pure unit
-    if 5 < length scores then do drawScore scores 5 else pure unit
-    if 6 < length scores then do drawScore scores 6 else pure unit
-    if 7 < length scores then do drawScore scores 7 else pure unit
-    if 8 < length scores then do drawScore scores 8 else pure unit
-    if 9 < length scores then do drawScore scores 9 else pure unit
+drawScore :: PlayerScore -> Draw Unit
+drawScore ps = do 
+    drawText ps.username textHeight usernameX y color
+    drawText (show ps.score) textHeight scoreX y color
+    drawText ps.time textHeight timeX y color
+    drawText (show ps.position) textHeight positionX y color
     where 
         textHeight = 27
         positionX = 420
@@ -116,22 +110,4 @@ drawLeaderboard scores = do
         startY = 500
         paddingY = 15
         color = White
-        drawScore :: Array PlayerScore -> Int -> Draw Unit
-        drawScore s index = do 
-            let 
-                playerScoreAtIndex = s !! index
-                username = case playerScoreAtIndex of
-                    Nothing -> ""
-                    Just ps -> ps.username
-                score = case playerScoreAtIndex of
-                    Nothing -> ""
-                    Just ps -> show ps.score
-                time = case playerScoreAtIndex of
-                    Nothing -> ""
-                    Just ps -> ps.time
-                y = startY - (index * (textHeight + paddingY))
-            
-            drawText username textHeight usernameX y color
-            drawText score textHeight scoreX y color
-            drawText time textHeight timeX y color
-            drawText (show (index + 1)) textHeight positionX y color
+        y = startY - ((ps.position - 1) * (textHeight + paddingY))

@@ -17,7 +17,8 @@ type PlayerScoreCreateRequestData = {
 type PlayerScore = {
     username :: String,
     score :: Int,
-    time :: String
+    time :: String,
+    position :: Int
 }
 
 buildSendPlayerScoreRequest :: PlayerScoreCreateRequestData -> Request

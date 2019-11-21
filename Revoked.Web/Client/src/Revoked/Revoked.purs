@@ -37,7 +37,7 @@ import Helper (
     adjustMonitorDistance, 
     drawUsername, 
     formatDateTime, 
-    drawLeaderboard
+    drawScore
 )
 import Levels (allRawLevels, enemies, goals, levelCount)
 
@@ -103,7 +103,7 @@ instance gameState :: Game State where
 
             scores = case result of
                 Right response -> response
-                _-> []
+                _-> s.scores
 
             backToTitleScreen = input.catched.isBackspace
             
@@ -247,8 +247,8 @@ instance gameState :: Game State where
         drawText (if s.isWaiting then "Sending..." else "") 27 570 80 White
     draw (Leaderboard s) = do
         drawScaledImage I.leaderboardScreen 0 0
-        drawLeaderboard s.scores
-        drawText (if s.isWaiting then "Loading..." else "") 27 570 80 White
+        traverse_ drawScore s.scores
+        if s.isWaiting then drawText "Loading..." 27 570 80 White else pure unit
     draw (Play s) = do
         drawScaledImage I.blackBackground 0 0
         drawScrollMap s.distance s.mapId
