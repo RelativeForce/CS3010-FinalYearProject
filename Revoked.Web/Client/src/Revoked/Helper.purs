@@ -7,7 +7,7 @@ import Collision (isWallsCollide, isHazardCollide)
 import Constants (leftBoundry, mapSizeInt, mapTileInMonitorSize, mapTileSize, mapSize, rightBoundry)
 import Emo8.Utils (defaultMonitorSize)
 import Data.Player (Player(..))
-import Data.Array ((!!))
+import Data.Array ((!!), length)
 import Data.Maybe (Maybe(..))
 import Data.Either (Either(..))
 import Emo8.Action.Draw (Draw, drawMap, drawText)
@@ -97,21 +97,22 @@ drawUsername username = do
 
 drawLeaderboard :: Array PlayerScore -> Draw Unit
 drawLeaderboard scores = do
-    drawScore scores 0
-    drawScore scores 1
-    drawScore scores 2
-    drawScore scores 3
-    drawScore scores 4
-    drawScore scores 5
-    drawScore scores 6
-    drawScore scores 7
-    drawScore scores 8
-    drawScore scores 9
+    if 0 < length scores then do drawScore scores 0 else pure unit
+    if 1 < length scores then do drawScore scores 1 else pure unit
+    if 2 < length scores then do drawScore scores 2 else pure unit
+    if 3 < length scores then do drawScore scores 3 else pure unit
+    if 4 < length scores then do drawScore scores 4 else pure unit
+    if 5 < length scores then do drawScore scores 5 else pure unit
+    if 6 < length scores then do drawScore scores 6 else pure unit
+    if 7 < length scores then do drawScore scores 7 else pure unit
+    if 8 < length scores then do drawScore scores 8 else pure unit
+    if 9 < length scores then do drawScore scores 9 else pure unit
     where 
         textHeight = 27
-        usernameX = 300
-        scoreX = 350
-        timeX = 400 
+        positionX = 420
+        usernameX = 500
+        scoreX = 600
+        timeX = 700 
         startY = 500
         paddingY = 15
         color = White
@@ -133,3 +134,4 @@ drawLeaderboard scores = do
             drawText username textHeight usernameX y color
             drawText score textHeight scoreX y color
             drawText time textHeight timeX y color
+            drawText (show (index + 1)) textHeight positionX y color
