@@ -15,7 +15,6 @@ namespace Revoked.Services.Data
             Username = playerScore.Username;
             Score = playerScore.Score;
             Time = playerScore.Time.ToString(@"hh\:mm\:ss");
-
         }
 
         public PlayerScoreMessage()

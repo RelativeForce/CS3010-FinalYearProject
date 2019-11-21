@@ -94,6 +94,7 @@ instance gameState :: Game State where
             else pure $ Left "AllowInput"
 
         let
+            backToTitleScreen = input.catched.isBackspace
             isWaiting = case result of
                 Left "Waiting" -> true
                 _-> false
@@ -103,8 +104,6 @@ instance gameState :: Game State where
             scores = case result of
                 Right response -> response
                 _-> s.scores
-
-            backToTitleScreen = input.catched.isBackspace
             
         pure $ case backToTitleScreen of
             true -> TitleScreen
