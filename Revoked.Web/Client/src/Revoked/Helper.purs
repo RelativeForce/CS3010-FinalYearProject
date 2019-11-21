@@ -11,10 +11,9 @@ import Data.Array ((!!), length)
 import Data.Maybe (Maybe(..))
 import Data.Either (Either(..))
 import Emo8.Action.Draw (Draw, drawMap, drawText)
-import Data.HighScores (PlayerScore)
 import Emo8.Data.Color (Color(..))
 import Emo8.Action.Update (Update)
-import Emo8.Types (MapId, X, Size, Position)
+import Emo8.Types (MapId, X, Size, Position, PlayerScore)
 import Data.Formatter.DateTime as F
 import Data.DateTime (DateTime)
 

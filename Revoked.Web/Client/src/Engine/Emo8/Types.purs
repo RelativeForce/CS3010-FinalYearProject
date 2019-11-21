@@ -1,7 +1,7 @@
 module Emo8.Types where
 
-import Graphics.Canvas (Context2D)
 import Data.Maybe (Maybe)
+import Graphics.Canvas (Context2D)
 
 type MonitorSize = Size
 
@@ -15,8 +15,6 @@ type Velocity = {
   ySpeed :: Number 
 }
 
--- | Asset type.
--- | It contains map data.
 type Asset = { 
   mapData :: Array TileMap
 }
@@ -53,6 +51,20 @@ type Request = {
 type Size = {
   width :: Width,
   height :: Height
+}
+
+type PlayerScoreCreateRequestData = {
+  username :: String,
+  score :: Int,
+  start :: String,
+  end :: String
+}
+
+type PlayerScore = {
+    username :: String,
+    score :: Int,
+    time :: String,
+    position :: Int
 }
 
 type Image = String

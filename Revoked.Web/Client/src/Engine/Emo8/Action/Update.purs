@@ -5,8 +5,9 @@ import Prelude
 import Control.Monad.Free (Free, liftF)
 import Data.Array (index, length)
 import Data.Maybe (Maybe)
-import Emo8.Types (X, Y, MapId, ImageId, Size)
+import Emo8.Types (X, Y, MapId, ImageId, Size, PlayerScore, PlayerScoreCreateRequestData)
 import Data.DateTime (DateTime)
+import Data.Either (Either)
 
 type Update = Free UpdateF
 
@@ -15,6 +16,8 @@ data UpdateF n
     | RandomNumber Number Number (Number -> n)
     | IsMapCollide MapId Size (Array ImageId) Size X Y (Boolean -> n)
     | NowDateTime (DateTime -> n)
+    | StorePlayerScore PlayerScoreCreateRequestData (Either String Boolean -> n)
+    | ListTopScores (Either String (Array PlayerScore) -> n) 
 
 -- | Get random int.
 randomInt :: Int -> Int -> Update Int
@@ -35,3 +38,9 @@ isMapCollide mId mSize collidableObjectIds size x y = liftF $ IsMapCollide mId m
 
 nowDateTime :: Update DateTime
 nowDateTime = liftF $ NowDateTime identity
+
+storePlayerScore :: PlayerScoreCreateRequestData -> Update (Either String Boolean)
+storePlayerScore request = liftF $ StorePlayerScore request identity
+
+listTopScores :: Update (Either String (Array PlayerScore))
+listTopScores = liftF $ ListTopScores identity

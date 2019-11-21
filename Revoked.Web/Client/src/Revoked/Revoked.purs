@@ -12,7 +12,6 @@ import Data.Bullet (Bullet, updateBullet)
 import Data.Enemy (Enemy, addEnemyBullet, updateEnemy, enemyToScore)
 import Data.EnemyBullet (EnemyBullet, updateEnemyBullet)
 import Data.Foldable (traverse_, sum)
-import Data.HighScores (sendPlayerScore, PlayerScore, getTopScores)
 import Data.Either (Either(..))
 import Data.String (joinWith)
 import Data.Goal (Goal, updateGoal)
@@ -22,13 +21,13 @@ import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
 import Effect (Effect)
 import Emo8 (emo8)
 import Emo8.Action.Draw (drawScaledImage, drawText)
-import Emo8.Action.Update (nowDateTime)
+import Emo8.Action.Update (nowDateTime, listTopScores, storePlayerScore)
 import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
 import Data.DateTime (DateTime)
 import Emo8.FFI.AudioController (AudioController, _addAudioStream, _isAudioStreamPlaying, _stopAudioStream, newAudioController)
 import Emo8.Input (isCatchAny, mapToCharacter)
-import Emo8.Types (MapId, Score)
+import Emo8.Types (MapId, Score, PlayerScore)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
 import Helper (
     drawScrollMap, 
@@ -88,19 +87,19 @@ instance gameState :: Game State where
     update input (Leaderboard s) = do
         let 
             hasNoScores = 0 == length s.scores
+            shouldLoadScores = not s.isLoaded && (s.isWaiting || hasNoScores)  
 
-            result = if not s.isLoaded && (s.isWaiting || hasNoScores) 
-                then getTopScores unit
-                else Left "AllowInput"
+        result <- if shouldLoadScores
+            then do listTopScores
+            else pure $ Left "AllowInput"
 
+        let
             isWaiting = case result of
                 Left "Waiting" -> true
                 _-> false
-
             isLoaded = case result of
                 Right response -> true
                 _-> false
-
             scores = case result of
                 Right response -> response
                 _-> s.scores
@@ -137,14 +136,14 @@ instance gameState :: Game State where
                 end: formatDateTime s.end
             }
 
-            result = if s.isWaiting || (enterPressed && isMaxUsernameLength) 
-                then sendPlayerScore request 
-                else Left "AllowInput"
+        result <- if s.isWaiting || (enterPressed && isMaxUsernameLength) 
+            then do storePlayerScore request 
+            else pure $ Left "AllowInput"
 
+        let
             isWaiting = case result of
                 Left "Waiting" -> true
                 _-> false
-
             submissionSuccess = case result of
                 Right response -> response
                 _-> false

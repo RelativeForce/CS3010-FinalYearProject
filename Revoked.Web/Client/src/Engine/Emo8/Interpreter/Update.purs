@@ -10,9 +10,13 @@ import Effect (Effect)
 import Emo8.Action.Update (Update, UpdateF(..))
 import Emo8.Class.Game (class Game)
 import Emo8.Excepiton (providedMap)
-import Emo8.Types (Asset, IdX, IdY, MapId, X, Y, ScaledImage, ImageId, Size)
+import Emo8.Types (Asset, IdX, IdY, MapId, X, Y, ScaledImage, ImageId, Size, PlayerScoreCreateRequestData, PlayerScore, Request)
 import Random.PseudoRandom (randomREff)
 import Effect.Now (nowDateTime)
+import Emo8.FFI.ServerIO (send)
+import Data.Argonaut.Encode (encodeJson)
+import Data.Argonaut.Core (stringify)
+import Data.Either (Either)
 
 runUpdate :: forall s. Game s => Asset -> Update s -> Effect s
 runUpdate ass = foldFree interpret
@@ -22,6 +26,8 @@ runUpdate ass = foldFree interpret
     interpret (RandomNumber min max f) = f <$> randomREff min max
     interpret (IsMapCollide mId mSize collidableObjectIds size x y f) = f <$> isMapCollide ass mId mSize collidableObjectIds size x y
     interpret (NowDateTime f) = f <$> nowDateTime
+    interpret (StorePlayerScore request f) = f <$> sendPlayerScore request
+    interpret (ListTopScores f) = f <$> listTopScores
 
 -- TODO: large object detection
 isMapCollide :: Asset -> MapId -> Size -> Array ImageId -> Size -> X -> Y -> Effect Boolean
@@ -50,4 +56,27 @@ getMapTile ass mId xId yId =
                 Nothing -> Nothing
                 Just e -> e
         pure $ maybeTile
+
+buildSendPlayerScoreRequest :: PlayerScoreCreateRequestData -> Request
+buildSendPlayerScoreRequest ps = {
+    json: encodePlayerScore ps,
+    url: "/?handler=StoreScore",
+    method: "POST"
+}
+
+encodePlayerScore :: PlayerScoreCreateRequestData -> String
+encodePlayerScore ps = stringify $ encodeJson ps
+
+sendPlayerScore :: PlayerScoreCreateRequestData -> Effect (Either String Boolean)
+sendPlayerScore ps = send $ buildSendPlayerScoreRequest ps
+
+getTopScoresRequest :: Request
+getTopScoresRequest = {
+    json: "",
+    url: "/?handler=TopTen",
+    method: "GET"
+}
+
+listTopScores :: Effect (Either String (Array PlayerScore))
+listTopScores = send getTopScoresRequest
                 

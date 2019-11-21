@@ -3,29 +3,31 @@
 exports.sendRequest = function(left){
     return function(right){
         return function(requestData){
-            var isNode = new Function("try {return this===global;}catch(e){return false;}");
+            return function() {
+                var isNode = new Function("try {return this===global;}catch(e){return false;}");
 
-            if(isNode()){
-                return right(false);  
-            }
-
-            // Check if request is in local store
-            var localRequest = findInLocalStore(requestData);
-
-            if(localRequest){
-
-                if(localRequest.isWaiting){
-                    return left("Waiting");
+                if(isNode()){
+                    return right(false);
                 }
 
-                // Remove from local store and return response
-                removeFromLocalStore(localRequest);
-                return right(localRequest.result);
-            }
+                // Check if request is in local store
+                var localRequest = findInLocalStore(requestData);
 
-            // Send request
-            send(requestData);
-            return left("Waiting");
+                if(localRequest){
+
+                    if(localRequest.isWaiting){
+                        return left("Waiting");
+                    }
+
+                    // Remove from local store and return response
+                    removeFromLocalStore(localRequest);
+                    return right(localRequest.result);
+                }
+
+                // Send request
+                send(requestData);
+                return left("Waiting");
+            }
         }
     }
 };
