@@ -54,7 +54,7 @@ function send(requestData){
 
             localRequest.isWaiting = false;
             if(result){
-                localRequest.result = JSON.parse(result);
+                localRequest.result = result;
             }
             else{
                 localRequest.result = true;

@@ -49,3 +49,6 @@ gameOverScreenId = 15
 
 victoryScreenId :: ImageId
 victoryScreenId = 16
+
+leaderboardScreenId :: ImageId
+leaderboardScreenId = 17

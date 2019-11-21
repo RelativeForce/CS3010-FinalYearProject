@@ -12,7 +12,7 @@ import Data.Bullet (Bullet, updateBullet)
 import Data.Enemy (Enemy, addEnemyBullet, updateEnemy, enemyToScore)
 import Data.EnemyBullet (EnemyBullet, updateEnemyBullet)
 import Data.Foldable (traverse_, sum)
-import Data.HighScores (sendPlayerScore)
+import Data.HighScores (sendPlayerScore, PlayerScore, getTopScores)
 import Data.Either (Either(..))
 import Data.String (joinWith)
 import Data.Goal (Goal, updateGoal)
@@ -30,12 +30,25 @@ import Emo8.FFI.AudioController (AudioController, _addAudioStream, _isAudioStrea
 import Emo8.Input (isCatchAny, mapToCharacter)
 import Emo8.Types (MapId, Score)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
-import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance, drawUsername, formatDateTime)
+import Helper (
+    drawScrollMap, 
+    isCollideMapWalls, 
+    isCollideMapHazards, 
+    adjustMonitorDistance, 
+    drawUsername, 
+    formatDateTime, 
+    drawLeaderboard
+)
 import Levels (allRawLevels, enemies, goals, levelCount)
 
 data State = 
     TitleScreen 
     | GameOver
+    | Leaderboard {
+        scores :: Array PlayerScore,
+        isWaiting :: Boolean,
+        isLoaded :: Boolean
+    }
     | Victory {
         username :: Array String,
         score :: Int,
@@ -60,12 +73,47 @@ data State =
 
 instance gameState :: Game State where
     update input TitleScreen = do
-
         startDateTime <- nowDateTime
 
-        pure $ if isCatchAny input then initialPlayState startDateTime else TitleScreen
+        let
+            toLeaderboard = input.catched.isL
+            toPlay = isCatchAny input
+
+        pure $ case toPlay, toLeaderboard of 
+            false, true -> initialLeaderboardState
+            true, false -> initialPlayState startDateTime
+            _, _ -> TitleScreen
     update input GameOver =
-        pure $ if isCatchAny input then initialState else GameOver
+        pure $ if isCatchAny input then TitleScreen else GameOver
+    update input (Leaderboard s) = do
+        let 
+            hasNoScores = 0 == length s.scores
+
+            result = if not s.isLoaded && (s.isWaiting || hasNoScores) 
+                then getTopScores unit
+                else Left "AllowInput"
+
+            isWaiting = case result of
+                Left "Waiting" -> true
+                _-> false
+
+            isLoaded = case result of
+                Right response -> true
+                _-> false
+
+            scores = case result of
+                Right response -> response
+                _-> []
+
+            backToTitleScreen = input.catched.isBackspace
+            
+        pure $ case backToTitleScreen of
+            true -> TitleScreen
+            false -> Leaderboard $ s {
+                scores = scores,
+                isWaiting = isWaiting,
+                isLoaded = isLoaded
+            }
     update input (Victory s) = do
         let 
             isMaxUsernameLength = maxUsernameLength == length s.username
@@ -102,7 +150,7 @@ instance gameState :: Game State where
                 _-> false
             
         pure $ case submissionSuccess of
-            true -> initialState
+            true -> TitleScreen
             false -> Victory $ s {
                 username = newUsername,
                 inputInterval = newInputInterval,
@@ -197,6 +245,10 @@ instance gameState :: Game State where
         drawUsername s.username
         drawText (show s.score) 27 635 187 White
         drawText (if s.isWaiting then "Sending..." else "") 27 570 80 White
+    draw (Leaderboard s) = do
+        drawScaledImage I.leaderboardScreen 0 0
+        drawLeaderboard s.scores
+        drawText (if s.isWaiting then "Loading..." else "") 27 570 80 White
     draw (Play s) = do
         drawScaledImage I.blackBackground 0 0
         drawScrollMap s.distance s.mapId
@@ -235,6 +287,13 @@ initialVictoryState score start end = Victory {
     end: end,
     isWaiting: false
 } 
+
+initialLeaderboardState :: State
+initialLeaderboardState = Leaderboard {
+    scores: [],
+    isWaiting: false,
+    isLoaded: false
+}
 
 initialState :: State
 initialState = TitleScreen

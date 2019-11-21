@@ -40,5 +40,5 @@ getTopScoresRequest = {
     method: "GET"
 }
 
-getTopScores :: Either String (Array PlayerScore)
-getTopScores = send getTopScoresRequest
+getTopScores :: Unit -> Either String (Array PlayerScore)
+getTopScores u = send getTopScoresRequest

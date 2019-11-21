@@ -13,6 +13,7 @@ import Assets.Images.GrassRight (grassRightData)
 import Assets.Images.GrassCenter (grassCenterData)
 import Assets.Images.GameOverScreen (gameOverScreenData)
 import Assets.Images.VictoryScreen (victoryScreenData)
+import Assets.Images.LeaderboardScreen (leaderboardScreenData)
 
 titleScreen :: ScaledImage
 titleScreen = {
@@ -42,6 +43,16 @@ victoryScreen = {
         width: 1280
     },    
     id: Id.victoryScreenId
+}
+
+leaderboardScreen :: ScaledImage
+leaderboardScreen = {
+    image: leaderboardScreenData,
+    size: {
+        height: 720,
+        width: 1280
+    },    
+    id: Id.leaderboardScreenId
 }
 
 blackBackground :: ScaledImage

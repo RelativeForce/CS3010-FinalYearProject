@@ -11,6 +11,7 @@ import Data.Array ((!!))
 import Data.Maybe (Maybe(..))
 import Data.Either (Either(..))
 import Emo8.Action.Draw (Draw, drawMap, drawText)
+import Data.HighScores (PlayerScore)
 import Emo8.Data.Color (Color(..))
 import Emo8.Action.Update (Update)
 import Emo8.Types (MapId, X, Size, Position)
@@ -93,3 +94,42 @@ drawUsername username = do
         character u index = case u !! index of
             Nothing -> "_"
             Just char -> char
+
+drawLeaderboard :: Array PlayerScore -> Draw Unit
+drawLeaderboard scores = do
+    drawScore scores 0
+    drawScore scores 1
+    drawScore scores 2
+    drawScore scores 3
+    drawScore scores 4
+    drawScore scores 5
+    drawScore scores 6
+    drawScore scores 7
+    drawScore scores 8
+    drawScore scores 9
+    where 
+        textHeight = 27
+        usernameX = 300
+        scoreX = 350
+        timeX = 400 
+        startY = 500
+        paddingY = 15
+        color = White
+        drawScore :: Array PlayerScore -> Int -> Draw Unit
+        drawScore s index = do 
+            let 
+                playerScoreAtIndex = s !! index
+                username = case playerScoreAtIndex of
+                    Nothing -> ""
+                    Just ps -> ps.username
+                score = case playerScoreAtIndex of
+                    Nothing -> ""
+                    Just ps -> show ps.score
+                time = case playerScoreAtIndex of
+                    Nothing -> ""
+                    Just ps -> ps.time
+                y = startY - (index * (textHeight + paddingY))
+            
+            drawText username textHeight usernameX y color
+            drawText score textHeight scoreX y color
+            drawText time textHeight timeX y color
