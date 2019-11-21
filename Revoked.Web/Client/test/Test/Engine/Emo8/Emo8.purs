@@ -8,6 +8,7 @@ import Effect (Effect)
 import Test.Engine.Emo8.Data (dataTests)
 import Test.Engine.Emo8.Parse (parseTests)
 import Test.Engine.Emo8.FFI (ffiTests)
+import Test.Engine.Emo8.Interpreter (interpreterTests)
 
 emo8Tests :: Effect Unit
 emo8Tests = do
@@ -17,3 +18,4 @@ emo8Tests = do
     ffiTests
     dataTests
     parseTests
+    interpreterTests
