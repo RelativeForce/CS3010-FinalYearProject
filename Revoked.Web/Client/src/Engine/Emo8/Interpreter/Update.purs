@@ -17,6 +17,7 @@ import Emo8.FFI.ServerIO (send)
 import Data.Argonaut.Encode (encodeJson)
 import Data.Argonaut.Core (stringify)
 import Data.Either (Either)
+import Emo8.FFI.AudioController (addAudioStream, isAudioStreamPlaying, stopAudioStream)
 
 runUpdate :: forall s. Game s => Asset -> Update s -> Effect s
 runUpdate ass = foldFree interpret
@@ -28,6 +29,9 @@ runUpdate ass = foldFree interpret
     interpret (NowDateTime f) = f <$> nowDateTime
     interpret (StorePlayerScore request f) = f <$> sendPlayerScore request
     interpret (ListTopScores f) = f <$> listTopScores
+    interpret (AddAudioStream controller src f) = f <$> addAudioStream controller src
+    interpret (IsAudioStreamPlaying controller src f) = f <$> isAudioStreamPlaying controller src
+    interpret (StopAudioStream controller src f) = f <$> stopAudioStream controller src
 
 -- TODO: large object detection
 isMapCollide :: Asset -> MapId -> Size -> Array ImageId -> Size -> X -> Y -> Effect Boolean

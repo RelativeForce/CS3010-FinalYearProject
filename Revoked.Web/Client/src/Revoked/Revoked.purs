@@ -21,11 +21,11 @@ import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
 import Effect (Effect)
 import Emo8 (emo8)
 import Emo8.Action.Draw (drawScaledImage, drawText)
-import Emo8.Action.Update (nowDateTime, listTopScores, storePlayerScore)
+import Emo8.Action.Update (nowDateTime, listTopScores, storePlayerScore, isAudioStreamPlaying, stopAudioStream, addAudioStream)
 import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
 import Data.DateTime (DateTime)
-import Emo8.FFI.AudioController (AudioController, _addAudioStream, _isAudioStreamPlaying, _stopAudioStream, newAudioController)
+import Emo8.FFI.AudioController (AudioController, newAudioController)
 import Emo8.Input (isCatchAny, mapToCharacter)
 import Emo8.Types (MapId, Score, PlayerScore)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
@@ -204,17 +204,17 @@ instance gameState :: Game State where
         -- evaluate game condition
         let isGameOver = hasCollidedHazard || hasCollidedEnemy || hasCollidedEnemyBullet
             isNextLevel = hasCollidedGoal
-            isBackgroundMusicPlaying = _isAudioStreamPlaying s.audioController A.backgroundMusicId
             isLastLevel = s.mapId + 1 >= levelCount
 
+        isBackgroundMusicPlaying <- isAudioStreamPlaying s.audioController A.backgroundMusicId
+
         -- update music
-        let newAudioController = case isBackgroundMusicPlaying, (isGameOver || (isNextLevel && isLastLevel)) of
-                true, true -> _stopAudioStream s.audioController A.backgroundMusicId
-                false, false ->  _addAudioStream s.audioController A.backgroundMusicId
-                _, _ -> s.audioController
-
         now <- nowDateTime
-
+        newAudioController <- case isBackgroundMusicPlaying, (isGameOver || (isNextLevel && isLastLevel)) of
+                true, true -> stopAudioStream s.audioController A.backgroundMusicId
+                false, false ->  addAudioStream s.audioController A.backgroundMusicId
+                _, _ -> pure s.audioController
+        
         pure $ case isGameOver, isNextLevel of
             true, _ -> GameOver
             false, true -> if isLastLevel 

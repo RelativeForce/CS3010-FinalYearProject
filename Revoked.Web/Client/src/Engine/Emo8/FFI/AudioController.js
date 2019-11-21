@@ -1,29 +1,35 @@
 "use strict";
 
 exports.stop = function(audio){
-  try {
-    audio.stop();
-    return true;
-  }
-  catch(e){
-    return false;
-  }
+  return function(){
+    try {
+      audio.stop();
+      return true;
+    }
+    catch(e){
+      return false;
+    }
+  } 
 };
 
 exports.isPlaying = function(audio){
-  return audio.isPlaying();
+  return function(){
+    return audio.isPlaying();
+  }
 };
 
 exports.play = function(just){
   return function(nothing){
     return function(src){
-      try {
-        var audio = new sound(src);
-        audio.play();
-        return just(audio);
-      }
-      catch(e){
-        return nothing;
+      return function(){
+        try {
+          var audio = new sound(src);
+          audio.play();
+          return just(audio);
+        }
+        catch(e){
+          return nothing;
+        }
       }
     }
   }
