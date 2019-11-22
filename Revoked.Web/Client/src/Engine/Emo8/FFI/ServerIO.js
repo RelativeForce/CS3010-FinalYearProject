@@ -94,7 +94,7 @@ function removeFromLocalStore(requestData){
         }
     }
 
-    if(indexToRemove){
-        serverLocalStore = serverLocalStore.splice(indexToRemove, 1);
+    if(indexToRemove !== undefined){
+        serverLocalStore.splice(indexToRemove, 1);
     }
 }
