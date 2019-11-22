@@ -3,37 +3,49 @@ module Test.Engine.Emo8.FFI.AudioController.IsAudioStreamPlaying (
 ) where
 
 import Prelude
-import Emo8.FFI.AudioController (isAudioStreamPlaying, newAudioController, AudioStream)
-import Test.Unit (TestSuite, suite, test)
+import Emo8.FFI.AudioController (_isAudioStreamPlaying, newAudioController, AudioStream)
+import Test.Unit (suite, test)
 import Test.Unit.Assert (equal)
+import Test.Unit.Main (runTest)
+import Effect (Effect)
 
-isAudioStreamPlayingTests :: TestSuite
-isAudioStreamPlayingTests =
-    suite "Engine.Emo8.FFI.AudioController - isAudioStreamPlaying" do
-        test "shouldReturnPlayingAudioStreamWhenCheckerReturnsTrue" do
+isAudioStreamPlayingTests :: Effect Unit
+isAudioStreamPlayingTests = do
 
-            let 
-                src = "testAudioFile"
-                controller = (newAudioController "test") { audioStreams = [ { src: src } ] }
-                checkerSucceeds = true
-                expectedResult = true
-                
-                result = isAudioStreamPlaying (mockAudioChecker checkerSucceeds) controller src
+    shouldReturnPlayingAudioStreamWhenCheckerReturnsTrueResult <- shouldReturnPlayingAudioStreamWhenCheckerReturnsTrueSetup
+    shouldReturnNotPlayingAudioStreamWhenCheckerReturnsFalseResult <- shouldReturnNotPlayingAudioStreamWhenCheckerReturnsFalseSetup
+    
+    runTest do
+        suite "Engine.Emo8.FFI.AudioController - _isAudioStreamPlaying" do
+            test "shouldReturnPlayingAudioStreamWhenCheckerReturnsTrue" do
 
-            equal expectedResult $ result
+                let expectedResult = true
 
-        test "shouldReturnNotPlayingAudioStreamWhenCheckerReturnsFalse" do
+                equal expectedResult $ shouldReturnPlayingAudioStreamWhenCheckerReturnsTrueResult
 
-            let 
-                src = "testAudioFile"
-                controller = (newAudioController "test") { audioStreams = [ { src: src } ] }
-                checkerSucceeds = false
-                expectedResult = false
-                
-                result = isAudioStreamPlaying (mockAudioChecker checkerSucceeds) controller src
+            test "shouldReturnNotPlayingAudioStreamWhenCheckerReturnsFalse" do
 
-            equal expectedResult $ result
+                let expectedResult = false
 
+                equal expectedResult $ shouldReturnNotPlayingAudioStreamWhenCheckerReturnsFalseResult
 
-mockAudioChecker :: Boolean -> AudioStream -> Boolean
-mockAudioChecker expected audioStream = expected
+shouldReturnNotPlayingAudioStreamWhenCheckerReturnsFalseSetup :: Effect Boolean
+shouldReturnNotPlayingAudioStreamWhenCheckerReturnsFalseSetup = do
+    let 
+        src = "testAudioFile"
+        controller = (newAudioController "test") { audioStreams = [ { src: src } ] }
+        checkerSucceeds = false
+        
+    _isAudioStreamPlaying (mockAudioChecker checkerSucceeds) controller src
+
+shouldReturnPlayingAudioStreamWhenCheckerReturnsTrueSetup :: Effect Boolean
+shouldReturnPlayingAudioStreamWhenCheckerReturnsTrueSetup = do
+    let 
+        src = "testAudioFile"
+        controller = (newAudioController "test") { audioStreams = [ { src: src } ] }
+        checkerSucceeds = true
+        
+    _isAudioStreamPlaying (mockAudioChecker checkerSucceeds) controller src
+
+mockAudioChecker :: Boolean -> AudioStream -> Effect Boolean
+mockAudioChecker expected audioStream = pure expected
