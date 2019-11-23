@@ -1,8 +1,8 @@
-module Test.Revoked.Data.HighScores.EncodePlayerScore ( 
+module Test.Emo8.Interpreter.Update.EncodePlayerScore ( 
     encodePlayerScoreTests 
 ) where
 
-import Data.HighScores (encodePlayerScore)
+import Emo8.Interpreter.Update (encodePlayerScore)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 

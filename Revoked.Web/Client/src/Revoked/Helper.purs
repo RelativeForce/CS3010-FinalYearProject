@@ -13,7 +13,7 @@ import Data.Either (Either(..))
 import Emo8.Action.Draw (Draw, drawMap, drawText)
 import Emo8.Data.Color (Color(..))
 import Emo8.Action.Update (Update)
-import Emo8.Types (MapId, X, Size, Position)
+import Emo8.Types (MapId, X, Size, Position, PlayerScore)
 import Data.Formatter.DateTime as F
 import Data.DateTime (DateTime)
 
@@ -93,3 +93,20 @@ drawUsername username = do
         character u index = case u !! index of
             Nothing -> "_"
             Just char -> char
+
+drawScore :: PlayerScore -> Draw Unit
+drawScore ps = do 
+    drawText ps.username textHeight usernameX y color
+    drawText (show ps.score) textHeight scoreX y color
+    drawText ps.time textHeight timeX y color
+    drawText (show ps.position) textHeight positionX y color
+    where 
+        textHeight = 27
+        positionX = 420
+        usernameX = 500
+        scoreX = 600
+        timeX = 700 
+        startY = 500
+        paddingY = 15
+        color = White
+        y = startY - ((ps.position - 1) * (textHeight + paddingY))

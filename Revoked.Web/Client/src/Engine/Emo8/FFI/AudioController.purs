@@ -13,6 +13,7 @@ module Emo8.FFI.AudioController (
 import Prelude
 import Data.Maybe (Maybe(..))
 import Data.Array (filter, find)
+import Effect (Effect)
 
 type AudioController = {
     id :: String,
@@ -23,11 +24,11 @@ type AudioStream = {
     src :: String
 }
 
-foreign import play :: (AudioStream -> Maybe AudioStream) -> (Maybe AudioStream) -> String -> Maybe AudioStream
+foreign import play :: (AudioStream -> Maybe AudioStream) -> (Maybe AudioStream) -> String -> Effect (Maybe AudioStream)
 
-foreign import isPlaying :: AudioStream -> Boolean
+foreign import isPlaying :: AudioStream -> Effect Boolean
 
-foreign import stop :: AudioStream -> Boolean
+foreign import stop :: AudioStream -> Effect Boolean
 
 newAudioController :: String -> AudioController
 newAudioController controllerId = {
@@ -41,35 +42,44 @@ findStreamBySource controller src = find (\a -> a.src == src) controller.audioSt
 filterOutStreamsBySource :: AudioController -> String -> Array AudioStream
 filterOutStreamsBySource controller src = filter (\a -> a.src /= src) controller.audioStreams
 
-addAudioStream :: (String -> Maybe AudioStream) -> AudioController -> String -> AudioController
-addAudioStream player controller src = controller { audioStreams = newAudioStreams }
-    where 
-        maybeAudioStream = player src
-        newAudioStreams = case maybeAudioStream of 
+_addAudioStream :: (String -> Effect (Maybe AudioStream)) -> AudioController -> String -> Effect AudioController
+_addAudioStream player controller src = do
+    
+    maybeAudioStream <- player src
+
+    let newAudioStreams = case maybeAudioStream of 
             Just newAudio -> [ newAudio ] <> filterOutStreamsBySource controller src
             Nothing -> controller.audioStreams
 
-_addAudioStream :: AudioController -> String -> AudioController
-_addAudioStream = addAudioStream $ play (Just) (Nothing)
+    pure $ controller { audioStreams = newAudioStreams }        
 
-isAudioStreamPlaying :: (AudioStream -> Boolean) -> AudioController -> String -> Boolean
-isAudioStreamPlaying checker controller src = result
-    where
-        maybeAudioStream = findStreamBySource controller src
-        result = case maybeAudioStream of
-            Nothing -> false
-            Just audioStream -> checker audioStream
+addAudioStream :: AudioController -> String -> Effect AudioController
+addAudioStream = _addAudioStream $ play (Just) (Nothing)
 
-_isAudioStreamPlaying :: AudioController -> String -> Boolean
-_isAudioStreamPlaying = isAudioStreamPlaying isPlaying
+_isAudioStreamPlaying :: (AudioStream -> Effect Boolean) -> AudioController -> String -> Effect Boolean
+_isAudioStreamPlaying checker controller src = do
+    let maybeAudioStream = findStreamBySource controller src
+    case maybeAudioStream of
+        Nothing -> pure false
+        Just audioStream -> checker audioStream
 
-stopAudioStream :: (AudioStream -> Boolean) -> AudioController -> String -> AudioController
-stopAudioStream stopper controller src = controller { audioStreams = newAudioStreams }
-    where
-        maybeAudioStream = findStreamBySource controller src
-        newAudioStreams = case maybeAudioStream of
-            Nothing -> controller.audioStreams
-            Just audioStream -> if stopper audioStream then filterOutStreamsBySource controller src else controller.audioStreams
+isAudioStreamPlaying :: AudioController -> String -> Effect Boolean
+isAudioStreamPlaying = _isAudioStreamPlaying isPlaying
 
-_stopAudioStream :: AudioController -> String -> AudioController
-_stopAudioStream = stopAudioStream stop
+_stopAudioStream :: (AudioStream -> Effect Boolean) -> AudioController -> String -> Effect AudioController
+_stopAudioStream stopper controller src = do
+    
+    let maybeAudioStream = findStreamBySource controller src
+    
+    newAudioStreams <- case maybeAudioStream of
+        Nothing -> pure controller.audioStreams
+        Just audioStream -> do 
+            stopped <- stopper audioStream
+            if stopped 
+                then pure $ filterOutStreamsBySource controller src 
+                else pure $ controller.audioStreams
+    
+    pure $ controller { audioStreams = newAudioStreams }        
+
+stopAudioStream :: AudioController -> String -> Effect AudioController
+stopAudioStream = _stopAudioStream stop

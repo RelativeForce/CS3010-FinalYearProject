@@ -35,10 +35,11 @@ namespace Revoked.Services
 
             return _repository
                 .Query<PlayerScore>()
-                .OrderByDescending(hs => hs.Score)
+                .OrderByDescending(ps => ps.Score)
+                .ThenBy(ps => ps.Time)
                 .Take(numberOfScores)
                 .AsEnumerable()
-                .Select(ps => new PlayerScoreMessage(ps))
+                .Select((ps, index) => new PlayerScoreMessage(ps, index + 1))
                 .ToList();
         }
     }

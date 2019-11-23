@@ -12,7 +12,6 @@ import Data.Bullet (Bullet, updateBullet)
 import Data.Enemy (Enemy, addEnemyBullet, updateEnemy, enemyToScore)
 import Data.EnemyBullet (EnemyBullet, updateEnemyBullet)
 import Data.Foldable (traverse_, sum)
-import Data.HighScores (sendPlayerScore)
 import Data.Either (Either(..))
 import Data.String (joinWith)
 import Data.Goal (Goal, updateGoal)
@@ -22,20 +21,33 @@ import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
 import Effect (Effect)
 import Emo8 (emo8)
 import Emo8.Action.Draw (drawScaledImage, drawText)
-import Emo8.Action.Update (nowDateTime)
+import Emo8.Action.Update (nowDateTime, listTopScores, storePlayerScore, isAudioStreamPlaying, stopAudioStream, addAudioStream)
 import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
 import Data.DateTime (DateTime)
-import Emo8.FFI.AudioController (AudioController, _addAudioStream, _isAudioStreamPlaying, _stopAudioStream, newAudioController)
+import Emo8.FFI.AudioController (AudioController, newAudioController)
 import Emo8.Input (isCatchAny, mapToCharacter)
-import Emo8.Types (MapId, Score)
+import Emo8.Types (MapId, Score, PlayerScore)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
-import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance, drawUsername, formatDateTime)
+import Helper (
+    drawScrollMap, 
+    isCollideMapWalls, 
+    isCollideMapHazards, 
+    adjustMonitorDistance, 
+    drawUsername, 
+    formatDateTime, 
+    drawScore
+)
 import Levels (allRawLevels, enemies, goals, levelCount)
 
 data State = 
     TitleScreen 
     | GameOver
+    | Leaderboard {
+        scores :: Array PlayerScore,
+        isWaiting :: Boolean,
+        isLoaded :: Boolean
+    }
     | Victory {
         username :: Array String,
         score :: Int,
@@ -60,12 +72,46 @@ data State =
 
 instance gameState :: Game State where
     update input TitleScreen = do
-
         startDateTime <- nowDateTime
 
-        pure $ if isCatchAny input then initialPlayState startDateTime else TitleScreen
+        let
+            toLeaderboard = input.catched.isL
+            toPlay = isCatchAny input
+
+        pure $ case toPlay, toLeaderboard of 
+            false, true -> initialLeaderboardState
+            true, false -> initialPlayState startDateTime
+            _, _ -> TitleScreen
     update input GameOver =
-        pure $ if isCatchAny input then initialState else GameOver
+        pure $ if isCatchAny input then TitleScreen else GameOver
+    update input (Leaderboard s) = do
+        let 
+            hasNoScores = 0 == length s.scores
+            shouldLoadScores = not s.isLoaded && (s.isWaiting || hasNoScores)  
+
+        result <- if shouldLoadScores
+            then do listTopScores
+            else pure $ Left "AllowInput"
+
+        let
+            backToTitleScreen = input.catched.isBackspace
+            isWaiting = case result of
+                Left "Waiting" -> true
+                _-> false
+            isLoaded = case result of
+                Right response -> true
+                _-> false
+            scores = case result of
+                Right response -> response
+                _-> s.scores
+            
+        pure $ case backToTitleScreen of
+            true -> TitleScreen
+            false -> Leaderboard $ s {
+                scores = scores,
+                isWaiting = isWaiting,
+                isLoaded = isLoaded
+            }
     update input (Victory s) = do
         let 
             isMaxUsernameLength = maxUsernameLength == length s.username
@@ -89,20 +135,20 @@ instance gameState :: Game State where
                 end: formatDateTime s.end
             }
 
-            result = if s.isWaiting || (enterPressed && isMaxUsernameLength) 
-                then sendPlayerScore request 
-                else Left "AllowInput"
+        result <- if s.isWaiting || (enterPressed && isMaxUsernameLength) 
+            then do storePlayerScore request 
+            else pure $ Left "AllowInput"
 
+        let
             isWaiting = case result of
                 Left "Waiting" -> true
                 _-> false
-
             submissionSuccess = case result of
                 Right response -> response
                 _-> false
             
         pure $ case submissionSuccess of
-            true -> initialState
+            true -> TitleScreen
             false -> Victory $ s {
                 username = newUsername,
                 inputInterval = newInputInterval,
@@ -158,17 +204,17 @@ instance gameState :: Game State where
         -- evaluate game condition
         let isGameOver = hasCollidedHazard || hasCollidedEnemy || hasCollidedEnemyBullet
             isNextLevel = hasCollidedGoal
-            isBackgroundMusicPlaying = _isAudioStreamPlaying s.audioController A.backgroundMusicId
             isLastLevel = s.mapId + 1 >= levelCount
 
+        isBackgroundMusicPlaying <- isAudioStreamPlaying s.audioController A.backgroundMusicId
+
         -- update music
-        let newAudioController = case isBackgroundMusicPlaying, (isGameOver || (isNextLevel && isLastLevel)) of
-                true, true -> _stopAudioStream s.audioController A.backgroundMusicId
-                false, false ->  _addAudioStream s.audioController A.backgroundMusicId
-                _, _ -> s.audioController
-
         now <- nowDateTime
-
+        newAudioController <- case isBackgroundMusicPlaying, (isGameOver || (isNextLevel && isLastLevel)) of
+                true, true -> stopAudioStream s.audioController A.backgroundMusicId
+                false, false ->  addAudioStream s.audioController A.backgroundMusicId
+                _, _ -> pure s.audioController
+        
         pure $ case isGameOver, isNextLevel of
             true, _ -> GameOver
             false, true -> if isLastLevel 
@@ -197,6 +243,10 @@ instance gameState :: Game State where
         drawUsername s.username
         drawText (show s.score) 27 635 187 White
         drawText (if s.isWaiting then "Sending..." else "") 27 570 80 White
+    draw (Leaderboard s) = do
+        drawScaledImage I.leaderboardScreen 0 0
+        traverse_ drawScore s.scores
+        if s.isWaiting then drawText "Loading..." 27 570 80 White else pure unit
     draw (Play s) = do
         drawScaledImage I.blackBackground 0 0
         drawScrollMap s.distance s.mapId
@@ -235,6 +285,13 @@ initialVictoryState score start end = Victory {
     end: end,
     isWaiting: false
 } 
+
+initialLeaderboardState :: State
+initialLeaderboardState = Leaderboard {
+    scores: [],
+    isWaiting: false,
+    isLoaded: false
+}
 
 initialState :: State
 initialState = TitleScreen

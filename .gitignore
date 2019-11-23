@@ -537,3 +537,6 @@
 /Revoked.Web/Client/output/Text.Parsing.Parser.String
 /Revoked.Web/Client/output/Text.Parsing.Parser.Token
 /Revoked.Web/Properties/PublishProfiles
+/Revoked.Web/Client/output/Test.Emo8.Interpreter.Update
+/Revoked.Web/Client/output/Test.Emo8.Interpreter.Update.EncodePlayerScore
+/Revoked.Web/Client/output/Test.Engine.Emo8.Interpreter
