@@ -13,7 +13,6 @@ import Emo8.Data.Sprite (incrementFrame)
 import Emo8.Input (Input)
 import Emo8.Types (Sprite, Velocity, X, Position)
 import Emo8.Utils (defaultMonitorSize, updatePosition)
-import Emo8.Action.Update (Update)
 
 data Player = Player { 
     pos :: Position, 
@@ -37,24 +36,20 @@ instance objectDrawPlayer :: ObjectDraw Player where
             Forword -> drawRotatedSprite p.sprite (position o).x (position o).y (- 30)
             Backword -> drawRotatedSprite p.sprite (position o).x (position o).y 30
 
-updatePlayer :: Input -> Player -> X -> (Player -> Update Boolean) -> Update Player
-updatePlayer i (Player p) distance collisionCheck = do
-    let 
+updatePlayer :: Input -> Player -> X -> (Player -> Boolean) -> Player
+updatePlayer i (Player p) distance collisionCheck = newPlayer
+    where
         newVelocityBasedOnGravity = updateVelocity i p.velocity p.onFloor
-
         newPositionBasedOnVelocity = updatePosition p.pos newVelocityBasedOnGravity
-
         newEnergy = case (canFire p.energy), i.active.isEnter of
             true, true -> 0
             true, false -> p.energy
             false, _ -> p.energy + 1
-
         newAppear =
             case i.active.isA, i.active.isD of
                 true, false -> Backword 
                 false, true -> Forword
                 _, _ -> Stable 
-
         playerBasedOnVelocity = Player $ p { 
             pos = newPositionBasedOnVelocity, 
             energy = newEnergy, 
@@ -63,15 +58,10 @@ updatePlayer i (Player p) distance collisionCheck = do
             velocity = newVelocityBasedOnGravity,
             onFloor = p.onFloor
         }
-
-    playerBasedOnMapCollision <- collide p.pos playerBasedOnVelocity distance collisionCheck
-
-    let
+        playerBasedOnMapCollision = collide p.pos playerBasedOnVelocity distance collisionCheck
         playerBasedOnMonitorCollision = beInMonitor p.pos playerBasedOnMapCollision
         newPlayer = adjustVelocity p.pos playerBasedOnMonitorCollision
     
-    pure newPlayer
-
 updateVelocity :: Input -> Velocity -> Boolean -> Velocity
 updateVelocity i currentVelocity onFloor = { xSpeed: xSpeed, ySpeed: ySpeed }
     where
@@ -129,9 +119,12 @@ adjustVelocity oldPos (Player new) = Player $ new {
             then 0.0
             else currentVelocity.ySpeed
 
-collide :: Position -> Player -> X -> (Player -> Update Boolean) -> Update Player
-collide oldPos (Player newPlayer) distance collisionCheck = do
-    let 
+collide :: Position -> Player -> X -> (Player -> Boolean) -> Player
+collide oldPos (Player newPlayer) distance collisionCheck = Player $ newPlayer { 
+    pos = newPosition, 
+    onFloor = newOnFloor
+}
+    where
         newPos = newPlayer.pos
         xChangePlayer = Player $ newPlayer { 
             pos = { 
@@ -145,10 +138,10 @@ collide oldPos (Player newPlayer) distance collisionCheck = do
                 y: newPos.y 
             }
         }
-    xCollide <- collisionCheck xChangePlayer
-    yCollide <- collisionCheck yChangePlayer
-    bothCollide <- collisionCheck (Player newPlayer)
-    let newPosition = case xCollide, yCollide, bothCollide of
+        xCollide = collisionCheck xChangePlayer
+        yCollide = collisionCheck yChangePlayer
+        bothCollide = collisionCheck (Player newPlayer)
+        newPosition = case xCollide, yCollide, bothCollide of
             true, false, _ -> { 
                 x: adjustX oldPos.x newPos.x distance, 
                 y: newPos.y 
@@ -163,10 +156,7 @@ collide oldPos (Player newPlayer) distance collisionCheck = do
                 y: adjustY oldPos.y newPos.y 
             }
         newOnFloor = yCollide
-    pure $ Player $ newPlayer { 
-        pos = newPosition, 
-        onFloor = newOnFloor
-    }
+    
 
 beInMonitor :: Position -> Player -> Player
 beInMonitor pos (Player np) = Player $ np { pos = { x: npx, y: npy } }

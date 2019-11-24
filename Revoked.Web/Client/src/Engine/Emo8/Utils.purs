@@ -5,6 +5,7 @@ module Emo8.Utils (
     isMonitorCollide, 
     isOutOfMonitor, 
     isCollide,
+    isMapCollide,
     updatePosition
 ) where
 
@@ -16,7 +17,10 @@ import Emo8.Excepiton (orErrMsg)
 import Emo8.Parse (RawMap, parseTileMap)
 import Data.Int (toNumber, floor)
 import Assets.AssetMapper (emojiToImage)
-import Emo8.Types (Asset, MonitorSize, Size, X, Y, Position, Velocity)
+import Emo8.Types (Asset, MonitorSize, Size, X, Y, Position, Velocity, IdX, IdY, MapId, ScaledImage, AssetId)
+import Data.Array (reverse, (!!))
+import Data.Foldable (elem, foldr)
+import Data.Maybe (Maybe(..))
 
 -- | Collision detection if an object protrudes out of monitor
 isMonitorCollide :: MonitorSize -> Size -> X -> Y -> Boolean
@@ -50,6 +54,33 @@ isCollide objectSizeA xA yA objectSizeB xB yB
         pBrx = xB + objectSizeB.width - 1
         pBby = yB
         pBty = yB + objectSizeB.height - 1 
+
+isMapCollide :: Asset -> MapId -> Size -> Array AssetId -> Size -> X -> Y -> Boolean
+isMapCollide asset mId mSize collidableObjectIds size x y = foldr f false [lbE, rbE, ltE, rtE]
+    where
+        lx = x
+        rx = x + size.width - 1
+        by = y
+        ty = y + size.height - 1
+        f :: Maybe ScaledImage -> Boolean -> Boolean
+        f maybeImage b = case maybeImage of
+            Just img | elem img.id collidableObjectIds -> true
+            _ -> b
+        lbE = getMapTile asset mId (lx / mSize.width) (by / mSize.height)
+        rbE = getMapTile asset mId (rx / mSize.width) (by / mSize.height)
+        ltE = getMapTile asset mId (lx / mSize.width) (ty / mSize.height)
+        rtE = getMapTile asset mId (rx / mSize.width) (ty / mSize.height)
+
+getMapTile :: Asset -> MapId -> IdX -> IdY -> Maybe ScaledImage
+getMapTile ass mId xId yId = maybeTile
+    where 
+        map = case ass.mapData !! mId of
+            Nothing -> []
+            Just m -> m
+        maybeAtIndex = reverse map !! yId >>= flip (!!) xId
+        maybeTile = case maybeAtIndex of
+            Nothing -> Nothing
+            Just e -> e
 
 -- | Make asset data from raw maps.
 -- | If there are unparsable strings, exception raised when executing javascript.

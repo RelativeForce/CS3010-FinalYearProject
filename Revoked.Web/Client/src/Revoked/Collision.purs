@@ -3,18 +3,17 @@ module Collision where
 import Prelude
 import Constants (walls, hazards, mapTileSize)
 import Class.Object (class Object, position, size)
-import Emo8.Action.Update (Update, isMapCollide)
-import Emo8.Types (MapId, AssetId, Position, Size)
-import Emo8.Utils (defaultMonitorSize, isCollide, isMonitorCollide, isOutOfMonitor)
+import Emo8.Types (MapId, AssetId, Position, Size, Asset)
+import Emo8.Utils (defaultMonitorSize, isCollide, isMonitorCollide, isOutOfMonitor, isMapCollide)
 
-isWallsCollide :: MapId -> Size -> Size -> Position -> Update Boolean
-isWallsCollide mId mSize size pos = isCollMap mId mSize size pos walls
+isWallsCollide :: Asset -> MapId -> Size -> Size -> Position -> Boolean
+isWallsCollide asset mId mSize size pos = isCollMap asset mId mSize size pos walls
 
-isHazardCollide :: MapId -> Size -> Size -> Position -> Update Boolean
-isHazardCollide mId mSize size pos = isCollMap mId mSize size pos hazards
+isHazardCollide :: Asset -> MapId -> Size -> Size -> Position -> Boolean
+isHazardCollide asset mId mSize size pos = isCollMap asset mId mSize size pos hazards
 
-isCollMap :: MapId -> Size -> Size -> Position -> Array AssetId -> Update Boolean
-isCollMap mId mSize size {x, y} collidableObjectIds = isMapCollide mId mSize collidableObjectIds size x y  
+isCollMap :: Asset -> MapId -> Size -> Size -> Position -> Array AssetId -> Boolean
+isCollMap asset mId mSize size {x, y} collidableObjectIds = isMapCollide asset mId mSize collidableObjectIds size x y  
 
 isCollideWorld :: forall a. Object a => a -> Boolean
 isCollideWorld o = isCollWorld (size o) (position o)

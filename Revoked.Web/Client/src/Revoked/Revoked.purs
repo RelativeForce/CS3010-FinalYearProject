@@ -71,7 +71,7 @@ data State =
     }
 
 instance gameState :: Game State where
-    update input TitleScreen = do
+    update _ input TitleScreen = do
         startDateTime <- nowDateTime
 
         let
@@ -82,9 +82,9 @@ instance gameState :: Game State where
             false, true -> initialLeaderboardState
             true, false -> initialPlayState startDateTime
             _, _ -> TitleScreen
-    update input GameOver =
+    update _ input GameOver =
         pure $ if isCatchAny input then TitleScreen else GameOver
-    update input (Leaderboard s) = do
+    update _ input (Leaderboard s) = do
         let 
             hasNoScores = 0 == length s.scores
             shouldLoadScores = not s.isLoaded && (s.isWaiting || hasNoScores)  
@@ -112,7 +112,7 @@ instance gameState :: Game State where
                 isWaiting = isWaiting,
                 isLoaded = isLoaded
             }
-    update input (Victory s) = do
+    update _ input (Victory s) = do
         let 
             isMaxUsernameLength = maxUsernameLength == length s.username
             backSpacePressed = input.active.isBackspace
@@ -154,13 +154,11 @@ instance gameState :: Game State where
                 inputInterval = newInputInterval,
                 isWaiting = isWaiting
             }
-    update input (Play s) = do
+    update asset input (Play s) = do
 
-        -- update player
-        updatedPlayer <- updatePlayer input s.player s.distance (isCollideMapWalls s.mapId s.distance)
-
-        -- adjust entities and map for scrolling
-        let newDistance = adjustMonitorDistance updatedPlayer s.distance
+        -- adjust player, entities and map for scrolling
+        let updatedPlayer = updatePlayer input s.player s.distance (isCollideMapWalls asset s.mapId s.distance)
+            newDistance = adjustMonitorDistance updatedPlayer s.distance
             scrollOffset = (s.distance - newDistance)
             scrollAdjustedPlayer = scroll scrollOffset updatedPlayer
             scrollAdjustedBullets = map (scroll scrollOffset) s.bullets
@@ -169,25 +167,22 @@ instance gameState :: Game State where
             scrollAdjustedParticles = map (scroll scrollOffset) s.particles
             scrollAdjustedEnemyBullets = map (scroll scrollOffset) s.enemyBullets
 
-        let { yes: enemiesInView, no: enemiesNotInView } = partition (not <<< isOutOfWorld) scrollAdjustedEnemies
-
         -- updated entities
-        let updatedBullets = map updateBullet scrollAdjustedBullets
-            updatedEnemies = map (updateEnemy s.player) enemiesInView
+        let { yes: enemiesInView, no: enemiesNotInView } = partition (not <<< isOutOfWorld) scrollAdjustedEnemies
+            updatedBullets = map updateBullet scrollAdjustedBullets
+            updatedEnemies = map (updateEnemy (isCollideMapWalls asset s.mapId s.distance) s.distance s.player) enemiesInView
             updatedGoals = map updateGoal scrollAdjustedGoals
             updatedParticles = map updateParticle scrollAdjustedParticles
             updatedEnemyBullets = map updateEnemyBullet scrollAdjustedEnemyBullets
 
         -- player collision
-        hasCollidedHazard <- isCollideMapHazards s.mapId s.distance scrollAdjustedPlayer
-
-        let hasCollidedEnemy = any (isCollideObjects scrollAdjustedPlayer) updatedEnemies
+        let hasCollidedHazard = isCollideMapHazards asset s.mapId s.distance scrollAdjustedPlayer
+            hasCollidedEnemy = any (isCollideObjects scrollAdjustedPlayer) updatedEnemies
             hasCollidedEnemyBullet = any (isCollideObjects scrollAdjustedPlayer) updatedEnemyBullets
             hasCollidedGoal = any (isCollideObjects scrollAdjustedPlayer) s.goals
 
         -- separate entities
-        let 
-            { yes: collidedEnemies, no: notCollidedEnemies } = partition (\e -> any (isCollideObjects e) updatedBullets) updatedEnemies
+        let { yes: collidedEnemies, no: notCollidedEnemies } = partition (\e -> any (isCollideObjects e) updatedBullets) updatedEnemies
             { yes: collidedBullets, no: notCollidedBullets } = partition (\b -> any (isCollideObjects b) updatedEnemies) updatedBullets
 
         -- add new entities

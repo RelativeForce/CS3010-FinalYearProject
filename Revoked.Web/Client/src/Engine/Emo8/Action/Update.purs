@@ -8,14 +8,13 @@ import Data.DateTime (DateTime)
 import Data.Either (Either)
 import Data.Maybe (Maybe)
 import Emo8.FFI.AudioController (AudioController)
-import Emo8.Types (X, Y, MapId, AssetId, Size, PlayerScore, PlayerScoreCreateRequestData)
+import Emo8.Types (PlayerScore, PlayerScoreCreateRequestData)
 
 type Update = Free UpdateF
 
 data UpdateF n
     = RandomInt Int Int (Int -> n)
     | RandomNumber Number Number (Number -> n)
-    | IsMapCollide MapId Size (Array AssetId) Size X Y (Boolean -> n)
     | NowDateTime (DateTime -> n)
     | StorePlayerScore PlayerScoreCreateRequestData (Either String Boolean -> n)
     | ListTopScores (Either String (Array PlayerScore) -> n) 
@@ -35,10 +34,6 @@ randomElement xs = index xs <$> randomInt 0 max
 -- | Get random number.
 randomNumber :: Number -> Number -> Update Number
 randomNumber min max = liftF $ RandomNumber min max identity
-
--- | Detect map collision.
-isMapCollide :: MapId -> Size -> Array AssetId -> Size -> X -> Y -> Update Boolean
-isMapCollide mId mSize collidableObjectIds size x y = liftF $ IsMapCollide mId mSize collidableObjectIds size x y identity
 
 nowDateTime :: Update DateTime
 nowDateTime = liftF $ NowDateTime identity

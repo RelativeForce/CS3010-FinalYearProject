@@ -39,7 +39,7 @@ type Polar = {
 }
 
 instance gameState :: Game State where
-  update i st@(State s)
+  update _ i st@(State s)
     | isFinish st = pure st
     | otherwise = if isCatchAny i
       then do
