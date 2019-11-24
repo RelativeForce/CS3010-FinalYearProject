@@ -29,7 +29,11 @@ addMarineBullet playerObject@(Player p) marine = if canFire && withinRange then 
         canFire = canFireBullet marine
         v = vectorTo p.pos marine.pos
         scaledVelocity = { xSpeed: (toNumber v.x) / 40.0, ySpeed: (toNumber v.y) / 40.0 } 
-        newBullet = MarineBullet { pos: marine.pos { y = marine.pos.y + (marine.sprite.size.height / 2) }, velocity: scaledVelocity}
+        newBullet = MarineBullet { 
+            pos: marine.pos { y = marine.pos.y + (marine.sprite.size.height / 2) }, 
+            velocity: scaledVelocity,
+            sprite: S.bulletRight
+        }
 
 playerInRange :: Player -> Marine -> Boolean
 playerInRange (Player p) marine = marineAgroRange > distanceBetween p.pos marine.pos

@@ -1,16 +1,4 @@
-module Emo8.Utils ( 
-    mkAsset, 
-    emptyAsset, 
-    defaultMonitorSize, 
-    isMonitorCollide, 
-    isOutOfMonitor, 
-    isCollide,
-    isMapCollide,
-    updatePosition,
-    xor,
-    distanceBetween,
-    vectorTo
-) where
+module Emo8.Utils where
 
 import Prelude
 
@@ -20,11 +8,11 @@ import Emo8.Excepiton (orErrMsg)
 import Emo8.Parse (RawMap, parseTileMap)
 import Data.Int (toNumber, floor)
 import Assets.AssetMapper (emojiToImage)
-import Emo8.Types (Asset, MonitorSize, Size, X, Y, Position, Velocity, IdX, IdY, MapId, ScaledImage, AssetId)
+import Emo8.Types (Asset, MonitorSize, Size, X, Y, Position, Velocity, IdX, IdY, MapId, ScaledImage, AssetId, Deg)
 import Data.Array (reverse, (!!))
 import Data.Foldable (elem, foldr)
 import Data.Maybe (Maybe(..))
-import Math (sqrt)
+import Math (sqrt, atan, pi)
 
 -- | Collision detection if an object protrudes out of monitor
 isMonitorCollide :: MonitorSize -> Size -> X -> Y -> Boolean
@@ -50,6 +38,9 @@ distanceFromOrigin p = sqrt $ toNumber $ (p.x * p.x) + (p.y * p.y)
 
 vectorTo :: Position -> Position -> Position
 vectorTo positionA positionB = { x: positionA.x - positionB.x, y: positionA.y - positionB.y }
+
+toPosition :: Velocity -> Position
+toPosition v = { x: floor v.xSpeed, y: floor v.ySpeed }
 
 distanceBetween :: Position -> Position -> Number
 distanceBetween a b = distanceFromOrigin $ vectorTo a b
@@ -110,6 +101,9 @@ emptyAsset :: Asset
 emptyAsset = { 
     mapData: []
 }
+
+angle :: Velocity -> Deg
+angle p = floor $ (180.0 * (atan (p.ySpeed / p.xSpeed))) / pi
 
 defaultMonitorSize :: MonitorSize
 defaultMonitorSize = { 
