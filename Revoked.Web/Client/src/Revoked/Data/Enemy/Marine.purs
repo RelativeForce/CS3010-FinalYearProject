@@ -2,15 +2,14 @@ module Data.Enemy.Marine where
 
 import Prelude
 
-import Constants (marineWalkSpeed, gravity, marineAgroRange, marineShotCooldown)
+import Constants (marineWalkSpeed, gravity, marineAgroRange, marineShotCooldown, marineBulletSpeed)
 import Assets.Sprites as S
 import Emo8.Types (Position, Sprite, Velocity, X)
 import Data.EnemyBullet (EnemyBullet(..))
 import Data.Player (Player(..))
 import Collision (adjustX)
-import Emo8.Utils (updatePosition, distanceBetween, vectorTo)
+import Emo8.Utils (updatePosition, distanceBetween, vectorTo, toVelocity, normalise)
 import Emo8.Data.Sprite (incrementFrame)
-import Data.Int (toNumber)
 
 data MarineAppear = Standing | WalkingLeft | WalkingRight 
 
@@ -27,8 +26,8 @@ addMarineBullet playerObject@(Player p) marine = if canFire && withinRange then 
     where 
         withinRange = playerInRange playerObject marine
         canFire = canFireBullet marine
-        v = vectorTo p.pos marine.pos
-        scaledVelocity = { xSpeed: (toNumber v.x) / 40.0, ySpeed: (toNumber v.y) / 40.0 } 
+        v = normalise $ toVelocity $ vectorTo p.pos marine.pos
+        scaledVelocity = { xSpeed: v.xSpeed * marineBulletSpeed, ySpeed: v.ySpeed * marineBulletSpeed} 
         newBullet = MarineBullet { 
             pos: marine.pos { y = marine.pos.y + (marine.sprite.size.height / 2) }, 
             velocity: scaledVelocity,

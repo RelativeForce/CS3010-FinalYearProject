@@ -36,11 +36,22 @@ isOutOfMonitor ms objectSize x y
 distanceFromOrigin :: Position -> Number
 distanceFromOrigin p = sqrt $ toNumber $ (p.x * p.x) + (p.y * p.y)
 
+magnitude :: Velocity -> Number
+magnitude v = sqrt $ (v.xSpeed * v.xSpeed) + (v.ySpeed * v.ySpeed)
+
 vectorTo :: Position -> Position -> Position
 vectorTo positionA positionB = { x: positionA.x - positionB.x, y: positionA.y - positionB.y }
 
 toPosition :: Velocity -> Position
 toPosition v = { x: floor v.xSpeed, y: floor v.ySpeed }
+
+toVelocity :: Position -> Velocity
+toVelocity p = { xSpeed: (toNumber p.x), ySpeed: (toNumber p.y)  } 
+
+normalise :: Velocity -> Velocity
+normalise v = { xSpeed: v.xSpeed / length, ySpeed: v.ySpeed / length } 
+    where
+        length = magnitude v
 
 distanceBetween :: Position -> Position -> Number
 distanceBetween a b = distanceFromOrigin $ vectorTo a b
@@ -101,6 +112,8 @@ emptyAsset :: Asset
 emptyAsset = { 
     mapData: []
 }
+
+
 
 angle :: Velocity -> Deg
 angle p = floor $ (180.0 * (atan (p.ySpeed / p.xSpeed))) / pi

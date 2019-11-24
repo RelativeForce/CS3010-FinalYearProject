@@ -41,8 +41,10 @@ enemies :: Array Enemy
 enemies = [
     defaultMarine { x: 830, y: 32 },
     defaultMarine { x: 864, y: 224 }, 
-    defaultMarine { x: 1830, y: 150 },
-    defaultMarine { x: 1980, y: 250 }
+    defaultMarine { x: 1504, y: 224 },
+    defaultMarine { x: 1856, y: 64 },
+    defaultMarine { x: 2528, y: 64 },
+    defaultMarine { x: 3008, y: 64 }
 ]
 
 chopperY :: Int
