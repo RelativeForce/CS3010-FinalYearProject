@@ -22,6 +22,7 @@ import Emo8.Types (Asset, MonitorSize, Size, X, Y, Position, Velocity, IdX, IdY,
 import Data.Array (reverse, (!!))
 import Data.Foldable (elem, foldr)
 import Data.Maybe (Maybe(..))
+import Math (sqrt)
 
 -- | Collision detection if an object protrudes out of monitor
 isMonitorCollide :: MonitorSize -> Size -> X -> Y -> Boolean
@@ -41,6 +42,9 @@ isOutOfMonitor ms objectSize x y
     || x > ms.width
     || y + objectSize.height - 1 < 0
     || y > ms.height
+
+distanceFromOrigin :: Position -> Number
+distanceFromOrigin p = sqrt $ toNumber $ (p.x * p.x) + (p.y * p.y)
 
 -- | Collision detection between two objects
 isCollide :: Size -> X -> Y -> Size -> X -> Y -> Boolean
