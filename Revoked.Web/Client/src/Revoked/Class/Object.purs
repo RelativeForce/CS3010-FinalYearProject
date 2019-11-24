@@ -11,9 +11,3 @@ class Object s where
 
 class Object s <= ObjectDraw s where
     draw :: s -> Draw Unit
-
-vectorTo :: forall a b. Object a => Object b => a -> b -> Position
-vectorTo a b = { x: positionA.x - positionB.x, y: positionA.y - positionB.y }
-    where 
-        positionA = position a
-        positionB = position b

@@ -3,11 +3,11 @@ module Data.Enemy where
 import Prelude
 
 import Class.Object (class ObjectDraw, class Object, position)
-import Data.EnemyBullet (EnemyBullet(..))
-import Data.Player (Player(..))
+import Data.EnemyBullet (EnemyBullet)
+import Data.Player (Player)
 import Emo8.Action.Draw (drawSprite)
 import Assets.Sprites as S
-import Data.Enemy.Marine (Marine, MarineAppear(..), updateMarine)
+import Data.Enemy.Marine (Marine, MarineAppear(..), updateMarine, addMarineBullet)
 import Emo8.Types (Position, Score, X)
 
 data Enemy = EnemyMarine Marine
@@ -24,7 +24,7 @@ enemyToScore :: Enemy -> Score
 enemyToScore (EnemyMarine s) = 9
 
 addEnemyBullet :: Player -> Enemy -> Array EnemyBullet
-addEnemyBullet (Player p) (EnemyMarine e) = []
+addEnemyBullet p (EnemyMarine m) = addMarineBullet p m
 
 updateEnemy :: (Enemy -> Boolean) -> X -> Player -> Enemy -> Enemy
 updateEnemy collisionCheck distance playerObject (EnemyMarine marine) = EnemyMarine $ updateMarine (toMarineCollision collisionCheck) distance playerObject marine

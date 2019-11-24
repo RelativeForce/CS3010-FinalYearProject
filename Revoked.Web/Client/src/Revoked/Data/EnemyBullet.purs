@@ -5,12 +5,14 @@ import Prelude
 import Class.Object (class ObjectDraw, class Object, position, size)
 import Constants (emoSize)
 import Emo8.Action.Draw (emor)
+import Emo8.Utils (updatePosition)
 import Emo8.Data.Emoji as E
-import Emo8.Types  (Position)
+import Emo8.Types  (Position, Velocity)
 
-data EnemyBullet
-    = NormalBull { pos :: Position }
-    | ParseBull { pos :: Position, vec :: Position, t :: Int }
+data EnemyBullet = MarineBullet { 
+    pos :: Position,
+    velocity :: Velocity
+}
 
 instance objectEnemyBullet :: Object EnemyBullet where
     size _ = { 
@@ -18,16 +20,14 @@ instance objectEnemyBullet :: Object EnemyBullet where
         height: emoSize.height / 2
     }
 
-    position (NormalBull s) = s.pos
-    position (ParseBull s) = s.pos
+    position (MarineBullet s) = s.pos
 
-    scroll offset (NormalBull s) = NormalBull $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
-    scroll offset (ParseBull s) = ParseBull $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
+    scroll offset (MarineBullet s) = MarineBullet $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
 
 instance objectDrawEnemyBullet :: ObjectDraw EnemyBullet where
-    draw o@(NormalBull _) = emor (-40) E.pushpin (size o) (position o).x (position o).y
-    draw o@(ParseBull s) = emor (10 * s.t) E.hammer (size o) (position o).x (position o).y
+    draw o@(MarineBullet _) = emor (-40) E.pushpin (size o) (position o).x (position o).y
 
 updateEnemyBullet :: EnemyBullet -> EnemyBullet
-updateEnemyBullet (NormalBull s) = NormalBull $ s { pos { x = s.pos.x - 6 } }
-updateEnemyBullet (ParseBull s) = ParseBull $ s { pos { x = s.pos.x + s.vec.x, y = s.pos.y + s.vec.y }, t = s.t + 1 }
+updateEnemyBullet (MarineBullet b) = MarineBullet $ b { pos = newPosition }
+    where
+        newPosition = updatePosition b.pos b.velocity

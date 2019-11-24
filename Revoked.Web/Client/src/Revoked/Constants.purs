@@ -83,7 +83,10 @@ maxUsernameLength :: Int
 maxUsernameLength = 3
 
 marineAgroRange :: Number
-marineAgroRange = 100.0
+marineAgroRange = 250.0
 
 marineWalkSpeed :: Number
 marineWalkSpeed = 2.0
+
+marineShotCooldown :: Int
+marineShotCooldown = 10

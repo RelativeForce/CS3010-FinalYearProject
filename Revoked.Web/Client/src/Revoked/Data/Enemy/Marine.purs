@@ -2,13 +2,15 @@ module Data.Enemy.Marine where
 
 import Prelude
 
-import Constants (marineWalkSpeed, gravity)
+import Constants (marineWalkSpeed, gravity, marineAgroRange, marineShotCooldown)
 import Assets.Sprites as S
 import Emo8.Types (Position, Sprite, Velocity, X)
+import Data.EnemyBullet (EnemyBullet(..))
 import Data.Player (Player(..))
 import Collision (adjustX)
-import Emo8.Utils (updatePosition)
+import Emo8.Utils (updatePosition, distanceBetween, vectorTo)
 import Emo8.Data.Sprite (incrementFrame)
+import Data.Int (toNumber)
 
 data MarineAppear = Standing | WalkingLeft | WalkingRight 
 
@@ -20,18 +22,38 @@ type Marine = {
     shotCoolDown :: Int
 }
 
+addMarineBullet :: Player -> Marine -> Array EnemyBullet
+addMarineBullet playerObject@(Player p) marine = if canFire && withinRange then [ newBullet ] else []
+    where 
+        withinRange = playerInRange playerObject marine
+        canFire = canFireBullet marine
+        v = vectorTo p.pos marine.pos
+        scaledVelocity = { xSpeed: (toNumber v.x) / 40.0, ySpeed: (toNumber v.y) / 40.0 } 
+        newBullet = MarineBullet { pos: marine.pos { y = marine.pos.y + (marine.sprite.size.height / 2) }, velocity: scaledVelocity}
+
+playerInRange :: Player -> Marine -> Boolean
+playerInRange (Player p) marine = marineAgroRange > distanceBetween p.pos marine.pos
+
+canFireBullet :: Marine -> Boolean
+canFireBullet m = m.shotCoolDown == 0
+
 updateMarine :: (Marine -> Boolean) -> X -> Player -> Marine -> Marine
-updateMarine collisionCheck distance playerObject marine = newMarine
+updateMarine collisionCheck distance p marine = newMarine
     where
         newVelocityBasedOnGravity = updateVelocity marine.appear marine.velocity
+        withinRange = playerInRange p marine
+        canFire = canFireBullet marine
         newPositionBasedOnVelocity = updatePosition marine.pos newVelocityBasedOnGravity
-        shotCoolDown = if marine.shotCoolDown > 0 then marine.shotCoolDown - 1 else 0
+        shotCoolDown = case canFire, withinRange of 
+            true, true -> marineShotCooldown
+            true, false -> 0
+            false, _ -> marine.shotCoolDown - 1 
         marineBasedOnVelocity = {
             pos: newPositionBasedOnVelocity,
             sprite: incrementFrame marine.sprite,
             appear: marine.appear,
             velocity: newVelocityBasedOnGravity,
-            shotCoolDown: marine.shotCoolDown
+            shotCoolDown: shotCoolDown
         }
         marineBasedOnMapCollision = collideMarine marine.pos marineBasedOnVelocity distance collisionCheck
         newMarine = adjustVelocity marine.pos marineBasedOnMapCollision

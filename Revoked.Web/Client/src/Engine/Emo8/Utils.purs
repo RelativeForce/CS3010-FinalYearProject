@@ -7,7 +7,9 @@ module Emo8.Utils (
     isCollide,
     isMapCollide,
     updatePosition,
-    xor
+    xor,
+    distanceBetween,
+    vectorTo
 ) where
 
 import Prelude
@@ -45,6 +47,12 @@ isOutOfMonitor ms objectSize x y
 
 distanceFromOrigin :: Position -> Number
 distanceFromOrigin p = sqrt $ toNumber $ (p.x * p.x) + (p.y * p.y)
+
+vectorTo :: Position -> Position -> Position
+vectorTo positionA positionB = { x: positionA.x - positionB.x, y: positionA.y - positionB.y }
+
+distanceBetween :: Position -> Position -> Number
+distanceBetween a b = distanceFromOrigin $ vectorTo a b
 
 -- | Collision detection between two objects
 isCollide :: Size -> X -> Y -> Size -> X -> Y -> Boolean
