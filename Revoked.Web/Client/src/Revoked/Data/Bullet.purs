@@ -4,7 +4,7 @@ import Prelude
 
 import Class.Object (class ObjectDraw, class Object)
 import Emo8.Action.Draw (drawSprite)
-import Data.Sprites as S
+import Assets.Sprites as S
 import Emo8.Types (Position, Sprite)
 
 data BulletAppear = Forward | Backward

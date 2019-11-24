@@ -1,54 +1,63 @@
 module Assets.AssetIds where
 
-import Emo8.Types (ImageId)
+import Emo8.Types (AssetId)
 
-titleScreenId :: ImageId
+titleScreenId :: AssetId
 titleScreenId = 1
 
-blackBackgroundId :: ImageId
+blackBackgroundId :: AssetId
 blackBackgroundId = 2
 
-playerSpriteId :: ImageId
+playerSpriteId :: AssetId
 playerSpriteId = 3
 
-grassTopId :: ImageId
+grassTopId :: AssetId
 grassTopId = 4
 
-grassLeftId :: ImageId
+grassLeftId :: AssetId
 grassLeftId = 5
 
-grassRightId :: ImageId
+grassRightId :: AssetId
 grassRightId = 6
 
-grassLeftCornerId :: ImageId
+grassLeftCornerId :: AssetId
 grassLeftCornerId = 7
 
-grassRightCornerId :: ImageId
+grassRightCornerId :: AssetId
 grassRightCornerId = 8
 
-grassCenterId :: ImageId
+grassCenterId :: AssetId
 grassCenterId = 9
 
-bulletForwardId :: ImageId
+bulletForwardId :: AssetId
 bulletForwardId = 10
 
-bulletBackwardId :: ImageId
+bulletBackwardId :: AssetId
 bulletBackwardId = 11
 
-toxicWasteId :: ImageId
+toxicWasteId :: AssetId
 toxicWasteId = 12
 
-chopperId :: ImageId
+chopperId :: AssetId
 chopperId = 13
 
-ladderId :: ImageId
+ladderId :: AssetId
 ladderId = 14
 
-gameOverScreenId :: ImageId
+gameOverScreenId :: AssetId
 gameOverScreenId = 15
 
-victoryScreenId :: ImageId
+victoryScreenId :: AssetId
 victoryScreenId = 16
 
-leaderboardScreenId :: ImageId
+leaderboardScreenId :: AssetId
 leaderboardScreenId = 17
+
+marineLeftId :: AssetId
+marineLeftId = 18
+
+marineRightId :: AssetId
+marineRightId = 19
+
+marineStandingId :: AssetId
+marineStandingId = 20

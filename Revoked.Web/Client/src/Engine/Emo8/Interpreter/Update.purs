@@ -10,7 +10,7 @@ import Effect (Effect)
 import Emo8.Action.Update (Update, UpdateF(..))
 import Emo8.Class.Game (class Game)
 import Emo8.Excepiton (providedMap)
-import Emo8.Types (Asset, IdX, IdY, MapId, X, Y, ScaledImage, ImageId, Size, PlayerScoreCreateRequestData, PlayerScore, Request)
+import Emo8.Types (Asset, IdX, IdY, MapId, X, Y, ScaledImage, AssetId, Size, PlayerScoreCreateRequestData, PlayerScore, Request)
 import Random.PseudoRandom (randomREff)
 import Effect.Now (nowDateTime)
 import Emo8.FFI.ServerIO (send)
@@ -34,7 +34,7 @@ runUpdate ass = foldFree interpret
     interpret (StopAudioStream controller src f) = f <$> stopAudioStream controller src
 
 -- TODO: large object detection
-isMapCollide :: Asset -> MapId -> Size -> Array ImageId -> Size -> X -> Y -> Effect Boolean
+isMapCollide :: Asset -> MapId -> Size -> Array AssetId -> Size -> X -> Y -> Effect Boolean
 isMapCollide asset mId mSize collidableObjectIds size x y = do
     lbE <- getMapTile asset mId (lx / mSize.width) (by / mSize.height)
     rbE <- getMapTile asset mId (rx / mSize.width) (by / mSize.height)

@@ -4,7 +4,8 @@ module Emo8.Utils (
     defaultMonitorSize, 
     isMonitorCollide, 
     isOutOfMonitor, 
-    isCollide
+    isCollide,
+    updatePosition
 ) where
 
 import Prelude
@@ -13,8 +14,9 @@ import Data.Traversable (traverse)
 import Effect (Effect)
 import Emo8.Excepiton (orErrMsg)
 import Emo8.Parse (RawMap, parseTileMap)
+import Data.Int (toNumber, floor)
 import Assets.AssetMapper (emojiToImage)
-import Emo8.Types (Asset, MonitorSize, Size, X, Y)
+import Emo8.Types (Asset, MonitorSize, Size, X, Y, Position, Velocity)
 
 -- | Collision detection if an object protrudes out of monitor
 isMonitorCollide :: MonitorSize -> Size -> X -> Y -> Boolean
@@ -67,3 +69,9 @@ defaultMonitorSize = {
     width: 1280, 
     height: 720
 }
+
+updatePosition :: Position -> Velocity -> Position
+updatePosition p v = { x: x, y: y }
+    where
+        x = floor $ (toNumber p.x) + v.xSpeed
+        y = floor $ (toNumber p.y) + v.ySpeed

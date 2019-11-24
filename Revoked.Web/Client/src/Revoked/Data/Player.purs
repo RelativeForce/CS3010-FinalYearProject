@@ -3,17 +3,16 @@ module Data.Player where
 import Prelude
 
 import Class.Object (class Object, class ObjectDraw, position)
-import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor, mapTileSize)
-import Collision (isCollWorld)
+import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor)
+import Collision (isCollWorld, adjustY, adjustX)
 import Data.Bullet (Bullet, BulletAppear(..), newBullet)
-import Data.Sprites as S
-import Data.Int (toNumber, floor)
+import Assets.Sprites as S
 import Math (abs)
 import Emo8.Action.Draw (drawRotatedSprite)
 import Emo8.Data.Sprite (incrementFrame)
 import Emo8.Input (Input)
 import Emo8.Types (Sprite, Velocity, X, Position)
-import Emo8.Utils (defaultMonitorSize)
+import Emo8.Utils (defaultMonitorSize, updatePosition)
 import Emo8.Action.Update (Update)
 
 data Player = Player { 
@@ -86,12 +85,6 @@ updateVelocity i currentVelocity onFloor = { xSpeed: xSpeed, ySpeed: ySpeed }
             _, false -> case currentVelocity.ySpeed + gravity >= -maxPlayerSpeedY of
                 true -> currentVelocity.ySpeed + gravity
                 false -> -maxPlayerSpeedY
-
-updatePosition :: Position -> Velocity -> Position
-updatePosition p v = { x: x, y: y }
-    where
-        x = floor $ (toNumber p.x) + v.xSpeed
-        y = floor $ (toNumber p.y) + v.ySpeed
 
 addBullet :: Input -> Player -> Array Bullet
 addBullet i (Player p) =
@@ -174,18 +167,6 @@ collide oldPos (Player newPlayer) distance collisionCheck = do
         pos = newPosition, 
         onFloor = newOnFloor
     }
-
-adjustY :: Int -> Int -> Int
-adjustY oldY newY = 
-    if (newY > oldY) -- If moving up
-        then newY - (mod newY mapTileSize.height)
-        else newY - (mod newY mapTileSize.height) + mapTileSize.height
-        
-adjustX :: Int -> Int -> Int -> Int
-adjustX oldX newX distance = 
-    if (newX > oldX) -- If moving Right
-        then newX - (mod (distance + newX) mapTileSize.width)
-        else newX - (mod (distance + newX) mapTileSize.width) + mapTileSize.width
 
 beInMonitor :: Position -> Player -> Player
 beInMonitor pos (Player np) = Player $ np { pos = { x: npx, y: npy } }

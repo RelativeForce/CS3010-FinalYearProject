@@ -1,9 +1,10 @@
 module Collision where
 
-import Constants (walls, hazards)
+import Prelude
+import Constants (walls, hazards, mapTileSize)
 import Class.Object (class Object, position, size)
 import Emo8.Action.Update (Update, isMapCollide)
-import Emo8.Types (MapId, ImageId, Position, Size)
+import Emo8.Types (MapId, AssetId, Position, Size)
 import Emo8.Utils (defaultMonitorSize, isCollide, isMonitorCollide, isOutOfMonitor)
 
 isWallsCollide :: MapId -> Size -> Size -> Position -> Update Boolean
@@ -12,7 +13,7 @@ isWallsCollide mId mSize size pos = isCollMap mId mSize size pos walls
 isHazardCollide :: MapId -> Size -> Size -> Position -> Update Boolean
 isHazardCollide mId mSize size pos = isCollMap mId mSize size pos hazards
 
-isCollMap :: MapId -> Size -> Size -> Position -> Array ImageId -> Update Boolean
+isCollMap :: MapId -> Size -> Size -> Position -> Array AssetId -> Update Boolean
 isCollMap mId mSize size {x, y} collidableObjectIds = isMapCollide mId mSize collidableObjectIds size x y  
 
 isCollideWorld :: forall a. Object a => a -> Boolean
@@ -32,3 +33,15 @@ isCollideObjects a b = isColl (size a) (position a) (size b) (position b)
 
 isColl :: Size -> Position -> Size -> Position -> Boolean
 isColl sizeA pA sizeB pB = isCollide sizeA pA.x pA.y sizeB pB.x pB.y
+
+adjustY :: Int -> Int -> Int
+adjustY oldY newY = 
+    if (newY > oldY) -- If moving Up
+        then newY - (mod newY mapTileSize.height)
+        else newY - (mod newY mapTileSize.height) + mapTileSize.height
+        
+adjustX :: Int -> Int -> Int -> Int
+adjustX oldX newX distance = 
+    if (newX > oldX) -- If moving Right
+        then newX - (mod (distance + newX) mapTileSize.width)
+        else newX - (mod (distance + newX) mapTileSize.width) + mapTileSize.width
