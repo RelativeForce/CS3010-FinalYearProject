@@ -13,6 +13,7 @@ import Assets.Sprites as S
 import Emo8.Types (Position, Score, Sprite, Velocity, X)
 import Math (sqrt)
 import Data.Int (toNumber)
+import Emo8.Data.Sprite (incrementFrame)
 
 data Enemy = EnemyMarine Marine
 
@@ -47,8 +48,8 @@ updateEnemy collisionCheck distance playerObject (EnemyMarine marine) = EnemyMar
         newPositionBasedOnVelocity = updatePosition marine.pos newVelocityBasedOnGravity
         shotCoolDown = if marine.shotCoolDown > 0 then marine.shotCoolDown - 1 else 0
         marineBasedOnVelocity = {
-            pos: marine.pos,
-            sprite: marine.sprite,
+            pos: newPositionBasedOnVelocity,
+            sprite: incrementFrame marine.sprite,
             appear: marine.appear,
             velocity: newVelocityBasedOnGravity,
             shotCoolDown: marine.shotCoolDown
@@ -98,32 +99,40 @@ collideMarine :: Position -> Marine -> X -> (Enemy -> Boolean) -> Marine
 collideMarine oldPos newMarine distance collisionCheck = collidedMarine { pos = collidedPos }
     where 
         newPos = newMarine.pos
+        size = newMarine.sprite.size
+        movingLeft = newPos.x < oldPos.x
+        movingRight = newPos.x > oldPos.x
         xChangePlayer = newMarine { 
             pos = { 
                 x: newPos.x, 
                 y: oldPos.y 
             }
         }
-        yChangePlayer = newMarine { 
+        yChangePlayerLeft = newMarine { 
             pos = { 
-                x: oldPos.x, 
+                x: oldPos.x - size.width, 
                 y: newPos.y 
             }
         }
-
+        yChangePlayerRight = newMarine { 
+            pos = { 
+                x: oldPos.x + size.width, 
+                y: newPos.y 
+            }
+        }
         xCollide = collisionCheck $ EnemyMarine xChangePlayer
-        yCollide = collisionCheck $ EnemyMarine yChangePlayer
-        bothCollide = collisionCheck $ EnemyMarine newMarine
-        shouldReverse = yCollide && not xCollide
+        yCollideLeft = collisionCheck $ EnemyMarine yChangePlayerLeft
+        yCollideRight = collisionCheck $ EnemyMarine yChangePlayerRight
+        shouldReverse = xCollide || (movingLeft && not yCollideLeft) || (movingRight && not yCollideRight)
         collidedPos = if shouldReverse
             then { 
-                x: newPos.x, 
-                y: oldPos.y 
-            } 
-            else { 
                 x: adjustX oldPos.x newPos.x distance, 
                 y: oldPos.y 
             }
+            else { 
+                x: newPos.x, 
+                y: oldPos.y 
+            } 
         collidedMarine = if shouldReverse 
             then (reverseDirection newMarine) 
             else newMarine

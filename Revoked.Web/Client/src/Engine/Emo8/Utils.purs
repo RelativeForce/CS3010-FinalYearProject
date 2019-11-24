@@ -6,7 +6,8 @@ module Emo8.Utils (
     isOutOfMonitor, 
     isCollide,
     isMapCollide,
-    updatePosition
+    updatePosition,
+    xor
 ) where
 
 import Prelude
@@ -29,6 +30,9 @@ isMonitorCollide ms objectSize x y
     || x + objectSize.width - 1 > ms.width
     || y < 0
     || y + objectSize.height - 1 > ms.height
+
+xor :: Boolean -> Boolean -> Boolean
+xor a b = (not a && b) || (not b && a)
 
 -- | Collision detection if an object completely protrudes out of monitor
 isOutOfMonitor :: MonitorSize -> Size -> X -> Y -> Boolean

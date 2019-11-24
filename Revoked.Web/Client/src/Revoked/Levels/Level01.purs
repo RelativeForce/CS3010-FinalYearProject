@@ -39,8 +39,8 @@ goals = [
 
 enemies :: Array Enemy
 enemies = [
-    defaultMarine { x: 1480, y: 250 },
-    defaultMarine { x: 1830, y: 400 }, 
+    defaultMarine { x: 830, y: 32 },
+    defaultMarine { x: 864, y: 224 }, 
     defaultMarine { x: 1830, y: 150 },
     defaultMarine { x: 1980, y: 250 }
 ]

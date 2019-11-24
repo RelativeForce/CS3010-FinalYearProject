@@ -86,4 +86,4 @@ marineAgroRange :: Number
 marineAgroRange = 100.0
 
 marineWalkSpeed :: Number
-marineWalkSpeed = 5.0
+marineWalkSpeed = 2.0
