@@ -5,6 +5,7 @@ module Test.Revoked (
 import Prelude
 
 import Effect (Effect)
+import Test.Revoked.Collision (collisionTests)
 import Test.Revoked.Data (dataTests)
 
 revokedTests :: Effect Unit
@@ -13,3 +14,4 @@ revokedTests = do
 
     -- Sub Modules
     dataTests
+    collisionTests

@@ -113,8 +113,6 @@ emptyAsset = {
     mapData: []
 }
 
-
-
 angle :: Velocity -> Deg
 angle p = floor $ (180.0 * (atan (p.ySpeed / p.xSpeed))) / pi
 

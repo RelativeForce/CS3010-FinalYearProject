@@ -5,6 +5,7 @@ module Test.Engine.Emo8 (
 import Prelude
 
 import Effect (Effect)
+import Test.Engine.Emo8.Utils (utilsTests)
 import Test.Engine.Emo8.Data (dataTests)
 import Test.Engine.Emo8.Parse (parseTests)
 import Test.Engine.Emo8.FFI (ffiTests)
@@ -19,3 +20,4 @@ emo8Tests = do
     dataTests
     parseTests
     interpreterTests
+    utilsTests

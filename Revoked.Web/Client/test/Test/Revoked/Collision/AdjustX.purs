@@ -1,15 +1,15 @@
-module Test.Revoked.Data.Player.AdjustX ( 
+module Test.Revoked.Collision.AdjustX ( 
     adjustXTests 
 ) where
 
 import Prelude
-import Data.Player (adjustX)
+import Collision (adjustX)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 
 adjustXTests :: TestSuite
 adjustXTests =
-    suite "Revoked.Data.Player - adjustX" do
+    suite "Collision - adjustX" do
 
         -- Moving Left
         test "shouldAdjustXCorrectlyWhenMovingLeft [12, 64, 0 -> 20]" do

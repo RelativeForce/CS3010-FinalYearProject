@@ -1,15 +1,15 @@
-module Test.Revoked.Data.Player.AdjustY ( 
+module Test.Revoked.Collision.AdjustY ( 
     adjustYTests 
 ) where
 
 import Prelude
-import Data.Player (adjustY)
+import Collision (adjustY)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 
 adjustYTests :: TestSuite
 adjustYTests =
-    suite "Revoked.Data.Player - adjustY" do
+    suite "Collision - adjustY" do
 
         -- Moving Up
         test "shouldAdjustYCorrectlyWhenMovingUp [0, 64 -> 64]" do
