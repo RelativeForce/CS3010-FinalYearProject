@@ -40,7 +40,7 @@ magnitude :: Velocity -> Number
 magnitude v = sqrt $ (v.xSpeed * v.xSpeed) + (v.ySpeed * v.ySpeed)
 
 vectorTo :: Position -> Position -> Position
-vectorTo positionA positionB = { x: positionA.x - positionB.x, y: positionA.y - positionB.y }
+vectorTo positionA positionB = { x: positionB.x - positionA.x, y: positionB.y - positionA.y }
 
 toPosition :: Velocity -> Position
 toPosition v = { x: floor v.xSpeed, y: floor v.ySpeed }

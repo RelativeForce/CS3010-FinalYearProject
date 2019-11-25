@@ -26,7 +26,7 @@ addMarineBullet playerObject@(Player p) marine = if canFire && withinRange then 
     where 
         withinRange = playerInRange playerObject marine
         canFire = canFireBullet marine
-        v = normalise $ toVelocity $ vectorTo p.pos marine.pos
+        v = normalise $ toVelocity $ vectorTo marine.pos p.pos
         scaledVelocity = { xSpeed: v.xSpeed * marineBulletSpeed, ySpeed: v.ySpeed * marineBulletSpeed} 
         newBullet = MarineBullet { 
             pos: marine.pos { y = marine.pos.y + (marine.sprite.size.height / 2) }, 
