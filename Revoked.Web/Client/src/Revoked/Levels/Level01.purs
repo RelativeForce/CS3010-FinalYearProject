@@ -1,10 +1,10 @@
 module Levels.Level01 where
 
 import Prelude
-import Data.Enemy (Enemy(..))
+import Data.Enemy (Enemy, defaultMarine)
 import Emo8.Parse (RawMap(..))
 import Data.Goal (Goal(..))
-import Data.Sprites as S
+import Assets.Sprites as S
 
 mapData :: RawMap
 mapData = RawMap """
@@ -39,10 +39,12 @@ goals = [
 
 enemies :: Array Enemy
 enemies = [
-    Invader { pos: { x: 1480, y: 250 } },
-    Invader { pos: { x: 1830, y: 400 } }, 
-    Invader { pos: { x: 1830, y: 150 } },
-    Invader { pos: { x: 1980, y: 250 } }
+    defaultMarine { x: 830, y: 32 },
+    defaultMarine { x: 864, y: 224 }, 
+    defaultMarine { x: 1504, y: 224 },
+    defaultMarine { x: 1856, y: 64 },
+    defaultMarine { x: 2528, y: 64 },
+    defaultMarine { x: 3008, y: 64 }
 ]
 
 chopperY :: Int

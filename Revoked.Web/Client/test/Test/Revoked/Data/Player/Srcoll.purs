@@ -5,7 +5,7 @@ module Test.Revoked.Data.Player.Srcoll (
 import Prelude
 import Class.Object (scroll)
 import Data.Player (Player(..), Appear(..))
-import Data.Sprites as S
+import Assets.Sprites as S
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 

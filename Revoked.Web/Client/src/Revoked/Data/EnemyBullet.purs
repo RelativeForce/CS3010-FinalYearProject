@@ -2,32 +2,28 @@ module Data.EnemyBullet where
 
 import Prelude
 
-import Class.Object (class ObjectDraw, class Object, position, size)
-import Constants (emoSize)
-import Emo8.Action.Draw (emor)
-import Emo8.Data.Emoji as E
-import Emo8.Types  (Position)
+import Class.Object (class ObjectDraw, class Object)
+import Emo8.Action.Draw (drawRotatedSprite)
+import Emo8.Data.Sprite (incrementFrame)
+import Emo8.Types (Position, Velocity, Sprite)
+import Emo8.Utils (angle, updatePosition)
 
-data EnemyBullet
-    = NormalBull { pos :: Position }
-    | ParseBull { pos :: Position, vec :: Position, t :: Int }
+data EnemyBullet = MarineBullet { 
+    pos :: Position,
+    velocity :: Velocity,
+    sprite :: Sprite
+}
 
 instance objectEnemyBullet :: Object EnemyBullet where
-    size _ = { 
-        width: emoSize.width / 2, 
-        height: emoSize.height / 2
-    }
-
-    position (NormalBull s) = s.pos
-    position (ParseBull s) = s.pos
-
-    scroll offset (NormalBull s) = NormalBull $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
-    scroll offset (ParseBull s) = ParseBull $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
+    size (MarineBullet s) = s.sprite.size
+    position (MarineBullet s) = s.pos
+    scroll offset (MarineBullet s) = MarineBullet $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
 
 instance objectDrawEnemyBullet :: ObjectDraw EnemyBullet where
-    draw o@(NormalBull _) = emor (-40) E.pushpin (size o) (position o).x (position o).y
-    draw o@(ParseBull s) = emor (10 * s.t) E.hammer (size o) (position o).x (position o).y
+    draw (MarineBullet b) = drawRotatedSprite b.sprite b.pos.x b.pos.y (angle b.velocity)
 
 updateEnemyBullet :: EnemyBullet -> EnemyBullet
-updateEnemyBullet (NormalBull s) = NormalBull $ s { pos { x = s.pos.x - 6 } }
-updateEnemyBullet (ParseBull s) = ParseBull $ s { pos { x = s.pos.x + s.vec.x, y = s.pos.y + s.vec.y }, t = s.t + 1 }
+updateEnemyBullet (MarineBullet b) = MarineBullet $ b { pos = newPosition, sprite = newSprite }
+    where
+        newPosition = updatePosition b.pos b.velocity
+        newSprite = incrementFrame b.sprite

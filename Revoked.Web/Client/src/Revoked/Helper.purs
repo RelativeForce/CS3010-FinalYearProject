@@ -12,8 +12,7 @@ import Data.Maybe (Maybe(..))
 import Data.Either (Either(..))
 import Emo8.Action.Draw (Draw, drawMap, drawText)
 import Emo8.Data.Color (Color(..))
-import Emo8.Action.Update (Update)
-import Emo8.Types (MapId, X, Size, Position, PlayerScore)
+import Emo8.Types (MapId, X, Size, Position, PlayerScore, Asset)
 import Data.Formatter.DateTime as F
 import Data.DateTime (DateTime)
 
@@ -27,22 +26,21 @@ drawScrollMap distance mapId = do
             when (-mapSizeInt * mapTileInMonitorSize.width <= d && d < mapSize.width) $
                 drawMap mId mapTileSize (-d) 0
 
--- TODO: readable
-isCollideMapWalls :: forall a. Object a => MapId -> X -> a -> Update Boolean
-isCollideMapWalls mapId distance o = isCollide (isWallsCollide) mapId distance o
+isCollideMapWalls :: forall a. Object a => Asset -> MapId -> X -> a -> Boolean
+isCollideMapWalls asset mapId distance o = isCollide (isWallsCollide asset) mapId distance o
 
-isCollideMapHazards :: forall a. Object a => MapId -> X -> a -> Update Boolean
-isCollideMapHazards mapId distance o = isCollide (isHazardCollide) mapId distance o
+isCollideMapHazards :: forall a. Object a => Asset -> MapId -> X -> a -> Boolean
+isCollideMapHazards asset mapId distance o = isCollide (isHazardCollide asset) mapId distance o
 
-isCollide :: forall a. Object a => (MapId -> Size -> Size -> Position -> Update Boolean) -> MapId -> X -> a -> Update Boolean
+isCollide :: forall a. Object a => (MapId -> Size -> Size -> Position -> Boolean) -> MapId -> X -> a -> Boolean
 isCollide f mapId distance o =
     collCond mapId distance
     where
-        collCond :: MapId -> X -> Update Boolean
+        collCond :: MapId -> X -> Boolean
         collCond mId d = do
             if (-mapSizeInt * mapTileInMonitorSize.width <= d && d < mapSize.width)
                 then f mId mapTileSize (size o) { x: (position o).x + d, y: (position o).y }
-                else pure false
+                else false
 
 adjustMonitorDistance :: Player -> X -> X
 adjustMonitorDistance (Player player) distance = 

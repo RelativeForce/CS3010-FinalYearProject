@@ -28,13 +28,13 @@ type DrawContext = {
 }
     
 type ScaledImage = {
-  id :: ImageId,
+  id :: AssetId,
   image :: Image,
   size :: Size
 }
 
 type Sprite = {
-  id :: ImageId,
+  id :: AssetId,
   frames :: FrameArray,
   frameIndex :: Int,
   framesPerSecond :: FramesPerSecond,
@@ -80,7 +80,7 @@ type IdX = Int
 type IdY = Int
 type Deg = Int
 type Bpm = Int
-type ImageId = Int
+type AssetId = Int
 type MapId = Int
 type Score = Int
 type TextHeight = Int

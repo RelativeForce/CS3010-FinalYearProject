@@ -43,8 +43,8 @@ emo8 state asset ms = withCanvas \canvas -> do
       biState = GameWithBoot state bootState 
   biStateSig <- foldEffect
     ( switchFoldOp
-      (\i -> runUpdate asset <<< update i)
-      (\i -> runUpdate bootAsset <<< update i)
+      (\i -> runUpdate <<< update asset i)
+      (\i -> runUpdate <<< update bootAsset i)
     )
     biState
     inputSampleSig
@@ -63,7 +63,7 @@ emo8Dev state asset ms = withCanvas \canvas -> do
   keyTouchInputSig <- poll
   let keyTouchInputSampleSig = sampleOn frameSig keyTouchInputSig
       inputSampleSig = mkInputSig keyTouchInputSampleSig
-  stateSig <- foldEffect (\i -> runUpdate asset <<< update i) state inputSampleSig
+  stateSig <- foldEffect (\i -> runUpdate <<< update asset i) state inputSampleSig
   runSignal $ runDraw drawCtx <<< draw <$> stateSig
   runSignal $ saveState <$> stateSig
 

@@ -3,7 +3,7 @@ module Emo8.Interpreter.Draw where
 import Prelude
 
 import Control.Monad.Free (foldFree)
-import Data.Array (length, zip, (..))
+import Data.Array (length, zip, (..), (!!))
 import Data.Int (toNumber)
 import Data.Maybe (Maybe(..))
 import Data.String (joinWith)
@@ -15,7 +15,6 @@ import Emo8.Action.Draw (Appearance(..), Draw, DrawF(..))
 import Emo8.Constants (fontFamily)
 import Emo8.Data.Color (Color(..), colorToCode)
 import Emo8.Data.Emoji (Emoji, japaneseVacancyButton)
-import Emo8.Excepiton (providedMap)
 import Emo8.FFI.TextBaseline (TextBaseline(..), setTextBaseline)
 import Emo8.Types (
     Deg, 
@@ -146,17 +145,21 @@ drawMap = drawMapWithF drawScaledImage
 
 drawMapWithF :: (ScaledImage -> X -> Y -> RenderOp) -> MapId -> Size -> X -> Y -> RenderOp
 drawMapWithF f mId size x y =
-    withLocalDraw \dctx ->
-        providedMap dctx.mapData mId \em -> 
-            for_ (emapWithIndex em) \(Tuple vertId withIdRow) ->
-                for_ withIdRow \(Tuple horiId maybeImage) ->
-                    when ((isVisible dctx.monitorSize horiId vertId) && (notEmpty maybeImage))
-                        let xx = x + (size.width * horiId)
-                            yy = y + (size.height * vertId) 
-                            img = case maybeImage of
-                                Nothing -> { image: "", size: { height: 0, width: 0 }, id: 0 }
-                                Just i -> i
-                        in f img xx yy dctx
+    withLocalDraw \dctx -> do
+
+        let map = case dctx.mapData !! mId of
+                Nothing -> []
+                Just m -> m
+
+        for_ (emapWithIndex map) \(Tuple vertId withIdRow) ->
+            for_ withIdRow \(Tuple horiId maybeImage) ->
+                when ((isVisible dctx.monitorSize horiId vertId) && (notEmpty maybeImage))
+                    let xx = x + (size.width * horiId)
+                        yy = y + (size.height * vertId) 
+                        img = case maybeImage of
+                            Nothing -> { image: "", size: { height: 0, width: 0 }, id: 0 }
+                            Just i -> i
+                    in f img xx yy dctx
     where
         withIndex :: forall a. Array a -> Array (Tuple Int a)
         withIndex arr = zip (0..((length arr) - 1)) arr

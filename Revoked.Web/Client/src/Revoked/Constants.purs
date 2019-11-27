@@ -1,7 +1,7 @@
 module Constants where
   
 import Prelude
-import Emo8.Types (ImageId, Size, TextHeight, X, Y)
+import Emo8.Types (AssetId, Size, TextHeight, X, Y)
 import Emo8.Utils (defaultMonitorSize)
 import Assets.AssetIds as Id
 
@@ -65,7 +65,7 @@ leftBoundry = boundry * mapTileSize.width
 rightBoundry :: Int
 rightBoundry = defaultMonitorSize.width - (boundry * mapTileSize.width) 
 
-walls :: Array ImageId
+walls :: Array AssetId
 walls = [ 
     Id.grassTopId,
     Id.grassLeftCornerId,
@@ -74,10 +74,25 @@ walls = [
     Id.grassRightId
 ]
 
-hazards :: Array ImageId
+hazards :: Array AssetId
 hazards = [
     Id.toxicWasteId
 ]
 
 maxUsernameLength :: Int
 maxUsernameLength = 3
+
+marineAgroRange :: Number
+marineAgroRange = 250.0
+
+marineWalkSpeed :: Number
+marineWalkSpeed = 2.0
+
+marineShotCooldown :: Int
+marineShotCooldown = 10
+
+bulletSpeed :: Number
+bulletSpeed = 12.0
+
+marineBulletSpeed :: Number
+marineBulletSpeed = 8.0

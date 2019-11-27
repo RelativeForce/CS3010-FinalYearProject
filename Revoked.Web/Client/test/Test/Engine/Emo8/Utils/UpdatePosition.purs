@@ -1,15 +1,15 @@
-module Test.Revoked.Data.Player.UpdatePosition ( 
+module Test.Engine.Emo8.Utils.UpdatePosition ( 
     updatePositionTests 
 ) where
 
 import Prelude
-import Data.Player (updatePosition)
+import Emo8.Utils (updatePosition)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 
 updatePositionTests :: TestSuite
 updatePositionTests =
-    suite "Revoked.Data.Player - updatePosition" do
+    suite "Emo8.Utils - updatePosition" do
         test "shouldSumXSpeedAndXPosition" do
             let 
                 velocity = { xSpeed: 5.0, ySpeed: 3.0 }
