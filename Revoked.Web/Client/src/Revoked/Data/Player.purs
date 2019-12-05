@@ -51,13 +51,12 @@ updatePlayer i (Player p) distance collisionCheck = newPlayer
             pos = newPositionBasedOnVelocity, 
             energy = newEnergy, 
             appear = newAppear,
-            velocity = newVelocityBasedOnGravity,
-            onFloor = p.onFloor
+            velocity = newVelocityBasedOnGravity
         }
         playerBasedOnMapCollision = collide p.pos playerBasedOnVelocity distance collisionCheck
         playerBasedOnMonitorCollision = beInMonitor p.pos playerBasedOnMapCollision
         playerBasedOnAdjustedVelocity = adjustVelocity p.pos playerBasedOnMonitorCollision
-        newPlayer = updateSprite p.appear p.onFloor playerBasedOnAdjustedVelocity
+        newPlayer = updateSprite p.appear p.onFloor p.velocity.xSpeed playerBasedOnAdjustedVelocity
     
 updateVelocity :: Input -> Velocity -> Boolean -> Velocity
 updateVelocity i currentVelocity onFloor = { xSpeed: xSpeed, ySpeed: ySpeed }
@@ -68,29 +67,30 @@ updateVelocity i currentVelocity onFloor = { xSpeed: xSpeed, ySpeed: ySpeed }
             _, _ -> if (abs currentVelocity.xSpeed) >= 1.0 then currentVelocity.xSpeed * frictionFactor else 0.0 
         ySpeed = case i.active.isSpace, onFloor of
             true, true -> maxPlayerSpeedY
-            false, true -> 0.0
-            _, false -> case currentVelocity.ySpeed + gravity >= -maxPlayerSpeedY of
+            _, _ -> case currentVelocity.ySpeed + gravity >= -maxPlayerSpeedY of
                 true -> currentVelocity.ySpeed + gravity
                 false -> -maxPlayerSpeedY
 
-updateSprite :: Appear -> Boolean -> Player -> Player
-updateSprite oldAppear oldOnFloor (Player newPlayer) = Player $ newPlayer {
+updateSprite :: Appear -> Boolean -> Number -> Player -> Player
+updateSprite oldAppear oldOnFloor oldXSpeed (Player newPlayer) = Player $ newPlayer {
     sprite = newSprite
 }
     where 
+        newXSpeed = newPlayer.velocity.xSpeed
         appearChanged = case newPlayer.appear, oldAppear of
             Backword, Backword -> false
             Forword, Forword -> false
             _, _ -> true
         onFloorChanged = newPlayer.onFloor /= oldOnFloor
-        newSprite = case appearChanged || onFloorChanged of
-            true -> newPlayerSprite newPlayer.appear newPlayer.velocity newPlayer.onFloor
+        speedChanged = newXSpeed /= oldXSpeed
+        newSprite = case appearChanged || onFloorChanged || speedChanged of
+            true -> newPlayerSprite newPlayer.appear newXSpeed newPlayer.onFloor
             false -> incrementFrame newPlayer.sprite
 
-newPlayerSprite :: Appear -> Velocity -> Boolean -> Sprite
-newPlayerSprite appear velocity onFloor = sprite
+newPlayerSprite :: Appear -> Number -> Boolean -> Sprite
+newPlayerSprite appear newXSpeed onFloor = sprite
     where
-        still = velocity.xSpeed == 0.0
+        still = newXSpeed == 0.0
         sprite = case appear, onFloor, still of
             Backword, true, false -> S.playerLeft
             Forword, true, false -> S.playerRight
