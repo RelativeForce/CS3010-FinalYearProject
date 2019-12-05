@@ -8,8 +8,8 @@ titleScreenId = 1
 blackBackgroundId :: AssetId
 blackBackgroundId = 2
 
-playerSpriteId :: AssetId
-playerSpriteId = 3
+playerStandingLeftId :: AssetId
+playerStandingLeftId = 3
 
 grassTopId :: AssetId
 grassTopId = 4

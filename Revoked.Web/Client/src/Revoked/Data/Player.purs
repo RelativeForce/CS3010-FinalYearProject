@@ -91,7 +91,7 @@ initialPlayer = Player {
     }, 
     energy: 30, 
     appear: Stable,
-    sprite: S.player,
+    sprite: S.playerStandingLeft,
     velocity: {
         xSpeed: 0.0,
         ySpeed: 0.0
