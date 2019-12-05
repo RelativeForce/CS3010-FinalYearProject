@@ -10,7 +10,7 @@ playerRight :: Sprite
 playerRight = {
     frames: [ frame0Data, frame1Data, frame2Data ],
     frameIndex: 0,
-    framesPerSecond: 2,
+    framesPerSecond: 1,
     frameCount: 3,
     size: {
         width: 24,

@@ -10,7 +10,7 @@ import Data.Bullet (Bullet, BulletAppear(..), newBullet)
 import Emo8.Action.Draw (drawSprite)
 import Emo8.Data.Sprite (incrementFrame)
 import Emo8.Input (Input)
-import Emo8.Types (Sprite, Velocity, X, Position)
+import Emo8.Types (Sprite, Velocity, X, Position, Size)
 import Emo8.Utils (defaultMonitorSize, updatePosition)
 import Math (abs)
 
@@ -25,6 +25,11 @@ data Player = Player {
 
 data PlayerAppear = PlayerForward | PlayerBackward
 
+instance playerAppearEqual :: Eq PlayerAppear where
+    eq (PlayerForward) (PlayerForward) = true
+    eq (PlayerBackward) (PlayerBackward) = true
+    eq _ _ = false
+
 instance objectPlayer :: Object Player where
     size (Player p) = p.sprite.size
     position (Player p) = p.pos
@@ -38,15 +43,8 @@ updatePlayer i (Player p) distance collisionCheck = newPlayer
     where
         newVelocityBasedOnGravity = updateVelocity i p.velocity p.onFloor
         newPositionBasedOnVelocity = updatePosition p.pos newVelocityBasedOnGravity
-        newEnergy = case (canFire p.energy), i.active.isEnter of
-            true, true -> 0
-            true, false -> p.energy
-            false, _ -> p.energy + 1
-        newAppear =
-            case i.active.isA, i.active.isD of
-                true, false -> PlayerBackward 
-                false, true -> PlayerForward
-                _, _ -> p.appear
+        newEnergy = updateEnergy p.energy i
+        newAppear = updateAppear i p.appear
         playerBasedOnVelocity = Player $ p { 
             pos = newPositionBasedOnVelocity, 
             energy = newEnergy, 
@@ -58,18 +56,36 @@ updatePlayer i (Player p) distance collisionCheck = newPlayer
         playerBasedOnAdjustedVelocity = adjustVelocity p.pos playerBasedOnMonitorCollision
         newPlayer = updateSprite p.appear p.onFloor p.velocity.xSpeed playerBasedOnAdjustedVelocity
     
+updateEnergy :: Int -> Input -> Int
+updateEnergy energy i = case (canFire energy), i.active.isEnter of
+            true, true -> 0
+            true, false -> energy
+            false, _ -> energy + 1
+
+updateAppear :: Input -> PlayerAppear -> PlayerAppear
+updateAppear i currentAppear = case i.active.isA, i.active.isD of
+    true, false -> PlayerBackward 
+    false, true -> PlayerForward
+    _, _ -> currentAppear
+
 updateVelocity :: Input -> Velocity -> Boolean -> Velocity
 updateVelocity i currentVelocity onFloor = { xSpeed: xSpeed, ySpeed: ySpeed }
     where
-        xSpeed = case i.active.isA, i.active.isD of
-            true, false -> -maxPlayerSpeedX
-            false, true -> maxPlayerSpeedX
-            _, _ -> if (abs currentVelocity.xSpeed) >= 1.0 then currentVelocity.xSpeed * frictionFactor else 0.0 
-        ySpeed = case i.active.isSpace, onFloor of
-            true, true -> maxPlayerSpeedY
-            _, _ -> case currentVelocity.ySpeed + gravity >= -maxPlayerSpeedY of
-                true -> currentVelocity.ySpeed + gravity
-                false -> -maxPlayerSpeedY
+        xSpeed = updateVelocityX i currentVelocity
+        ySpeed = updateVelocityY i currentVelocity onFloor
+
+updateVelocityY :: Input -> Velocity -> Boolean -> Number 
+updateVelocityY i currentVelocity onFloor = case i.active.isSpace, onFloor of
+    true, true -> maxPlayerSpeedY
+    _, _ -> case currentVelocity.ySpeed + gravity >= -maxPlayerSpeedY of
+        true -> currentVelocity.ySpeed + gravity
+        false -> -maxPlayerSpeedY
+
+updateVelocityX :: Input -> Velocity -> Number
+updateVelocityX i currentVelocity = case i.active.isA, i.active.isD of
+    true, false -> -maxPlayerSpeedX
+    false, true -> maxPlayerSpeedX
+    _, _ -> if (abs currentVelocity.xSpeed) >= 1.0 then currentVelocity.xSpeed * frictionFactor else 0.0 
 
 updateSprite :: PlayerAppear -> Boolean -> Number -> Player -> Player
 updateSprite oldAppear oldOnFloor oldXSpeed (Player newPlayer) = Player $ newPlayer {
@@ -77,10 +93,7 @@ updateSprite oldAppear oldOnFloor oldXSpeed (Player newPlayer) = Player $ newPla
 }
     where 
         newXSpeed = newPlayer.velocity.xSpeed
-        appearChanged = case newPlayer.appear, oldAppear of
-            PlayerBackward, PlayerBackward -> false
-            PlayerForward, PlayerForward -> false
-            _, _ -> true
+        appearChanged = newPlayer.appear /= oldAppear
         onFloorChanged = newPlayer.onFloor /= oldOnFloor
         speedChanged = newXSpeed /= oldXSpeed
         newSprite = case appearChanged || onFloorChanged || speedChanged of
@@ -100,17 +113,21 @@ newPlayerSprite appear newXSpeed onFloor = sprite
 addBullet :: Input -> Player -> Array Bullet
 addBullet i (Player p) = bulletArray
     where
-        xOrigin = case p.appear of
-            PlayerBackward -> -p.sprite.size.width
-            PlayerForward -> p.sprite.size.width 
-        newBulletPosition = {
-            y: p.pos.y + (p.sprite.size.height / 2),
-            x: p.pos.x + xOrigin
-        }
+        bulletPosition = initialBulletPosition p.pos p.sprite.size p.appear
         bulletArray = case (i.active.isEnter && (canFire p.energy)), p.appear of
-            true, PlayerBackward -> [ newBullet (BulletBackward) newBulletPosition ]
-            true, PlayerForward -> [ newBullet (BulletForward) newBulletPosition ]
+            true, PlayerBackward -> [ newBullet (BulletBackward) bulletPosition ]
+            true, PlayerForward -> [ newBullet (BulletForward) bulletPosition ]
             false, _ -> []
+
+initialBulletPosition :: Position -> Size -> PlayerAppear -> Position
+initialBulletPosition pos size (PlayerBackward) = {
+            x: pos.x - size.width,
+            y: pos.y + (size.height / 2)
+        }
+initialBulletPosition pos size (PlayerForward) = {
+            x: pos.x + size.width,
+            y: pos.y + (size.height / 2)
+        }
 
 initialPlayer :: Player
 initialPlayer = Player { 
