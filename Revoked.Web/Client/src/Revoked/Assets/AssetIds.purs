@@ -61,3 +61,6 @@ marineRightId = 19
 
 marineStandingId :: AssetId
 marineStandingId = 20
+
+playerStandingRightId :: AssetId
+playerStandingRightId = 21

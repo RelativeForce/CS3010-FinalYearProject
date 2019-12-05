@@ -1,5 +1,6 @@
 module Assets.Sprites (
     module Assets.Sprites.PlayerStandingLeft.Sprite,
+    module Assets.Sprites.PlayerStandingRight.Sprite,
     module Assets.Sprites.BulletLeft.Sprite,
     module Assets.Sprites.BulletRight.Sprite,
     module Assets.Sprites.Chopper.Sprite,
@@ -17,3 +18,4 @@ import Assets.Sprites.MarineLeft.Sprite (marineLeft)
 import Assets.Sprites.MarineRight.Sprite (marineRight)
 import Assets.Sprites.MarineStanding.Sprite (marineStanding)
 import Assets.Sprites.PlayerStandingLeft.Sprite (playerStandingLeft)
+import Assets.Sprites.PlayerStandingRight.Sprite (playerStandingRight)
