@@ -98,11 +98,19 @@ newPlayerSprite appear newXSpeed onFloor = sprite
             PlayerForward, _, _ -> S.playerStandingRight   
 
 addBullet :: Input -> Player -> Array Bullet
-addBullet i (Player p) =
-    case (i.active.isEnter && (canFire p.energy)), p.appear of
-        true, PlayerBackward -> [ newBullet (BulletBackward) p.pos p.sprite.size ]
-        true, PlayerForward -> [ newBullet (BulletForward) p.pos p.sprite.size ]
-        false, _ -> []
+addBullet i (Player p) = bulletArray
+    where
+        xOrigin = case p.appear of
+            PlayerBackward -> -p.sprite.size.width
+            PlayerForward -> p.sprite.size.width 
+        newBulletPosition = {
+            y: p.pos.y + (p.sprite.size.height / 2),
+            x: p.pos.x + xOrigin
+        }
+        bulletArray = case (i.active.isEnter && (canFire p.energy)), p.appear of
+            true, PlayerBackward -> [ newBullet (BulletBackward) newBulletPosition ]
+            true, PlayerForward -> [ newBullet (BulletForward) newBulletPosition ]
+            false, _ -> []
 
 initialPlayer :: Player
 initialPlayer = Player { 
