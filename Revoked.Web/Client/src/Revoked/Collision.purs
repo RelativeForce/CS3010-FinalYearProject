@@ -3,7 +3,7 @@ module Collision where
 import Prelude
 import Constants (walls, hazards, mapTileSize)
 import Class.Object (class Object, position, size)
-import Emo8.Types (MapId, AssetId, Position, Size, Asset)
+import Emo8.Types (MapId, AssetId, Position, Size, Asset, Height, Width)
 import Emo8.Utils (defaultMonitorSize, isCollide, isMonitorCollide, isOutOfMonitor, isMapCollide)
 
 isWallsCollide :: Asset -> MapId -> Size -> Size -> Position -> Boolean
@@ -33,14 +33,14 @@ isCollideObjects a b = isColl (size a) (position a) (size b) (position b)
 isColl :: Size -> Position -> Size -> Position -> Boolean
 isColl sizeA pA sizeB pB = isCollide sizeA pA.x pA.y sizeB pB.x pB.y
 
-adjustY :: Int -> Int -> Int
-adjustY oldY newY = 
+adjustY :: Int -> Int -> Height -> Int
+adjustY oldY newY height = 
     if (newY > oldY) -- If moving Up
-        then newY - (mod newY mapTileSize.height)
+        then newY - (mod (newY + height) mapTileSize.height)
         else newY - (mod newY mapTileSize.height) + mapTileSize.height
         
-adjustX :: Int -> Int -> Int -> Int
-adjustX oldX newX distance = 
+adjustX :: Int -> Int -> Int -> Width -> Int
+adjustX oldX newX distance width = 
     if (newX > oldX) -- If moving Right
-        then newX - (mod (distance + newX) mapTileSize.width)
+        then newX - (mod (distance + newX + width) mapTileSize.width)
         else newX - (mod (distance + newX) mapTileSize.width) + mapTileSize.width

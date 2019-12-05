@@ -2,17 +2,17 @@ module Data.Player where
 
 import Prelude
 
-import Class.Object (class Object, class ObjectDraw, position)
-import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor)
-import Collision (isCollWorld, adjustY, adjustX)
-import Data.Bullet (Bullet, BulletAppear(..), newBullet)
 import Assets.Sprites as S
-import Math (abs)
-import Emo8.Action.Draw (drawRotatedSprite)
+import Class.Object (class Object, class ObjectDraw, position)
+import Collision (isCollWorld, adjustY, adjustX)
+import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor)
+import Data.Bullet (Bullet, BulletAppear(..), newBullet)
+import Emo8.Action.Draw (drawSprite)
 import Emo8.Data.Sprite (incrementFrame)
 import Emo8.Input (Input)
 import Emo8.Types (Sprite, Velocity, X, Position)
 import Emo8.Utils (defaultMonitorSize, updatePosition)
+import Math (abs)
 
 data Player = Player { 
     pos :: Position, 
@@ -23,7 +23,7 @@ data Player = Player {
     onFloor :: Boolean
 }
 
-data Appear = Stable | Forword | Backword
+data Appear = Forword | Backword
 
 instance objectPlayer :: Object Player where
     size (Player p) = p.sprite.size
@@ -31,10 +31,7 @@ instance objectPlayer :: Object Player where
     scroll offset (Player p) = Player $ p { pos = { x: p.pos.x + offset, y: p.pos.y }}
 
 instance objectDrawPlayer :: ObjectDraw Player where
-    draw o@(Player p) = case p.appear of
-            Stable -> drawRotatedSprite p.sprite (position o).x (position o).y 0
-            Forword -> drawRotatedSprite p.sprite (position o).x (position o).y (- 30)
-            Backword -> drawRotatedSprite p.sprite (position o).x (position o).y 30
+    draw o@(Player p) = drawSprite p.sprite (position o).x (position o).y
 
 updatePlayer :: Input -> Player -> X -> (Player -> Boolean) -> Player
 updatePlayer i (Player p) distance collisionCheck = newPlayer
@@ -49,18 +46,18 @@ updatePlayer i (Player p) distance collisionCheck = newPlayer
             case i.active.isA, i.active.isD of
                 true, false -> Backword 
                 false, true -> Forword
-                _, _ -> Stable 
+                _, _ -> p.appear
         playerBasedOnVelocity = Player $ p { 
             pos = newPositionBasedOnVelocity, 
             energy = newEnergy, 
             appear = newAppear,
-            sprite = incrementFrame p.sprite,
             velocity = newVelocityBasedOnGravity,
             onFloor = p.onFloor
         }
         playerBasedOnMapCollision = collide p.pos playerBasedOnVelocity distance collisionCheck
         playerBasedOnMonitorCollision = beInMonitor p.pos playerBasedOnMapCollision
-        newPlayer = adjustVelocity p.pos playerBasedOnMonitorCollision
+        playerBasedOnAdjustedVelocity = adjustVelocity p.pos playerBasedOnMonitorCollision
+        newPlayer = updateSprite p.appear p.onFloor playerBasedOnAdjustedVelocity
     
 updateVelocity :: Input -> Velocity -> Boolean -> Velocity
 updateVelocity i currentVelocity onFloor = { xSpeed: xSpeed, ySpeed: ySpeed }
@@ -76,11 +73,35 @@ updateVelocity i currentVelocity onFloor = { xSpeed: xSpeed, ySpeed: ySpeed }
                 true -> currentVelocity.ySpeed + gravity
                 false -> -maxPlayerSpeedY
 
+updateSprite :: Appear -> Boolean -> Player -> Player
+updateSprite oldAppear oldOnFloor (Player newPlayer) = Player $ newPlayer {
+    sprite = newSprite
+}
+    where 
+        appearChanged = case newPlayer.appear, oldAppear of
+            Backword, Backword -> false
+            Forword, Forword -> false
+            _, _ -> true
+        onFloorChanged = newPlayer.onFloor /= oldOnFloor
+        newSprite = case appearChanged || onFloorChanged of
+            true -> newPlayerSprite newPlayer.appear newPlayer.velocity newPlayer.onFloor
+            false -> incrementFrame newPlayer.sprite
+
+newPlayerSprite :: Appear -> Velocity -> Boolean -> Sprite
+newPlayerSprite appear velocity onFloor = sprite
+    where
+        still = velocity.xSpeed == 0.0
+        sprite = case appear, onFloor, still of
+            Backword, true, false -> S.playerLeft
+            Forword, true, false -> S.playerRight
+            Backword, _, _ -> S.playerStandingLeft
+            Forword, _, _ -> S.playerStandingRight   
+
 addBullet :: Input -> Player -> Array Bullet
 addBullet i (Player p) =
     case (i.active.isEnter && (canFire p.energy)), p.appear of
         true, Backword -> [ newBullet (Backward) p.pos ]
-        true, _ -> [ newBullet (Forward) p.pos ]
+        true, Forword -> [ newBullet (Forward) p.pos ]
         false, _ -> []
 
 initialPlayer :: Player
@@ -90,8 +111,8 @@ initialPlayer = Player {
         y: 40
     }, 
     energy: 30, 
-    appear: Stable,
-    sprite: S.playerStandingLeft,
+    appear: Forword,
+    sprite: S.playerStandingRight,
     velocity: {
         xSpeed: 0.0,
         ySpeed: 0.0
@@ -126,6 +147,7 @@ collide oldPos (Player newPlayer) distance collisionCheck = Player $ newPlayer {
 }
     where
         newPos = newPlayer.pos
+        size = newPlayer.sprite.size
         xChangePlayer = Player $ newPlayer { 
             pos = { 
                 x: newPos.x, 
@@ -143,17 +165,17 @@ collide oldPos (Player newPlayer) distance collisionCheck = Player $ newPlayer {
         bothCollide = collisionCheck (Player newPlayer)
         newPosition = case xCollide, yCollide, bothCollide of
             true, false, _ -> { 
-                x: adjustX oldPos.x newPos.x distance, 
+                x: adjustX oldPos.x newPos.x distance size.width, 
                 y: newPos.y 
             }
             false, true, _ -> { 
                 x: newPos.x, 
-                y: adjustY oldPos.y newPos.y
+                y: adjustY oldPos.y newPos.y size.height 
             }
             false, false, false -> newPos
             _, _, _ -> { 
-                x: adjustX oldPos.x newPos.x distance, 
-                y: adjustY oldPos.y newPos.y 
+                x: adjustX oldPos.x newPos.x distance size.width, 
+                y: adjustY oldPos.y newPos.y size.height 
             }
         newOnFloor = yCollide
     

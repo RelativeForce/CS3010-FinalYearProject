@@ -139,7 +139,7 @@ collideMarine oldPos newMarine distance collisionCheck = collidedMarine { pos = 
         shouldReverse = xCollide || (movingLeft && not yCollideLeft) || (movingRight && not yCollideRight)
         collidedPos = if shouldReverse
             then { 
-                x: adjustX oldPos.x newPos.x distance, 
+                x: adjustX oldPos.x newPos.x distance size.width, 
                 y: oldPos.y 
             }
             else { 

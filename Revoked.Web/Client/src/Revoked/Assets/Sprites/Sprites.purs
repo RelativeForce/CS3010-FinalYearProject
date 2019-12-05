@@ -7,7 +7,9 @@ module Assets.Sprites (
     module Assets.Sprites.Ladder.Sprite,
     module Assets.Sprites.MarineLeft.Sprite,
     module Assets.Sprites.MarineRight.Sprite,
-    module Assets.Sprites.MarineStanding.Sprite
+    module Assets.Sprites.MarineStanding.Sprite,
+    module Assets.Sprites.PlayerRight.Sprite,
+    module Assets.Sprites.PlayerLeft.Sprite
 ) where
 
 import Assets.Sprites.BulletLeft.Sprite (bulletLeft)
@@ -19,3 +21,5 @@ import Assets.Sprites.MarineRight.Sprite (marineRight)
 import Assets.Sprites.MarineStanding.Sprite (marineStanding)
 import Assets.Sprites.PlayerStandingLeft.Sprite (playerStandingLeft)
 import Assets.Sprites.PlayerStandingRight.Sprite (playerStandingRight)
+import Assets.Sprites.PlayerRight.Sprite (playerRight)
+import Assets.Sprites.PlayerLeft.Sprite (playerLeft)
