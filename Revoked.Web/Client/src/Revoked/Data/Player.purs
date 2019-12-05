@@ -17,13 +17,13 @@ import Math (abs)
 data Player = Player { 
     pos :: Position, 
     energy :: Int, 
-    appear :: Appear,
+    appear :: PlayerAppear,
     sprite :: Sprite,
     velocity :: Velocity,
     onFloor :: Boolean
 }
 
-data Appear = Forword | Backword
+data PlayerAppear = PlayerForward | PlayerBackward
 
 instance objectPlayer :: Object Player where
     size (Player p) = p.sprite.size
@@ -44,8 +44,8 @@ updatePlayer i (Player p) distance collisionCheck = newPlayer
             false, _ -> p.energy + 1
         newAppear =
             case i.active.isA, i.active.isD of
-                true, false -> Backword 
-                false, true -> Forword
+                true, false -> PlayerBackward 
+                false, true -> PlayerForward
                 _, _ -> p.appear
         playerBasedOnVelocity = Player $ p { 
             pos = newPositionBasedOnVelocity, 
@@ -71,15 +71,15 @@ updateVelocity i currentVelocity onFloor = { xSpeed: xSpeed, ySpeed: ySpeed }
                 true -> currentVelocity.ySpeed + gravity
                 false -> -maxPlayerSpeedY
 
-updateSprite :: Appear -> Boolean -> Number -> Player -> Player
+updateSprite :: PlayerAppear -> Boolean -> Number -> Player -> Player
 updateSprite oldAppear oldOnFloor oldXSpeed (Player newPlayer) = Player $ newPlayer {
     sprite = newSprite
 }
     where 
         newXSpeed = newPlayer.velocity.xSpeed
         appearChanged = case newPlayer.appear, oldAppear of
-            Backword, Backword -> false
-            Forword, Forword -> false
+            PlayerBackward, PlayerBackward -> false
+            PlayerForward, PlayerForward -> false
             _, _ -> true
         onFloorChanged = newPlayer.onFloor /= oldOnFloor
         speedChanged = newXSpeed /= oldXSpeed
@@ -87,21 +87,21 @@ updateSprite oldAppear oldOnFloor oldXSpeed (Player newPlayer) = Player $ newPla
             true -> newPlayerSprite newPlayer.appear newXSpeed newPlayer.onFloor
             false -> incrementFrame newPlayer.sprite
 
-newPlayerSprite :: Appear -> Number -> Boolean -> Sprite
+newPlayerSprite :: PlayerAppear -> Number -> Boolean -> Sprite
 newPlayerSprite appear newXSpeed onFloor = sprite
     where
         still = newXSpeed == 0.0
         sprite = case appear, onFloor, still of
-            Backword, true, false -> S.playerLeft
-            Forword, true, false -> S.playerRight
-            Backword, _, _ -> S.playerStandingLeft
-            Forword, _, _ -> S.playerStandingRight   
+            PlayerBackward, true, false -> S.playerLeft
+            PlayerForward, true, false -> S.playerRight
+            PlayerBackward, _, _ -> S.playerStandingLeft
+            PlayerForward, _, _ -> S.playerStandingRight   
 
 addBullet :: Input -> Player -> Array Bullet
 addBullet i (Player p) =
     case (i.active.isEnter && (canFire p.energy)), p.appear of
-        true, Backword -> [ newBullet (Backward) p.pos ]
-        true, Forword -> [ newBullet (Forward) p.pos ]
+        true, PlayerBackward -> [ newBullet (BulletBackward) p.pos p.sprite.size ]
+        true, PlayerForward -> [ newBullet (BulletForward) p.pos p.sprite.size ]
         false, _ -> []
 
 initialPlayer :: Player
@@ -111,7 +111,7 @@ initialPlayer = Player {
         y: 40
     }, 
     energy: 30, 
-    appear: Forword,
+    appear: PlayerForward,
     sprite: S.playerStandingRight,
     velocity: {
         xSpeed: 0.0,

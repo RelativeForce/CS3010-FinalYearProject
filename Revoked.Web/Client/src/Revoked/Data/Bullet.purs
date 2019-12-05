@@ -6,11 +6,11 @@ import Class.Object (class ObjectDraw, class Object)
 import Emo8.Action.Draw (drawSprite)
 import Data.Int (floor)
 import Assets.Sprites as S
-import Emo8.Types (Position, Sprite)
+import Emo8.Types (Position, Sprite, Size)
 import Emo8.Data.Sprite (incrementFrame)
 import Constants (bulletSpeed)
 
-data BulletAppear = Forward | Backward
+data BulletAppear = BulletForward | BulletBackward
 
 data Bullet = Bullet { 
     pos :: Position,
@@ -30,15 +30,17 @@ updateBullet :: Bullet -> Bullet
 updateBullet (Bullet s) = Bullet $ s { pos { x = newX }, sprite = newSprite }
     where
         newX = case s.appear of
-            Forward -> s.pos.x + floor bulletSpeed
-            Backward -> s.pos.x - floor bulletSpeed
+            BulletForward -> s.pos.x + floor bulletSpeed
+            BulletBackward -> s.pos.x - floor bulletSpeed
         newSprite = incrementFrame s.sprite
 
-newBullet :: BulletAppear -> Position -> Bullet
-newBullet appear pos = Bullet $ {
-    pos: pos,
+newBullet :: BulletAppear -> Position -> Size -> Bullet
+newBullet appear pos size = Bullet $ {
+    pos: pos {
+        y = pos.y + (size.height / 2)
+    },
     appear: appear,
     sprite: case appear of
-        Forward -> S.bulletRight
-        Backward -> S.bulletLeft
+        BulletForward -> S.bulletRight
+        BulletBackward -> S.bulletLeft
 }
