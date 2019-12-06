@@ -10,7 +10,7 @@ marineLeft :: Sprite
 marineLeft = {
     frames: [ frame0Data, frame1Data, frame2Data ],
     frameIndex: 0,
-    framesPerSecond: 1,
+    framesPerSecond: 2,
     frameCount: 3,
     size: {
         width: 24,

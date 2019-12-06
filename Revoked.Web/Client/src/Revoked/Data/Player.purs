@@ -88,9 +88,7 @@ updateVelocityX i currentVelocity = case i.active.isA, i.active.isD of
     _, _ -> if (abs currentVelocity.xSpeed) >= 1.0 then currentVelocity.xSpeed * frictionFactor else 0.0 
 
 updateSprite :: PlayerAppear -> Boolean -> Number -> Player -> Player
-updateSprite oldAppear oldOnFloor oldXSpeed (Player newPlayer) = Player $ newPlayer {
-    sprite = newSprite
-}
+updateSprite oldAppear oldOnFloor oldXSpeed (Player newPlayer) = Player $ newPlayer { sprite = newSprite }
     where 
         newXSpeed = newPlayer.velocity.xSpeed
         appearChanged = newPlayer.appear /= oldAppear
