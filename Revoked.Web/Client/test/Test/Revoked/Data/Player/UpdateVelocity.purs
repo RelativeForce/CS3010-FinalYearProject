@@ -12,7 +12,7 @@ import Test.Unit.Assert (equal)
 updateVelocityTests :: TestSuite
 updateVelocityTests =
     suite "Revoked.Data.Player - updateVelocity" do
-        test "shouldApplyGravityWhenNotOnFloor" do
+        test "shouldApplyGravity" do
             let 
                 velocity = { xSpeed: still, ySpeed: still }
                 onFloor = false
@@ -22,16 +22,6 @@ updateVelocityTests =
                 result = updateVelocity input velocity onFloor
             equal still result.xSpeed
             equal (still + gravity) result.ySpeed
-        test "shouldNotApplyGravityWhenOnFloor" do
-            let 
-                velocity = { xSpeed: still, ySpeed: still }
-                onFloor = true
-                pressingJumpButton = false
-                input = buildInput pressingJumpButton false false
-
-                result = updateVelocity input velocity onFloor
-            equal still result.xSpeed
-            equal still result.ySpeed
         test "shouldJumpWhenOnFloorAndPressingJumpButton" do
             let 
                 velocity = { xSpeed: still, ySpeed: still }
@@ -60,7 +50,7 @@ updateVelocityTests =
 
                 result = updateVelocity input velocity onFloor
             equal frictionFactor result.xSpeed
-            equal still result.ySpeed
+            equal gravity result.ySpeed
         test "shouldSetMaxSpeedXWhenPressingLeftButton" do
             let 
                 velocity = { xSpeed: still, ySpeed: still }
@@ -70,7 +60,7 @@ updateVelocityTests =
 
                 result = updateVelocity input velocity onFloor
             equal (-maxPlayerSpeedX) result.xSpeed
-            equal still result.ySpeed
+            equal gravity result.ySpeed
         test "shouldSetMaxSpeedXWhenPressingRightButton" do
             let 
                 velocity = { xSpeed: still, ySpeed: still }
@@ -80,7 +70,7 @@ updateVelocityTests =
 
                 result = updateVelocity input velocity onFloor
             equal maxPlayerSpeedX result.xSpeed
-            equal still result.ySpeed
+            equal gravity result.ySpeed
             
 still :: Number
 still = 0.0
