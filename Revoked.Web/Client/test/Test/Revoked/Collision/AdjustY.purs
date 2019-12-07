@@ -4,6 +4,7 @@ module Test.Revoked.Collision.AdjustY (
 
 import Prelude
 import Collision (adjustY)
+import Emo8.Types (Height)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 
@@ -18,7 +19,7 @@ adjustYTests =
                 newY = 64
 
                 expectedResult = 64
-                result = adjustY oldY newY
+                result = adjustY oldY newY entityHeight
             equal expectedResult result
 
         test "shouldAdjustYCorrectlyWhenMovingUp [30, 32 -> 32]" do
@@ -27,7 +28,7 @@ adjustYTests =
                 newY = 32
 
                 expectedResult = 32
-                result = adjustY oldY newY
+                result = adjustY oldY newY entityHeight
             equal expectedResult result
 
         test "shouldAdjustYCorrectlyWhenMovingUp [4, 7 -> 0]" do
@@ -36,7 +37,7 @@ adjustYTests =
                 newY = 7
 
                 expectedResult = 0
-                result = adjustY oldY newY
+                result = adjustY oldY newY entityHeight
             equal expectedResult result
 
         -- Moving Down
@@ -46,7 +47,7 @@ adjustYTests =
                 newY = 0
 
                 expectedResult = 32
-                result = adjustY oldY newY
+                result = adjustY oldY newY entityHeight
             equal expectedResult result
 
         test "shouldAdjustYCorrectlyWhenMovingDown [32, 30 -> 32]" do
@@ -55,7 +56,7 @@ adjustYTests =
                 newY = 30
 
                 expectedResult = 32
-                result = adjustY oldY newY
+                result = adjustY oldY newY entityHeight
             equal expectedResult result
 
         test "shouldAdjustYCorrectlyWhenMovingDown [7, 4 -> 0]" do
@@ -64,5 +65,8 @@ adjustYTests =
                 newY = 4
 
                 expectedResult = 32
-                result = adjustY oldY newY
+                result = adjustY oldY newY entityHeight
             equal expectedResult result
+
+entityHeight :: Height
+entityHeight = 32

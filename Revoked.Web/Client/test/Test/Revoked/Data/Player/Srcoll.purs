@@ -4,7 +4,7 @@ module Test.Revoked.Data.Player.Srcoll (
 
 import Prelude
 import Class.Object (scroll)
-import Data.Player (Player(..), Appear(..))
+import Data.Player (Player(..), PlayerAppear(..))
 import Assets.Sprites as S
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
@@ -36,8 +36,8 @@ buildPlayer x = Player {
         y: 0
     }, 
     energy: 0, 
-    appear: Stable,
-    sprite: S.player,
+    appear: PlayerForward,
+    sprite: S.playerRight,
     velocity: {
         xSpeed: 0.0,
         ySpeed: 0.0
