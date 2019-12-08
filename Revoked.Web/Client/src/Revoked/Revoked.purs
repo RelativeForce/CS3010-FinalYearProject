@@ -9,37 +9,30 @@ import Collision (isCollideObjects, isOutOfWorld)
 import Constants (scoreDisplayX, scoreDisplayY, scoreDisplayTextHeight, maxUsernameLength)
 import Data.Array (any, filter, partition, length, init)
 import Data.Bullet (Bullet, updateBullet)
+import Data.DateTime (DateTime)
+import Data.Either (Either(..))
 import Data.Enemy (Enemy, addEnemyBullet, updateEnemy, enemyToScore)
 import Data.EnemyBullet (EnemyBullet, updateEnemyBullet)
 import Data.Foldable (traverse_, sum)
-import Data.Either (Either(..))
-import Data.String (joinWith)
 import Data.Goal (Goal, updateGoal)
 import Data.Maybe (Maybe(..))
 import Data.Particle (Particle, initParticle, updateParticle)
 import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
+import Data.String (joinWith)
 import Effect (Effect)
 import Emo8 (emo8)
 import Emo8.Action.Draw (drawScaledImage, drawText)
 import Emo8.Action.Update (nowDateTime, listTopScores, storePlayerScore, isAudioStreamPlaying, stopAudioStream, addAudioStream)
 import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
-import Data.DateTime (DateTime)
 import Emo8.FFI.AudioController (AudioController, newAudioController)
 import Emo8.Input (isCatchAny, mapToCharacter)
 import Emo8.Types (MapId, Score, PlayerScore)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
-import Helper (
-    drawScrollMap, 
-    isCollideMapWalls, 
-    isCollideMapHazards, 
-    adjustMonitorDistance, 
-    drawUsername, 
-    formatDateTime, 
-    drawScore
-)
+import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance, drawUsername, formatDateTime, drawScore)
 import Levels (allRawLevels, enemies, goals, levelCount)
 import State.Play (PlayState, updatePlay, initialPlayState)
+import State.Victory (VictoryState, updateVictory, initialVictoryState)
 
 data State = 
     TitleScreen 
@@ -49,14 +42,7 @@ data State =
         isWaiting :: Boolean,
         isLoaded :: Boolean
     }
-    | Victory {
-        username :: Array String,
-        score :: Int,
-        inputInterval :: Int,
-        start :: DateTime,
-        end :: DateTime,
-        isWaiting :: Boolean
-    }
+    | Victory VictoryState
     | Play PlayState
 
 instance gameState :: Game State where
@@ -102,47 +88,15 @@ instance gameState :: Game State where
                 isLoaded = isLoaded
             }
     update _ input (Victory s) = do
-        let 
-            isMaxUsernameLength = maxUsernameLength == length s.username
-            backSpacePressed = input.active.isBackspace
-            character = mapToCharacter input
-            isInvaildCharacter = character == ""
-            enterPressed = input.active.isEnter
-            removeCharacter = 0 < length s.username && backSpacePressed && s.inputInterval == 0
-            addCharacter = not isMaxUsernameLength && not isInvaildCharacter && s.inputInterval == 0
-            newUsername = case addCharacter, removeCharacter of 
-                true, false -> s.username <> [ character ]
-                false, true -> case init s.username of
-                    Just username -> username
-                    Nothing -> s.username
-                _, _ -> s.username 
-            newInputInterval = if addCharacter || removeCharacter then 15 else if s.inputInterval == 0 then 0 else s.inputInterval - 1
-            request = {
-                username: joinWith "" s.username,
-                score: s.score,
-                start: formatDateTime s.start,
-                end: formatDateTime s.end
-            }
+       
+        victoryStateOrNextStateId <- updateVictory input s
 
-        result <- if s.isWaiting || (enterPressed && isMaxUsernameLength) 
-            then do storePlayerScore request 
-            else pure $ Left "AllowInput"
+        pure $ case victoryStateOrNextStateId of
+            Left victory -> Victory victory
+            Right stateId -> case stateId of
+                1 -> TitleScreen
+                _ -> Victory s
 
-        let
-            isWaiting = case result of
-                Left "Waiting" -> true
-                _-> false
-            submissionSuccess = case result of
-                Right response -> response
-                _-> false
-            
-        pure $ case submissionSuccess of
-            true -> TitleScreen
-            false -> Victory $ s {
-                username = newUsername,
-                inputInterval = newInputInterval,
-                isWaiting = isWaiting
-            }
     update asset input (Play s) = do
     
         playStateOrNextStateId <- updatePlay asset input s
@@ -152,7 +106,7 @@ instance gameState :: Game State where
             Left play -> Play play
             Right stateId -> case stateId of
                 2 -> GameOver
-                4 -> initialVictoryState s.score s.start now
+                4 -> Victory $ initialVictoryState s.score s.start now
                 _ -> Play s
 
     draw TitleScreen = do
@@ -194,15 +148,7 @@ newLevel mapId score audioController start = Play {
     start: start
 }
 
-initialVictoryState :: Score -> DateTime -> DateTime -> State
-initialVictoryState score start end = Victory {
-    username: [],
-    score: score,
-    inputInterval: 0,
-    start: start,
-    end: end,
-    isWaiting: false
-} 
+ 
 
 initialLeaderboardState :: State
 initialLeaderboardState = Leaderboard {
