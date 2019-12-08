@@ -1,9 +1,9 @@
-module State.Play where
+module States.Play where
 
 import Prelude
 
 import Assets.Audio as A
-import State.StateIds as S
+import States.StateIds as S
 import Class.Object (position, scroll)
 import Collision (isCollideObjects, isOutOfWorld)
 import Data.Array (any, filter, partition)

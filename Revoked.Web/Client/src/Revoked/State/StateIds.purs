@@ -1,4 +1,4 @@
-module State.StateIds where
+module States.StateIds where
 
 import Emo8.Types (StateId)
 

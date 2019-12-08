@@ -31,8 +31,8 @@ import Emo8.Types (MapId, Score, PlayerScore)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
 import Helper (drawScrollMap, isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance, drawUsername, formatDateTime, drawScore)
 import Levels (allRawLevels, enemies, goals, levelCount)
-import State.Play (PlayState, updatePlay, initialPlayState)
-import State.Victory (VictoryState, updateVictory, initialVictoryState)
+import States.Play (PlayState, updatePlay, initialPlayState)
+import States.Victory (VictoryState, updateVictory, initialVictoryState)
 
 data State = 
     TitleScreen 

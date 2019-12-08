@@ -1,8 +1,8 @@
-module State.Victory where
+module States.Victory where
 
 import Prelude
 
-import State.StateIds as S
+import States.StateIds as S
 import Constants (maxUsernameLength)
 import Data.Array (length, init)
 import Data.Either (Either(..))
