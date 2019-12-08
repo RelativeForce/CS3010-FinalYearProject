@@ -181,7 +181,7 @@ instance gameState :: Game State where
             hasCollidedEnemyBullet = any (isCollideObjects scrollAdjustedPlayer) updatedEnemyBullets
             hasCollidedGoal = any (isCollideObjects scrollAdjustedPlayer) s.goals
 
-        -- separate entities
+        -- collision with enemies
         let { yes: collidedEnemies, no: notCollidedEnemies } = partition (\e -> any (isCollideObjects e) updatedBullets) updatedEnemies
             { yes: collidedBullets, no: notCollidedBullets } = partition (\b -> any (isCollideObjects b) updatedEnemies) updatedBullets
 
@@ -193,8 +193,12 @@ instance gameState :: Game State where
 
         -- delete entities (out of monitor)
         let updatedBulletsInView = filter (not <<< isOutOfWorld) notCollidedBullets
-            updatedParticlesInView = filter (not <<< isOutOfWorld) updatedParticles
             updatedEnemyBulletsInView = filter (not <<< isOutOfWorld) updatedEnemyBullets
+            updatedParticlesInView = filter (not <<< isOutOfWorld) updatedParticles
+
+		-- delete entities (map collision)
+        let notCollidedWithMapBullets = filter (not <<< (isCollideMapWalls asset s.mapId s.distance)) updatedBulletsInView
+            notCollidedWithMapEnemyBullets = filter (not <<< (isCollideMapWalls asset s.mapId s.distance)) updatedEnemyBulletsInView
 
         -- evaluate game condition
         let isGameOver = hasCollidedHazard || hasCollidedEnemy || hasCollidedEnemyBullet
@@ -218,10 +222,10 @@ instance gameState :: Game State where
             false, false -> Play $ s { 
                 distance = newDistance, 
                 player = scrollAdjustedPlayer, 
-                bullets = updatedBulletsInView <> newBullets, 
+                bullets = notCollidedWithMapBullets <> newBullets, 
                 enemies = notCollidedEnemies <> enemiesNotInView, 
                 particles = updatedParticlesInView <> newParticles, 
-                enemyBullets = updatedEnemyBulletsInView <> newEnemyBullets,
+                enemyBullets = notCollidedWithMapEnemyBullets <> newEnemyBullets,
                 goals = updatedGoals,
                 mapId = s.mapId,
                 score = s.score + newScore,
