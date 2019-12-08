@@ -3,6 +3,7 @@ module Revoked where
 import Prelude
 
 import Assets.Images as I
+import States.StateIds as S
 import Class.Object (draw)
 import Constants (scoreDisplayX, scoreDisplayY, scoreDisplayTextHeight)
 import Data.Either (Either(..))
@@ -53,9 +54,9 @@ instance gameState :: Game State where
 
         pure $ case leaderboardStateOrNextStateId of
             Left leaderboard -> Leaderboard leaderboard
-            Right stateId -> case stateId of
-                1 -> TitleScreen
-                _ -> Leaderboard s
+            Right stateId -> if stateId == S.titleScreenId 
+                then TitleScreen
+                else Leaderboard s
 
     -- update Victory state
     update _ input (Victory s) = do
@@ -64,9 +65,9 @@ instance gameState :: Game State where
 
         pure $ case victoryStateOrNextStateId of
             Left victory -> Victory victory
-            Right stateId -> case stateId of
-                1 -> TitleScreen
-                _ -> Victory s
+            Right stateId -> if stateId == S.titleScreenId 
+                then TitleScreen
+                else Victory s
 
     -- update Play state
     update asset input (Play s) = do
@@ -76,10 +77,11 @@ instance gameState :: Game State where
 
         pure $ case playStateOrNextStateId of
             Left play -> Play play
-            Right stateId -> case stateId of
-                2 -> GameOver
-                4 -> Victory $ initialVictoryState s.score s.start now
-                _ -> Play s
+            Right stateId -> if stateId == S.gameOverId 
+                then GameOver
+                else if stateId == S.victoryId 
+                    then Victory $ initialVictoryState s.score s.start now
+                    else Play s
 
     draw TitleScreen = do
         drawScaledImage I.titleScreen 0 0
