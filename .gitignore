@@ -553,3 +553,7 @@
 /Revoked.Web/Client/output/Assets.Sprites.PlayerStandingRight.Sprite
 /Revoked.Web/Client/output/Assets.Sprites.PlayerLeft.Sprite
 /Revoked.Web/Client/output/Assets.Sprites.PlayerRight.Sprite
+/Revoked.Web/Client/output/States.Play
+/Revoked.Web/Client/output/States.StateIds
+/Revoked.Web/Client/output/States.Victory
+/Revoked.Web/Client/output/States.Leaderboard

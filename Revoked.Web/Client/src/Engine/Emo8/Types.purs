@@ -81,6 +81,7 @@ type IdY = Int
 type Deg = Int
 type Bpm = Int
 type AssetId = Int
+type StateId = Int
 type MapId = Int
 type Score = Int
 type TextHeight = Int
