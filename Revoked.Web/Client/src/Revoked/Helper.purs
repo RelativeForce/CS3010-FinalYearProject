@@ -11,10 +11,12 @@ import Data.Array ((!!))
 import Data.Maybe (Maybe(..))
 import Data.Either (Either(..))
 import Emo8.Action.Draw (Draw, drawMap, drawText)
+import Data.Int (floor)
 import Emo8.Data.Color (Color(..))
 import Emo8.Types (MapId, X, Size, Position, PlayerScore, Asset)
 import Data.Formatter.DateTime as F
-import Data.DateTime (DateTime)
+import Data.DateTime (DateTime, diff)
+import Data.Time.Duration (Milliseconds(..))
 
 -- TODO: readable
 drawScrollMap :: X -> MapId -> Draw Unit
@@ -72,6 +74,14 @@ formatDateTime :: DateTime -> String
 formatDateTime dt = case F.formatDateTime "YYYY/MM/DD hh:mm:ss" dt of
     Left error -> ""
     Right dateString -> dateString
+
+formatDifference :: DateTime -> DateTime -> String
+formatDifference start end = show minutes <> ":" <> show seconds
+    where
+        (Milliseconds milliseconds) = diff end start
+        totalSeconds = floor $ milliseconds / 1000.0
+        minutes = totalSeconds / 60
+        seconds = mod totalSeconds 60
 
 drawUsername :: (Array String) -> Draw Unit
 drawUsername username = do

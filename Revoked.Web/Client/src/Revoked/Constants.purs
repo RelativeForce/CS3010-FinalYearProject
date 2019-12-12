@@ -17,11 +17,14 @@ emoSize = {
 scoreDisplayX :: X
 scoreDisplayX = (defaultMonitorSize.width - 200)
 
-scoreDisplayY :: Y
-scoreDisplayY = (defaultMonitorSize.height - 50)
+timeDisplayX :: X
+timeDisplayX = (defaultMonitorSize.width - 500)
 
-scoreDisplayTextHeight :: TextHeight
-scoreDisplayTextHeight = 32
+hudDisplayY :: Y
+hudDisplayY = (defaultMonitorSize.height - 50)
+
+hudTextHeight :: TextHeight
+hudTextHeight = 32
 
 mapSizeInt :: Int
 mapSizeInt = 207
