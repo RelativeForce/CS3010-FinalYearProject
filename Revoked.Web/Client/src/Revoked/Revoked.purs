@@ -5,7 +5,7 @@ import Prelude
 import Assets.Images as I
 import States.StateIds as S
 import Class.Object (draw)
-import Constants (scoreDisplayX, scoreDisplayY, scoreDisplayTextHeight)
+import Constants (scoreDisplayX, hudDisplayY, timeDisplayX, hudTextHeight)
 import Data.Either (Either(..))
 import Data.Foldable (traverse_)
 import Effect (Effect)
@@ -16,7 +16,7 @@ import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
 import Emo8.Input (isCatchAny)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
-import Helper (drawScrollMap, drawUsername, drawScore)
+import Helper (drawScrollMap, drawUsername, drawScore, formatDifference)
 import Levels (allRawLevels)
 import States.Play (PlayState, updatePlay, initialPlayState)
 import States.Victory (VictoryState, updateVictory, initialVictoryState)
@@ -90,6 +90,7 @@ instance gameState :: Game State where
     draw (Victory s) = do
         drawScaledImage I.victoryScreen 0 0
         drawUsername s.username
+        drawText (formatDifference s.start s.end) 27 635 140 White
         drawText (show s.score) 27 635 187 White
         drawText (if s.isWaiting then "Sending..." else "") 27 570 80 White
     draw (Leaderboard s) = do
@@ -105,7 +106,8 @@ instance gameState :: Game State where
         traverse_ draw s.particles
         traverse_ draw s.enemyBullets
         traverse_ draw s.goals
-        drawText ("Score: " <> show s.score) scoreDisplayTextHeight scoreDisplayX scoreDisplayY Lime
+        drawText ("Score: " <> show s.score) hudTextHeight scoreDisplayX hudDisplayY Lime
+        drawText ("Time: " <> s.elapsed) hudTextHeight timeDisplayX hudDisplayY Lime
 
 initialState :: State
 initialState = TitleScreen

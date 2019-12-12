@@ -15,13 +15,13 @@ import Data.Either (Either(..))
 import Data.Goal (Goal, updateGoal)
 import Data.Particle (Particle, initParticle, updateParticle)
 import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
-import Emo8.Action.Update (Update, isAudioStreamPlaying, stopAudioStream, addAudioStream)
+import Emo8.Action.Update (Update, isAudioStreamPlaying, stopAudioStream, addAudioStream, nowDateTime)
 import Data.DateTime (DateTime)
 import Emo8.FFI.AudioController (AudioController, newAudioController)
 import Emo8.Input (Input)
 import Emo8.Types (MapId, Score, StateId, Asset)
 import Levels (enemies, goals, levelCount)
-import Helper (isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance)
+import Helper (isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance, formatDifference)
 
 type PlayState = { 
     distance :: Int, 
@@ -34,7 +34,8 @@ type PlayState = {
     mapId :: MapId,
     score :: Score,
     audioController :: AudioController,
-    start :: DateTime
+    start :: DateTime,
+    elapsed :: String
 }
 
 updatePlay :: Asset -> Input -> PlayState -> Update (Either PlayState StateId)
@@ -97,11 +98,13 @@ updatePlay asset input s = do
             false, false ->  addAudioStream s.audioController A.backgroundMusicId
             _, _ -> pure s.audioController
     
+    now <- nowDateTime
+    
     pure $ case isGameOver, isNextLevel of
         true, _ -> Right S.gameOverId
         false, true -> if isLastLevel 
             then Right $ S.victoryId
-            else Left $ newLevel (s.mapId + 1) s.score s.audioController s.start
+            else Left $ newLevel (s.mapId + 1) s.score s.audioController s.elapsed s.start
         false, false -> Left $ s { 
             distance = newDistance, 
             player = scrollAdjustedPlayer, 
@@ -113,11 +116,12 @@ updatePlay asset input s = do
             mapId = s.mapId,
             score = s.score + newScore,
             audioController = newAudioController,
-            start = s.start
+            start = s.start,
+            elapsed = formatDifference s.start now
         }
 
-newLevel :: MapId -> Score -> AudioController -> DateTime -> PlayState
-newLevel mapId score audioController start = { 
+newLevel :: MapId -> Score -> AudioController -> String -> DateTime -> PlayState
+newLevel mapId score audioController elapsed start = { 
     distance: 0, 
     player: initialPlayer, 
     bullets: [], 
@@ -128,8 +132,9 @@ newLevel mapId score audioController start = {
     mapId: mapId,
     score: score,
     audioController: audioController,
-    start: start
+    start: start,
+    elapsed: elapsed
 }
 
 initialPlayState :: DateTime -> PlayState
-initialPlayState = newLevel 0 0 $ newAudioController "Play"
+initialPlayState = newLevel 0 0 (newAudioController "Play") "0:00"
