@@ -11,7 +11,7 @@ import Emo8.Types (Y, X, Velocity)
 adjustVelocityTests :: TestSuite
 adjustVelocityTests =
     suite "Revoked.Data.Player - adjustVelocity" do
-        test "ShouldAdjustVelocityToZeroInXandYWhenPositionHasNotChangedInXandY" do
+        test "shouldAdjustVelocityToZeroInXandYWhenPositionHasNotChangedInXandY" do
             let 
                 x = 50
                 y = 50
@@ -32,7 +32,7 @@ adjustVelocityTests =
                 (Player result) = adjustVelocity oldPos newPlayer
 
             equal expectedVelocity result.velocity
-        test "ShouldAdjustVelocityToZeroInXWhenPositionHasNotChangedInX" do
+        test "shouldAdjustVelocityToZeroInXWhenPositionHasNotChangedInX" do
             let 
                 x = 50
                 ySpeed = 6.7
@@ -53,7 +53,7 @@ adjustVelocityTests =
                 (Player result) = adjustVelocity oldPos newPlayer
 
             equal expectedVelocity result.velocity
-        test "ShouldAdjustVelocityToZeroInYWhenPositionHasNotChangedInY" do
+        test "shouldAdjustVelocityToZeroInYWhenPositionHasNotChangedInY" do
             let 
                 xSpeed = 57.6
                 y = 50
@@ -74,7 +74,7 @@ adjustVelocityTests =
                 (Player result) = adjustVelocity oldPos newPlayer
 
             equal expectedVelocity result.velocity
-        test "ShouldNotAdjustVelocityInXorYWhenPositionHasChangedInBothXandY" do
+        test "shouldNotAdjustVelocityInXorYWhenPositionHasChangedInBothXandY" do
             let 
                 xSpeed = 34.6
                 ySpeed = 2.4

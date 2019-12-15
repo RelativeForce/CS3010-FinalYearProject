@@ -12,7 +12,7 @@ import Emo8.Utils (defaultMonitorSize)
 beInMonitorTests :: TestSuite
 beInMonitorTests =
     suite "Revoked.Data.Player - beInMonitor" do
-        test "PositionShouldNotChangeWhenPlayerHasNotMovedWithInMonitorBounds" do
+        test "positionShouldNotChangeWhenPlayerHasNotMovedWithInMonitorBounds" do
             let 
                 x = 50
                 y = 50
@@ -30,7 +30,7 @@ beInMonitorTests =
 
             equal expectedPos result.pos
         
-        test "PositionShouldNotChangeWhenPlayerHasOutsideMonitorBoundsLeft" do
+        test "positionShouldNotChangeWhenPlayerHasOutsideMonitorBoundsLeft" do
             let 
                 y = 50
                 oldPos = {
@@ -47,7 +47,7 @@ beInMonitorTests =
 
             equal expectedPos result.pos
 
-        test "PositionShouldNotChangeWhenPlayerHasOutsideMonitorBoundsDown" do
+        test "positionShouldNotChangeWhenPlayerHasOutsideMonitorBoundsDown" do
             let 
                 x = 50
                 oldPos = {
@@ -64,7 +64,7 @@ beInMonitorTests =
 
             equal expectedPos result.pos
 
-        test "PositionShouldNotChangeWhenPlayerHasOutsideMonitorBoundsUp" do
+        test "positionShouldNotChangeWhenPlayerHasOutsideMonitorBoundsUp" do
             let 
                 x = 50
                 yBoundry = defaultMonitorSize.height - spriteSize.height
@@ -82,7 +82,7 @@ beInMonitorTests =
 
             equal expectedPos result.pos
 
-        test "PositionShouldNotChangeWhenPlayerHasOutsideMonitorBoundsRight" do
+        test "positionShouldNotChangeWhenPlayerHasOutsideMonitorBoundsRight" do
             let 
                 y = 50
                 xBoundry = defaultMonitorSize.width - spriteSize.width
@@ -99,7 +99,7 @@ beInMonitorTests =
                 (Player result) = beInMonitor oldPos newPlayer
 
             equal expectedPos result.pos
-        test "PositionShouldNotChangeWhenPlayerHasOutsideMonitorBoundsRightAndUp" do
+        test "positionShouldNotChangeWhenPlayerHasOutsideMonitorBoundsRightAndUp" do
             let 
                 xBoundry = defaultMonitorSize.width - spriteSize.width
                 yBoundry = defaultMonitorSize.height - spriteSize.height

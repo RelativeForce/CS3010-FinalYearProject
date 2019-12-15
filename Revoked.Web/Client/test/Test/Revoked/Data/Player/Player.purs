@@ -11,6 +11,8 @@ import Test.Revoked.Data.Player.UpdateEnergy (updateEnergyTests)
 import Test.Revoked.Data.Player.CanFire (canFireTests)
 import Test.Revoked.Data.Player.BeInMonitor (beInMonitorTests)
 import Test.Revoked.Data.Player.AdjustVelocity (adjustVelocityTests)
+import Test.Revoked.Data.Player.NewPlayerSprite (newPlayerSpriteTests)
+import Test.Revoked.Data.Player.UpdateAppear (updateAppearTests)
 import Test.Unit.Main (runTest)
 
 playerTests :: Effect Unit
@@ -23,4 +25,6 @@ playerTests = do
         canFireTests
         beInMonitorTests
         adjustVelocityTests
+        newPlayerSpriteTests
+        updateAppearTests
     -- Sub Modules
