@@ -200,7 +200,7 @@ collide oldPos (Player newPlayer) distance collisionCheck = Player $ newPlayer {
                 x: adjustX oldPos.x newPos.x distance size.width, 
                 y: adjustY oldPos.y newPos.y size.height 
             }
-        newOnFloor = yCollide
+        newOnFloor = yCollide && oldPos.y > newPos.y
 
 beInMonitor :: Position -> Player -> Player
 beInMonitor oldPos (Player p) = Player $ p { pos = { x: x, y: y } }

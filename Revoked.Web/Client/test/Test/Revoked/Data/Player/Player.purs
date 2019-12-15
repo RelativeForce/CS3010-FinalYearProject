@@ -13,6 +13,7 @@ import Test.Revoked.Data.Player.BeInMonitor (beInMonitorTests)
 import Test.Revoked.Data.Player.AdjustVelocity (adjustVelocityTests)
 import Test.Revoked.Data.Player.NewPlayerSprite (newPlayerSpriteTests)
 import Test.Revoked.Data.Player.UpdateAppear (updateAppearTests)
+import Test.Revoked.Data.Player.Collide (collideTests)
 import Test.Unit.Main (runTest)
 
 playerTests :: Effect Unit
@@ -27,4 +28,5 @@ playerTests = do
         adjustVelocityTests
         newPlayerSpriteTests
         updateAppearTests
+        collideTests
     -- Sub Modules
