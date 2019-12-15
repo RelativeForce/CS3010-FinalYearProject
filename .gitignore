@@ -564,3 +564,7 @@
 /Revoked.Web/Client/output/Test.Revoked.Data.Player.NewPlayerSprite
 /Revoked.Web/Client/output/Test.Revoked.Data.Player.UpdateAppear
 /Revoked.Web/Client/output/Test.Revoked.Data.Player.Collide
+/Revoked.Web/Client/output/Test.Revoked.Data.Enemy
+/Revoked.Web/Client/output/Test.Revoked.Data.Enemy.Marine
+/Revoked.Web/Client/output/Test.Revoked.Data.Enemy.Marine.PlayerInRange
+/Revoked.Web/Client/output/Test.Revoked.Data.Enemy.Marine.VelocityOfMarineBullet

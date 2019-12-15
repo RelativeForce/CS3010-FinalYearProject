@@ -12,7 +12,7 @@ import Emo8.Types (Asset, MonitorSize, Size, X, Y, Position, Velocity, IdX, IdY,
 import Data.Array (reverse, (!!))
 import Data.Foldable (elem, foldr)
 import Data.Maybe (Maybe(..))
-import Math (sqrt, atan, pi)
+import Math (sqrt, atan, pi, abs)
 
 -- | Collision detection if an object protrudes out of monitor
 isMonitorCollide :: MonitorSize -> Size -> X -> Y -> Boolean
@@ -49,9 +49,9 @@ toVelocity :: Position -> Velocity
 toVelocity p = { xSpeed: (toNumber p.x), ySpeed: (toNumber p.y)  } 
 
 normalise :: Velocity -> Velocity
-normalise v = { xSpeed: v.xSpeed / length, ySpeed: v.ySpeed / length } 
+normalise v = { xSpeed: v.xSpeed / sum, ySpeed: v.ySpeed / sum } 
     where
-        length = magnitude v
+        sum = (abs v.xSpeed) + (abs v.ySpeed)
 
 distanceBetween :: Position -> Position -> Number
 distanceBetween a b = distanceFromOrigin $ vectorTo a b

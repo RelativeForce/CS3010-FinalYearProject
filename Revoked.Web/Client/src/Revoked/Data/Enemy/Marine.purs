@@ -26,13 +26,21 @@ addMarineBullet playerObject@(Player p) marine = if canFire && withinRange then 
     where 
         withinRange = playerInRange playerObject marine
         canFire = canFireBullet marine
-        v = normalise $ toVelocity $ vectorTo marine.pos p.pos
-        scaledVelocity = { xSpeed: v.xSpeed * marineBulletSpeed, ySpeed: v.ySpeed * marineBulletSpeed} 
+        scaledVelocity = velocityOfMarineBullet marine.pos p.pos 
         newBullet = MarineBullet { 
             pos: marine.pos { y = marine.pos.y + (marine.sprite.size.height / 2) }, 
             velocity: scaledVelocity,
             sprite: S.bulletRight
         }
+
+velocityOfMarineBullet :: Position -> Position -> Velocity
+velocityOfMarineBullet marinePos playerPos = scaledVelocity
+    where
+        normalisedVector = normalise $ toVelocity $ vectorTo marinePos playerPos
+        scaledVelocity = { 
+            xSpeed: normalisedVector.xSpeed * marineBulletSpeed, 
+            ySpeed: normalisedVector.ySpeed * marineBulletSpeed
+        } 
 
 playerInRange :: Player -> Marine -> Boolean
 playerInRange (Player p) marine = marineAgroRange > distanceBetween p.pos marine.pos
@@ -149,3 +157,15 @@ collideMarine oldPos newMarine distance collisionCheck = collidedMarine { pos = 
         collidedMarine = if shouldReverse 
             then (reverseDirection newMarine) 
             else newMarine
+
+defaultMarine :: Position -> Marine
+defaultMarine pos =  {
+    pos: pos,
+    sprite: S.marineLeft,
+    appear: WalkingLeft,
+    velocity: {
+        xSpeed: 0.0,
+        ySpeed: 0.0
+    },
+    shotCoolDown: 0
+}

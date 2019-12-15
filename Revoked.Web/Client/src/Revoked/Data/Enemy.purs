@@ -6,8 +6,7 @@ import Class.Object (class ObjectDraw, class Object, position)
 import Data.EnemyBullet (EnemyBullet)
 import Data.Player (Player)
 import Emo8.Action.Draw (drawSprite)
-import Assets.Sprites as S
-import Data.Enemy.Marine (Marine, MarineAppear(..), updateMarine, addMarineBullet)
+import Data.Enemy.Marine (Marine, updateMarine, addMarineBullet, defaultMarine)
 import Emo8.Types (Position, Score, X)
 
 data Enemy = EnemyMarine Marine
@@ -29,17 +28,8 @@ addEnemyBullet p (EnemyMarine m) = addMarineBullet p m
 updateEnemy :: (Enemy -> Boolean) -> X -> Player -> Enemy -> Enemy
 updateEnemy collisionCheck distance playerObject (EnemyMarine marine) = EnemyMarine $ updateMarine (toMarineCollision collisionCheck) distance playerObject marine
 
-defaultMarine :: Position -> Enemy
-defaultMarine pos = EnemyMarine {
-    pos: pos,
-    sprite: S.marineLeft,
-    appear: WalkingLeft,
-    velocity: {
-        xSpeed: 0.0,
-        ySpeed: 0.0
-    },
-    shotCoolDown: 0
-}
+defaultMarineEnemy :: Position -> Enemy
+defaultMarineEnemy = defaultMarine >>> EnemyMarine
 
 toMarineCollision :: (Enemy -> Boolean) -> Marine -> Boolean
 toMarineCollision check = check <<< EnemyMarine
