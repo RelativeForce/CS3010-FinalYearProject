@@ -201,22 +201,21 @@ collide oldPos (Player newPlayer) distance collisionCheck = Player $ newPlayer {
                 y: adjustY oldPos.y newPos.y size.height 
             }
         newOnFloor = yCollide
-    
 
 beInMonitor :: Position -> Player -> Player
-beInMonitor pos (Player np) = Player $ np { pos = { x: npx, y: npy } }
+beInMonitor oldPos (Player p) = Player $ p { pos = { x: x, y: y } }
     where
-        size = np.sprite.size
+        size = p.sprite.size
         width = size.width
         height = size.height
-        npos = np.pos
-        isCollX = isCollWorld size { x: npos.x, y: pos.y }
-        isCollY = isCollWorld size { x: pos.x, y: npos.y }
-        npx = case isCollX, (npos.x < pos.x) of
+        pos = p.pos
+        isCollX = isCollWorld size { x: pos.x, y: oldPos.y }
+        isCollY = isCollWorld size { x: oldPos.x, y: pos.y }
+        x = case isCollX, (pos.x < oldPos.x) of
             true, true -> 0
             true, false -> defaultMonitorSize.width - width
-            _, _ -> npos.x
-        npy = case isCollY, (npos.y < pos.y) of
+            _, _ -> pos.x
+        y = case isCollY, (pos.y < oldPos.y) of
             true, true -> 0
             true, false -> defaultMonitorSize.height - height
-            _, _ -> npos.y
+            _, _ -> pos.y
