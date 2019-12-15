@@ -557,3 +557,5 @@
 /Revoked.Web/Client/output/States.StateIds
 /Revoked.Web/Client/output/States.Victory
 /Revoked.Web/Client/output/States.Leaderboard
+/Revoked.Web/Client/output/Test.Revoked.Data.Player.CanFire
+/Revoked.Web/Client/output/Test.Revoked.Data.Player.UpdateEnergy

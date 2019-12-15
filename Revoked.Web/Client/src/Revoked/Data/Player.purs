@@ -5,7 +5,7 @@ import Prelude
 import Assets.Sprites as S
 import Class.Object (class Object, class ObjectDraw, position)
 import Collision (isCollWorld, adjustY, adjustX)
-import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor)
+import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor, playerShotCooldown)
 import Data.Bullet (Bullet, BulletAppear(..), newBullet)
 import Emo8.Action.Draw (drawSprite)
 import Emo8.Data.Sprite (incrementFrame)
@@ -144,7 +144,7 @@ initialPlayer = Player {
 }
 
 canFire :: Int -> Boolean
-canFire energy = energy >= 10
+canFire energy = energy >= playerShotCooldown
 
 adjustVelocity :: Position -> Player -> Player
 adjustVelocity oldPos (Player new) = Player $ new { 

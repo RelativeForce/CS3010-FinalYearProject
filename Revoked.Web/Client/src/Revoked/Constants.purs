@@ -99,3 +99,6 @@ bulletSpeed = 12.0
 
 marineBulletSpeed :: Number
 marineBulletSpeed = 8.0
+
+playerShotCooldown :: Int
+playerShotCooldown = 10
