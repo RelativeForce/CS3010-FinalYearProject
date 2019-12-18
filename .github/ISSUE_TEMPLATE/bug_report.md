@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: ''
+title: New bug
 labels: Bug
 assignees: ''
 
@@ -11,11 +11,11 @@ assignees: ''
 Approved Date:
 Points Spent: 0
 
-##Overview
+## Overview
 
-##Steps To Reproduce
+## Steps To Reproduce
 
-##Acceptance Criteria
+## Acceptance Criteria
 
 ## Closing Notes
 
