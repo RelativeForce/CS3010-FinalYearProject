@@ -3,7 +3,7 @@ module Data.Particle.Ghost where
 import Prelude
 
 import Constants (ghostAscentSpeed)
-import Emo8.Types (Position, Sprite, X)
+import Emo8.Types (Position, Sprite, X, Size)
 import Emo8.Data.Sprite (incrementFrame)
 import Assets.Sprites as S
 
@@ -11,6 +11,12 @@ type Ghost = {
     pos :: Position,
     sprite :: Sprite
 }
+
+ghostSize :: Ghost -> Size
+ghostSize g = g.sprite.size
+
+ghostPosition :: Ghost -> Position
+ghostPosition g = g.pos
 
 scrollGhost :: X -> Ghost -> Ghost
 scrollGhost offset g = g { pos = { x: g.pos.x + offset, y: g.pos.y }}
