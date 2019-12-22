@@ -102,3 +102,6 @@ marineBulletSpeed = 8.0
 
 playerShotCooldown :: Int
 playerShotCooldown = 10
+
+ghostAscentSpeed :: Int
+ghostAscentSpeed = 5

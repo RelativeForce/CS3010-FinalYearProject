@@ -4,7 +4,7 @@ import Prelude
 
 import Assets.Audio as A
 import States.StateIds as S
-import Class.Object (position, scroll)
+import Class.Object (scroll)
 import Collision (isCollideObjects, isOutOfWorld)
 import Data.Array (any, filter, partition)
 import Data.Bullet (Bullet, updateBullet)
@@ -13,7 +13,7 @@ import Data.EnemyBullet (EnemyBullet, updateEnemyBullet)
 import Data.Foldable (sum)
 import Data.Either (Either(..))
 import Data.Goal (Goal, updateGoal)
-import Data.Particle (Particle, initParticle, updateParticle)
+import Data.Particle (Particle, updateParticle)
 import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
 import Emo8.Action.Update (Update, isAudioStreamPlaying, stopAudioStream, addAudioStream, nowDateTime)
 import Data.DateTime (DateTime)
@@ -21,7 +21,7 @@ import Emo8.FFI.AudioController (AudioController, newAudioController)
 import Emo8.Input (Input)
 import Emo8.Types (MapId, Score, StateId, Asset)
 import Levels (enemies, goals, levelCount)
-import Helper (isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance, formatDifference)
+import Helper (isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance, formatDifference, enemyToParticle)
 
 type PlayState = { 
     distance :: Int, 
@@ -72,7 +72,7 @@ updatePlay asset input s = do
 
     -- add new entities
     let newBullets = addBullet input s.player
-        newParticles = map (\e -> initParticle (position e)) collidedEnemies
+        newParticles = map enemyToParticle collidedEnemies
         newEnemyBullets = notCollidedEnemies >>= addEnemyBullet s.player
         newScore = sum $ map enemyToScore collidedEnemies
 
