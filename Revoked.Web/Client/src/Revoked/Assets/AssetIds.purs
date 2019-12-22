@@ -70,3 +70,6 @@ playerRightId = 22
 
 playerLeftId :: AssetId
 playerLeftId = 23
+
+marineGhostId :: AssetId
+marineGhostId = 24
