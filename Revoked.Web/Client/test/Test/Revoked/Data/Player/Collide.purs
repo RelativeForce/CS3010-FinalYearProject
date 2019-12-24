@@ -48,7 +48,7 @@ collideTests =
 
             equal expectedPos result.pos
             equal expectedOnFloor result.onFloor
-        test "shouldAdjustPositionAndBeOnFloorWhenPlayerCollidesInBothDirection" do
+        test "shouldAdjustPositionAndBeOnFloorWhenPlayerCollidesInXandYandBothDirections" do
             let 
                 oldPos = { x: 60, y: 65 }
                 newPos = { x: 75, y: 45 }
@@ -61,6 +61,25 @@ collideTests =
 
                 expectedPos = { x: 54,  y: 64 }
                 expectedOnFloor = true
+
+                (Player result) = collide oldPos newPlayer distance collisionCheck
+
+            equal expectedPos result.pos
+            equal expectedOnFloor result.onFloor
+
+        test "shouldAdjustXandReachNewYWhenPlayerCollidesInBothDirectionBothButNotXandY" do
+            let 
+                oldPos = { x: 60, y: 65 }
+                newPos = { x: 75, y: 45 }
+                distance = 50
+                collideX = false
+                collideY = false
+                collideBoth = true
+                newPlayer = player newPos
+                collisionCheck = mockCollisionCheck collideX collideY collideBoth oldPos
+
+                expectedPos = { x: 54,  y: 45 }
+                expectedOnFloor = false
 
                 (Player result) = collide oldPos newPlayer distance collisionCheck
 
