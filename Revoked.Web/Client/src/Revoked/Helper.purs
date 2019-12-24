@@ -5,18 +5,20 @@ import Prelude
 import Class.Object (class Object, position, size)
 import Collision (isWallsCollide, isHazardCollide)
 import Constants (leftBoundry, mapSizeInt, mapTileInMonitorSize, mapTileSize, mapSize, rightBoundry)
-import Emo8.Utils (defaultMonitorSize)
-import Data.Player (Player(..))
 import Data.Array ((!!))
-import Data.Maybe (Maybe(..))
+import Data.DateTime (DateTime, diff)
 import Data.Either (Either(..))
-import Emo8.Action.Draw (Draw, drawMap, drawText)
+import Data.Enemy (Enemy(..))
+import Data.Formatter.DateTime as F
 import Data.Int (floor)
+import Data.Maybe (Maybe(..))
+import Data.Particle (Particle, defaultMarineGhostParticle)
+import Data.Player (Player(..))
+import Data.Time.Duration (Milliseconds(..))
+import Emo8.Action.Draw (Draw, drawMap, drawText)
 import Emo8.Data.Color (Color(..))
 import Emo8.Types (MapId, X, Size, Position, PlayerScore, Asset)
-import Data.Formatter.DateTime as F
-import Data.DateTime (DateTime, diff)
-import Data.Time.Duration (Milliseconds(..))
+import Emo8.Utils (defaultMonitorSize)
 
 -- TODO: readable
 drawScrollMap :: X -> MapId -> Draw Unit
@@ -118,3 +120,6 @@ drawScore ps = do
         paddingY = 15
         color = White
         y = startY - ((ps.position - 1) * (textHeight + paddingY))
+
+enemyToParticle :: Enemy -> Particle
+enemyToParticle (EnemyMarine m) = defaultMarineGhostParticle m.pos

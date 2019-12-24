@@ -2,28 +2,24 @@ module Data.Particle where
 
 import Prelude
 
-import Constants (emoSize)
-import Class.Object (class ObjectDraw, class Object, position, size)
-import Emo8.Action.Draw (emo)
-import Emo8.Data.Emoji as E
+import Class.Object (class ObjectDraw, class Object, position)
+import Emo8.Action.Draw (drawSprite)
 import Emo8.Types (Position)
+import Data.Particle.Ghost (Ghost, scrollGhost, updateGhost, defaultMarineGhost, ghostSize, ghostPosition)
 
 
-data Particle
-    = Normal
-        { pos :: Position
-        }
+data Particle = MarineGhost Ghost
 
 instance objectParticle :: Object Particle where
-    size _ = emoSize
-    position (Normal s) = s.pos
-    scroll offset (Normal s) = Normal $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
+    size (MarineGhost g) = ghostSize g
+    position (MarineGhost g) = ghostPosition g
+    scroll offset (MarineGhost g) = MarineGhost $ scrollGhost offset g
 
 instance objectDrawParticle :: ObjectDraw Particle where
-    draw o = emo E.globeWithMeridians (size o) (position o).x (position o).y
+    draw o@(MarineGhost g) = drawSprite g.sprite (position o).x (position o).y
 
 updateParticle :: Particle -> Particle
-updateParticle (Normal s) = Normal $ s { pos { x = s.pos.x, y = s.pos.y - 2 } }
+updateParticle (MarineGhost g) = MarineGhost $ updateGhost g
 
-initParticle :: Position -> Particle
-initParticle pos = Normal { pos: pos }
+defaultMarineGhostParticle :: Position -> Particle
+defaultMarineGhostParticle = defaultMarineGhost >>> MarineGhost
