@@ -55,7 +55,7 @@ function send(requestData){
             }
 
             localRequest.isWaiting = false;
-            if(result){
+            if(result || result === []){
                 localRequest.result = result;
             }
             else{
