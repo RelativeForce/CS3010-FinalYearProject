@@ -186,22 +186,28 @@ collide oldPos (Player newPlayer) distance collisionCheck = Player $ newPlayer {
         xCollide = collisionCheck xChangePlayer
         yCollide = collisionCheck yChangePlayer
         bothCollide = collisionCheck (Player newPlayer)
+        adjustedX = adjustX oldPos.x newPos.x distance size.width
+        adjustedY = adjustY oldPos.y newPos.y size.height 
+        newOnFloor = yCollide && oldPos.y > newPos.y
         newPosition = case xCollide, yCollide, bothCollide of
             true, false, _ -> { 
-                x: adjustX oldPos.x newPos.x distance size.width, 
+                x: adjustedX, 
                 y: newPos.y 
             }
             false, true, _ -> { 
                 x: newPos.x, 
-                y: adjustY oldPos.y newPos.y size.height 
+                y: adjustedY
+            }
+            false, false, true -> { 
+                x: adjustedX, 
+                y: newPos.y 
             }
             false, false, false -> newPos
             _, _, _ -> { 
-                x: adjustX oldPos.x newPos.x distance size.width, 
-                y: adjustY oldPos.y newPos.y size.height 
+                x: adjustedX, 
+                y: adjustedY
             }
-        newOnFloor = yCollide && oldPos.y > newPos.y
-
+        
 beInMonitor :: Position -> Player -> Player
 beInMonitor oldPos (Player p) = Player $ p { pos = { x: x, y: y } }
     where
