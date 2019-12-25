@@ -89,7 +89,7 @@ drawUsername :: (Array String) -> Draw Unit
 drawUsername username = do
     drawText char0 textHeight x y color
     drawText char1 textHeight (x + 21) y color
-    drawText char2 textHeight (x + 46) y color
+    drawText char2 textHeight (x + 42) y color
     where
         char0 = character username 0 
         char1 = character username 1 
