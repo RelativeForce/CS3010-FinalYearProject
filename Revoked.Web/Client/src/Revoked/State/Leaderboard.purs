@@ -17,9 +17,8 @@ type LeaderboardState = {
 
 updateLeaderboard :: Input -> LeaderboardState -> Update (Either LeaderboardState StateId)
 updateLeaderboard input s = do
-    let 
-        hasNoScores = 0 == length s.scores
-        shouldLoadScores = not s.isLoaded && (s.isWaiting || hasNoScores)  
+
+    let shouldLoadScores = (not s.isLoaded) || s.isWaiting
 
     result <- if shouldLoadScores
         then do listTopScores
@@ -30,7 +29,7 @@ updateLeaderboard input s = do
         isWaiting = case result of
             Left "Waiting" -> true
             _-> false
-        isLoaded = case result of
+        isLoaded = s.isLoaded || case result of
             Right response -> true
             _-> false
         scores = case result of
