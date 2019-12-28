@@ -105,3 +105,9 @@ playerShotCooldown = 10
 
 ghostAscentSpeed :: Int
 ghostAscentSpeed = 5
+
+pistolMagazineSize :: Int
+pistolMagazineSize = 6
+
+pistolShotCooldown :: Int
+pistolShotCooldown = 10
