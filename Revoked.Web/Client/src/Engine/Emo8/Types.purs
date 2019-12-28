@@ -10,6 +10,8 @@ type Position = {
   y :: Y
 }
 
+type Vector = Position
+
 type Velocity = {
   xSpeed :: Number,
   ySpeed :: Number 

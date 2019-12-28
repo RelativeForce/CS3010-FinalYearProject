@@ -8,7 +8,7 @@ import Emo8.Excepiton (orErrMsg)
 import Emo8.Parse (RawMap, parseTileMap)
 import Data.Int (toNumber, floor)
 import Assets.AssetMapper (emojiToImage)
-import Emo8.Types (Asset, MonitorSize, Size, X, Y, Position, Velocity, IdX, IdY, MapId, ScaledImage, AssetId, Deg)
+import Emo8.Types (Asset, MonitorSize, Size, X, Y, Position, Velocity, IdX, IdY, MapId, ScaledImage, AssetId, Deg, Vector)
 import Data.Array (reverse, (!!))
 import Data.Foldable (elem, foldr)
 import Data.Maybe (Maybe(..))
@@ -39,7 +39,7 @@ distanceFromOrigin p = sqrt $ toNumber $ (p.x * p.x) + (p.y * p.y)
 magnitude :: Velocity -> Number
 magnitude v = sqrt $ (v.xSpeed * v.xSpeed) + (v.ySpeed * v.ySpeed)
 
-vectorTo :: Position -> Position -> Position
+vectorTo :: Position -> Position -> Vector
 vectorTo positionA positionB = { x: positionB.x - positionA.x, y: positionB.y - positionA.y }
 
 toPosition :: Velocity -> Position
@@ -55,6 +55,9 @@ normalise v = { xSpeed: v.xSpeed / sum, ySpeed: v.ySpeed / sum }
 
 distanceBetween :: Position -> Position -> Number
 distanceBetween a b = distanceFromOrigin $ vectorTo a b
+
+sum :: Vector -> Vector -> Vector
+sum a b = { x: a.x + b.x, y: a.y + b.y }
 
 -- | Collision detection between two objects
 isCollide :: Size -> X -> Y -> Size -> X -> Y -> Boolean
