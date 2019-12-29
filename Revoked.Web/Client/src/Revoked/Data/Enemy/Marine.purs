@@ -2,14 +2,15 @@ module Data.Enemy.Marine where
 
 import Prelude
 
-import Constants (marineWalkSpeed, gravity, marineAgroRange, marineShotCooldown, marineBulletSpeed)
 import Assets.Sprites as S
-import Emo8.Types (Position, Sprite, Velocity, X)
-import Data.EnemyBullet (EnemyBullet(..))
-import Data.Player (Player(..))
 import Collision (adjustX)
-import Emo8.Utils (updatePosition, distanceBetween, vectorTo, toVelocity, normalise)
+import Constants (marineWalkSpeed, gravity, marineAgroRange)
+import Data.Bullet (Bullet)
+import Data.Gun (Gun, defaultPistolGun, fireAndUpdateGun, setPositionAndRotation, updateGun)
+import Data.Player (Player(..))
 import Emo8.Data.Sprite (incrementFrame)
+import Emo8.Types (Position, Sprite, Velocity, X, Deg)
+import Emo8.Utils (updatePosition, distanceBetween, vectorTo, angle)
 
 data MarineAppear = Standing | WalkingLeft | WalkingRight 
 
@@ -18,56 +19,50 @@ type Marine = {
     velocity :: Velocity,
     sprite :: Sprite,
     appear :: MarineAppear,
-    shotCoolDown :: Int
+    gun :: Gun
 }
 
-addMarineBullet :: Player -> Marine -> Array EnemyBullet
-addMarineBullet playerObject@(Player p) marine = if canFire && withinRange then [ newBullet ] else []
-    where 
-        withinRange = playerInRange playerObject marine
-        canFire = canFireBullet marine
-        scaledVelocity = velocityOfMarineBullet marine.pos p.pos 
-        newBullet = MarineBullet { 
-            pos: marine.pos { y = marine.pos.y + (marine.sprite.size.height / 2) }, 
-            velocity: scaledVelocity,
-            sprite: S.bulletRight
-        }
-
-velocityOfMarineBullet :: Position -> Position -> Velocity
-velocityOfMarineBullet marinePos playerPos = scaledVelocity
-    where
-        normalisedVector = normalise $ toVelocity $ vectorTo marinePos playerPos
-        scaledVelocity = { 
-            xSpeed: normalisedVector.xSpeed * marineBulletSpeed, 
-            ySpeed: normalisedVector.ySpeed * marineBulletSpeed
-        } 
+updateGunBasedOnRangeToPlayer :: Gun -> Boolean -> { gun :: Gun, bullets :: Array Bullet }
+updateGunBasedOnRangeToPlayer g shouldFire = if shouldFire
+    then fireAndUpdateGun g
+    else { gun: updateGun g, bullets: [] }
 
 playerInRange :: Player -> Marine -> Boolean
 playerInRange (Player p) marine = marineAgroRange > distanceBetween p.pos marine.pos
 
-canFireBullet :: Marine -> Boolean
-canFireBullet m = m.shotCoolDown == 0
+angleToPlayer :: Player -> Marine -> Deg
+angleToPlayer (Player p) marine = angle $ vectorTo p.pos marine.pos
 
-updateMarine :: (Marine -> Boolean) -> X -> Player -> Marine -> Marine
-updateMarine collisionCheck distance p marine = newMarine
+updateMarine :: (Marine -> Boolean) -> X -> Player -> Marine -> { enemy :: Marine, bullets :: Array Bullet }
+updateMarine collisionCheck distance p marine = { enemy: newMarine, bullets: newBullets } 
     where
+
+        { gun: potentialyFiredGun, bullets: newBullets } = updateGunBasedOnRangeToPlayer marine.gun (playerInRange p marine)
         newVelocityBasedOnGravity = updateVelocity marine.appear marine.velocity
-        withinRange = playerInRange p marine
-        canFire = canFireBullet marine
         newPositionBasedOnVelocity = updatePosition marine.pos newVelocityBasedOnGravity
-        shotCoolDown = case canFire, withinRange of 
-            true, true -> marineShotCooldown
-            true, false -> 0
-            false, _ -> marine.shotCoolDown - 1 
         marineBasedOnVelocity = {
             pos: newPositionBasedOnVelocity,
             sprite: incrementFrame marine.sprite,
             appear: marine.appear,
             velocity: newVelocityBasedOnGravity,
-            shotCoolDown: shotCoolDown
+            gun: potentialyFiredGun
         }
         marineBasedOnMapCollision = collideMarine marine.pos marineBasedOnVelocity distance collisionCheck
-        newMarine = adjustVelocity marine.pos marineBasedOnMapCollision
+        marineWithAdjustedVelocity = adjustVelocity marine.pos marineBasedOnMapCollision
+        newMarine = adjustGunPosition marineWithAdjustedVelocity (angleToPlayer p marineWithAdjustedVelocity)
+
+adjustGunPosition :: Marine -> Deg -> Marine
+adjustGunPosition m a = marinWithAdjustedGun
+    where 
+        gunPosX = case m.appear of
+            WalkingLeft -> m.pos.x - 12
+            WalkingRight -> m.pos.x + m.sprite.size.width - 5
+            Standing -> m.pos.x + m.sprite.size.width - 5
+        gunPosY = m.pos.y + (m.sprite.size.height / 2) - 3
+        gunPos = { x: gunPosX, y: gunPosY }
+        marinWithAdjustedGun = m {
+            gun = setPositionAndRotation m.gun gunPos a
+        }
 
 updateVelocity :: MarineAppear -> Velocity -> Velocity
 updateVelocity appear currentVelocity = { xSpeed: xSpeed, ySpeed: ySpeed }
@@ -159,7 +154,7 @@ collideMarine oldPos newMarine distance collisionCheck = collidedMarine { pos = 
             else newMarine
 
 defaultMarine :: Position -> Marine
-defaultMarine pos =  {
+defaultMarine pos = {
     pos: pos,
     sprite: S.marineLeft,
     appear: WalkingLeft,
@@ -167,5 +162,5 @@ defaultMarine pos =  {
         xSpeed: 0.0,
         ySpeed: 0.0
     },
-    shotCoolDown: 0
+    gun: defaultPistolGun true pos 90
 }

@@ -21,7 +21,8 @@ type Pistol = {
     shotCoolDown :: Int,
     shotCount :: Int,
     appear :: PistolAppear,
-    sprite :: Sprite
+    sprite :: Sprite,
+    infinte :: Boolean
 }
 
 fireAndUpdatePistol :: Pistol -> { gun :: Pistol, bullets :: Array Bullet }
@@ -60,7 +61,7 @@ spriteBasedOnAppear appear = case appear of
     PistolRight -> S.pistolRight
 
 canFire :: Pistol -> Boolean
-canFire p = p.shotCoolDown == 0 && p.shotCount > 0
+canFire p = p.shotCoolDown == 0 && (p.infinte || p.shotCount > 0)
 
 pistolBullet :: PistolAppear -> Position -> Size -> Bullet
 pistolBullet appear pos s = bullet
@@ -74,8 +75,8 @@ pistolBullet appear pos s = bullet
         y = pos.y + 4
         bullet = newBullet bulletAppear { x: x, y: y }
 
-defaultPistol :: Position -> Deg -> Pistol
-defaultPistol pos angle = pistol
+defaultPistol :: Boolean -> Position -> Deg -> Pistol
+defaultPistol infinte pos angle = pistol
     where 
         appear = appearBasedOnAngle angle
         sprite = spriteBasedOnAppear appear
@@ -85,5 +86,6 @@ defaultPistol pos angle = pistol
             shotCoolDown: 0,
             shotCount: pistolMagazineSize,
             appear: appear,
-            sprite: sprite
+            sprite: sprite,
+            infinte: infinte
         }

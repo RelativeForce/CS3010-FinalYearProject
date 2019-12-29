@@ -33,5 +33,5 @@ toGunAndBullets mapper r = { gun: mapper r.gun, bullets: r.bullets }
 setPositionAndRotation :: Gun -> Position -> Deg -> Gun
 setPositionAndRotation (PistolGun p) pos angle = PistolGun $ p { pos = pos, angle = angle }
 
-defaultPistolGun :: Position -> Deg -> Gun
-defaultPistolGun p = PistolGun <<< defaultPistol p
+defaultPistolGun :: Boolean -> Position -> Deg -> Gun
+defaultPistolGun infinte pos angle = PistolGun $ defaultPistol infinte pos angle

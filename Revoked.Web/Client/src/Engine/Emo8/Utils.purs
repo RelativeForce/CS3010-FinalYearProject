@@ -116,8 +116,8 @@ emptyAsset = {
     mapData: []
 }
 
-angle :: Velocity -> Deg
-angle p = floor $ (180.0 * (atan (p.ySpeed / p.xSpeed))) / pi
+angle :: Vector -> Deg
+angle p = floor $ (180.0 * (atan ((toNumber p.x) / (toNumber p.y)))) / pi
 
 defaultMonitorSize :: MonitorSize
 defaultMonitorSize = { 

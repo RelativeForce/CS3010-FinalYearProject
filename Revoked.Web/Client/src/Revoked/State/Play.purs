@@ -6,10 +6,9 @@ import Assets.Audio as A
 import States.StateIds as S
 import Class.Object (scroll)
 import Collision (isCollideObjects, isOutOfWorld)
-import Data.Array (any, filter, partition)
+import Data.Array (any, filter, partition, concatMap)
 import Data.Bullet (Bullet, updateBullet)
-import Data.Enemy (Enemy, addEnemyBullet, updateEnemy, enemyToScore)
-import Data.EnemyBullet (EnemyBullet, updateEnemyBullet)
+import Data.Enemy (Enemy, updateEnemy, enemyToScore)
 import Data.Foldable (sum)
 import Data.Either (Either(..))
 import Data.Goal (Goal, updateGoal)
@@ -29,7 +28,7 @@ type PlayState = {
     bullets :: Array Bullet, 
     enemies :: Array Enemy,
     particles :: Array Particle, 
-    enemyBullets :: Array EnemyBullet,
+    enemyBullets :: Array Bullet,
     goals :: Array Goal,
     mapId :: MapId,
     score :: Score,
@@ -54,11 +53,13 @@ updatePlay asset input s = do
 
     -- updated entities
     let { yes: enemiesInView, no: enemiesNotInView } = partition (not <<< isOutOfWorld) scrollAdjustedEnemies
-        updatedBullets = map updateBullet scrollAdjustedBullets
-        updatedEnemies = map (updateEnemy (isCollideMapWalls asset s.mapId s.distance) s.distance s.player) enemiesInView
+        updatedEnemiesAndNewBullets = map (updateEnemy (isCollideMapWalls asset s.mapId s.distance) s.distance s.player) enemiesInView
+        updatedEnemies = map toEnemy updatedEnemiesAndNewBullets
+        newEnemyBullets = concatMap toBullets updatedEnemiesAndNewBullets
         updatedGoals = map updateGoal scrollAdjustedGoals
         updatedParticles = map updateParticle scrollAdjustedParticles
-        updatedEnemyBullets = map updateEnemyBullet scrollAdjustedEnemyBullets
+        updatedBullets = map updateBullet scrollAdjustedBullets
+        updatedEnemyBullets = map updateBullet scrollAdjustedEnemyBullets
 
     -- player collision
     let hasCollidedHazard = isCollideMapHazards asset s.mapId s.distance scrollAdjustedPlayer
@@ -72,7 +73,6 @@ updatePlay asset input s = do
 
     -- add new entities
     let newParticles = map enemyToParticle collidedEnemies
-        newEnemyBullets = notCollidedEnemies >>= addEnemyBullet s.player
         newScore = sum $ map enemyToScore collidedEnemies
 
     -- delete entities (out of monitor)
@@ -137,3 +137,9 @@ newLevel mapId score audioController elapsed start = {
 
 initialPlayState :: DateTime -> PlayState
 initialPlayState = newLevel 0 0 (newAudioController "Play") "0:00"
+
+toBullets :: { enemy :: Enemy, bullets :: Array Bullet } -> Array Bullet
+toBullets enemyAndBullets = enemyAndBullets.bullets
+
+toEnemy :: { enemy :: Enemy, bullets :: Array Bullet } -> Enemy
+toEnemy enemyAndBullets = enemyAndBullets.enemy

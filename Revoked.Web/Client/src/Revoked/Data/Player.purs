@@ -143,7 +143,7 @@ initialPlayer = Player {
         ySpeed: 0.0
     },
     onFloor: true,
-    gun: defaultPistolGun { x: 10, y: 40 } 0
+    gun: defaultPistolGun false { x: 10, y: 40 } 0
 }
 
 adjustVelocity :: Position -> Player -> Player
