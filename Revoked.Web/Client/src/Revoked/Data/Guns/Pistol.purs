@@ -24,19 +24,16 @@ type Pistol = {
     sprite :: Sprite
 }
 
-firePistol :: Pistol -> { gun :: Pistol, bullets :: Array Bullet }
-firePistol p = case canFire p of
-    true -> { 
-        gun: p { 
-            shotCoolDown = pistolShotCooldown,
-            shotCount = p.shotCount - 1
-        }, 
-        bullets : [ pistolBullet p.appear p.pos ] 
-    }
-    false -> { 
-        gun: p , 
-        bullets: [] 
-    }
+fireAndUpdatePistol :: Pistol -> { gun :: Pistol, bullets :: Array Bullet }
+fireAndUpdatePistol p = pistolAndBullets
+    where 
+        updatedPistol = updatePistol p
+        pistolAndBullets = case canFire p of
+            true -> { 
+                gun: updatedPistol { shotCoolDown = pistolShotCooldown, shotCount = p.shotCount - 1 }, 
+                bullets: [ pistolBullet p.appear p.pos ] 
+            }
+            false -> { gun: updatedPistol, bullets: [] }
 
 reloadPistol :: Pistol -> Pistol
 reloadPistol p = p { shotCoolDown = 0, shotCount = pistolMagazineSize }
@@ -55,7 +52,7 @@ updatePistol p = newPistol
         }
 
 appearBasedOnAngle :: Deg -> PistolAppear
-appearBasedOnAngle angle = if angle > 180 then PistolLeft else PistolRight
+appearBasedOnAngle angle = if angle > 90 && angle < 270 then PistolLeft else PistolRight
 
 spriteBasedOnAppear :: PistolAppear -> Sprite
 spriteBasedOnAppear appear = case appear of

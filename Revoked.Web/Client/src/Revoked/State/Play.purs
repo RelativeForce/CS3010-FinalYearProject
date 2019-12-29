@@ -14,7 +14,7 @@ import Data.Foldable (sum)
 import Data.Either (Either(..))
 import Data.Goal (Goal, updateGoal)
 import Data.Particle (Particle, updateParticle)
-import Data.Player (Player, addBullet, initialPlayer, updatePlayer)
+import Data.Player (Player, initialPlayer, updatePlayer)
 import Emo8.Action.Update (Update, isAudioStreamPlaying, stopAudioStream, addAudioStream, nowDateTime)
 import Data.DateTime (DateTime)
 import Emo8.FFI.AudioController (AudioController, newAudioController)
@@ -42,7 +42,7 @@ updatePlay :: Asset -> Input -> PlayState -> Update (Either PlayState StateId)
 updatePlay asset input s = do
 
     -- adjust player, entities and map for scrolling
-    let updatedPlayer = updatePlayer input s.player s.distance (isCollideMapWalls asset s.mapId s.distance)
+    let { player: updatedPlayer, bullets: newBullets } = updatePlayer input s.player s.distance (isCollideMapWalls asset s.mapId s.distance)
         newDistance = adjustMonitorDistance updatedPlayer s.distance
         scrollOffset = (s.distance - newDistance)
         scrollAdjustedPlayer = scroll scrollOffset updatedPlayer
@@ -71,8 +71,7 @@ updatePlay asset input s = do
         { yes: collidedBullets, no: notCollidedBullets } = partition (\b -> any (isCollideObjects b) updatedEnemies) updatedBullets
 
     -- add new entities
-    let newBullets = addBullet input s.player
-        newParticles = map enemyToParticle collidedEnemies
+    let newParticles = map enemyToParticle collidedEnemies
         newEnemyBullets = notCollidedEnemies >>= addEnemyBullet s.player
         newScore = sum $ map enemyToScore collidedEnemies
 
