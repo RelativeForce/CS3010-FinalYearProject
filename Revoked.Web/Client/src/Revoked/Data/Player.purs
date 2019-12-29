@@ -118,9 +118,9 @@ adjustGunPosition :: Player -> Player
 adjustGunPosition (Player p) = Player playerWithAdjustedGun
     where 
         gunPosX = case p.appear of
-            PlayerBackward -> p.pos.x
-            PlayerForward -> p.pos.x
-        gunPosY = p.pos.y + (p.sprite.size.height / 2)
+            PlayerBackward -> p.pos.x - 12
+            PlayerForward -> p.pos.x + p.sprite.size.width - 5
+        gunPosY = p.pos.y + (p.sprite.size.height / 2) - 3
         gunPos = { x: gunPosX, y: gunPosY }
         angle = case p.appear of
             PlayerBackward -> 180

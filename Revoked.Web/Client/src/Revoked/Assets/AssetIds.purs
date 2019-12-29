@@ -73,3 +73,9 @@ playerLeftId = 23
 
 marineGhostId :: AssetId
 marineGhostId = 24
+
+pistolLeftId :: AssetId
+pistolLeftId = 25
+
+pistolRightId :: AssetId
+pistolRightId = 26

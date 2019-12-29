@@ -49,9 +49,9 @@ toVelocity :: Position -> Velocity
 toVelocity p = { xSpeed: (toNumber p.x), ySpeed: (toNumber p.y)  } 
 
 normalise :: Velocity -> Velocity
-normalise v = { xSpeed: v.xSpeed / sum, ySpeed: v.ySpeed / sum } 
+normalise v = { xSpeed: v.xSpeed / s, ySpeed: v.ySpeed / s } 
     where
-        sum = (abs v.xSpeed) + (abs v.ySpeed)
+        s = (abs v.xSpeed) + (abs v.ySpeed)
 
 distanceBetween :: Position -> Position -> Number
 distanceBetween a b = distanceFromOrigin $ vectorTo a b

@@ -3,7 +3,7 @@ module Data.Gun.Pistol where
 import Prelude
 
 import Assets.Sprites as S
-import Emo8.Types (Position, Sprite, Deg)
+import Emo8.Types (Position, Sprite, Deg, Size)
 import Constants (pistolShotCooldown, pistolMagazineSize)
 import Data.Bullet (Bullet, newBullet, BulletAppear(..))
 import Emo8.Data.Sprite (incrementFrame)
@@ -31,7 +31,7 @@ fireAndUpdatePistol p = pistolAndBullets
         pistolAndBullets = case canFire p of
             true -> { 
                 gun: updatedPistol { shotCoolDown = pistolShotCooldown, shotCount = p.shotCount - 1 }, 
-                bullets: [ pistolBullet p.appear p.pos ] 
+                bullets: [ pistolBullet p.appear p.pos p.sprite.size ] 
             }
             false -> { gun: updatedPistol, bullets: [] }
 
@@ -56,19 +56,23 @@ appearBasedOnAngle angle = if angle > 90 && angle < 270 then PistolLeft else Pis
 
 spriteBasedOnAppear :: PistolAppear -> Sprite
 spriteBasedOnAppear appear = case appear of
-    PistolLeft -> S.bulletLeft
-    PistolRight ->  S.bulletRight
+    PistolLeft -> S.pistolLeft
+    PistolRight -> S.pistolRight
 
 canFire :: Pistol -> Boolean
 canFire p = p.shotCoolDown == 0 && p.shotCount > 0
 
-pistolBullet :: PistolAppear -> Position -> Bullet
-pistolBullet appear pos = bullet
+pistolBullet :: PistolAppear -> Position -> Size -> Bullet
+pistolBullet appear pos s = bullet
     where
         bulletAppear = case appear of
             PistolLeft -> BulletBackward
             PistolRight -> BulletForward
-        bullet = newBullet bulletAppear pos
+        x = case appear of
+            PistolLeft -> pos.x - s.width
+            PistolRight -> pos.x + s.width
+        y = pos.y + 4
+        bullet = newBullet bulletAppear { x: x, y: y }
 
 defaultPistol :: Position -> Deg -> Pistol
 defaultPistol pos angle = pistol
