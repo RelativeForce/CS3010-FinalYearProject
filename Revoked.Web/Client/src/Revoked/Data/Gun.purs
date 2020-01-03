@@ -16,7 +16,7 @@ instance objectGun :: Object Gun where
     scroll offset (PistolGun p) = PistolGun $ p { pos = { x: p.pos.x + offset, y: p.pos.y }}
 
 instance objectDrawGun :: ObjectDraw Gun where
-    draw o@(PistolGun p) = drawRotatedSprite p.sprite (position o).x (position o).y $ gunDisplayAngle p.angle
+    draw o@(PistolGun p) = drawRotatedSprite p.sprite (position o).x (position o).y p.angle
 
 fireAndUpdateGun :: Gun -> { gun :: Gun, bullets :: Array Bullet }
 fireAndUpdateGun (PistolGun p) = (fireAndUpdatePistol >>> toGunAndBullets PistolGun) p
@@ -35,9 +35,3 @@ setPositionAndRotation (PistolGun p) pos angle = PistolGun $ setPistolPositionAn
 
 defaultPistolGun :: Boolean -> Position -> Deg -> Gun
 defaultPistolGun infinte pos angle = PistolGun $ defaultPistol infinte pos angle
-
-gunDisplayAngle :: Deg -> Deg
-gunDisplayAngle a = angle
-    where 
-        isLeft = a > 90 && a < 270
-        angle = if isLeft then mod (a + 180) 360 else a
