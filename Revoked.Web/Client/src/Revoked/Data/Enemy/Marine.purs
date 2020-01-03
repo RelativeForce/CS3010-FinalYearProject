@@ -5,12 +5,13 @@ import Prelude
 import Assets.Sprites as S
 import Collision (adjustX)
 import Constants (marineWalkSpeed, gravity, marineAgroRange)
+import Class.Object (size)
 import Data.Bullet (Bullet)
 import Data.Gun (Gun, defaultPistolGun, fireAndUpdateGun, setPositionAndRotation, updateGun)
 import Data.Player (Player(..))
 import Emo8.Data.Sprite (incrementFrame)
 import Emo8.Types (Position, Sprite, Velocity, X, Deg)
-import Emo8.Utils (updatePosition, distanceBetween, vectorTo, angle)
+import Emo8.Utils (updatePosition, distanceBetween, vectorTo, angle, xComponent, yComponent)
 
 data MarineAppear = Standing | WalkingLeft | WalkingRight 
 
@@ -55,11 +56,10 @@ updateMarine collisionCheck distance p marine = { enemy: newMarine, bullets: new
 adjustGunPosition :: Marine -> Deg -> Marine
 adjustGunPosition m a = marinWithAdjustedGun
     where 
-        gunPosX = case m.appear of
-            WalkingLeft -> m.pos.x - 12
-            WalkingRight -> m.pos.x + m.sprite.size.width - 5
-            Standing -> m.pos.x + m.sprite.size.width - 5
-        gunPosY = m.pos.y + (m.sprite.size.height / 2) - 3
+        radius = 10.0
+        gunSize = size m.gun
+        gunPosX = m.pos.x + (m.sprite.size.width / 2) + xComponent a radius
+        gunPosY = m.pos.y + (m.sprite.size.height / 2) - gunSize.height + yComponent a radius
         gunPos = { x: gunPosX, y: gunPosY }
         marinWithAdjustedGun = m {
             gun = setPositionAndRotation m.gun gunPos a
@@ -163,5 +163,5 @@ defaultMarine pos = {
         xSpeed: 0.0,
         ySpeed: 0.0
     },
-    gun: defaultPistolGun false pos 180
+    gun: defaultPistolGun true pos 180
 }

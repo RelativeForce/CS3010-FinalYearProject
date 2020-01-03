@@ -1,8 +1,7 @@
 module Assets.Sprites (
     module Assets.Sprites.PlayerStandingLeft.Sprite,
     module Assets.Sprites.PlayerStandingRight.Sprite,
-    module Assets.Sprites.BulletLeft.Sprite,
-    module Assets.Sprites.BulletRight.Sprite,
+    module Assets.Sprites.PistolBullet.Sprite,
     module Assets.Sprites.Chopper.Sprite,
     module Assets.Sprites.Ladder.Sprite,
     module Assets.Sprites.MarineLeft.Sprite,
@@ -15,8 +14,7 @@ module Assets.Sprites (
     module Assets.Sprites.PistolRight.Sprite 
 ) where
 
-import Assets.Sprites.BulletLeft.Sprite (bulletLeft)
-import Assets.Sprites.BulletRight.Sprite (bulletRight)
+import Assets.Sprites.PistolBullet.Sprite (pistolBullet)
 import Assets.Sprites.Chopper.Sprite (chopper)
 import Assets.Sprites.Ladder.Sprite (ladder)
 import Assets.Sprites.MarineLeft.Sprite (marineLeft)

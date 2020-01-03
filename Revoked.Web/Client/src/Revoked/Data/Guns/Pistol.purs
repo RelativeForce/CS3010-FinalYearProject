@@ -3,10 +3,12 @@ module Data.Gun.Pistol where
 import Prelude
 
 import Assets.Sprites as S
-import Emo8.Types (Position, Sprite, Deg, Size)
-import Constants (pistolShotCooldown, pistolMagazineSize)
-import Data.Bullet (Bullet, newBullet, BulletAppear(..))
+import Emo8.Types (Position, Sprite, Deg, Size, Velocity)
+import Constants (pistolShotCooldown, pistolMagazineSize, bulletSpeed)
+import Data.Bullet (Bullet, newBullet)
 import Emo8.Data.Sprite (incrementFrame)
+import Emo8.Utils (xComponent, yComponent, inLeftDirection)
+import Data.Int (toNumber)
 
 data PistolAppear = PistolLeft | PistolRight 
 
@@ -32,7 +34,7 @@ fireAndUpdatePistol p = pistolAndBullets
         pistolAndBullets = case canFire p of
             true -> { 
                 gun: updatedPistol { shotCoolDown = pistolShotCooldown, shotCount = p.shotCount - 1 }, 
-                bullets: [ pistolBullet p.appear p.pos p.sprite.size ] 
+                bullets: [ pistolBullet p.angle p.pos p.sprite.size ] 
             }
             false -> { gun: updatedPistol, bullets: [] }
 
@@ -48,7 +50,7 @@ updatePistol p = newPistol
         }
 
 appearBasedOnAngle :: Deg -> PistolAppear
-appearBasedOnAngle angle = if angle > 90 && angle < 270 then PistolLeft else PistolRight
+appearBasedOnAngle angle = if inLeftDirection angle then PistolLeft else PistolRight
 
 spriteBasedOnAppear :: PistolAppear -> Sprite
 spriteBasedOnAppear appear = case appear of
@@ -58,17 +60,30 @@ spriteBasedOnAppear appear = case appear of
 canFire :: Pistol -> Boolean
 canFire p = p.shotCoolDown == 0 && (p.infinte || p.shotCount > 0)
 
-pistolBullet :: PistolAppear -> Position -> Size -> Bullet
-pistolBullet appear pos s = bullet
+bulletVelocity :: Deg -> Velocity
+bulletVelocity angle = velocity
     where
-        bulletAppear = case appear of
-            PistolLeft -> BulletBackward
-            PistolRight -> BulletForward
-        x = case appear of
-            PistolLeft -> pos.x - s.width
-            PistolRight -> pos.x + s.width
-        y = pos.y + 4
-        bullet = newBullet bulletAppear { x: x, y: y }
+        velocity = {
+            xSpeed: toNumber $ xComponent angle bulletSpeed,
+            ySpeed: toNumber $ yComponent angle bulletSpeed
+        }
+
+bulletPosition :: Deg -> Position -> Size -> Position
+bulletPosition angle pos size = { x: x, y: y }
+    where 
+        x = if inLeftDirection angle
+                then pos.x + (xComponent angle (toNumber size.width))
+                else pos.x + (xComponent angle (toNumber size.width))
+        y = if inLeftDirection angle
+                then pos.y + (yComponent angle (toNumber size.width)) + size.height
+                else pos.y + (yComponent angle (toNumber size.width)) 
+
+pistolBullet :: Deg -> Position -> Size -> Bullet
+pistolBullet angle pos s = bullet
+    where
+        velocity = bulletVelocity angle
+        position = bulletPosition angle pos s
+        bullet = newBullet position velocity 
 
 setPistolPositionAndRotation :: Pistol -> Position -> Deg -> Pistol
 setPistolPositionAndRotation p pos angle = newPistol

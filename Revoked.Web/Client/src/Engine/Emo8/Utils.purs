@@ -12,7 +12,7 @@ import Emo8.Types (Asset, MonitorSize, Size, X, Y, Position, Velocity, IdX, IdY,
 import Data.Array (reverse, (!!))
 import Data.Foldable (elem, foldr)
 import Data.Maybe (Maybe(..))
-import Math (sqrt, atan, pi, abs)
+import Math (sqrt, atan, pi, abs, cos, sin)
 
 -- | Collision detection if an object protrudes out of monitor
 isMonitorCollide :: MonitorSize -> Size -> X -> Y -> Boolean
@@ -58,6 +58,21 @@ distanceBetween a b = distanceFromOrigin $ vectorTo a b
 
 sum :: Vector -> Vector -> Vector
 sum a b = { x: a.x + b.x, y: a.y + b.y }
+
+xComponent :: Deg -> Number -> Int
+xComponent a length = floor $ length * (cos $ degToRadians a)
+
+yComponent :: Deg -> Number -> Int
+yComponent a length = floor $ length * (sin $ degToRadians a)
+
+degToRadians :: Deg -> Number
+degToRadians d = (pi * toNumber d) / 180.0
+
+radiansToDeg :: Number -> Deg
+radiansToDeg r = floor $ (180.0 * r) / pi
+
+inLeftDirection :: Deg -> Boolean
+inLeftDirection d = d > 90 && d < 270
 
 -- | Collision detection between two objects
 isCollide :: Size -> X -> Y -> Size -> X -> Y -> Boolean
@@ -119,7 +134,7 @@ emptyAsset = {
 angle :: Vector -> Deg
 angle v = mod angleBasedOnDirection 360
     where
-        angleFromHorizontalAxis = floor $ (180.0 * (atan ((toNumber v.y) / (toNumber v.x)))) / pi
+        angleFromHorizontalAxis = radiansToDeg $ atan $ (toNumber v.y) / (toNumber v.x)
         isRight = v.x > 0
         isUp = v.y > 0
         isDown = v.y < 0

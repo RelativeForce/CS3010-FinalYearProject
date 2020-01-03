@@ -3,42 +3,39 @@ module Data.Bullet where
 import Prelude
 
 import Class.Object (class ObjectDraw, class Object)
-import Emo8.Action.Draw (drawSprite)
+import Emo8.Action.Draw (drawRotatedSprite)
 import Data.Int (floor)
 import Assets.Sprites as S
-import Emo8.Types (Position, Sprite)
+import Emo8.Types (Position, Sprite, Velocity)
 import Emo8.Data.Sprite (incrementFrame)
-import Constants (bulletSpeed)
-
-data BulletAppear = BulletForward | BulletBackward
+import Emo8.Utils (angle, toPosition)
 
 data Bullet = Bullet { 
     pos :: Position,
-    appear :: BulletAppear,
-    sprite :: Sprite
+    sprite :: Sprite,
+    velocity :: Velocity
 }
 
 instance objectBullet :: Object Bullet where
-    size (Bullet s) = s.sprite.size
-    position (Bullet s) = s.pos
-    scroll offset (Bullet s) = Bullet $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
+    size (Bullet b) = b.sprite.size
+    position (Bullet b) = b.pos
+    scroll offset (Bullet b) = Bullet $ b { pos = { x: b.pos.x + offset, y: b.pos.y }}
 
 instance objectDrawBullet :: ObjectDraw Bullet where
-    draw (Bullet b) = drawSprite b.sprite b.pos.x b.pos.y
+    draw (Bullet b) = drawRotatedSprite b.sprite b.pos.x b.pos.y $ mod (angle (toPosition b.velocity)) 180
 
 updateBullet :: Bullet -> Bullet
-updateBullet (Bullet s) = Bullet $ s { pos { x = newX }, sprite = newSprite }
+updateBullet (Bullet b) = Bullet $ b { pos = newPos, sprite = newSprite }
     where
-        newX = case s.appear of
-            BulletForward -> s.pos.x + floor bulletSpeed
-            BulletBackward -> s.pos.x - floor bulletSpeed
-        newSprite = incrementFrame s.sprite
+        newPos = {
+            x: b.pos.x + floor b.velocity.xSpeed,
+            y: b.pos.y + floor b.velocity.ySpeed
+        } 
+        newSprite = incrementFrame b.sprite
 
-newBullet :: BulletAppear -> Position -> Bullet
-newBullet appear pos = Bullet $ {
+newBullet :: Position -> Velocity -> Bullet
+newBullet pos velocity = Bullet $ {
     pos: pos,
-    appear: appear,
-    sprite: case appear of
-        BulletForward -> S.bulletRight
-        BulletBackward -> S.bulletLeft
+    velocity: velocity,
+    sprite: S.pistolBullet 
 }
