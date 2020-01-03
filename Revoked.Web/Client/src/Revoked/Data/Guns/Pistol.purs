@@ -42,14 +42,9 @@ reloadPistol p = p { shotCoolDown = 0, shotCount = pistolMagazineSize }
 updatePistol :: Pistol -> Pistol
 updatePistol p = newPistol
     where
-        newAppear = appearBasedOnAngle p.angle
-        newSprite = if newAppear == p.appear 
-            then incrementFrame p.sprite 
-            else spriteBasedOnAppear newAppear
         newPistol = p {
-            sprite = newSprite,
-            shotCoolDown = if p.shotCoolDown > 0 then p.shotCoolDown - 1 else 0,
-            appear = newAppear
+            sprite = incrementFrame p.sprite,
+            shotCoolDown = if p.shotCoolDown > 0 then p.shotCoolDown - 1 else 0
         }
 
 appearBasedOnAngle :: Deg -> PistolAppear
@@ -74,6 +69,20 @@ pistolBullet appear pos s = bullet
             PistolRight -> pos.x + s.width
         y = pos.y + 4
         bullet = newBullet bulletAppear { x: x, y: y }
+
+setPistolPositionAndRotation :: Pistol -> Position -> Deg -> Pistol
+setPistolPositionAndRotation p pos angle = newPistol
+    where
+        newAppear = appearBasedOnAngle angle
+        newSprite = if newAppear == p.appear 
+            then p.sprite 
+            else spriteBasedOnAppear newAppear
+        newPistol = p { 
+            pos = pos, 
+            angle = angle,
+            sprite = newSprite,
+            appear = newAppear 
+        }
 
 defaultPistol :: Boolean -> Position -> Deg -> Pistol
 defaultPistol infinte pos angle = pistol

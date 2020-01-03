@@ -3,7 +3,7 @@ module Data.Enemy where
 import Prelude
 
 import Class.Object (class ObjectDraw, class Object, position, draw)
-import Data.Bullet (Bullet(..))
+import Data.Bullet (Bullet)
 import Data.Enemy.Marine (Marine, updateMarine, defaultMarine)
 import Data.Player (Player)
 import Emo8.Action.Draw (drawSprite)

@@ -31,13 +31,13 @@ playerInRange :: Player -> Marine -> Boolean
 playerInRange (Player p) marine = marineAgroRange > distanceBetween p.pos marine.pos
 
 angleToPlayer :: Player -> Marine -> Deg
-angleToPlayer (Player p) marine = angle $ vectorTo p.pos marine.pos
+angleToPlayer (Player p) marine = angle $ vectorTo marine.pos p.pos
 
 updateMarine :: (Marine -> Boolean) -> X -> Player -> Marine -> { enemy :: Marine, bullets :: Array Bullet }
 updateMarine collisionCheck distance p marine = { enemy: newMarine, bullets: newBullets } 
     where
-
-        { gun: potentialyFiredGun, bullets: newBullets } = updateGunBasedOnRangeToPlayer marine.gun (playerInRange p marine)
+        shouldFire = playerInRange p marine
+        { gun: potentialyFiredGun, bullets: newBullets } = updateGunBasedOnRangeToPlayer marine.gun shouldFire
         newVelocityBasedOnGravity = updateVelocity marine.appear marine.velocity
         newPositionBasedOnVelocity = updatePosition marine.pos newVelocityBasedOnGravity
         marineBasedOnVelocity = {
@@ -49,7 +49,8 @@ updateMarine collisionCheck distance p marine = { enemy: newMarine, bullets: new
         }
         marineBasedOnMapCollision = collideMarine marine.pos marineBasedOnVelocity distance collisionCheck
         marineWithAdjustedVelocity = adjustVelocity marine.pos marineBasedOnMapCollision
-        newMarine = adjustGunPosition marineWithAdjustedVelocity (angleToPlayer p marineWithAdjustedVelocity)
+        gunAngle = angleToPlayer p marineWithAdjustedVelocity
+        newMarine = adjustGunPosition marineWithAdjustedVelocity gunAngle
 
 adjustGunPosition :: Marine -> Deg -> Marine
 adjustGunPosition m a = marinWithAdjustedGun
@@ -162,5 +163,5 @@ defaultMarine pos = {
         xSpeed: 0.0,
         ySpeed: 0.0
     },
-    gun: defaultPistolGun true pos 90
+    gun: defaultPistolGun false pos 180
 }

@@ -115,9 +115,24 @@ emptyAsset :: Asset
 emptyAsset = { 
     mapData: []
 }
-
+-- | Rotation is anti-clockwise from the positive x axis
 angle :: Vector -> Deg
-angle p = floor $ (180.0 * (atan ((toNumber p.x) / (toNumber p.y)))) / pi
+angle v = mod angleBasedOnDirection 360
+    where
+        angleFromHorizontalAxis = floor $ (180.0 * (atan ((toNumber v.y) / (toNumber v.x)))) / pi
+        isRight = v.x > 0
+        isUp = v.y > 0
+        isDown = v.y < 0
+        isLeft = v.x < 0
+        angleBasedOnDirection = case isRight, isDown, isLeft, isUp of
+            false, true, true, false -> 180 + angleFromHorizontalAxis
+            false, false, true, true -> 180 + angleFromHorizontalAxis
+            false, true, false, false -> 270
+            false, false, false, true -> 90
+            false, false, true, false -> 180
+            true, false, false, false -> 0
+            false, false, false, false -> 0
+            _, _, _, _ -> angleFromHorizontalAxis
 
 defaultMonitorSize :: MonitorSize
 defaultMonitorSize = { 
