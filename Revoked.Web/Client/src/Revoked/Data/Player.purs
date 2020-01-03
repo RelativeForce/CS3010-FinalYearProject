@@ -3,7 +3,7 @@ module Data.Player where
 import Prelude
 
 import Assets.Sprites as S
-import Class.Object (class Object, class ObjectDraw, position, scroll, draw)
+import Class.Object (class Object, class ObjectDraw, position, scroll, draw, size)
 import Collision (isCollWorld, adjustY, adjustX)
 import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor)
 import Data.Bullet (Bullet)
@@ -117,10 +117,13 @@ updateGunWithInput i g = if i.active.isEnter
 adjustGunPosition :: Player -> Player
 adjustGunPosition (Player p) = Player playerWithAdjustedGun
     where 
+        gunSize = size p.gun
         gunPosX = case p.appear of
-            PlayerBackward -> p.pos.x - 12
+            PlayerBackward -> p.pos.x + (gunSize.width) - 12
             PlayerForward -> p.pos.x + p.sprite.size.width - 5
-        gunPosY = p.pos.y + (p.sprite.size.height / 2) - 3
+        gunPosY = case p.appear of
+            PlayerBackward -> p.pos.y + (p.sprite.size.height / 2) - (gunSize.height) - 3
+            PlayerForward -> p.pos.y + (p.sprite.size.height / 2) - 3 
         gunPos = { x: gunPosX, y: gunPosY }
         angle = case p.appear of
             PlayerBackward -> 180
