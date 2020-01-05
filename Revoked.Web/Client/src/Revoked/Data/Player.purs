@@ -7,7 +7,7 @@ import Class.Object (class Object, class ObjectDraw, position, scroll, draw, siz
 import Collision (isCollWorld, adjustY, adjustX)
 import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor)
 import Data.Bullet (Bullet)
-import Data.Gun (Gun, defaultPistolGun, updateGun, fireAndUpdateGun, setPositionAndRotation)
+import Data.Gun (Gun, defaultPistolGun, fireAndUpdateGun, setPositionAndRotation, shotCount, updateGun)
 import Emo8.Action.Draw (drawSprite)
 import Emo8.Data.Sprite (incrementFrame)
 import Emo8.Input (Input)
@@ -228,3 +228,6 @@ beInMonitor oldPos (Player p) = Player $ p { pos = { x: x, y: y } }
             true, true -> 0
             true, false -> defaultMonitorSize.height - height
             _, _ -> pos.y
+
+playerShotCount :: Player -> Int
+playerShotCount (Player p) = shotCount p.gun

@@ -27,6 +27,9 @@ reloadGun (PistolGun p) = PistolGun $ reloadPistol p
 updateGun :: Gun -> Gun 
 updateGun (PistolGun p) = PistolGun $ updatePistol p
 
+shotCount :: Gun -> Int 
+shotCount (PistolGun p) = if p.infinte then -1 else p.shotCount
+
 toGunAndBullets :: forall a. (a -> Gun) -> { gun :: a, bullets :: Array Bullet } -> { gun :: Gun, bullets :: Array Bullet }
 toGunAndBullets mapper r = { gun: mapper r.gun, bullets: r.bullets }
 
