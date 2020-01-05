@@ -8,7 +8,7 @@ import Constants (pistolShotCooldown, pistolMagazineSize, bulletSpeed)
 import Data.Bullet (Bullet, newBullet)
 import Emo8.Data.Sprite (incrementFrame)
 import Emo8.Utils (xComponent, yComponent, inLeftDirection)
-import Data.Int (toNumber)
+import Data.Int (toNumber, floor)
 
 data PistolAppear = PistolLeft | PistolRight 
 
@@ -64,19 +64,19 @@ bulletVelocity :: Deg -> Velocity
 bulletVelocity angle = velocity
     where
         velocity = {
-            xSpeed: toNumber $ xComponent angle bulletSpeed,
-            ySpeed: toNumber $ yComponent angle bulletSpeed
+            xSpeed: xComponent angle bulletSpeed,
+            ySpeed: yComponent angle bulletSpeed
         }
 
 bulletPosition :: Deg -> Position -> Size -> Position
 bulletPosition angle pos size = { x: x, y: y }
     where 
         x = if inLeftDirection angle
-                then pos.x + (xComponent angle (toNumber size.width))
-                else pos.x + (xComponent angle (toNumber size.width))
+                then pos.x + floor (xComponent angle (toNumber size.width))
+                else pos.x + floor (xComponent angle (toNumber size.width))
         y = if inLeftDirection angle
-                then pos.y + (yComponent angle (toNumber size.width)) + size.height
-                else pos.y + (yComponent angle (toNumber size.width)) 
+                then pos.y + size.height + (floor (yComponent angle (toNumber size.width)))
+                else pos.y + floor (yComponent angle (toNumber size.width))
 
 pistolBullet :: Deg -> Position -> Size -> Bullet
 pistolBullet angle pos s = bullet

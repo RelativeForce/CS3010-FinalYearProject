@@ -10,6 +10,7 @@ import Data.Bullet (Bullet)
 import Data.Gun (Gun, defaultPistolGun, fireAndUpdateGun, setPositionAndRotation, updateGun)
 import Data.Player (Player(..))
 import Emo8.Data.Sprite (incrementFrame)
+import Data.Int (floor)
 import Emo8.Types (Position, Sprite, Velocity, X, Deg)
 import Emo8.Utils (updatePosition, distanceBetween, vectorTo, angle, xComponent, yComponent)
 
@@ -58,8 +59,8 @@ adjustGunPosition m a = marinWithAdjustedGun
     where 
         radius = 10.0
         gunSize = size m.gun
-        gunPosX = m.pos.x + (m.sprite.size.width / 2) + xComponent a radius
-        gunPosY = m.pos.y + (m.sprite.size.height / 2) - gunSize.height - ((yComponent a radius) / 2)
+        gunPosX = m.pos.x + (m.sprite.size.width / 2) + floor (xComponent a radius)
+        gunPosY = m.pos.y + (m.sprite.size.height / 2) - gunSize.height - (floor ((yComponent a radius) / 2.0))
         gunPos = { x: gunPosX, y: gunPosY }
         marinWithAdjustedGun = m {
             gun = setPositionAndRotation m.gun gunPos a

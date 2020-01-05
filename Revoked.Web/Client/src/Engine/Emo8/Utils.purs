@@ -59,11 +59,11 @@ distanceBetween a b = distanceFromOrigin $ vectorTo a b
 sum :: Vector -> Vector -> Vector
 sum a b = { x: a.x + b.x, y: a.y + b.y }
 
-xComponent :: Deg -> Number -> Int
-xComponent a length = floor $ length * (cos $ degToRadians a)
+xComponent :: Deg -> Number -> Number
+xComponent a length = length * (cos $ degToRadians a)
 
-yComponent :: Deg -> Number -> Int
-yComponent a length = floor $ length * (sin $ degToRadians a)
+yComponent :: Deg -> Number -> Number
+yComponent a length = length * (sin $ degToRadians a)
 
 degToRadians :: Deg -> Number
 degToRadians d = (pi * toNumber d) / 180.0
