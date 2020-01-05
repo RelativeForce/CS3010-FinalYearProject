@@ -13,7 +13,7 @@ import Emo8.FFI.ServerIO (send)
 import Data.Argonaut.Encode (encodeJson)
 import Data.Argonaut.Core (stringify)
 import Data.Either (Either)
-import Emo8.FFI.AudioController (addAudioStream, isAudioStreamPlaying, stopAudioStream)
+import Emo8.FFI.AudioController (addAudioStream, isAudioStreamPlaying, stopAudioStream, muteAudio, unmuteAudio)
 
 runUpdate :: forall s. Game s => Update s -> Effect s
 runUpdate = foldFree interpret
@@ -27,6 +27,8 @@ runUpdate = foldFree interpret
     interpret (AddAudioStream controller src f) = f <$> addAudioStream controller src
     interpret (IsAudioStreamPlaying controller src f) = f <$> isAudioStreamPlaying controller src
     interpret (StopAudioStream controller src f) = f <$> stopAudioStream controller src
+    interpret (MuteAudio controller f) = f <$> muteAudio controller
+    interpret (UnmuteAudio controller f) = f <$> unmuteAudio controller
 
 buildSendPlayerScoreRequest :: PlayerScoreCreateRequestData -> Request
 buildSendPlayerScoreRequest ps = {

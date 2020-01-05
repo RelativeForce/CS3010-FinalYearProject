@@ -14,7 +14,7 @@ import Data.Either (Either(..))
 import Data.Goal (Goal, updateGoal)
 import Data.Particle (Particle, updateParticle)
 import Data.Player (Player, initialPlayer, updatePlayer)
-import Emo8.Action.Update (Update, isAudioStreamPlaying, stopAudioStream, addAudioStream, nowDateTime)
+import Emo8.Action.Update (Update, isAudioStreamPlaying, stopAudioStream, addAudioStream, nowDateTime, muteAudio, unmuteAudio)
 import Data.DateTime (DateTime)
 import Emo8.FFI.AudioController (AudioController, newAudioController)
 import Emo8.Input (Input)
@@ -92,10 +92,7 @@ updatePlay asset input s = do
     isBackgroundMusicPlaying <- isAudioStreamPlaying s.audioController A.backgroundMusicId
 
     -- update music
-    newAudioController <- case isBackgroundMusicPlaying, (isGameOver || (isNextLevel && isLastLevel)) of
-            true, true -> stopAudioStream s.audioController A.backgroundMusicId
-            false, false ->  addAudioStream s.audioController A.backgroundMusicId
-            _, _ -> pure s.audioController
+    newAudioController <- updateAudioController s.audioController input (isGameOver || (isNextLevel && isLastLevel))
     
     now <- nowDateTime
     
@@ -143,3 +140,21 @@ toBullets enemyAndBullets = enemyAndBullets.bullets
 
 toEnemy :: { enemy :: Enemy, bullets :: Array Bullet } -> Enemy
 toEnemy enemyAndBullets = enemyAndBullets.enemy
+
+updateAudioController :: AudioController -> Input -> Boolean -> Update AudioController
+updateAudioController controller input shouldStop = do
+
+    isBackgroundMusicPlaying <- isAudioStreamPlaying controller A.backgroundMusicId
+
+    controllerWithBackgroundMusic <- case isBackgroundMusicPlaying, shouldStop of
+            true, true -> stopAudioStream controller A.backgroundMusicId
+            false, false ->  addAudioStream controller A.backgroundMusicId
+            _, _ -> pure controller
+
+    updatedController <- if input.released.isM 
+        then if controllerWithBackgroundMusic.muted 
+            then unmuteAudio controllerWithBackgroundMusic 
+            else muteAudio controllerWithBackgroundMusic
+        else pure controllerWithBackgroundMusic
+
+    pure updatedController

@@ -21,6 +21,8 @@ data UpdateF n
     | AddAudioStream AudioController String (AudioController -> n)
     | IsAudioStreamPlaying AudioController String (Boolean -> n)
     | StopAudioStream AudioController String (AudioController -> n)
+    | MuteAudio AudioController (AudioController -> n)
+    | UnmuteAudio AudioController (AudioController -> n)
 
 -- | Get random int.
 randomInt :: Int -> Int -> Update Int
@@ -52,3 +54,9 @@ isAudioStreamPlaying controller src = liftF $ IsAudioStreamPlaying controller sr
 
 stopAudioStream :: AudioController -> String -> Update AudioController
 stopAudioStream controller src = liftF $ StopAudioStream controller src identity
+
+muteAudio :: AudioController -> Update AudioController
+muteAudio controller = liftF $ MuteAudio controller identity
+
+unmuteAudio :: AudioController -> Update AudioController
+unmuteAudio controller = liftF $ UnmuteAudio controller identity
