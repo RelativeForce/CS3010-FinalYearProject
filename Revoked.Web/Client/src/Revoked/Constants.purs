@@ -95,13 +95,16 @@ marineShotCooldown :: Int
 marineShotCooldown = 10
 
 bulletSpeed :: Number
-bulletSpeed = 12.0
-
-marineBulletSpeed :: Number
-marineBulletSpeed = 8.0
+bulletSpeed = 8.0
 
 playerShotCooldown :: Int
 playerShotCooldown = 10
 
 ghostAscentSpeed :: Int
 ghostAscentSpeed = 5
+
+pistolMagazineSize :: Int
+pistolMagazineSize = 6
+
+pistolShotCooldown :: Int
+pistolShotCooldown = 10

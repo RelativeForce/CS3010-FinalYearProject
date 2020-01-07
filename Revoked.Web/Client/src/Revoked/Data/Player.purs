@@ -3,24 +3,25 @@ module Data.Player where
 import Prelude
 
 import Assets.Sprites as S
-import Class.Object (class Object, class ObjectDraw, position)
+import Class.Object (class Object, class ObjectDraw, position, scroll, draw, size)
 import Collision (isCollWorld, adjustY, adjustX)
-import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor, playerShotCooldown)
-import Data.Bullet (Bullet, BulletAppear(..), newBullet)
+import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor)
+import Data.Bullet (Bullet)
+import Data.Gun (Gun, defaultPistolGun, fireAndUpdateGun, setPositionAndRotation, shotCount, updateGun)
 import Emo8.Action.Draw (drawSprite)
 import Emo8.Data.Sprite (incrementFrame)
 import Emo8.Input (Input)
-import Emo8.Types (Sprite, Velocity, X, Position, Size)
+import Emo8.Types (Sprite, Velocity, X, Position)
 import Emo8.Utils (defaultMonitorSize, updatePosition)
 import Math (abs)
 
 data Player = Player { 
     pos :: Position, 
-    energy :: Int, 
     appear :: PlayerAppear,
     sprite :: Sprite,
     velocity :: Velocity,
-    onFloor :: Boolean
+    onFloor :: Boolean,
+    gun :: Gun
 }
 
 data PlayerAppear = PlayerForward | PlayerBackward
@@ -33,34 +34,34 @@ instance playerAppearEqual :: Eq PlayerAppear where
 instance objectPlayer :: Object Player where
     size (Player p) = p.sprite.size
     position (Player p) = p.pos
-    scroll offset (Player p) = Player $ p { pos = { x: p.pos.x + offset, y: p.pos.y }}
+    scroll offset (Player p) = Player $ p { 
+        pos = { x: p.pos.x + offset, y: p.pos.y },
+        gun = scroll offset p.gun
+    }
 
 instance objectDrawPlayer :: ObjectDraw Player where
-    draw o@(Player p) = drawSprite p.sprite (position o).x (position o).y
+    draw o@(Player p) = do
+        drawSprite p.sprite (position o).x (position o).y
+        draw p.gun
 
-updatePlayer :: Input -> Player -> X -> (Player -> Boolean) -> Player
-updatePlayer i (Player p) distance collisionCheck = newPlayer
+updatePlayer :: Input -> Player -> X -> (Player -> Boolean) -> { player :: Player, bullets :: Array Bullet }
+updatePlayer i (Player p) distance collisionCheck = { player: newPlayer, bullets: bullets }
     where
+        { gun: updatedGun, bullets: bullets } = updateGunWithInput i p.gun
         newVelocityBasedOnGravity = updateVelocity i p.velocity p.onFloor
         newPositionBasedOnVelocity = updatePosition p.pos newVelocityBasedOnGravity
-        newEnergy = updateEnergy p.energy i
         newAppear = updateAppear i p.appear
         playerBasedOnVelocity = Player $ p { 
             pos = newPositionBasedOnVelocity, 
-            energy = newEnergy, 
             appear = newAppear,
-            velocity = newVelocityBasedOnGravity
+            velocity = newVelocityBasedOnGravity,
+            gun = updatedGun
         }
         playerBasedOnMapCollision = collide p.pos playerBasedOnVelocity distance collisionCheck
         playerBasedOnMonitorCollision = beInMonitor p.pos playerBasedOnMapCollision
         playerBasedOnAdjustedVelocity = adjustVelocity p.pos playerBasedOnMonitorCollision
-        newPlayer = updateSprite p.appear p.onFloor p.velocity.xSpeed playerBasedOnAdjustedVelocity
-    
-updateEnergy :: Int -> Input -> Int
-updateEnergy energy i = case (canFire energy), i.active.isEnter of
-            true, true -> 0
-            true, false -> energy
-            false, _ -> energy + 1
+        playerWithAdjustedGun = adjustGunPosition playerBasedOnAdjustedVelocity
+        newPlayer = updateSprite p.appear p.onFloor p.velocity.xSpeed playerWithAdjustedGun
 
 updateAppear :: Input -> PlayerAppear -> PlayerAppear
 updateAppear i currentAppear = case i.active.isA, i.active.isD of
@@ -108,23 +109,28 @@ newPlayerSprite appear newXSpeed onFloor = sprite
             PlayerBackward, _, _ -> S.playerStandingLeft
             PlayerForward, _, _ -> S.playerStandingRight   
 
-addBullet :: Input -> Player -> Array Bullet
-addBullet i (Player p) = bulletArray
-    where
-        bulletPosition = initialBulletPosition p.pos p.sprite.size p.appear
-        bulletArray = case (i.active.isEnter && (canFire p.energy)), p.appear of
-            true, PlayerBackward -> [ newBullet (BulletBackward) bulletPosition ]
-            true, PlayerForward -> [ newBullet (BulletForward) bulletPosition ]
-            false, _ -> []
+updateGunWithInput :: Input -> Gun -> { gun :: Gun, bullets :: Array Bullet }
+updateGunWithInput i g = if i.active.isEnter
+    then fireAndUpdateGun g
+    else { gun: updateGun g, bullets: [] }
 
-initialBulletPosition :: Position -> Size -> PlayerAppear -> Position
-initialBulletPosition pos size (PlayerBackward) = {
-            x: pos.x - size.width,
-            y: pos.y + (size.height / 2)
-        }
-initialBulletPosition pos size (PlayerForward) = {
-            x: pos.x + size.width,
-            y: pos.y + (size.height / 2)
+adjustGunPosition :: Player -> Player
+adjustGunPosition (Player p) = Player playerWithAdjustedGun
+    where 
+        gunSize = size p.gun
+        gunPosX = case p.appear of
+            PlayerBackward -> p.pos.x + (gunSize.width) - 12
+            PlayerForward -> p.pos.x + p.sprite.size.width - 5
+        gunPosY = case p.appear of
+            PlayerBackward -> p.pos.y + (p.sprite.size.height / 2) - (gunSize.height) - 3
+            PlayerForward -> p.pos.y + (p.sprite.size.height / 2) - 3 
+        gunPos = { x: gunPosX, y: gunPosY }
+        angle = case p.appear of
+            PlayerBackward -> 180
+            PlayerForward -> 0
+
+        playerWithAdjustedGun = p {
+            gun = setPositionAndRotation p.gun gunPos angle
         }
 
 initialPlayer :: Player
@@ -133,18 +139,15 @@ initialPlayer = Player {
         x: 0, 
         y: 40
     }, 
-    energy: 30, 
     appear: PlayerForward,
     sprite: S.playerStandingRight,
     velocity: {
         xSpeed: 0.0,
         ySpeed: 0.0
     },
-    onFloor: true
+    onFloor: true,
+    gun: defaultPistolGun false { x: 10, y: 40 } 0
 }
-
-canFire :: Int -> Boolean
-canFire energy = energy >= playerShotCooldown
 
 adjustVelocity :: Position -> Player -> Player
 adjustVelocity oldPos (Player new) = Player $ new { 
@@ -225,3 +228,6 @@ beInMonitor oldPos (Player p) = Player $ p { pos = { x: x, y: y } }
             true, true -> 0
             true, false -> defaultMonitorSize.height - height
             _, _ -> pos.y
+
+playerShotCount :: Player -> Int
+playerShotCount (Player p) = shotCount p.gun

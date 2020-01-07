@@ -4,8 +4,7 @@ module Test.Revoked.Data.Player.Srcoll (
 
 import Prelude
 import Class.Object (scroll)
-import Data.Player (Player(..), PlayerAppear(..))
-import Assets.Sprites as S
+import Data.Player (Player(..),  initialPlayer)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 
@@ -30,17 +29,7 @@ scrollTests =
             equal expectedResult result.pos.x
 
 buildPlayer :: Int -> Player
-buildPlayer x = Player { 
-    pos: { 
-        x: x, 
-        y: 0
-    }, 
-    energy: 0, 
-    appear: PlayerForward,
-    sprite: S.playerRight,
-    velocity: {
-        xSpeed: 0.0,
-        ySpeed: 0.0
-    },
-    onFloor: true
-}
+buildPlayer x = Player $ p { pos = p.pos { x = x } } 
+    where
+        (Player p) = initialPlayer
+  

@@ -4,7 +4,7 @@ import Prelude
 
 import Class.Object (class Object, position, size)
 import Collision (isWallsCollide, isHazardCollide)
-import Constants (leftBoundry, mapSizeInt, mapTileInMonitorSize, mapTileSize, mapSize, rightBoundry)
+import Constants (leftBoundry, mapSizeInt, mapTileInMonitorSize, mapTileSize, mapSize, rightBoundry, hudTextHeight)
 import Data.Array ((!!))
 import Data.DateTime (DateTime, diff)
 import Data.Either (Either(..))
@@ -13,7 +13,7 @@ import Data.Formatter.DateTime as F
 import Data.Int (floor)
 import Data.Maybe (Maybe(..))
 import Data.Particle (Particle, defaultMarineGhostParticle)
-import Data.Player (Player(..))
+import Data.Player (Player(..), playerShotCount)
 import Data.Time.Duration (Milliseconds(..))
 import Emo8.Action.Draw (Draw, drawMap, drawText)
 import Emo8.Data.Color (Color(..))
@@ -123,3 +123,13 @@ drawScore ps = do
 
 enemyToParticle :: Enemy -> Particle
 enemyToParticle (EnemyMarine m) = defaultMarineGhostParticle m.pos
+
+drawPlayerShotCount :: Player -> Draw Unit
+drawPlayerShotCount p = do
+    drawText (show shotCount) hudTextHeight x y Lime
+        where 
+            pos = position p
+            playerSize = size p
+            shotCount = playerShotCount p
+            x = pos.x 
+            y = pos.y + playerSize.height + 5

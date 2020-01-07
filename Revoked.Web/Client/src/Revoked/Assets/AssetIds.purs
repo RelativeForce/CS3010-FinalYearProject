@@ -29,11 +29,8 @@ grassRightCornerId = 8
 grassCenterId :: AssetId
 grassCenterId = 9
 
-bulletForwardId :: AssetId
-bulletForwardId = 10
-
-bulletBackwardId :: AssetId
-bulletBackwardId = 11
+pistolBulletId :: AssetId
+pistolBulletId = 10
 
 toxicWasteId :: AssetId
 toxicWasteId = 12
@@ -73,3 +70,11 @@ playerLeftId = 23
 
 marineGhostId :: AssetId
 marineGhostId = 24
+
+pistolLeftId :: AssetId
+pistolLeftId = 25
+
+pistolRightId :: AssetId
+pistolRightId = 26
+
+-- 11 unused

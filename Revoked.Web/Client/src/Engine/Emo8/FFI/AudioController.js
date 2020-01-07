@@ -18,6 +18,30 @@ exports.isPlaying = function(audio){
   }
 };
 
+exports.mute = function(audio){
+  return function(){
+    try {
+      audio.mute();
+      return true;
+    }
+    catch(e){
+      return false;
+    }
+  }
+}
+
+exports.unmute = function(audio){
+  return function(){
+    try {
+      audio.unmute();
+      return true;
+    }
+    catch(e){
+      return false;
+    }
+  }
+}
+
 exports.play = function(just){
   return function(nothing){
     return function(src){
@@ -49,6 +73,14 @@ function sound(src) {
 
   this.stop = function(){
     this.sound.pause();
+  }
+
+  this.mute = function(){
+    this.sound.volume = 0.0;
+  }
+
+  this.unmute = function(){
+    this.sound.volume = 1.0;
   }
 
   this.src = src;

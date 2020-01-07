@@ -7,16 +7,19 @@ module Emo8.FFI.AudioController (
     isAudioStreamPlaying,
     _isAudioStreamPlaying,
     stopAudioStream,
-    _stopAudioStream
+    _stopAudioStream,
+    muteAudio,
+    unmuteAudio
 ) where
 
 import Prelude
 import Data.Maybe (Maybe(..))
 import Data.Array (filter, find)
-import Effect (Effect)
+import Effect (Effect, foreachE)
 
 type AudioController = {
     id :: String,
+    muted :: Boolean,
     audioStreams :: Array AudioStream
 }
 
@@ -30,11 +33,26 @@ foreign import isPlaying :: AudioStream -> Effect Boolean
 
 foreign import stop :: AudioStream -> Effect Boolean
 
+foreign import mute :: AudioStream -> Effect Unit
+
+foreign import unmute :: AudioStream -> Effect Unit
+
 newAudioController :: String -> AudioController
 newAudioController controllerId = {
     id: controllerId,
+    muted: false,
     audioStreams: []
 }
+
+muteAudio :: AudioController -> Effect AudioController
+muteAudio controller = do
+    _ <- foreachE controller.audioStreams mute
+    pure $ controller { muted = true }
+
+unmuteAudio :: AudioController -> Effect AudioController
+unmuteAudio controller = do
+    _ <- foreachE controller.audioStreams unmute 
+    pure $ controller { muted = false }
 
 findStreamBySource :: AudioController -> String -> Maybe AudioStream
 findStreamBySource controller src = find (\a -> a.src == src) controller.audioStreams
