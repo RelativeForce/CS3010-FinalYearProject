@@ -98,7 +98,7 @@ instance gameState :: Game State where
         traverse_ drawScore s.scores
         if s.isWaiting then drawText "Loading..." 27 570 80 White else pure unit
     draw (Play s) = do
-        drawScaledImage I.blackBackground 0 0
+        drawScaledImage I.playBackground 0 0
         drawScrollMap s.distance s.mapId
         draw s.player
         traverse_ draw s.bullets

@@ -3,7 +3,7 @@ module Assets.Images where
 import Emo8.Types (ScaledImage)
 import Assets.AssetIds as Id
 import Assets.Images.TitleScreen (titleScreenData)
-import Assets.Images.BlackBackground (blackBackgroundData)
+import Assets.Images.PlayBackground (playBackgroundData)
 import Assets.Images.ToxicWaste (toxicWasteData)
 import Assets.Images.GrassTop (grassTopData)
 import Assets.Images.GrassLeftCorner (grassLeftCornerData)
@@ -55,14 +55,14 @@ leaderboardScreen = {
     id: Id.leaderboardScreenId
 }
 
-blackBackground :: ScaledImage
-blackBackground = {
-    image: blackBackgroundData,
+playBackground :: ScaledImage
+playBackground = {
+    image: playBackgroundData,
     size: {
         height: 720,
         width: 1280
     },
-    id: Id.blackBackgroundId
+    id: Id.playBackgroundId
 }
 
 grassTop :: ScaledImage
