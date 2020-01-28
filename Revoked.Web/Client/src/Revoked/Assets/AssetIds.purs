@@ -5,8 +5,8 @@ import Emo8.Types (AssetId)
 titleScreenId :: AssetId
 titleScreenId = 1
 
-blackBackgroundId :: AssetId
-blackBackgroundId = 2
+playBackgroundId :: AssetId
+playBackgroundId = 2
 
 playerStandingLeftId :: AssetId
 playerStandingLeftId = 3
