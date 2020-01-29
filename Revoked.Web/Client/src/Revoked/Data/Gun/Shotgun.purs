@@ -35,9 +35,9 @@ fireAndUpdateShotgun p = shotgunAndBullets
                 gun: updatedShotgun { shotCoolDown = shotgunShotCooldown, shotCount = p.shotCount - 1 }, 
                 bullets: [ 
                     shotgunBullet (p.angle - 20) p.pos p.sprite.size,
-                    shotgunBullet (p.angle - 10) p.pos p.sprite.size,
+                    shotgunBullet (p.angle - 8) p.pos p.sprite.size,
                     shotgunBullet (p.angle) p.pos p.sprite.size,
-                    shotgunBullet (p.angle + 10) p.pos p.sprite.size,
+                    shotgunBullet (p.angle + 8) p.pos p.sprite.size,
                     shotgunBullet (p.angle + 20) p.pos p.sprite.size 
                 ] 
             }

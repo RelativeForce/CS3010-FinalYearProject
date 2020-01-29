@@ -123,8 +123,8 @@ adjustGunPosition (Player p) = Player playerWithAdjustedGun
     where 
         gunSize = size p.gun
         gunPosX = case p.appear of
-            PlayerBackward -> p.pos.x + (gunSize.width) - 12
-            PlayerForward -> p.pos.x + p.sprite.size.width - 5
+            PlayerBackward -> p.pos.x + gunSize.width - 12
+            PlayerForward -> p.pos.x + p.sprite.size.width - gunSize.width + 12
         gunPosY = case p.appear of
             PlayerBackward -> p.pos.y + (p.sprite.size.height / 2) - (gunSize.height) - 3
             PlayerForward -> p.pos.y + (p.sprite.size.height / 2) - 3 
