@@ -29,7 +29,7 @@ mapData = RawMap """
 
 goals :: Array Goal
 goals = [
-    shotgunSpawn { x: 864, y: 224 }, 
+    shotgunSpawn { x: 900, y: 224 }, 
     chopper, 
     ladder 0, 
     ladder 36, 
