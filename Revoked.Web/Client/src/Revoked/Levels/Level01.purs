@@ -4,7 +4,7 @@ import Prelude
 import Data.Enemy (Enemy, defaultMarineEnemy)
 import Emo8.Parse (RawMap(..))
 import Data.Goal (Goal(..))
-import Assets.Sprites as S
+import Assets.Sprites as S   
 
 mapData :: RawMap
 mapData = RawMap """
@@ -60,7 +60,7 @@ ladderX :: Int
 ladderX = chopperX + 150
 
 ladder :: Int -> Goal
-ladder yOffset = Goal {
+ladder yOffset = NextLevel {
     pos: { 
         x: ladderX, 
         y: ladderY - yOffset
@@ -69,7 +69,7 @@ ladder yOffset = Goal {
 }
 
 chopper :: Goal
-chopper = Goal {
+chopper = NextLevel {
     pos: { 
         x: chopperX, 
         y: chopperY

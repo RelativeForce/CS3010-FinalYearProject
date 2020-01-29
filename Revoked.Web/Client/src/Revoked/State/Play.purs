@@ -11,9 +11,10 @@ import Data.Bullet (Bullet, updateBullet)
 import Data.Enemy (Enemy, updateEnemy, enemyToScore)
 import Data.Foldable (sum)
 import Data.Either (Either(..))
-import Data.Goal (Goal, updateGoal)
+import Data.Goal (Goal, updateGoal, isNextLevelGoal, firstGun)
 import Data.Particle (Particle, updateParticle)
-import Data.Player (Player, initialPlayer, updatePlayer)
+import Data.Maybe (Maybe(..))
+import Data.Player (Player, initialPlayer, updatePlayer, setGun)
 import Emo8.Action.Update (Update, isAudioStreamPlaying, stopAudioStream, addAudioStream, nowDateTime, muteAudio, unmuteAudio)
 import Data.DateTime (DateTime)
 import Emo8.FFI.AudioController (AudioController, newAudioController)
@@ -65,11 +66,11 @@ updatePlay asset input s = do
     let hasCollidedHazard = isCollideMapHazards asset s.mapId s.distance scrollAdjustedPlayer
         hasCollidedEnemy = any (isCollideObjects scrollAdjustedPlayer) updatedEnemies
         hasCollidedEnemyBullet = any (isCollideObjects scrollAdjustedPlayer) updatedEnemyBullets
-        hasCollidedGoal = any (isCollideObjects scrollAdjustedPlayer) s.goals
 
     -- collision with enemies
     let { yes: collidedEnemies, no: notCollidedEnemies } = partition (\e -> any (isCollideObjects e) updatedBullets) updatedEnemies
         { yes: collidedBullets, no: notCollidedBullets } = partition (\b -> any (isCollideObjects b) updatedEnemies) updatedBullets
+        { yes: collidedGoals, no: notCollidedGoals } = partition (isCollideObjects scrollAdjustedPlayer) updatedGoals
 
     -- add new entities
     let newParticles = map enemyToParticle collidedEnemies
@@ -86,8 +87,14 @@ updatePlay asset input s = do
 
     -- evaluate game condition
     let isGameOver = hasCollidedHazard || hasCollidedEnemy || hasCollidedEnemyBullet
-        isNextLevel = hasCollidedGoal
+        isNextLevel = any isNextLevelGoal collidedGoals
         isLastLevel = s.mapId + 1 >= levelCount
+
+    -- update gun based on ammo 
+    let collidedGun = firstGun collidedGoals
+        newPlayer = case collidedGun of
+            Nothing -> scrollAdjustedPlayer
+            Just gun -> setGun scrollAdjustedPlayer gun
 
     isBackgroundMusicPlaying <- isAudioStreamPlaying s.audioController A.backgroundMusicId
 
@@ -103,12 +110,12 @@ updatePlay asset input s = do
             else Left $ newLevel (s.mapId + 1) s.score s.audioController s.elapsed s.start
         false, false -> Left $ s { 
             distance = newDistance, 
-            player = scrollAdjustedPlayer, 
+            player = newPlayer, 
             bullets = notCollidedWithMapBullets <> newBullets, 
             enemies = notCollidedEnemies <> enemiesNotInView, 
             particles = updatedParticlesInView <> newParticles, 
             enemyBullets = notCollidedWithMapEnemyBullets <> newEnemyBullets,
-            goals = updatedGoals,
+            goals = notCollidedGoals,
             mapId = s.mapId,
             score = s.score + newScore,
             audioController = newAudioController,
@@ -148,7 +155,7 @@ updateAudioController controller input shouldStop = do
 
     controllerWithBackgroundMusic <- case isBackgroundMusicPlaying, shouldStop of
             true, true -> stopAudioStream controller A.backgroundMusicId
-            false, false ->  addAudioStream controller A.backgroundMusicId
+            false, false -> addAudioStream controller A.backgroundMusicId
             _, _ -> pure controller
 
     updatedController <- if input.released.isM 

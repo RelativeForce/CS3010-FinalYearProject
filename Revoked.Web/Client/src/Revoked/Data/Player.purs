@@ -69,6 +69,9 @@ updateAppear i currentAppear = case i.active.isA, i.active.isD of
     false, true -> PlayerForward
     _, _ -> currentAppear
 
+setGun :: Player -> Gun -> Player
+setGun (Player p) newGun = Player $ p { gun = newGun }
+
 updateVelocity :: Input -> Velocity -> Boolean -> Velocity
 updateVelocity i currentVelocity onFloor = { xSpeed: xSpeed, ySpeed: ySpeed }
     where
