@@ -13,8 +13,7 @@ import Data.Foldable (sum)
 import Data.Either (Either(..))
 import Data.Goal (Goal, updateGoal, isNextLevelGoal, firstGun)
 import Data.Particle (Particle, updateParticle)
-import Data.Maybe (Maybe(..))
-import Data.Player (Player, initialPlayer, updatePlayer, setGun)
+import Data.Player (Player, initialPlayer, updatePlayer, updatePlayerGun)
 import Emo8.Action.Update (Update, isAudioStreamPlaying, stopAudioStream, addAudioStream, nowDateTime, muteAudio, unmuteAudio)
 import Data.DateTime (DateTime)
 import Emo8.FFI.AudioController (AudioController, newAudioController)
@@ -91,14 +90,10 @@ updatePlay asset input s = do
         isLastLevel = s.mapId + 1 >= levelCount
 
     -- update gun based on ammo 
-    let collidedGun = firstGun collidedGoals
-        newPlayer = case collidedGun of
-            Nothing -> scrollAdjustedPlayer
-            Just gun -> setGun scrollAdjustedPlayer gun
-
-    isBackgroundMusicPlaying <- isAudioStreamPlaying s.audioController A.backgroundMusicId
+    let newPlayer = updatePlayerGun (firstGun collidedGoals) scrollAdjustedPlayer 
 
     -- update music
+    isBackgroundMusicPlaying <- isAudioStreamPlaying s.audioController A.backgroundMusicId
     newAudioController <- updateAudioController s.audioController input (isGameOver || (isNextLevel && isLastLevel))
     
     now <- nowDateTime
