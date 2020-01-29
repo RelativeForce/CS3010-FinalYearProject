@@ -13,7 +13,7 @@ import Data.Formatter.DateTime as F
 import Data.Int (floor)
 import Data.Maybe (Maybe(..))
 import Data.Particle (Particle, defaultMarineGhostParticle)
-import Data.Player (Player(..), playerShotCount)
+import Data.Player (Player(..), playerShotCount, playerGunIsInfinite)
 import Data.Time.Duration (Milliseconds(..))
 import Emo8.Action.Draw (Draw, drawMap, drawText)
 import Emo8.Data.Color (Color(..))
@@ -126,7 +126,7 @@ enemyToParticle (EnemyMarine m) = defaultMarineGhostParticle m.pos
 
 drawPlayerShotCount :: Player -> Draw Unit
 drawPlayerShotCount p = do
-    drawText (show shotCount) hudTextHeight x y Lime
+    drawText (if playerGunIsInfinite p then "" else show shotCount) hudTextHeight x y Lime
         where 
             pos = position p
             playerSize = size p
