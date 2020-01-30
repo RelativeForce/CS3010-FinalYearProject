@@ -5,7 +5,7 @@ import Prelude
 import Assets.Sprites as S
 import Class.Object (class Object, class ObjectDraw, position, scroll, draw, size)
 import Collision (isCollWorld, adjustY, adjustX)
-import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor)
+import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor, defaultPlayerHealth)
 import Data.Bullet (Bullet)
 import Data.Gun (Gun, defaultPistolGun, fireAndUpdateGun, setPositionAndRotation, shotCount, updateGun, isInfinite)
 import Data.Maybe (Maybe(..))
@@ -163,7 +163,7 @@ initialPlayer = Player {
     },
     onFloor: true,
     gun: defaultPistolGun true { x: 10, y: 40 } 0,
-    health: 5
+    health: defaultPlayerHealth
 }
 
 adjustVelocity :: Position -> Player -> Player
