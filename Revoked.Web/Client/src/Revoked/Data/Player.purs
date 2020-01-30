@@ -7,7 +7,8 @@ import Class.Object (class Object, class ObjectDraw, position, scroll, draw, siz
 import Collision (isCollWorld, adjustY, adjustX)
 import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor)
 import Data.Bullet (Bullet)
-import Data.Gun (Gun, defaultPistolGun, fireAndUpdateGun, setPositionAndRotation, shotCount, updateGun)
+import Data.Gun (Gun, defaultPistolGun, fireAndUpdateGun, setPositionAndRotation, shotCount, updateGun, isInfinite)
+import Data.Maybe (Maybe(..))
 import Emo8.Action.Draw (drawSprite)
 import Emo8.Data.Sprite (incrementFrame)
 import Emo8.Input (Input)
@@ -69,6 +70,9 @@ updateAppear i currentAppear = case i.active.isA, i.active.isD of
     false, true -> PlayerForward
     _, _ -> currentAppear
 
+setGun :: Player -> Gun -> Player
+setGun (Player p) newGun = Player $ p { gun = newGun }
+
 updateVelocity :: Input -> Velocity -> Boolean -> Velocity
 updateVelocity i currentVelocity onFloor = { xSpeed: xSpeed, ySpeed: ySpeed }
     where
@@ -119,8 +123,8 @@ adjustGunPosition (Player p) = Player playerWithAdjustedGun
     where 
         gunSize = size p.gun
         gunPosX = case p.appear of
-            PlayerBackward -> p.pos.x + (gunSize.width) - 12
-            PlayerForward -> p.pos.x + p.sprite.size.width - 5
+            PlayerBackward -> p.pos.x + gunSize.width - 12
+            PlayerForward -> p.pos.x + p.sprite.size.width - gunSize.width + 12
         gunPosY = case p.appear of
             PlayerBackward -> p.pos.y + (p.sprite.size.height / 2) - (gunSize.height) - 3
             PlayerForward -> p.pos.y + (p.sprite.size.height / 2) - 3 
@@ -132,6 +136,14 @@ adjustGunPosition (Player p) = Player playerWithAdjustedGun
         playerWithAdjustedGun = p {
             gun = setPositionAndRotation p.gun gunPos angle
         }
+
+updatePlayerGun :: (Maybe Gun) -> Player -> Player
+updatePlayerGun collidedGun (Player p) = newPlayer
+    where 
+        newPlayer = case (shotCount p.gun) > 0, collidedGun of
+            true, Nothing -> Player p
+            false, Nothing -> setGun (Player p) (defaultPistolGun true p.pos 0)
+            _, Just gun -> adjustGunPosition $ setGun (Player p) gun
 
 initialPlayer :: Player
 initialPlayer = Player { 
@@ -146,7 +158,7 @@ initialPlayer = Player {
         ySpeed: 0.0
     },
     onFloor: true,
-    gun: defaultPistolGun false { x: 10, y: 40 } 0
+    gun: defaultPistolGun true { x: 10, y: 40 } 0
 }
 
 adjustVelocity :: Position -> Player -> Player
@@ -231,3 +243,6 @@ beInMonitor oldPos (Player p) = Player $ p { pos = { x: x, y: y } }
 
 playerShotCount :: Player -> Int
 playerShotCount (Player p) = shotCount p.gun
+
+playerGunIsInfinite :: Player -> Boolean
+playerGunIsInfinite (Player p) = isInfinite p.gun

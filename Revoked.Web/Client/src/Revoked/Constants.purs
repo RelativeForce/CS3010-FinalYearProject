@@ -108,3 +108,9 @@ pistolMagazineSize = 6
 
 pistolShotCooldown :: Int
 pistolShotCooldown = 10
+
+shotgunMagazineSize :: Int
+shotgunMagazineSize = 5
+
+shotgunShotCooldown :: Int
+shotgunShotCooldown = 20

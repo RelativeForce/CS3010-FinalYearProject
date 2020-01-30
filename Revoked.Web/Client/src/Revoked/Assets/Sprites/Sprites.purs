@@ -11,7 +11,9 @@ module Assets.Sprites (
     module Assets.Sprites.PlayerLeft.Sprite,
     module Assets.Sprites.MarineGhost.Sprite,
     module Assets.Sprites.PistolLeft.Sprite,
-    module Assets.Sprites.PistolRight.Sprite 
+    module Assets.Sprites.PistolRight.Sprite,
+    module Assets.Sprites.ShotgunLeft.Sprite,
+    module Assets.Sprites.ShotgunRight.Sprite  
 ) where
 
 import Assets.Sprites.PistolBullet.Sprite (pistolBullet)
@@ -27,3 +29,5 @@ import Assets.Sprites.PlayerLeft.Sprite (playerLeft)
 import Assets.Sprites.MarineGhost.Sprite (marineGhost)
 import Assets.Sprites.PistolLeft.Sprite (pistolLeft)
 import Assets.Sprites.PistolRight.Sprite (pistolRight)
+import Assets.Sprites.ShotgunLeft.Sprite (shotgunLeft)
+import Assets.Sprites.ShotgunRight.Sprite (shotgunRight)

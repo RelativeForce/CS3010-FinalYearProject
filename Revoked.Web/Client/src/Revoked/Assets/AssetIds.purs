@@ -77,4 +77,8 @@ pistolLeftId = 25
 pistolRightId :: AssetId
 pistolRightId = 26
 
--- 11 unused
+shotgunLeftId :: AssetId
+shotgunLeftId = 11
+
+shotgunRightId :: AssetId
+shotgunRightId = 27

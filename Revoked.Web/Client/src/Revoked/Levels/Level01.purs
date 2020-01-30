@@ -1,10 +1,12 @@
 module Levels.Level01 where
 
 import Prelude
+import Emo8.Types (Position)
 import Data.Enemy (Enemy, defaultMarineEnemy)
 import Emo8.Parse (RawMap(..))
 import Data.Goal (Goal(..))
-import Assets.Sprites as S
+import Data.Gun (defaultShotgunGun)
+import Assets.Sprites as S   
 
 mapData :: RawMap
 mapData = RawMap """
@@ -26,7 +28,8 @@ mapData = RawMap """
 """
 
 goals :: Array Goal
-goals = [ 
+goals = [
+    shotgunSpawn { x: 900, y: 224 }, 
     chopper, 
     ladder 0, 
     ladder 36, 
@@ -60,7 +63,7 @@ ladderX :: Int
 ladderX = chopperX + 150
 
 ladder :: Int -> Goal
-ladder yOffset = Goal {
+ladder yOffset = NextLevel {
     pos: { 
         x: ladderX, 
         y: ladderY - yOffset
@@ -69,10 +72,13 @@ ladder yOffset = Goal {
 }
 
 chopper :: Goal
-chopper = Goal {
+chopper = NextLevel {
     pos: { 
         x: chopperX, 
         y: chopperY
     },
     sprite: S.chopper
 }
+
+shotgunSpawn :: Position -> Goal
+shotgunSpawn pos = GunPickup $ defaultShotgunGun pos 0
