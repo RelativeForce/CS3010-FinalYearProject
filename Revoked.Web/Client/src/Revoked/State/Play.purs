@@ -6,14 +6,14 @@ import Assets.Audio as A
 import States.StateIds as S
 import Class.Object (scroll)
 import Collision (isCollideObjects, isOutOfWorld)
-import Data.Array (any, filter, partition, concatMap)
+import Data.Array (any, filter, partition, concatMap, length)
 import Data.Bullet (Bullet, updateBullet)
 import Data.Enemy (Enemy, updateEnemy, enemyToScore)
 import Data.Foldable (sum)
 import Data.Either (Either(..))
 import Data.Goal (Goal, updateGoal, isNextLevelGoal, firstGun)
 import Data.Particle (Particle, updateParticle)
-import Data.Player (Player, initialPlayer, updatePlayer, updatePlayerGun)
+import Data.Player (Player, initialPlayer, updatePlayer, updatePlayerGun, playerHealth, damagePlayer)
 import Emo8.Action.Update (Update, isAudioStreamPlaying, stopAudioStream, addAudioStream, nowDateTime, muteAudio, unmuteAudio)
 import Data.DateTime (DateTime)
 import Emo8.FFI.AudioController (AudioController, newAudioController)
@@ -64,12 +64,13 @@ updatePlay asset input s = do
     -- player collision
     let hasCollidedHazard = isCollideMapHazards asset s.mapId s.distance scrollAdjustedPlayer
         hasCollidedEnemy = any (isCollideObjects scrollAdjustedPlayer) updatedEnemies
-        hasCollidedEnemyBullet = any (isCollideObjects scrollAdjustedPlayer) updatedEnemyBullets
 
     -- collision with enemies
     let { yes: collidedEnemies, no: notCollidedEnemies } = partition (\e -> any (isCollideObjects e) updatedBullets) updatedEnemies
         { yes: collidedBullets, no: notCollidedBullets } = partition (\b -> any (isCollideObjects b) updatedEnemies) updatedBullets
+        { yes: collidedEnemyBullets, no: notCollidedEnemyBullets } = partition (isCollideObjects scrollAdjustedPlayer) updatedEnemyBullets
         { yes: collidedGoals, no: notCollidedGoals } = partition (isCollideObjects scrollAdjustedPlayer) updatedGoals
+        collidedEnemyBulletCount = length collidedEnemyBullets
 
     -- add new entities
     let newParticles = map enemyToParticle collidedEnemies
@@ -77,20 +78,22 @@ updatePlay asset input s = do
 
     -- delete entities (out of monitor)
     let updatedBulletsInView = filter (not <<< isOutOfWorld) notCollidedBullets
-        updatedEnemyBulletsInView = filter (not <<< isOutOfWorld) updatedEnemyBullets
+        updatedEnemyBulletsInView = filter (not <<< isOutOfWorld) notCollidedEnemyBullets
         updatedParticlesInView = filter (not <<< isOutOfWorld) updatedParticles
 
     -- delete entities (map collision)
     let notCollidedWithMapBullets = filter (not <<< (isCollideMapWalls asset s.mapId s.distance)) updatedBulletsInView
         notCollidedWithMapEnemyBullets = filter (not <<< (isCollideMapWalls asset s.mapId s.distance)) updatedEnemyBulletsInView
 
+    -- update player based on collision
+    let damagedPlayer = damagePlayer scrollAdjustedPlayer collidedEnemyBulletCount
+        newPlayer = updatePlayerGun (firstGun collidedGoals) damagedPlayer 
+
     -- evaluate game condition
-    let isGameOver = hasCollidedHazard || hasCollidedEnemy || hasCollidedEnemyBullet
+    let isPlayerDead = 0 >= (playerHealth newPlayer)
+        isGameOver = hasCollidedHazard || hasCollidedEnemy || isPlayerDead
         isNextLevel = any isNextLevelGoal collidedGoals
         isLastLevel = s.mapId + 1 >= levelCount
-
-    -- update gun based on ammo 
-    let newPlayer = updatePlayerGun (firstGun collidedGoals) scrollAdjustedPlayer 
 
     -- update music
     isBackgroundMusicPlaying <- isAudioStreamPlaying s.audioController A.backgroundMusicId
