@@ -1,6 +1,10 @@
 name: Build and Test
 
-on: [push,pull_request]
+on: 
+  pull_request:
+    # Sequence of patterns matched against refs/heads
+    branches:    
+      - master         # Pull request events on master branch
 
 jobs:
   build:
