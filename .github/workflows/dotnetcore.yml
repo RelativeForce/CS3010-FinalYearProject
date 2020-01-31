@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '10', '8' ]
+        node: [ '10' ]
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -20,7 +20,7 @@ jobs:
       with:
         node-version: ${{ matrix.node }} 
 
-    - name: npm install and npm run build
+    - name: install yarn and load dependencies
       run: |
         npm install yarn -g
         cd /home/runner/work/CS3010-FinalYearProject/CS3010-FinalYearProject/Revoked.Web/Client
