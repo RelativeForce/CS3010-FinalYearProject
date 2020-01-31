@@ -1,0 +1,40 @@
+name: Build and Test
+
+on: 
+  pull_request:
+    # Sequence of patterns matched against refs/heads
+    branches:    
+      - master         # Pull request events on master branch
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.2.108
+    - name: Setup Node.js 10
+      uses: actions/setup-node@v1
+      with:
+        node-version: 10
+
+    - name: Install yarn and load dependencies
+      run: |
+        npm install yarn -g
+        cd /home/runner/work/CS3010-FinalYearProject/CS3010-FinalYearProject/Revoked.Web/Client
+        yarn
+        yarn postinstall
+    - name: Test PureScript
+      run: | 
+        cd /home/runner/work/CS3010-FinalYearProject/CS3010-FinalYearProject/Revoked.Web/Client
+        yarn test
+    - name: Build C# and PureScript
+      run: dotnet build --configuration Debug
+    - name: Test C#
+      run: dotnet test --configuration Debug
+    
+    

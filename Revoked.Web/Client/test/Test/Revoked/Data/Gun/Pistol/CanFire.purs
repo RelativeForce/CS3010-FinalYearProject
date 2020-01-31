@@ -4,7 +4,6 @@ module Test.Revoked.Data.Gun.Pistol.CanFire (
 
 import Prelude
 
-import Constants (bulletSpeed)
 import Data.Gun.Pistol (Pistol, canFire, defaultPistol)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
