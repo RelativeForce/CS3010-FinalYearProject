@@ -114,3 +114,6 @@ shotgunMagazineSize = 5
 
 shotgunShotCooldown :: Int
 shotgunShotCooldown = 20
+
+defaultPlayerHealth :: Int
+defaultPlayerHealth = 5

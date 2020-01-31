@@ -16,7 +16,7 @@ import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
 import Emo8.Input (isCatchAny)
 import Emo8.Utils (defaultMonitorSize, mkAsset)
-import Helper (drawScrollMap, drawUsername, drawScore, formatDifference, drawPlayerShotCount)
+import Helper (drawScrollMap, drawUsername, drawScore, formatDifference, drawPlayerShotCount, drawHealth)
 import Levels (allRawLevels)
 import States.Play (PlayState, updatePlay, initialPlayState)
 import States.Victory (VictoryState, updateVictory, initialVictoryState)
@@ -109,6 +109,7 @@ instance gameState :: Game State where
         drawText ("Score: " <> show s.score) hudTextHeight scoreDisplayX hudDisplayY Lime
         drawText ("Time: " <> s.elapsed) hudTextHeight timeDisplayX hudDisplayY Lime
         drawPlayerShotCount s.player
+        drawHealth s.player
 
 initialState :: State
 initialState = TitleScreen

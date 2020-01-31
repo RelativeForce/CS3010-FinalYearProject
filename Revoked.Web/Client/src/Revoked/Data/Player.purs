@@ -5,7 +5,7 @@ import Prelude
 import Assets.Sprites as S
 import Class.Object (class Object, class ObjectDraw, position, scroll, draw, size)
 import Collision (isCollWorld, adjustY, adjustX)
-import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor)
+import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor, defaultPlayerHealth)
 import Data.Bullet (Bullet)
 import Data.Gun (Gun, defaultPistolGun, fireAndUpdateGun, setPositionAndRotation, shotCount, updateGun, isInfinite)
 import Data.Maybe (Maybe(..))
@@ -22,7 +22,8 @@ data Player = Player {
     sprite :: Sprite,
     velocity :: Velocity,
     onFloor :: Boolean,
-    gun :: Gun
+    gun :: Gun,
+    health :: Int
 }
 
 data PlayerAppear = PlayerForward | PlayerBackward
@@ -137,6 +138,9 @@ adjustGunPosition (Player p) = Player playerWithAdjustedGun
             gun = setPositionAndRotation p.gun gunPos angle
         }
 
+damagePlayer :: Player -> Int -> Player
+damagePlayer (Player p) damage = Player $ p { health = p.health - damage }
+
 updatePlayerGun :: (Maybe Gun) -> Player -> Player
 updatePlayerGun collidedGun (Player p) = newPlayer
     where 
@@ -158,7 +162,8 @@ initialPlayer = Player {
         ySpeed: 0.0
     },
     onFloor: true,
-    gun: defaultPistolGun true { x: 10, y: 40 } 0
+    gun: defaultPistolGun true { x: 10, y: 40 } 0,
+    health: defaultPlayerHealth
 }
 
 adjustVelocity :: Position -> Player -> Player
@@ -246,3 +251,6 @@ playerShotCount (Player p) = shotCount p.gun
 
 playerGunIsInfinite :: Player -> Boolean
 playerGunIsInfinite (Player p) = isInfinite p.gun
+
+playerHealth :: Player -> Int
+playerHealth (Player p) = p.health

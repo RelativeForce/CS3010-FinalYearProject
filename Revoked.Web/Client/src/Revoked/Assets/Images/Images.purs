@@ -14,6 +14,7 @@ import Assets.Images.GrassCenter (grassCenterData)
 import Assets.Images.GameOverScreen (gameOverScreenData)
 import Assets.Images.VictoryScreen (victoryScreenData)
 import Assets.Images.LeaderboardScreen (leaderboardScreenData)
+import Assets.Images.Heart (heartData)
 
 titleScreen :: ScaledImage
 titleScreen = {
@@ -133,4 +134,14 @@ toxicWaste = {
         width: 32
     },
     id: Id.toxicWasteId
+}
+
+heart :: ScaledImage
+heart = {
+    image: heartData,
+    size: {
+        height: 20,
+        width: 20
+    },
+    id: Id.heartId
 }
