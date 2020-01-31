@@ -24,7 +24,10 @@ jobs:
         cd /home/runner/work/CS3010-FinalYearProject/CS3010-FinalYearProject/Revoked.Web/Client
         yarn
         yarn postinstall
+    - name: Test
+      run: | 
+        cd /home/runner/work/CS3010-FinalYearProject/CS3010-FinalYearProject/Revoked.Web/Client
+        yarn test
     - name: Build
       run: dotnet build --configuration Debug
-    - name: Test
-      run: yarn test
+    
