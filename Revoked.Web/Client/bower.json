@@ -26,7 +26,9 @@
     "purescript-emoji-splitter": "^0.2.0",
     "purescript-free": "^5.1.0",
     "purescript-pseudo-random": "^0.2.1",
-    "purescript-foreign-generic": "^8.0.0"
+    "purescript-foreign-generic": "^8.0.0",
+    "purescript-record": "^1.0.0",
+    "purescript-typelevel-prelude": "^3.0.0"
   },
   "devDependencies": {
     "purescript-psci-support": "^4.0.0",

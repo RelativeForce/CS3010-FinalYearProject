@@ -13,5 +13,15 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2.108
+    - name: Node $
+      uses: actions/setup-node@v1
+      with:
+        node-version: $
+
+    - name: npm install and npm run build
+      run: |
+        npm install yarn -g
+        yarn
+        yarn postinstall
     - name: Build with dotnet
-      run: dotnet build --configuration Release
+      run: dotnet build --configuration Debug
