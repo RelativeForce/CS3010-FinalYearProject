@@ -1,6 +1,6 @@
 name: .NET Core build
 
-on: [pull_request]
+on: [push,pull_request]
 
 jobs:
   build:
@@ -15,16 +15,18 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2.108
-    - name: Node ${{ matrix.node }} 
+    - name: Setup Node ${{ matrix.node }} 
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node }} 
 
-    - name: install yarn and load dependencies
+    - name: Install yarn and load dependencies
       run: |
         npm install yarn -g
         cd /home/runner/work/CS3010-FinalYearProject/CS3010-FinalYearProject/Revoked.Web/Client
         yarn
         yarn postinstall
-    - name: Build with dotnet
+    - name: Build
       run: dotnet build --configuration Debug
+    - name: Test
+      run: yarn test
