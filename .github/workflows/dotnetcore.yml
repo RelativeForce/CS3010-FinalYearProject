@@ -23,6 +23,7 @@ jobs:
     - name: npm install and npm run build
       run: |
         npm install yarn -g
+        cd /Revoked.Web/Client
         yarn
         yarn postinstall
     - name: Build with dotnet
