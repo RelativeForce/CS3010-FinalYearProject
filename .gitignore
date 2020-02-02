@@ -576,7 +576,6 @@
 /Revoked.Web/Client/output/Assets.Sprites.PistolBullet.Sprite
 /Revoked.Web/Client/output/Test.Revoked.Data.Gun
 /Revoked.Web/Client/output/Test.Revoked.Data.Gun.Pistol
-/Revoked.Web/Client/output/Test.Revoked.Data.Gun.Pistol.BulletVelocity
 /Revoked.Web/Client/output/Test.Revoked.Data.Gun.Pistol.CanFire
 /Revoked.Web/Client/output/Assets.Sprites.ShotgunLeft.Sprite
 /Revoked.Web/Client/output/Assets.Sprites.ShotgunRight.Sprite
@@ -585,3 +584,5 @@
 /Revoked.Web/Client/output/Assets.Sprites.AssaultRifleRight.Sprite
 /Revoked.Web/Client/output/Data.Gun.Helper
 /Revoked.Web/Client/output/Data.Gun.AssaultRifle
+/Revoked.Web/Client/output/Test.Revoked.Data.Gun.Helper.BulletVelocity
+/Revoked.Web/Client/output/Test.Revoked.Data.Gun.Helper
