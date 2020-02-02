@@ -581,3 +581,6 @@
 /Revoked.Web/Client/output/Assets.Sprites.ShotgunLeft.Sprite
 /Revoked.Web/Client/output/Assets.Sprites.ShotgunRight.Sprite
 /Revoked.Web/Client/output/Data.Gun.Shotgun
+/Revoked.Web/Client/output/Assets.Sprites.AssaultRifleLeft.Sprite
+/Revoked.Web/Client/output/Assets.Sprites.AssaultRifleRight.Sprite
+/Revoked.Web/Client/output/Data.Gun.Helper
