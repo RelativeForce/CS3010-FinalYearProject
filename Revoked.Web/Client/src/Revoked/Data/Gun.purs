@@ -4,8 +4,8 @@ import Prelude
 
 import Class.Object (class ObjectDraw, class Object, position)
 import Data.Bullet (Bullet)
-import Data.Gun.Pistol (Pistol, reloadPistol, fireAndUpdatePistol, updatePistol, defaultPistol, setPistolPositionAndRotation)
-import Data.Gun.Shotgun (Shotgun, defaultShotgun, fireAndUpdateShotgun, reloadShotgun, setShotgunPositionAndRotation, updateShotgun)
+import Data.Gun.Pistol (Pistol, fireAndUpdatePistol, updatePistol, defaultPistol, setPistolPositionAndRotation)
+import Data.Gun.Shotgun (Shotgun, defaultShotgun, fireAndUpdateShotgun, setShotgunPositionAndRotation, updateShotgun)
 import Emo8.Action.Draw (drawRotatedSprite)
 import Emo8.Types (Position, Deg)
 
@@ -28,10 +28,6 @@ instance objectDrawGun :: ObjectDraw Gun where
 fireAndUpdateGun :: Gun -> { gun :: Gun, bullets :: Array Bullet }
 fireAndUpdateGun (PistolGun p) = (fireAndUpdatePistol >>> toGunAndBullets PistolGun) p
 fireAndUpdateGun (ShotgunGun sg) = (fireAndUpdateShotgun >>> toGunAndBullets ShotgunGun) sg
-
-reloadGun :: Gun -> Gun
-reloadGun (PistolGun p) = PistolGun $ reloadPistol p
-reloadGun (ShotgunGun sg) = ShotgunGun $ reloadShotgun sg
 
 updateGun :: Gun -> Gun 
 updateGun (PistolGun p) = PistolGun $ updatePistol p
