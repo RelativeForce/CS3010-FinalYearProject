@@ -1,4 +1,4 @@
-module Levels.Level01 where
+module Levels.Level02 where
 
 import Prelude
 import Emo8.Types (Position)
