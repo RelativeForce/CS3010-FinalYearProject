@@ -5,8 +5,7 @@ import Emo8.Types (Position)
 import Data.Enemy (Enemy, defaultMarineEnemy)
 import Emo8.Parse (RawMap(..))
 import Data.Goal (Goal(..))
-import Data.Gun (defaultShotgunGun)
-import Levels.Helper (toTilePosition)
+import Levels.Helper (toTilePosition, shotgunSpawn)
 import Assets.Sprites as S   
 
 mapData :: RawMap
@@ -86,6 +85,3 @@ chopper = NextLevel {
     },
     sprite: S.chopper
 }
-
-shotgunSpawn :: Position -> Goal
-shotgunSpawn pos = GunPickup $ defaultShotgunGun pos 0
