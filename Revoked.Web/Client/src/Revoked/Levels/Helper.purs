@@ -2,7 +2,6 @@ module Levels.Helper where
 
 import Prelude
 
-
 import Constants (mapTileSize)
 import Emo8.Types (Position)
 import Data.Goal (Goal(..))
