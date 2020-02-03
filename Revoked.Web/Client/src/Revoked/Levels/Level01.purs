@@ -6,6 +6,7 @@ import Data.Enemy (Enemy, defaultMarineEnemy)
 import Emo8.Parse (RawMap(..))
 import Data.Goal (Goal(..))
 import Data.Gun (defaultShotgunGun)
+import Levels.Helper (toTilePosition)
 import Assets.Sprites as S   
 
 mapData :: RawMap
@@ -29,7 +30,7 @@ mapData = RawMap """
 
 goals :: Array Goal
 goals = [
-    shotgunSpawn { x: 900, y: 224 }, 
+    shotgunSpawn $ toTilePosition 28 7, 
     chopper, 
     ladder 0, 
     ladder 36, 
@@ -40,15 +41,20 @@ goals = [
     ladder 216 
 ]
 
+startPosition :: Position
+startPosition = { x: 0,  y: 40 }
+
 enemies :: Array Enemy
 enemies = [
-    defaultMarineEnemy { x: 830, y: 32 },
-    defaultMarineEnemy { x: 864, y: 224 }, 
-    defaultMarineEnemy { x: 1504, y: 224 },
-    defaultMarineEnemy { x: 1856, y: 64 },
-    defaultMarineEnemy { x: 2528, y: 64 },
-    defaultMarineEnemy { x: 3008, y: 64 },
-    defaultMarineEnemy { x: 5312, y: 64 }
+    defaultMarineEnemy $ toTilePosition 26 1,
+    defaultMarineEnemy $ toTilePosition 27 7, 
+    defaultMarineEnemy $ toTilePosition 47 7,
+    defaultMarineEnemy $ toTilePosition 58 2,
+    defaultMarineEnemy $ toTilePosition 79 2,
+    defaultMarineEnemy $ toTilePosition 94 2,
+    defaultMarineEnemy $ toTilePosition 118 3,
+    defaultMarineEnemy $ toTilePosition 142 9,
+    defaultMarineEnemy $ toTilePosition 166 2 
 ]
 
 chopperY :: Int

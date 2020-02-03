@@ -19,7 +19,7 @@ import Data.DateTime (DateTime)
 import Emo8.FFI.AudioController (AudioController, newAudioController)
 import Emo8.Input (Input)
 import Emo8.Types (MapId, Score, StateId, Asset)
-import Levels (enemies, goals, levelCount)
+import Levels (enemies, goals, levelCount, startPosition)
 import Helper (isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance, formatDifference, enemyToParticle)
 
 type PlayState = { 
@@ -90,7 +90,7 @@ updatePlay asset input s = do
         newPlayer = updatePlayerGun (firstGun collidedGoals) damagedPlayer 
 
     -- evaluate game condition
-    let isPlayerDead = 0 >= (playerHealth newPlayer)
+    let isPlayerDead = (playerHealth newPlayer) <= 0
         isGameOver = hasCollidedHazard || hasCollidedEnemy || isPlayerDead
         isNextLevel = any isNextLevelGoal collidedGoals
         isLastLevel = s.mapId + 1 >= levelCount
@@ -124,7 +124,7 @@ updatePlay asset input s = do
 newLevel :: MapId -> Score -> AudioController -> String -> DateTime -> PlayState
 newLevel mapId score audioController elapsed start = { 
     distance: 0, 
-    player: initialPlayer, 
+    player: initialPlayer $ startPosition mapId, 
     bullets: [], 
     enemies: enemies mapId, 
     particles: [], 
