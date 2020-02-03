@@ -117,3 +117,9 @@ shotgunShotCooldown = 20
 
 defaultPlayerHealth :: Int
 defaultPlayerHealth = 5
+
+assaultRifleMagazineSize :: Int
+assaultRifleMagazineSize = 25
+
+assaultRifleShotCooldown :: Int
+assaultRifleShotCooldown = 1

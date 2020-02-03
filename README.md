@@ -50,8 +50,6 @@ It is also compiled into JavaScript and easy to distribute.
 npm install yarn -g
 cd "./Revoked.Web/Client"
 yarn
-1 - purescript-record#^1.0.0
-1 - purescript-typelevel-prelude#^3.0.0
 yarn postinstall
 ```
 ### Build

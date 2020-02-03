@@ -85,3 +85,9 @@ shotgunRightId = 27
 
 heartId :: AssetId
 heartId = 28
+
+assaultRifleLeftId :: AssetId
+assaultRifleLeftId = 29
+
+assaultRifleRightId :: AssetId
+assaultRifleRightId = 30

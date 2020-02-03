@@ -1,11 +1,11 @@
-module Test.Revoked.Data.Gun.Pistol.BulletVelocity ( 
+module Test.Revoked.Data.Gun.Helper.BulletVelocity ( 
     bulletVelocityTests 
 ) where
 
 import Prelude
 
 import Constants (bulletSpeed)
-import Data.Gun.Pistol (bulletVelocity)
+import Data.Gun.Helper (bulletVelocity)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 
