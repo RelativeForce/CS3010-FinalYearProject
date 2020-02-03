@@ -29,7 +29,5 @@ scrollTests =
             equal expectedResult result.pos.x
 
 buildPlayer :: Int -> Player
-buildPlayer x = Player $ p { pos = p.pos { x = x } } 
-    where
-        (Player p) = initialPlayer
+buildPlayer x = initialPlayer { x: x, y: 0 }
   

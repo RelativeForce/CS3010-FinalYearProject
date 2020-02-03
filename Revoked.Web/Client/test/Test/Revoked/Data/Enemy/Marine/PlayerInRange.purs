@@ -97,6 +97,4 @@ playerInRangeTests =
             equal expected result 
 
 player :: Position -> Player
-player pos = Player $ p { pos = pos }
-    where 
-        (Player p) = initialPlayer
+player pos = initialPlayer pos
