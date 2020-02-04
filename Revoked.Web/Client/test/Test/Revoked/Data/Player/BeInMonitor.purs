@@ -119,11 +119,9 @@ beInMonitorTests =
 
 
 player :: X -> Y -> Player
-player x y = Player $ p { pos = { x: x, y: y } }
-    where 
-        (Player p) = initialPlayer
+player x y = initialPlayer { x: x, y: y } 
 
 spriteSize :: Size
 spriteSize = p.sprite.size
     where 
-        (Player p) = initialPlayer
+        (Player p) = initialPlayer { x: 0, y: 0 }

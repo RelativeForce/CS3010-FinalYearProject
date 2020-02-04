@@ -149,12 +149,9 @@ updatePlayerGun collidedGun (Player p) = newPlayer
             false, Nothing -> setGun (Player p) (defaultPistolGun true p.pos 0)
             _, Just gun -> adjustGunPosition $ setGun (Player p) gun
 
-initialPlayer :: Player
-initialPlayer = Player { 
-    pos: { 
-        x: 0, 
-        y: 40
-    }, 
+initialPlayer :: Position -> Player
+initialPlayer pos = Player { 
+    pos: pos, 
     appear: PlayerForward,
     sprite: S.playerStandingRight,
     velocity: {
@@ -162,7 +159,7 @@ initialPlayer = Player {
         ySpeed: 0.0
     },
     onFloor: true,
-    gun: defaultPistolGun true { x: 10, y: 40 } 0,
+    gun: defaultPistolGun true (pos { x = pos.x + 10 }) 0,
     health: defaultPlayerHealth
 }
 

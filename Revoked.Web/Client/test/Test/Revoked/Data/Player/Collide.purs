@@ -99,6 +99,4 @@ mockCollisionCheck collideX collideY collideBoth oldPos (Player p) = collided
             false, false -> collideBoth
 
 player :: Position -> Player
-player pos = Player $ p { pos = pos }
-    where 
-        (Player p) = initialPlayer
+player pos = initialPlayer pos 

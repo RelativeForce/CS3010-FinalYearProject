@@ -97,6 +97,6 @@ adjustVelocityTests =
             equal expectedVelocity result.velocity
 
 player :: X -> Y -> Velocity -> Player
-player x y v = Player $ p { velocity = v, pos = { x: x, y: y } }
-    where 
-        (Player p) = initialPlayer
+player x y v = Player $ p { velocity = v }
+    where
+        (Player p) = initialPlayer { x: x, y: y }

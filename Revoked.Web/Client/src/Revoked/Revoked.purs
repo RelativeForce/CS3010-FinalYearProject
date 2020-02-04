@@ -5,7 +5,7 @@ import Prelude
 import Assets.Images as I
 import States.StateIds as S
 import Class.Object (draw)
-import Constants (scoreDisplayX, hudDisplayY, timeDisplayX, hudTextHeight)
+import Constants (scoreDisplayX, hudDisplayY, timeDisplayX, hudTextHeight, levelDisplayX)
 import Data.Either (Either(..))
 import Data.Foldable (traverse_)
 import Effect (Effect)
@@ -108,6 +108,7 @@ instance gameState :: Game State where
         traverse_ draw s.goals
         drawText ("Score: " <> show s.score) hudTextHeight scoreDisplayX hudDisplayY Lime
         drawText ("Time: " <> s.elapsed) hudTextHeight timeDisplayX hudDisplayY Lime
+        drawText ("Level " <> show (s.mapId + 1)) hudTextHeight levelDisplayX hudDisplayY Lime
         drawPlayerShotCount s.player
         drawHealth s.player
 

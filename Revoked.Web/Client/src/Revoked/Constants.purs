@@ -20,6 +20,9 @@ scoreDisplayX = (defaultMonitorSize.width - 200)
 timeDisplayX :: X
 timeDisplayX = (defaultMonitorSize.width - 500)
 
+levelDisplayX :: X
+levelDisplayX = 20
+
 hudDisplayY :: Y
 hudDisplayY = (defaultMonitorSize.height - 50)
 
