@@ -26,3 +26,6 @@ drawHealth entity = do
                 x: entityPos.x - ( width / 2) + (i * increment) + (entitySize.width / 2), 
                 y: entityPos.y + entitySize.height + 5
             }
+
+isDead :: forall a. MortalEntity a => a -> Boolean
+isDead entity = (health entity) <= 0

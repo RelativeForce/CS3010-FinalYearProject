@@ -4,7 +4,7 @@ import Prelude
 
 import Assets.Audio as A
 import States.StateIds as S
-import Class.Object (scroll, health, damage)
+import Class.Object (scroll, damage)
 import Collision (isCollideObjects, isOutOfWorld)
 import Data.Array (any, filter, partition, concatMap, length)
 import Data.Bullet (Bullet, updateBullet)
@@ -19,6 +19,7 @@ import Data.DateTime (DateTime)
 import Emo8.FFI.AudioController (AudioController, newAudioController)
 import Emo8.Input (Input)
 import Emo8.Types (MapId, Score, StateId, Asset)
+import Data.Helper (isDead)
 import Levels (enemies, goals, levelCount, startPosition)
 import Helper (isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance, formatDifference, enemyToParticle)
 
@@ -73,8 +74,11 @@ updatePlay asset input s = do
         collidedEnemyBulletCount = length collidedEnemyBullets
 
     -- add new entities
-    let newParticles = map enemyToParticle collidedEnemies
-        newScore = sum $ map enemyToScore collidedEnemies
+    let damageCounter = (\e -> length (filter (isCollideObjects e) updatedBullets))
+        damagedEnemies = map (\e -> damage e (damageCounter e)) collidedEnemies 
+        { yes: deadEnemies , no: damagedButAliveEnemies } = partition isDead damagedEnemies
+        newParticles = map enemyToParticle deadEnemies
+        newScore = sum $ map enemyToScore deadEnemies
 
     -- delete entities (out of monitor)
     let updatedBulletsInView = filter (not <<< isOutOfWorld) notCollidedBullets
@@ -90,7 +94,7 @@ updatePlay asset input s = do
         newPlayer = updatePlayerGun (firstGun collidedGoals) damagedPlayer 
 
     -- evaluate game condition
-    let isPlayerDead = (health newPlayer) <= 0
+    let isPlayerDead = isDead newPlayer
         isGameOver = hasCollidedHazard || hasCollidedEnemy || isPlayerDead
         isNextLevel = any isNextLevelGoal collidedGoals
         isLastLevel = s.mapId + 1 >= levelCount
@@ -110,7 +114,7 @@ updatePlay asset input s = do
             distance = newDistance, 
             player = newPlayer, 
             bullets = notCollidedWithMapBullets <> newBullets, 
-            enemies = notCollidedEnemies <> enemiesNotInView, 
+            enemies = notCollidedEnemies <> enemiesNotInView <> damagedButAliveEnemies, 
             particles = updatedParticlesInView <> newParticles, 
             enemyBullets = notCollidedWithMapEnemyBullets <> newEnemyBullets,
             goals = notCollidedGoals,
