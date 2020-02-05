@@ -3,7 +3,7 @@ module Data.Player where
 import Prelude
 
 import Assets.Sprites as S
-import Class.Object (class Object, class ObjectDraw, position, scroll, draw, size)
+import Class.Object (class Object, class ObjectDraw, class MortalEntity, position, scroll, draw, size)
 import Collision (isCollWorld, adjustY, adjustX)
 import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor, defaultPlayerHealth)
 import Data.Bullet (Bullet)
@@ -45,6 +45,10 @@ instance objectDrawPlayer :: ObjectDraw Player where
     draw o@(Player p) = do
         drawSprite p.sprite (position o).x (position o).y
         draw p.gun
+
+instance mortalEntityPlayer :: MortalEntity Player where
+    health (Player p) = p.health
+    damage (Player p) healthLoss = Player $ p { health = p.health - healthLoss }
 
 updatePlayer :: Input -> Player -> X -> (Player -> Boolean) -> { player :: Player, bullets :: Array Bullet }
 updatePlayer i (Player p) distance collisionCheck = { player: newPlayer, bullets: bullets }
@@ -137,9 +141,6 @@ adjustGunPosition (Player p) = Player playerWithAdjustedGun
         playerWithAdjustedGun = p {
             gun = setPositionAndRotation p.gun gunPos angle
         }
-
-damagePlayer :: Player -> Int -> Player
-damagePlayer (Player p) damage = Player $ p { health = p.health - damage }
 
 updatePlayerGun :: (Maybe Gun) -> Player -> Player
 updatePlayerGun collidedGun (Player p) = newPlayer
@@ -248,6 +249,3 @@ playerShotCount (Player p) = shotCount p.gun
 
 playerGunIsInfinite :: Player -> Boolean
 playerGunIsInfinite (Player p) = isInfinite p.gun
-
-playerHealth :: Player -> Int
-playerHealth (Player p) = p.health

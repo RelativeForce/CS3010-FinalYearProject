@@ -17,7 +17,7 @@
     <ProjectReference Include="..\Revoked.Services\Revoked.Services.csproj" />
   </ItemGroup>
 
-  <Target Name="GenerateSomeFiles" BeforeTargets="BeforeBuild">
+  <Target Name="Build and Bundle PureScript" BeforeTargets="BeforeBuild">
     <Exec Command="npm run revoked --prefix Client" />
   </Target>
 </Project>

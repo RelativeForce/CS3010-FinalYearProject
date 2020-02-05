@@ -7,7 +7,7 @@ import Prelude
 import Constants (marineAgroRange)
 import Data.Enemy.Marine (playerInRange, defaultMarine)
 import Data.Int (floor)
-import Data.Player (Player(..), initialPlayer)
+import Data.Player (Player, initialPlayer)
 import Emo8.Types (Position)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
@@ -25,7 +25,7 @@ playerInRangeTests =
                     x: 3,
                     y: 5
                 } 
-                marine = defaultMarine marinePos
+                marine = defaultMarine 1 marinePos
                 newPlayer = player playerPos
                 expected = true  
 
@@ -41,7 +41,7 @@ playerInRangeTests =
                     x: 0,
                     y: 0
                 } 
-                marine = defaultMarine marinePos
+                marine = defaultMarine 1 marinePos
                 newPlayer = player playerPos
                 expected = false  
 
@@ -57,7 +57,7 @@ playerInRangeTests =
                     x: 0,
                     y: 0
                 } 
-                marine = defaultMarine marinePos
+                marine = defaultMarine 1 marinePos
                 newPlayer = player playerPos
                 expected = true  
 
@@ -73,7 +73,7 @@ playerInRangeTests =
                     x: 0,
                     y: 0
                 } 
-                marine = defaultMarine marinePos
+                marine = defaultMarine 1 marinePos
                 newPlayer = player playerPos
                 expected = false  
 
@@ -89,7 +89,7 @@ playerInRangeTests =
                     x: 0,
                     y: 0
                 } 
-                marine = defaultMarine marinePos
+                marine = defaultMarine 1 marinePos
                 newPlayer = player playerPos
                 expected = true  
 

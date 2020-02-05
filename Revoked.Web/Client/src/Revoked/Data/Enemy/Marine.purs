@@ -21,7 +21,8 @@ type Marine = {
     velocity :: Velocity,
     sprite :: Sprite,
     appear :: MarineAppear,
-    gun :: Gun
+    gun :: Gun,
+    health :: Int
 }
 
 updateGunBasedOnRangeToPlayer :: Gun -> Boolean -> { gun :: Gun, bullets :: Array Bullet }
@@ -47,7 +48,8 @@ updateMarine collisionCheck distance p marine = { enemy: newMarine, bullets: new
             sprite: incrementFrame marine.sprite,
             appear: marine.appear,
             velocity: newVelocityBasedOnGravity,
-            gun: potentialyFiredGun
+            gun: potentialyFiredGun,
+            health: marine.health
         }
         marineBasedOnMapCollision = collideMarine marine.pos marineBasedOnVelocity distance collisionCheck
         marineWithAdjustedVelocity = adjustVelocity marine.pos marineBasedOnMapCollision
@@ -155,8 +157,8 @@ collideMarine oldPos newMarine distance collisionCheck = collidedMarine { pos = 
             then (reverseDirection newMarine) 
             else newMarine
 
-defaultMarine :: Position -> Marine
-defaultMarine pos = {
+defaultMarine :: Int -> Position -> Marine
+defaultMarine marineHealth pos = {
     pos: pos,
     sprite: S.marineLeft,
     appear: WalkingLeft,
@@ -164,5 +166,6 @@ defaultMarine pos = {
         xSpeed: 0.0,
         ySpeed: 0.0
     },
-    gun: defaultPistolGun true pos 180
+    gun: defaultPistolGun true pos 180,
+    health: marineHealth
 }

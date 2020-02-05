@@ -2,11 +2,10 @@ module Helper where
 
 import Prelude
 
-import Assets.Images as I
 import Class.Object (class Object, position, size)
 import Collision (isWallsCollide, isHazardCollide)
 import Constants (leftBoundry, mapSizeInt, mapTileInMonitorSize, mapTileSize, mapSize, rightBoundry, hudTextHeight)
-import Data.Array ((!!), (..))
+import Data.Array ((!!))
 import Data.DateTime (DateTime, diff)
 import Data.Either (Either(..))
 import Data.Enemy (Enemy(..))
@@ -14,10 +13,9 @@ import Data.Formatter.DateTime as F
 import Data.Int (floor)
 import Data.Maybe (Maybe(..))
 import Data.Particle (Particle, defaultMarineGhostParticle)
-import Data.Player (Player(..), playerShotCount, playerGunIsInfinite, playerHealth)
+import Data.Player (Player(..), playerShotCount, playerGunIsInfinite)
 import Data.Time.Duration (Milliseconds(..))
-import Data.Traversable (for_)
-import Emo8.Action.Draw (Draw, drawMap, drawText, drawScaledImage)
+import Emo8.Action.Draw (Draw, drawMap, drawText)
 import Emo8.Data.Color (Color(..))
 import Emo8.Types (MapId, X, Size, Position, PlayerScore, Asset)
 import Emo8.Utils (defaultMonitorSize)
@@ -135,21 +133,3 @@ drawPlayerShotCount p = do
             shotCount = playerShotCount p
             x = pos.x 
             y = pos.y + playerSize.height + 25
-
-drawHealth :: Player -> Draw Unit
-drawHealth p = do
-    for_ (map toHeartPosition indexes) \(heartPos) -> 
-        drawScaledImage I.heart heartPos.x heartPos.y
-        where 
-            pos = position p
-            playerSize = size p
-            health = playerHealth p
-            indexes = if health > 0 then 0 .. (health - 1) else []
-            padding = 5
-            increment = I.heart.size.width + padding
-            width = increment * health
-            toHeartPosition :: Int -> Position
-            toHeartPosition i = { 
-                x: pos.x - ( width / 2) + (i * increment) + (playerSize.width / 2), 
-                y: pos.y + playerSize.height + 5
-            }
