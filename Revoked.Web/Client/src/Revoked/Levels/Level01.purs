@@ -46,13 +46,13 @@ startPosition = { x: 0,  y: 40 }
 enemies :: Array Enemy
 enemies = [
     defaultMarineEnemy 1 $ toTilePosition 26 1,
-    defaultMarineEnemy 1 $ toTilePosition 27 7, 
+    defaultMarineEnemy 2 $ toTilePosition 27 7, 
     defaultMarineEnemy 1 $ toTilePosition 47 7,
     defaultMarineEnemy 1 $ toTilePosition 58 2,
     defaultMarineEnemy 1 $ toTilePosition 79 2,
-    defaultMarineEnemy 1 $ toTilePosition 94 2,
+    defaultMarineEnemy 2 $ toTilePosition 94 2,
     defaultMarineEnemy 1 $ toTilePosition 118 3,
-    defaultMarineEnemy 1 $ toTilePosition 142 9,
+    defaultMarineEnemy 2 $ toTilePosition 142 9,
     defaultMarineEnemy 1 $ toTilePosition 166 2 
 ]
 
