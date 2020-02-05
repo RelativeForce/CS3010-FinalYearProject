@@ -4,7 +4,7 @@ import Prelude
 
 import Assets.Audio as A
 import States.StateIds as S
-import Class.Object (scroll)
+import Class.Object (scroll, health)
 import Collision (isCollideObjects, isOutOfWorld)
 import Data.Array (any, filter, partition, concatMap, length)
 import Data.Bullet (Bullet, updateBullet)
@@ -13,7 +13,7 @@ import Data.Foldable (sum)
 import Data.Either (Either(..))
 import Data.Goal (Goal, updateGoal, isNextLevelGoal, firstGun)
 import Data.Particle (Particle, updateParticle)
-import Data.Player (Player, initialPlayer, updatePlayer, updatePlayerGun, playerHealth, damagePlayer)
+import Data.Player (Player, initialPlayer, updatePlayer, updatePlayerGun, damagePlayer)
 import Emo8.Action.Update (Update, isAudioStreamPlaying, stopAudioStream, addAudioStream, nowDateTime, muteAudio, unmuteAudio)
 import Data.DateTime (DateTime)
 import Emo8.FFI.AudioController (AudioController, newAudioController)
@@ -90,7 +90,7 @@ updatePlay asset input s = do
         newPlayer = updatePlayerGun (firstGun collidedGoals) damagedPlayer 
 
     -- evaluate game condition
-    let isPlayerDead = (playerHealth newPlayer) <= 0
+    let isPlayerDead = (health newPlayer) <= 0
         isGameOver = hasCollidedHazard || hasCollidedEnemy || isPlayerDead
         isNextLevel = any isNextLevelGoal collidedGoals
         isLastLevel = s.mapId + 1 >= levelCount

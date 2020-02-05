@@ -11,3 +11,6 @@ class Object s where
 
 class Object s <= ObjectDraw s where
     draw :: s -> Draw Unit
+
+class Object s <= MortalEntity s where
+    health :: s -> Int
