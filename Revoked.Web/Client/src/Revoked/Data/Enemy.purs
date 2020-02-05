@@ -2,11 +2,12 @@ module Data.Enemy where
 
 import Prelude
 
-import Class.Object (class ObjectDraw, class Object, position, draw, scroll)
+import Class.Object (class ObjectDraw, class Object, class MortalEntity, position, draw, scroll)
 import Data.Bullet (Bullet)
 import Data.Enemy.Marine (Marine, updateMarine, defaultMarine)
 import Data.Player (Player)
 import Emo8.Action.Draw (drawSprite)
+import Data.Helper (drawHealth)
 import Emo8.Types (Position, Score, X)
 
 data Enemy = EnemyMarine Marine
@@ -20,6 +21,11 @@ instance objectDrawEnemy :: ObjectDraw Enemy where
     draw o@(EnemyMarine m) = do 
         drawSprite m.sprite (position o).x (position o).y
         draw m.gun
+        drawHealth o
+
+instance mortalEntityPlayer :: MortalEntity Enemy where
+    health (EnemyMarine m) = m.health
+    damage (EnemyMarine m) healthLoss = EnemyMarine $ m { health = m.health - healthLoss }
 
 enemyToScore :: Enemy -> Score
 enemyToScore (EnemyMarine s) = 9

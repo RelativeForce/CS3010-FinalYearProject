@@ -14,3 +14,4 @@ class Object s <= ObjectDraw s where
 
 class Object s <= MortalEntity s where
     health :: s -> Int
+    damage :: s -> Int -> s

@@ -2,11 +2,10 @@ module Helper where
 
 import Prelude
 
-import Assets.Images as I
-import Class.Object (class Object, class MortalEntity, position, size, health)
+import Class.Object (class Object, position, size)
 import Collision (isWallsCollide, isHazardCollide)
 import Constants (leftBoundry, mapSizeInt, mapTileInMonitorSize, mapTileSize, mapSize, rightBoundry, hudTextHeight)
-import Data.Array ((!!), (..))
+import Data.Array ((!!))
 import Data.DateTime (DateTime, diff)
 import Data.Either (Either(..))
 import Data.Enemy (Enemy(..))
@@ -16,8 +15,7 @@ import Data.Maybe (Maybe(..))
 import Data.Particle (Particle, defaultMarineGhostParticle)
 import Data.Player (Player(..), playerShotCount, playerGunIsInfinite)
 import Data.Time.Duration (Milliseconds(..))
-import Data.Traversable (for_)
-import Emo8.Action.Draw (Draw, drawMap, drawText, drawScaledImage)
+import Emo8.Action.Draw (Draw, drawMap, drawText)
 import Emo8.Data.Color (Color(..))
 import Emo8.Types (MapId, X, Size, Position, PlayerScore, Asset)
 import Emo8.Utils (defaultMonitorSize)

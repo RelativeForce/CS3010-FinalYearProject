@@ -97,6 +97,9 @@ marineWalkSpeed = 2.0
 marineShotCooldown :: Int
 marineShotCooldown = 10
 
+marineHealth :: Int
+marineHealth = 1
+
 bulletSpeed :: Number
 bulletSpeed = 8.0
 

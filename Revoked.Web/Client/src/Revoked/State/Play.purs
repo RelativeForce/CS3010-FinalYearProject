@@ -4,7 +4,7 @@ import Prelude
 
 import Assets.Audio as A
 import States.StateIds as S
-import Class.Object (scroll, health)
+import Class.Object (scroll, health, damage)
 import Collision (isCollideObjects, isOutOfWorld)
 import Data.Array (any, filter, partition, concatMap, length)
 import Data.Bullet (Bullet, updateBullet)
@@ -13,7 +13,7 @@ import Data.Foldable (sum)
 import Data.Either (Either(..))
 import Data.Goal (Goal, updateGoal, isNextLevelGoal, firstGun)
 import Data.Particle (Particle, updateParticle)
-import Data.Player (Player, initialPlayer, updatePlayer, updatePlayerGun, damagePlayer)
+import Data.Player (Player, initialPlayer, updatePlayer, updatePlayerGun)
 import Emo8.Action.Update (Update, isAudioStreamPlaying, stopAudioStream, addAudioStream, nowDateTime, muteAudio, unmuteAudio)
 import Data.DateTime (DateTime)
 import Emo8.FFI.AudioController (AudioController, newAudioController)
@@ -86,7 +86,7 @@ updatePlay asset input s = do
         notCollidedWithMapEnemyBullets = filter (not <<< (isCollideMapWalls asset s.mapId s.distance)) updatedEnemyBulletsInView
 
     -- update player based on collision
-    let damagedPlayer = damagePlayer scrollAdjustedPlayer collidedEnemyBulletCount
+    let damagedPlayer = damage scrollAdjustedPlayer collidedEnemyBulletCount
         newPlayer = updatePlayerGun (firstGun collidedGoals) damagedPlayer 
 
     -- evaluate game condition
