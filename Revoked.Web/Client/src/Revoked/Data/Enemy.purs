@@ -33,8 +33,8 @@ enemyToScore (EnemyMarine s) = 9
 updateEnemy :: (Enemy -> Boolean) -> X -> Player -> Enemy -> { enemy :: Enemy, bullets :: Array Bullet }
 updateEnemy collisionCheck distance playerObject (EnemyMarine marine) = (toEnemyAndBullets (EnemyMarine)) $ updateMarine (toMarineCollision collisionCheck) distance playerObject marine
 
-defaultMarineEnemy :: Position -> Enemy
-defaultMarineEnemy = defaultMarine >>> EnemyMarine
+defaultMarineEnemy :: Int -> Position -> Enemy
+defaultMarineEnemy initialHealth pos = EnemyMarine $ defaultMarine initialHealth pos
 
 toMarineCollision :: (Enemy -> Boolean) -> Marine -> Boolean
 toMarineCollision check = check <<< EnemyMarine

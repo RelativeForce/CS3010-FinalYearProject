@@ -71,13 +71,13 @@ updatePlay asset input s = do
         { yes: collidedBullets, no: notCollidedBullets } = partition (\b -> any (isCollideObjects b) updatedEnemies) updatedBullets
         { yes: collidedEnemyBullets, no: notCollidedEnemyBullets } = partition (isCollideObjects scrollAdjustedPlayer) updatedEnemyBullets
         { yes: collidedGoals, no: notCollidedGoals } = partition (isCollideObjects scrollAdjustedPlayer) updatedGoals
+        damageCounter = (\e -> length (filter (isCollideObjects e) updatedBullets))
+        damagedEnemies = map (\e -> damage e (damageCounter e)) collidedEnemies 
+        { yes: deadEnemies, no: damagedButAliveEnemies } = partition isDead damagedEnemies
         collidedEnemyBulletCount = length collidedEnemyBullets
 
     -- add new entities
-    let damageCounter = (\e -> length (filter (isCollideObjects e) updatedBullets))
-        damagedEnemies = map (\e -> damage e (damageCounter e)) collidedEnemies 
-        { yes: deadEnemies , no: damagedButAliveEnemies } = partition isDead damagedEnemies
-        newParticles = map enemyToParticle deadEnemies
+    let newParticles = map enemyToParticle deadEnemies
         newScore = sum $ map enemyToScore deadEnemies
 
     -- delete entities (out of monitor)

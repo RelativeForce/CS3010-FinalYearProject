@@ -4,7 +4,7 @@ import Prelude
 
 import Assets.Sprites as S
 import Collision (adjustX)
-import Constants (marineWalkSpeed, gravity, marineAgroRange, marineHealth)
+import Constants (marineWalkSpeed, gravity, marineAgroRange)
 import Class.Object (size)
 import Data.Bullet (Bullet)
 import Data.Gun (Gun, defaultPistolGun, fireAndUpdateGun, setPositionAndRotation, updateGun)
@@ -157,8 +157,8 @@ collideMarine oldPos newMarine distance collisionCheck = collidedMarine { pos = 
             then (reverseDirection newMarine) 
             else newMarine
 
-defaultMarine :: Position -> Marine
-defaultMarine pos = {
+defaultMarine :: Int -> Position -> Marine
+defaultMarine marineHealth pos = {
     pos: pos,
     sprite: S.marineLeft,
     appear: WalkingLeft,
