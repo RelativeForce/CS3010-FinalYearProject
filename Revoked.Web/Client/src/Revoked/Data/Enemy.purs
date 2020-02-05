@@ -2,7 +2,7 @@ module Data.Enemy where
 
 import Prelude
 
-import Class.Object (class ObjectDraw, class Object, position, draw)
+import Class.Object (class ObjectDraw, class Object, position, draw, scroll)
 import Data.Bullet (Bullet)
 import Data.Enemy.Marine (Marine, updateMarine, defaultMarine)
 import Data.Player (Player)
@@ -14,7 +14,7 @@ data Enemy = EnemyMarine Marine
 instance objectEnemy :: Object Enemy where
     size (EnemyMarine s) = s.sprite.size
     position (EnemyMarine s) = s.pos
-    scroll offset (EnemyMarine s) = EnemyMarine $ s { pos = { x: s.pos.x + offset, y: s.pos.y }}
+    scroll offset (EnemyMarine s) = EnemyMarine $ s { pos = { x: s.pos.x + offset, y: s.pos.y }, gun = scroll offset s.gun }
 
 instance objectDrawEnemy :: ObjectDraw Enemy where
     draw o@(EnemyMarine m) = do 
