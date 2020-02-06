@@ -1,6 +1,4 @@
-module Emo8.Data.KeyInput
-  ( KeyInput(..)
-  ) where
+module Emo8.Data.KeyInput (KeyInput(..)) where
 
 import Prelude
 

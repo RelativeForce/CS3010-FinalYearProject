@@ -9,7 +9,7 @@ module Emo8.Input(
 
 import Prelude
 
-import Emo8.Data.KeyTouchInput (KeyTouchInput(..))
+import Emo8.Data.KeyInput (KeyInput(..))
 import Emo8.Data.PressState (PressState(..), updatePressState)
 import Signal (Signal, foldp)
 
@@ -104,10 +104,10 @@ isReleaseAny i
   || i.released.isUp || i.released.isDown || i.released.isLeft || i.released.isRight 
   || i.released.isSpace || i.released.isEnter
 
-mkInputSig :: Signal KeyTouchInput -> Signal Input
+mkInputSig :: Signal KeyInput -> Signal Input
 mkInputSig = map mkInput <<< mkInputStateSig
 
-mkInputStateSig :: Signal KeyTouchInput -> Signal InputState
+mkInputStateSig :: Signal KeyInput -> Signal InputState
 mkInputStateSig = foldp updateInputState initialInputState
 
 initialInputState :: InputState
@@ -147,8 +147,8 @@ initialInputState = {
   zState : Unpressed
 }
 
-updateInputState :: KeyTouchInput -> InputState -> InputState
-updateInputState (KeyTouchInput i) s = { 
+updateInputState :: KeyInput -> InputState -> InputState
+updateInputState (KeyInput i) s = { 
   leftState: updatePressState i.isLeft s.leftState, 
   rightState: updatePressState i.isRight s.rightState, 
   upState: updatePressState i.isUp s.upState, 
