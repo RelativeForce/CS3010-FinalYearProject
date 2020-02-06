@@ -14,10 +14,6 @@ import Emo8.Data.PressState (PressState(..), updatePressState)
 import Signal (Signal, foldp)
 
 type InputFlags = {
-  isLeft :: Boolean, 
-  isRight :: Boolean, 
-  isUp :: Boolean, 
-  isDown :: Boolean,  
   isSpace :: Boolean,
   isEnter :: Boolean,
   isBackspace :: Boolean,
@@ -57,10 +53,6 @@ type Input = {
 
 -- NOTE: update after sampleOn not to miss catch and release state
 type InputState = { 
-  leftState :: PressState, 
-  rightState :: PressState, 
-  upState :: PressState, 
-  downState :: PressState, 
   spaceState :: PressState,
   enterState :: PressState,
   backspaceState :: PressState,
@@ -95,13 +87,11 @@ type InputState = {
 isCatchAny :: Input -> Boolean
 isCatchAny i
   = i.catched.isW || i.catched.isS || i.catched.isA || i.catched.isD
-  || i.catched.isUp || i.catched.isDown || i.catched.isLeft || i.catched.isRight
   || i.catched.isSpace || i.catched.isEnter
 
 isReleaseAny :: Input -> Boolean
 isReleaseAny i
   = i.released.isW || i.released.isS || i.released.isA || i.released.isD
-  || i.released.isUp || i.released.isDown || i.released.isLeft || i.released.isRight 
   || i.released.isSpace || i.released.isEnter
 
 mkInputSig :: Signal KeyInput -> Signal Input
@@ -112,10 +102,6 @@ mkInputStateSig = foldp updateInputState initialInputState
 
 initialInputState :: InputState
 initialInputState = { 
-  leftState: Unpressed, 
-  rightState: Unpressed, 
-  upState: Unpressed, 
-  downState: Unpressed,
   spaceState: Unpressed,
   enterState: Unpressed,
   backspaceState: Unpressed,
@@ -149,10 +135,6 @@ initialInputState = {
 
 updateInputState :: KeyInput -> InputState -> InputState
 updateInputState (KeyInput i) s = { 
-  leftState: updatePressState i.isLeft s.leftState, 
-  rightState: updatePressState i.isRight s.rightState, 
-  upState: updatePressState i.isUp s.upState, 
-  downState: updatePressState i.isDown s.downState,
   spaceState: updatePressState i.isSpace s.spaceState,
   enterState: updatePressState i.isEnter s.enterState,
   backspaceState: updatePressState i.isBackspace s.backspaceState,
@@ -186,10 +168,6 @@ updateInputState (KeyInput i) s = {
 
 mkSubInput :: InputState -> (PressState -> Boolean) -> InputFlags
 mkSubInput s f = {
-  isLeft: f s.leftState, 
-  isRight: f s.rightState, 
-  isUp: f s.upState, 
-  isDown: f s.downState, 
   isSpace: f s.spaceState,
   isEnter: f s.enterState,
   isBackspace: f s.backspaceState,
