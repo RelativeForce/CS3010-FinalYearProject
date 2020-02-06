@@ -2,7 +2,7 @@ module Constants where
   
 import Prelude
 import Emo8.Types (AssetId, Size, TextHeight, X, Y)
-import Emo8.Utils (defaultMonitorSize)
+import Emo8.Constants (defaultMonitorSize)
 import Assets.AssetIds as Id
 
 speed :: Int

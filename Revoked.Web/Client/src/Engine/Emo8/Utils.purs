@@ -125,11 +125,6 @@ mkAsset rms = do
     ms <- orErrMsg $ traverse (\m -> parseTileMap m emojiToImage) rms 
     pure { mapData: ms}
 
--- | Empty asset for convenience. 
-emptyAsset :: Asset
-emptyAsset = { 
-    mapData: []
-}
 -- | Rotation is anti-clockwise from the positive x axis
 angle :: Vector -> Deg
 angle v = mod angleBasedOnDirection 360
@@ -148,12 +143,6 @@ angle v = mod angleBasedOnDirection 360
             true, false, false, false -> 0
             false, false, false, false -> 0
             _, _, _, _ -> angleFromHorizontalAxis
-
-defaultMonitorSize :: MonitorSize
-defaultMonitorSize = { 
-    width: 1280, 
-    height: 720
-}
 
 updatePosition :: Position -> Velocity -> Position
 updatePosition p v = { x: x, y: y }

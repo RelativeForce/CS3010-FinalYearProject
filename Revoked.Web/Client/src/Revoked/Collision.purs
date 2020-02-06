@@ -3,8 +3,9 @@ module Collision where
 import Prelude
 import Constants (walls, hazards, mapTileSize)
 import Class.Object (class Object, position, size)
+import Emo8.Constants (defaultMonitorSize)
 import Emo8.Types (MapId, AssetId, Position, Size, Asset, Height, Width)
-import Emo8.Utils (defaultMonitorSize, isCollide, isMonitorCollide, isOutOfMonitor, isMapCollide)
+import Emo8.Utils (isCollide, isMonitorCollide, isOutOfMonitor, isMapCollide)
 
 isWallsCollide :: Asset -> MapId -> Size -> Size -> Position -> Boolean
 isWallsCollide asset mId mSize size pos = isCollMap asset mId mSize size pos walls
