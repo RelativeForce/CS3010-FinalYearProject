@@ -75,10 +75,6 @@ updateAppearTests =
 buildInput :: Boolean -> Boolean -> Input
 buildInput  pressingLeftButton pressingRightButton = { 
     active: {
-        isLeft: false, 
-        isRight: false, 
-        isUp: false, 
-        isDown: false,  
         isSpace: false,
         isEnter: false,
         isBackspace: false,
@@ -110,10 +106,6 @@ buildInput  pressingLeftButton pressingRightButton = {
         isZ: false
     },
     catched: {
-        isLeft: false, 
-        isRight: false, 
-        isUp: false, 
-        isDown: false,  
         isSpace: false,
         isEnter: false,
         isBackspace: false,
@@ -145,10 +137,6 @@ buildInput  pressingLeftButton pressingRightButton = {
         isZ: false
     }, 
     released: {
-        isLeft: false, 
-        isRight: false, 
-        isUp: false, 
-        isDown: false,  
         isSpace: false,
         isEnter: false,
         isBackspace: false,
