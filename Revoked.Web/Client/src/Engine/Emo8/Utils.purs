@@ -15,23 +15,23 @@ import Data.Maybe (Maybe(..))
 import Math (sqrt, atan, pi, abs, cos, sin)
 
 -- | Collision detection if an object protrudes out of monitor
-isMonitorCollide :: MonitorSize -> Size -> X -> Y -> Boolean
-isMonitorCollide ms objectSize x y
-    = x < 0
-    || x + objectSize.width - 1 > ms.width
-    || y < 0
-    || y + objectSize.height - 1 > ms.height
+isMonitorCollide :: MonitorSize -> Size -> Position -> Boolean
+isMonitorCollide ms objectSize pos
+    = pos.x < 0
+    || pos.x + objectSize.width - 1 > ms.width
+    || pos.y < 0
+    || pos.y + objectSize.height - 1 > ms.height
 
 xor :: Boolean -> Boolean -> Boolean
 xor a b = (not a && b) || (not b && a)
 
 -- | Collision detection if an object completely protrudes out of monitor
-isOutOfMonitor :: MonitorSize -> Size -> X -> Y -> Boolean
-isOutOfMonitor ms objectSize x y
-    = x + objectSize.width - 1 < 0
-    || x > ms.width
-    || y + objectSize.height - 1 < 0
-    || y > ms.height
+isOutOfMonitor :: MonitorSize -> Size -> Position -> Boolean
+isOutOfMonitor ms objectSize pos
+    = pos.x + objectSize.width - 1 < 0
+    || pos.x > ms.width
+    || pos.y + objectSize.height - 1 < 0
+    || pos.y > ms.height
 
 distanceFromOrigin :: Position -> Number
 distanceFromOrigin p = sqrt $ toNumber $ (p.x * p.x) + (p.y * p.y)
@@ -75,29 +75,29 @@ inLeftDirection :: Deg -> Boolean
 inLeftDirection d = d > 90 && d < 270
 
 -- | Collision detection between two objects
-isCollide :: Size -> X -> Y -> Size -> X -> Y -> Boolean
-isCollide objectSizeA xA yA objectSizeB xB yB
+isCollide :: Size -> Position -> Size -> Position -> Boolean
+isCollide objectSizeA posA objectSizeB posB
     = pAlx <= pBrx
     && pBlx <= pArx
     && pAby <= pBty
     && pBby <= pAty
     where
-        pAlx = xA
-        pArx = xA + objectSizeA.width - 1
-        pAby = yA
-        pAty = yA + objectSizeA.height - 1 
-        pBlx = xB
-        pBrx = xB + objectSizeB.width - 1
-        pBby = yB
-        pBty = yB + objectSizeB.height - 1 
+        pAlx = posA.x
+        pArx = posA.x + objectSizeA.width - 1
+        pAby = posA.y
+        pAty = posA.y + objectSizeA.height - 1 
+        pBlx = posB.x
+        pBrx = posB.x + objectSizeB.width - 1
+        pBby = posB.y
+        pBty = posB.y + objectSizeB.height - 1 
 
-isMapCollide :: Asset -> MapId -> Size -> Array AssetId -> Size -> X -> Y -> Boolean
-isMapCollide asset mId mSize collidableObjectIds size x y = foldr f false [lbE, rbE, ltE, rtE]
+isMapCollide :: Asset -> MapId -> Size -> Array AssetId -> Size -> Position -> Boolean
+isMapCollide asset mId mSize collidableObjectIds size pos = foldr f false [lbE, rbE, ltE, rtE]
     where
-        lx = x
-        rx = x + size.width - 1
-        by = y
-        ty = y + size.height - 1
+        lx = pos.x
+        rx = pos.x + size.width - 1
+        by = pos.y
+        ty = pos.y + size.height - 1
         f :: Maybe ScaledImage -> Boolean -> Boolean
         f maybeImage b = case maybeImage of
             Just img | elem img.id collidableObjectIds -> true
