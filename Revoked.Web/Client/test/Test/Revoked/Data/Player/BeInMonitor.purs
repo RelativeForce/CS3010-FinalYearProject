@@ -7,7 +7,7 @@ import Data.Player (beInMonitor, initialPlayer, Player(..))
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 import Emo8.Types (Y, X, Size)
-import Emo8.Utils (defaultMonitorSize)
+import Emo8.Constants (defaultMonitorSize)
 
 beInMonitorTests :: TestSuite
 beInMonitorTests =

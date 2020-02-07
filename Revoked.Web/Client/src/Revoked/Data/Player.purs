@@ -6,6 +6,7 @@ import Assets.Sprites as S
 import Class.Object (class Object, class ObjectDraw, class MortalEntity, position, scroll, draw, size)
 import Collision (isCollWorld, adjustY, adjustX)
 import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor, defaultPlayerHealth)
+import Emo8.Constants (defaultMonitorSize)
 import Data.Bullet (Bullet)
 import Data.Gun (Gun, defaultPistolGun, fireAndUpdateGun, setPositionAndRotation, shotCount, updateGun, isInfinite)
 import Data.Maybe (Maybe(..))
@@ -13,7 +14,7 @@ import Emo8.Action.Draw (drawSprite)
 import Emo8.Data.Sprite (incrementFrame)
 import Emo8.Input (Input)
 import Emo8.Types (Sprite, Velocity, X, Position)
-import Emo8.Utils (defaultMonitorSize, updatePosition)
+import Emo8.Utils (updatePosition)
 import Math (abs)
 
 data Player = Player { 

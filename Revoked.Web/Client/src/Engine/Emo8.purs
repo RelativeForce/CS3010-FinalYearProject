@@ -1,7 +1,4 @@
-module Emo8
-  ( emo8
-  , emo8Dev
-  ) where
+module Emo8( emo8 ) where
 
 import Prelude
 
@@ -10,17 +7,13 @@ import Data.Maybe (Maybe(..))
 import Data.String (joinWith)
 import Effect (Effect)
 import Effect.Exception (throw)
-import Emo8.Boot (initialState)
 import Emo8.Class.Game (class Game, draw, update)
-import Emo8.Class.GameDev (class GameDev, saveState)
 import Emo8.Class.Input (poll)
 import Emo8.Constants (canvasId)
-import Emo8.Data.GameWithBoot (GameWithBoot(..), switchFoldOp, switchOp)
 import Emo8.Input (mkInputSig)
 import Emo8.Interpreter.Draw (runDraw)
 import Emo8.Interpreter.Update (runUpdate)
 import Emo8.Types (Asset, MonitorSize)
-import Emo8.Utils (mkAsset)
 import Graphics.Canvas (CanvasElement, getCanvasElementById, getContext2D, setCanvasHeight, setCanvasWidth)
 import Signal (runSignal, sampleOn)
 import Signal.DOM (animationFrame)
@@ -31,41 +24,16 @@ emo8 :: forall s. Game s => s -> Asset -> MonitorSize -> Effect Unit
 emo8 state asset ms = withCanvas \canvas -> do
   setDim canvas ms
   context <- getContext2D canvas
-  bootAsset <- mkAsset []
-  let drawCtx = { ctx: context, mapData: asset.mapData, monitorSize: ms }
-      bootState = initialState ms
-      bootDrawCtx = { ctx: context, mapData: bootAsset.mapData, monitorSize: ms }
-
   frameSig <- animationFrame
   keyTouchInputSig <- poll
-  let keyTouchInputSampleSig = sampleOn frameSig keyTouchInputSig
-      inputSampleSig = mkInputSig keyTouchInputSampleSig
-      biState = GameWithBoot state bootState 
-  biStateSig <- foldEffect
-    ( switchFoldOp
-      (\i -> runUpdate <<< update asset i)
-      (\i -> runUpdate <<< update bootAsset i)
-    )
-    biState
-    inputSampleSig
-  runSignal $ switchOp
-    (runDraw drawCtx <<< draw)
-    (runDraw bootDrawCtx <<< draw)
-    biStateSig
 
-emo8Dev :: forall s. GameDev s => s -> Asset -> MonitorSize -> Effect Unit
-emo8Dev state asset ms = withCanvas \canvas -> do
-  setDim canvas ms
-  context <- getContext2D canvas
-  let drawCtx = { ctx: context, mapData: asset.mapData, monitorSize: ms }
+  let
+    drawCtx = { ctx: context, mapData: asset.mapData, monitorSize: ms } 
+    keyTouchInputSampleSig = sampleOn frameSig keyTouchInputSig
+    inputSampleSig = mkInputSig keyTouchInputSampleSig
 
-  frameSig <- animationFrame
-  keyTouchInputSig <- poll
-  let keyTouchInputSampleSig = sampleOn frameSig keyTouchInputSig
-      inputSampleSig = mkInputSig keyTouchInputSampleSig
-  stateSig <- foldEffect (\i -> runUpdate <<< update asset i) state inputSampleSig
-  runSignal $ runDraw drawCtx <<< draw <$> stateSig
-  runSignal $ saveState <$> stateSig
+  stateSig <- foldEffect (\i -> runUpdate <<< (update asset i)) state inputSampleSig 
+  runSignal $ map (\s -> (runDraw drawCtx <<< draw) s) stateSig
 
 withCanvas :: (CanvasElement -> Effect Unit) -> Effect Unit
 withCanvas op = do

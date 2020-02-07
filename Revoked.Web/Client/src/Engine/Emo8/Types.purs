@@ -3,14 +3,29 @@ module Emo8.Types where
 import Data.Maybe (Maybe)
 import Graphics.Canvas (Context2D)
 
+type Image = String
+type X = Int
+type Y = Int
+type Width = Int
+type Height = Int
+type FrameCount = Int
+type FramesPerSecond = Int
+type FrameArray = Array String
+type IdX = Int
+type IdY = Int
+type Deg = Int
+type AssetId = Int
+type StateId = Int
+type MapId = Int
+type Score = Int
+type TextHeight = Int
 type MonitorSize = Size
+type Vector = Position
 
 type Position = { 
   x :: X, 
   y :: Y
 }
-
-type Vector = Position
 
 type Velocity = {
   xSpeed :: Number,
@@ -68,22 +83,3 @@ type PlayerScore = {
     time :: String,
     position :: Int
 }
-
-type Image = String
-type X = Int
-type Y = Int
-type Width = Int
-type Height = Int
-type FrameCount = Int
-type FramesPerSecond = Int
-type FolderPath = String
-type FrameArray = Array String
-type IdX = Int
-type IdY = Int
-type Deg = Int
-type Bpm = Int
-type AssetId = Int
-type StateId = Int
-type MapId = Int
-type Score = Int
-type TextHeight = Int

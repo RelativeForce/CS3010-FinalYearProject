@@ -11,10 +11,9 @@ import Data.Traversable (for_)
 import Data.Tuple (Tuple(..))
 import Effect (Effect)
 import Effect.Exception (throwException, error)
-import Emo8.Action.Draw (Appearance(..), Draw, DrawF(..))
+import Emo8.Action.Draw (Draw, DrawF(..))
 import Emo8.Constants (fontFamily)
-import Emo8.Data.Color (Color(..), colorToCode)
-import Emo8.Data.Emoji (Emoji, japaneseVacancyButton)
+import Emo8.Data.Color (Color, colorToCode)
 import Emo8.FFI.TextBaseline (TextBaseline(..), setTextBaseline)
 import Emo8.Types (
     Deg, 
@@ -33,15 +32,12 @@ import Emo8.Types (
     TextHeight
 )
 import Emo8.Data.Sprite (toScaledImage)
-import Graphics.Canvas (
-    Context2D, 
-    CanvasImageSource, 
-    fillRect, 
+import Graphics.Canvas ( 
+    CanvasImageSource,  
     fillText, 
     restore, 
     rotate, 
-    save, 
-    scale, 
+    save,
     setFillStyle, 
     setFont, 
     translate, 
@@ -57,49 +53,19 @@ runDraw :: forall a. DrawContext -> Draw a -> Effect a
 runDraw dctx = foldFree interpret
   where
     interpret :: DrawF ~> Effect
-    interpret (ClearScreen c n) = const n <$> cls c dctx
     interpret (DrawImageNoScaling image x y n) = const n <$> drawImageNoScaling image x y dctx
     interpret (DrawScaledImage image x y n) = const n <$> drawScaledImage image x y dctx
     interpret (DrawRotatedScaledImage image x y angle n) = const n <$> drawRotatedScaledImage image x y angle dctx
     interpret (DrawSprite sprite x y n) = const n <$> drawSprite sprite x y dctx
     interpret (DrawRotatedSprite sprite x y angle n) = const n <$> drawRotatedSprite sprite x y angle dctx
     interpret (DrawText text height x y color n) = const n <$> drawText text height x y color dctx
-    interpret (Emo Normal e size x y n) = const n <$> emo e size x y dctx
-    interpret (Emo Mirrored e size x y n) = const n <$> emo' e size x y dctx
-    interpret (Emor Normal deg e size x y n) = const n <$> emor deg e size x y dctx
-    interpret (Emor Mirrored deg e size x y n) = const n <$> emor' deg e size x y dctx
     interpret (DrawMap mId size x y n) = const n <$> drawMap mId size x y dctx
-
-cls :: Color -> RenderOp
-cls c dctx = do
-    setFillStyle dctx.ctx (colorToCode c)
-    fillRect dctx.ctx { x: 0.0, y: 0.0, width: toNumber dctx.monitorSize.width, height: toNumber dctx.monitorSize.height }
 
 withLocalDraw :: RenderOp -> RenderOp
 withLocalDraw op dctx = do
     save dctx.ctx
     op dctx
     restore dctx.ctx
-
-drawEmojiWithTrans :: Emoji -> Size -> X -> Y -> (Context2D -> Effect Unit) -> RenderOp
-drawEmojiWithTrans e size x y op dctx = do
-    translate dctx.ctx { translateX: toNumber x + halfSize, translateY: toNumber y' - halfSize }
-    op dctx.ctx
-    drawEmoji e size (-halfSize) halfSize dctx.ctx
-    where
-        y' = toBaseY dctx.monitorSize y
-        halfSize = toNumber size.width / 2.0
-
-drawEmoji :: Emoji -> Size -> Number -> Number -> Context2D -> Effect Unit
-drawEmoji e size x y ctx
-    | e == japaneseVacancyButton = pure unit
-    | otherwise = do
-        setFont ctx font
-        setTextBaseline ctx BaselineIdeographic
-        setFillStyle ctx (colorToCode Black) -- NOTE: for text emoji
-        fillText ctx (show e) x y
-        where
-            font = sizeToFont size
 
 drawText :: String -> TextHeight -> X -> Y -> Color -> RenderOp
 drawText e size x y color =
@@ -112,33 +78,6 @@ drawText e size x y color =
         setTextBaseline dctx.ctx BaselineIdeographic
         setFillStyle dctx.ctx (colorToCode color)
         fillText dctx.ctx e (toNumber x) (toNumber y')             
-
-emo :: Emoji -> Size -> X -> Y -> RenderOp
-emo e size x y =
-    withLocalDraw \dctx ->
-        let y' = toBaseY dctx.monitorSize y
-        in drawEmoji e size (toNumber x) (toNumber y') dctx.ctx
-
--- | NOTE: It does not display correctly (Deg = 45, 135, 225, 315).
-emor :: Deg -> Emoji -> Size -> X -> Y -> RenderOp
-emor rot e size x y =
-    withLocalDraw \dctx ->
-        flip (drawEmojiWithTrans e size x y) dctx \ctx2d ->
-            rotate ctx2d (-degToRad rot)
-
-emo' :: Emoji -> Size -> X -> Y -> RenderOp
-emo' e size x y =
-    withLocalDraw \dctx ->
-        flip (drawEmojiWithTrans e size x y) dctx \ctx2d ->
-            scale ctx2d { scaleX: -1.0, scaleY: 1.0 }
-  
--- | NOTE: It does not display correctly (Deg = 45, 135, 225, 315).
-emor' :: Deg -> Emoji -> Size -> X -> Y -> RenderOp
-emor' rot e size x y =
-    withLocalDraw \dctx ->
-        flip (drawEmojiWithTrans e size x y) dctx \ctx2d -> do
-            rotate ctx2d (-degToRad rot)
-            scale ctx2d { scaleX: -1.0, scaleY: 1.0 }
 
 drawMap :: MapId -> Size -> X -> Y -> RenderOp
 drawMap = drawMapWithF drawScaledImage
@@ -195,10 +134,6 @@ toBaseY ms y = ms.height - y
 
 degToRad :: Deg -> Number
 degToRad d = 2.0 * pi * toNumber d / 360.0
-
-sizeToFont :: Size -> String
-sizeToFont size = joinWith " " [fontSize, fontFamily]
-    where fontSize = show size.height <> "px"
 
 drawImageNoScaling :: Image -> X -> Y -> RenderOp
 drawImageNoScaling image x y =

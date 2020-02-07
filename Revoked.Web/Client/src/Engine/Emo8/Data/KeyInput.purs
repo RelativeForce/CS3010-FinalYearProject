@@ -1,6 +1,4 @@
-module Emo8.Data.KeyInput
-  ( KeyInput(..)
-  ) where
+module Emo8.Data.KeyInput (KeyInput(..)) where
 
 import Prelude
 
@@ -8,10 +6,6 @@ import Emo8.Class.Input (class Input)
 import Signal.DOM (keyPressed)
 
 newtype KeyInput = KeyInput { 
-  isLeft :: Boolean, 
-  isRight :: Boolean, 
-  isUp :: Boolean, 
-  isDown :: Boolean, 
   isSpace :: Boolean,
   isEnter :: Boolean,
   isBackspace :: Boolean,
@@ -45,10 +39,6 @@ newtype KeyInput = KeyInput {
 
 instance inputKeyInput :: Input KeyInput where
   poll = do
-    leftSig <- mkSignal Left
-    rightSig <- mkSignal Right
-    upSig <- mkSignal Up
-    downSig <- mkSignal Down
     spaceSig <- mkSignal Space
     enterSig <- mkSignal Enter
     backspaceSig <- mkSignal Backspace
@@ -79,10 +69,6 @@ instance inputKeyInput :: Input KeyInput where
     ySig <- mkSignal Y 
     zSig <- mkSignal Z
     pure <<< map KeyInput $ { 
-      isLeft: _, 
-      isRight: _, 
-      isUp: _, 
-      isDown: _, 
       isSpace: _,
       isEnter: _,
       isBackspace: _,
@@ -113,11 +99,7 @@ instance inputKeyInput :: Input KeyInput where
       isY: _, 
       isZ: _
     } 
-      <$> leftSig
-      <*> rightSig
-      <*> upSig
-      <*> downSig
-      <*> spaceSig
+      <$> spaceSig
       <*> enterSig
       <*> backspaceSig
       <*> aSig
@@ -150,11 +132,7 @@ instance inputKeyInput :: Input KeyInput where
         mkSignal = keyPressed <<< keyToCodeNum
 
 data Key = 
-  Left 
-  | Right 
-  | Up 
-  | Down 
-  | Space 
+  Space 
   | Enter
   | Backspace
   | A  
@@ -185,10 +163,6 @@ data Key =
   | Z  
 
 keyToCodeNum :: Key -> Int 
-keyToCodeNum Left = 37
-keyToCodeNum Right = 39
-keyToCodeNum Up = 38
-keyToCodeNum Down = 40
 keyToCodeNum Space = 32
 keyToCodeNum Enter = 13
 keyToCodeNum Backspace = 8

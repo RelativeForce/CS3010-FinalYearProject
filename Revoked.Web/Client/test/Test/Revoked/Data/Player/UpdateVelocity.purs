@@ -77,11 +77,7 @@ still = 0.0
 
 buildInput :: Boolean -> Boolean -> Boolean -> Input
 buildInput pressingJumpButton pressingLeftButton pressingRightButton = { 
-    active: {
-        isLeft: false, 
-        isRight: false, 
-        isUp: false, 
-        isDown: false,  
+    active: { 
         isSpace: pressingJumpButton,
         isEnter: false,
         isBackspace: false,
@@ -113,10 +109,6 @@ buildInput pressingJumpButton pressingLeftButton pressingRightButton = {
         isZ: false
     },
     catched: {
-        isLeft: false, 
-        isRight: false, 
-        isUp: false, 
-        isDown: false,  
         isSpace: false,
         isEnter: false,
         isBackspace: false,
@@ -148,10 +140,6 @@ buildInput pressingJumpButton pressingLeftButton pressingRightButton = {
         isZ: false
     }, 
     released: {
-        isLeft: false, 
-        isRight: false, 
-        isUp: false, 
-        isDown: false,  
         isSpace: false,
         isEnter: false,
         isBackspace: false,
