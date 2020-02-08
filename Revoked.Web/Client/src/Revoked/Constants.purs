@@ -129,3 +129,6 @@ assaultRifleShotCooldown = 1
 
 healthPackBonusHealth :: Int
 healthPackBonusHealth = 2
+
+healthScoreMultipler :: Int
+healthScoreMultipler = 5

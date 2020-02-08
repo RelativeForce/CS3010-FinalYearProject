@@ -4,8 +4,8 @@ import Prelude
 
 import Assets.Images as I
 import States.StateIds as S
-import Class.Object (draw)
-import Constants (scoreDisplayX, hudDisplayY, timeDisplayX, hudTextHeight, levelDisplayX)
+import Class.Object (draw, health)
+import Constants (scoreDisplayX, hudDisplayY, timeDisplayX, hudTextHeight, levelDisplayX, healthScoreMultipler)
 import Data.Either (Either(..))
 import Data.Foldable (traverse_)
 import Effect (Effect)
@@ -82,7 +82,7 @@ instance gameState :: Game State where
             Right stateId -> if stateId == S.gameOverId 
                 then GameOver
                 else if stateId == S.victoryId 
-                    then Victory $ initialVictoryState s.score s.start now
+                    then Victory $ initialVictoryState (calculateEndScore s) s.start now
                     else Play s
 
     draw TitleScreen = do
@@ -116,6 +116,13 @@ instance gameState :: Game State where
 
 initialState :: State
 initialState = TitleScreen
+
+calculateEndScore :: PlayState -> Int
+calculateEndScore play = score
+    where
+        enemiesKilledScore = play.score
+        healthBonus = healthScoreMultipler * ((health play.player) - 1)
+        score = enemiesKilledScore + healthBonus
 
 main :: Effect Unit
 main = do
