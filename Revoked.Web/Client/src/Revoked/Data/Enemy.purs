@@ -26,6 +26,7 @@ instance objectDrawEnemy :: ObjectDraw Enemy where
 instance mortalEntityPlayer :: MortalEntity Enemy where
     health (EnemyMarine m) = m.health
     damage (EnemyMarine m) healthLoss = EnemyMarine $ m { health = m.health - healthLoss }
+    heal (EnemyMarine m) healthBonus = EnemyMarine $ m { health = m.health + healthBonus }
 
 enemyToScore :: Enemy -> Score
 enemyToScore (EnemyMarine s) = 9

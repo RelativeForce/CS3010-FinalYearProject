@@ -4,9 +4,8 @@ import Prelude
 import Emo8.Types (Position)
 import Data.Enemy (Enemy, defaultMarineEnemy)
 import Emo8.Parse (RawMap(..))
-import Data.Goal (Goal(..))
-import Levels.Helper (toTilePosition, shotgunSpawn, assaultRifleSpawn)
-import Assets.Sprites as S   
+import Data.Goal (Goal)
+import Levels.Helper (toTilePosition, shotgunSpawn, assaultRifleSpawn, ladderSection, chopper, healthPack)
 
 mapData :: RawMap
 mapData = RawMap """
@@ -29,9 +28,14 @@ mapData = RawMap """
 
 goals :: Array Goal
 goals = [
+    -- Pickups
     assaultRifleSpawn $ toTilePosition 16 3,
-    shotgunSpawn $ toTilePosition 77 4, 
-    chopper, 
+    shotgunSpawn $ toTilePosition 77 4,
+    healthPack $ toTilePosition 64 5, 
+    healthPack $ toTilePosition 148 4, 
+
+    -- Chopper
+    chopper chopperPosition, 
     ladder 0, 
     ladder 36, 
     ladder 72, 
@@ -46,8 +50,8 @@ startPosition = { x: 10,  y: 384 }
 
 enemies :: Array Enemy
 enemies = [
-    defaultMarineEnemy 1 $ toTilePosition 10 8,
-    defaultMarineEnemy 2 $ toTilePosition 20 5,
+    defaultMarineEnemy 2 $ toTilePosition 10 8,
+    defaultMarineEnemy 1 $ toTilePosition 20 5,
     defaultMarineEnemy 1 $ toTilePosition 30 2,
     defaultMarineEnemy 3 $ toTilePosition 45 5,
     defaultMarineEnemy 1 $ toTilePosition 59 2,
@@ -60,32 +64,11 @@ enemies = [
     defaultMarineEnemy 1 $ toTilePosition 186 4
 ]
 
-chopperY :: Int
-chopperY = 400
+chopperPosition :: Position
+chopperPosition = {x: 6200, y: 400 }
 
-chopperX :: Int
-chopperX = 6200
-
-ladderY :: Int
-ladderY = chopperY - 35
-
-ladderX :: Int
-ladderX = chopperX + 150
+ladderPosition :: Position
+ladderPosition = {x: chopperPosition.x + 150, y: chopperPosition.y - 35 }
 
 ladder :: Int -> Goal
-ladder yOffset = NextLevel {
-    pos: { 
-        x: ladderX, 
-        y: ladderY - yOffset
-    },
-    sprite: S.ladder
-}
-
-chopper :: Goal
-chopper = NextLevel {
-    pos: { 
-        x: chopperX, 
-        y: chopperY
-    },
-    sprite: S.chopper
-}
+ladder = ladderSection ladderPosition

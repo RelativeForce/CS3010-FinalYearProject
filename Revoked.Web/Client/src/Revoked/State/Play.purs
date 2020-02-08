@@ -4,16 +4,16 @@ import Prelude
 
 import Assets.Audio as A
 import States.StateIds as S
-import Class.Object (scroll, damage)
+import Class.Object (scroll, damage, heal)
 import Collision (isCollideObjects, isOutOfWorld)
 import Data.Array (any, filter, partition, concatMap, length)
 import Data.Bullet (Bullet, updateBullet)
 import Data.Enemy (Enemy, updateEnemy, enemyToScore)
 import Data.Foldable (sum)
 import Data.Either (Either(..))
-import Data.Goal (Goal, updateGoal, isNextLevelGoal, firstGun)
+import Data.Goal (Goal, updateGoal, isNextLevelGoal, firstGun, toHealthBonus)
 import Data.Particle (Particle, updateParticle)
-import Data.Player (Player, initialPlayer, updatePlayer, updatePlayerGun)
+import Data.Player (Player(..), initialPlayer, updatePlayer, updatePlayerGun)
 import Emo8.Action.Update (Update, isAudioStreamPlaying, stopAudioStream, addAudioStream, nowDateTime, muteAudio, unmuteAudio)
 import Data.DateTime (DateTime)
 import Emo8.FFI.AudioController (AudioController, newAudioController)
@@ -91,7 +91,8 @@ updatePlay asset input s = do
 
     -- update player based on collision
     let damagedPlayer = damage scrollAdjustedPlayer collidedEnemyBulletCount
-        newPlayer = updatePlayerGun (firstGun collidedGoals) damagedPlayer 
+        healthBonusedPlayer = heal damagedPlayer (toHealthBonus collidedGoals)
+        newPlayer = updatePlayerGun (firstGun collidedGoals) healthBonusedPlayer 
 
     -- evaluate game condition
     let isPlayerDead = isDead newPlayer
@@ -109,7 +110,7 @@ updatePlay asset input s = do
         true, _ -> Right S.gameOverId
         false, true -> if isLastLevel 
             then Right $ S.victoryId
-            else Left $ newLevel (s.mapId + 1) s.score s.audioController s.elapsed s.start
+            else Left $ newLevel (s.mapId + 1) s.player s.score s.audioController s.elapsed s.start
         false, false -> Left $ s { 
             distance = newDistance, 
             player = newPlayer, 
@@ -125,10 +126,10 @@ updatePlay asset input s = do
             elapsed = formatDifference s.start now
         }
 
-newLevel :: MapId -> Score -> AudioController -> String -> DateTime -> PlayState
-newLevel mapId score audioController elapsed start = { 
+newLevel :: MapId -> Player -> Score -> AudioController -> String -> DateTime -> PlayState
+newLevel mapId (Player p) score audioController elapsed start = { 
     distance: 0, 
-    player: initialPlayer $ startPosition mapId, 
+    player: Player $ p { pos = startPosition mapId }, 
     bullets: [], 
     enemies: enemies mapId, 
     particles: [], 
@@ -142,7 +143,7 @@ newLevel mapId score audioController elapsed start = {
 }
 
 initialPlayState :: DateTime -> PlayState
-initialPlayState = newLevel 0 0 (newAudioController "Play") "0:00"
+initialPlayState = newLevel 0 (initialPlayer (startPosition 0)) 0 (newAudioController "Play") "0:00"
 
 toBullets :: { enemy :: Enemy, bullets :: Array Bullet } -> Array Bullet
 toBullets enemyAndBullets = enemyAndBullets.bullets
