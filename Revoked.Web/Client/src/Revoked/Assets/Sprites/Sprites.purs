@@ -15,7 +15,8 @@ module Assets.Sprites (
     module Assets.Sprites.ShotgunLeft.Sprite,
     module Assets.Sprites.ShotgunRight.Sprite,  
     module Assets.Sprites.AssaultRifleLeft.Sprite,
-    module Assets.Sprites.AssaultRifleRight.Sprite  
+    module Assets.Sprites.AssaultRifleRight.Sprite,
+    module Assets.Sprites.HealthPack.Sprite  
 ) where
 
 import Assets.Sprites.PistolBullet.Sprite (pistolBullet)
@@ -35,3 +36,4 @@ import Assets.Sprites.ShotgunLeft.Sprite (shotgunLeft)
 import Assets.Sprites.ShotgunRight.Sprite (shotgunRight)
 import Assets.Sprites.AssaultRifleLeft.Sprite (assaultRifleLeft)
 import Assets.Sprites.AssaultRifleRight.Sprite (assaultRifleRight)
+import Assets.Sprites.HealthPack.Sprite (healthPack)

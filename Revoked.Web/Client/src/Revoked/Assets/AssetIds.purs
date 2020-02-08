@@ -91,3 +91,6 @@ assaultRifleLeftId = 29
 
 assaultRifleRightId :: AssetId
 assaultRifleRightId = 30
+
+healthPackId :: AssetId
+healthPackId = 31

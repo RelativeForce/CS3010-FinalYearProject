@@ -126,3 +126,6 @@ assaultRifleMagazineSize = 25
 
 assaultRifleShotCooldown :: Int
 assaultRifleShotCooldown = 1
+
+healthPackBonusHealth :: Int
+healthPackBonusHealth = 2
