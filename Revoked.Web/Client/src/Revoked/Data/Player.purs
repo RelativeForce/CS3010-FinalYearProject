@@ -50,6 +50,7 @@ instance objectDrawPlayer :: ObjectDraw Player where
 instance mortalEntityPlayer :: MortalEntity Player where
     health (Player p) = p.health
     damage (Player p) healthLoss = Player $ p { health = p.health - healthLoss }
+    heal (Player p) healthBonus = Player $ p { health = p.health + healthBonus }
 
 updatePlayer :: Input -> Player -> X -> (Player -> Boolean) -> { player :: Player, bullets :: Array Bullet }
 updatePlayer i (Player p) distance collisionCheck = { player: newPlayer, bullets: bullets }
