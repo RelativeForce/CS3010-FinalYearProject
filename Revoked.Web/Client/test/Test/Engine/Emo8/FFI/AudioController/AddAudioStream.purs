@@ -46,8 +46,8 @@ shouldAddAudioStreamWhenThereIsNoAudioStreamsActiveSetup src = do
 
     _addAudioStream mockAudioPlayer controller src
 
-mockAudioPlayer :: String -> Effect (Maybe AudioStream)
-mockAudioPlayer src = pure $ Just { src: src }
+mockAudioPlayer :: Boolean -> String -> Effect (Maybe AudioStream)
+mockAudioPlayer _ src = pure $ Just { src: src }
 
-mockAudioPlayerThatFails :: String -> Effect (Maybe AudioStream)
-mockAudioPlayerThatFails src = pure Nothing
+mockAudioPlayerThatFails :: Boolean -> String -> Effect (Maybe AudioStream)
+mockAudioPlayerThatFails _ _ = pure Nothing
