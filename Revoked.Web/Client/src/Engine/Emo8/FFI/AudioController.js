@@ -18,53 +18,57 @@ exports.isPlaying = function(audio){
   }
 };
 
-exports.mute = function(audio){
+exports.mute = function(controller){
   return function(){
-    try {
-      audio.mute();
-      return true;
+
+    for (var index = 0; index < controller.audioStreams.length; index++) {
+      controller.audioStreams[index].mute();
     }
-    catch(e){
-      return false;
-    }
+
+    
+    return controller;
   }
 }
 
-exports.unmute = function(audio){
+exports.unmute = function(controller){
   return function(){
-    try {
-      audio.unmute();
-      return true;
+    for (var index = 0; index < controller.audioStreams.length; index++) {
+      controller.audioStreams[index].unmute();
     }
-    catch(e){
-      return false;
-    }
+
+    return controller;
   }
 }
 
 exports.play = function(just){
   return function(nothing){
-    return function(src){
-      return function(){
-        try {
-          var audio = new sound(src);
-          audio.play();
-          return just(audio);
-        }
-        catch(e){
-          return nothing;
+    return function(muted){
+      return function(src){
+        return function(){
+          try {
+            var audio = new sound(src, muted);
+            audio.play();
+            return just(audio);
+          }
+          catch(e){
+            return nothing;
+          }
         }
       }
     }
   }
 }
 
-function sound(src) {
+function sound(src, muted) {
+
+  var maxVolume = 0.5;
+
   this.sound = document.createElement("audio");
   this.sound.src = src;
   this.sound.setAttribute("preload", "auto");
   this.sound.setAttribute("controls", "none");
   this.sound.style.display = "none";
+  this.sound.volume = maxVolume;
   document.body.appendChild(this.sound);
 
   this.play = function(){
@@ -80,12 +84,16 @@ function sound(src) {
   }
 
   this.unmute = function(){
-    this.sound.volume = 1.0;
+    this.sound.volume = maxVolume;
   }
 
   this.src = src;
 
   this.isPlaying = function(){
     return !this.sound.ended;
+  }
+
+  if(muted){
+    this.mute();
   }
 }
