@@ -4,5 +4,3 @@ var instructionsScreenData = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABQAA
 module.exports = {
     instructionsScreenData: instructionsScreenData
 };
-
-};
