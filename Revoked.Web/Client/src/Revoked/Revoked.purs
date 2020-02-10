@@ -30,6 +30,7 @@ data State =
     | Leaderboard LeaderboardState
     | Victory VictoryState
     | Play PlayState
+    | Instructions 
 
 instance gameState :: Game State where
     -- update TitleScreen state
@@ -38,16 +39,22 @@ instance gameState :: Game State where
 
         let
             toLeaderboard = input.catched.isL
-            toPlay = isCatchAny input
+            toInstructions = input.catched.isI
+            toPlay = input.catched.isEnter
 
-        pure $ case toPlay, toLeaderboard of 
-            false, true -> Leaderboard initialLeaderboardState
-            true, false -> Play $ initialPlayState startDateTime
-            _, _ -> TitleScreen
+        pure $ case toPlay, toLeaderboard, toInstructions of 
+            false, true, false -> Leaderboard initialLeaderboardState
+            true, false, false -> Play $ initialPlayState startDateTime
+            false, false, true -> Instructions
+            _, _, _ -> TitleScreen
     
     -- update GameOver state
     update _ input GameOver =
         pure $ if isCatchAny input then TitleScreen else GameOver
+
+    -- update Instructions state
+    update _ input Instructions =
+        pure $ if input.catched.isBackspace then TitleScreen else Instructions
     
     -- update Leaderboard state
     update _ input (Leaderboard s) = do
@@ -89,6 +96,8 @@ instance gameState :: Game State where
         drawScaledImage I.titleScreen 0 0
     draw GameOver = do
         drawScaledImage I.gameOverScreen 0 0
+    draw Instructions = do
+        drawScaledImage I.instructionsScreen 0 0
     draw (Victory s) = do
         drawScaledImage I.victoryScreen 0 0
         drawUsername s.username

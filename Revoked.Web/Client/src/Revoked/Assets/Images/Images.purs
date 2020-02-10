@@ -14,6 +14,7 @@ import Assets.Images.GrassCenter (grassCenterData)
 import Assets.Images.GameOverScreen (gameOverScreenData)
 import Assets.Images.VictoryScreen (victoryScreenData)
 import Assets.Images.LeaderboardScreen (leaderboardScreenData)
+import Assets.Images.InstructionsScreen (instructionsScreenData)
 import Assets.Images.Heart (heartData)
 
 titleScreen :: ScaledImage
@@ -144,4 +145,14 @@ heart = {
         width: 20
     },
     id: Id.heartId
+}
+
+instructionsScreen :: ScaledImage
+instructionsScreen = {
+    image: instructionsScreenData,
+    size: {
+        height: 720,
+        width: 1280
+    },    
+    id: Id.instructionsScreenId
 }

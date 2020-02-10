@@ -94,3 +94,6 @@ assaultRifleRightId = 30
 
 healthPackId :: AssetId
 healthPackId = 31
+
+instructionsScreenId :: AssetId
+instructionsScreenId = 32
