@@ -2,7 +2,7 @@ module Levels.Level01 where
 
 import Prelude
 import Emo8.Types (Position)
-import Data.Enemy (Enemy, defaultMarineEnemy, defaultDroneEnemy)
+import Data.Enemy (Enemy, defaultMarineEnemy)
 import Emo8.Parse (RawMap(..))
 import Data.Goal (Goal)
 import Levels.Helper (toTilePosition, shotgunSpawn, ladderSection, chopper, healthPack)
@@ -49,7 +49,6 @@ startPosition = { x: 0,  y: 40 }
 
 enemies :: Array Enemy
 enemies = [
-    defaultDroneEnemy 1 (toTilePosition 6 10) (toTilePosition 18 10),
     defaultMarineEnemy 1 $ toTilePosition 26 1,
     defaultMarineEnemy 2 $ toTilePosition 27 7, 
     defaultMarineEnemy 1 $ toTilePosition 47 7,
