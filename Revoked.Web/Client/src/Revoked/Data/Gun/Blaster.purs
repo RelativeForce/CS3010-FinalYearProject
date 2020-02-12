@@ -7,6 +7,7 @@ import Emo8.Types (Position, Sprite, Deg)
 import Data.Bullet (Bullet)
 import Emo8.Data.Sprite (incrementFrame)
 import Data.Gun.Helper (newGunBullet)
+import Constants (droneShotCooldown)
 
 type Blaster = { 
     pos :: Position,
@@ -21,7 +22,7 @@ fireAndUpdateBlaster p = blasterAndBullets
         updatedBlaster = updateBlaster p
         blasterAndBullets = case canFire p of
             true -> { 
-                gun: updatedBlaster { shotCoolDown = 20 }, 
+                gun: updatedBlaster { shotCoolDown = droneShotCooldown }, 
                 bullets: [ newGunBullet p.angle p.pos p.sprite.size ] 
             }
             false -> { gun: updatedBlaster, bullets: [] }

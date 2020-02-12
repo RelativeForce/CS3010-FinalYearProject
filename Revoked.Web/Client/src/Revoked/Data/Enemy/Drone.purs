@@ -7,6 +7,7 @@ import Class.Object (size)
 import Data.Bullet (Bullet)
 import Data.Gun (Gun, defaultBlasterGun, fireAndUpdateGun, setPositionAndRotation)
 import Data.Player (Player(..))
+import Constants (droneAccuracyDeviationIncrements, droneSpeed)
 import Emo8.Data.Sprite (incrementFrame)
 import Data.Array (length)
 import Data.Int (floor)
@@ -24,20 +25,14 @@ type Drone = {
     health :: Int
 }
 
-angleIncrement :: Int
-angleIncrement = 10
-
 maxOffset :: Int
 maxOffset = 6
-
-maxMovementSpeed :: Number
-maxMovementSpeed = 1.0
 
 angleOffset :: Deg -> Int -> Deg
 angleOffset angle offset = mod (angle + aOffset) 360
     where
         relativeOffset = offset - (maxOffset / 2)
-        aOffset = angleIncrement * relativeOffset
+        aOffset = droneAccuracyDeviationIncrements * relativeOffset
 
 angleToPlayer :: Player -> Drone -> Deg
 angleToPlayer (Player p) drone = angle $ vectorTo drone.pos p.pos
@@ -83,8 +78,8 @@ updateVelocity leftLimit rightLimit currentPosition currentVelocity = { xSpeed: 
     where
         newX = currentPosition.x + floor currentVelocity.xSpeed
         newY = currentPosition.y + floor currentVelocity.ySpeed
-        xSpeed = if newX < leftLimit.x then maxMovementSpeed else if newX > rightLimit.x then -maxMovementSpeed else currentVelocity.xSpeed
-        ySpeed = if newY < leftLimit.y then maxMovementSpeed else if newY > rightLimit.y then -maxMovementSpeed else currentVelocity.ySpeed
+        xSpeed = if newX < leftLimit.x then droneSpeed else if newX > rightLimit.x then -droneSpeed else currentVelocity.xSpeed
+        ySpeed = if newY < leftLimit.y then droneSpeed else if newY > rightLimit.y then -droneSpeed else currentVelocity.ySpeed
 
 updatePosition :: Position -> Position -> Position -> Velocity -> Position
 updatePosition leftLimit rightLimit currentPosition currentVelocity = { x: x, y: y }
@@ -113,8 +108,8 @@ defaultDrone droneHealth leftLimit rightLimit = {
     rightLimit: ensureRightLimit leftLimit rightLimit,
     sprite: S.droneRight,
     velocity: {
-        xSpeed: maxMovementSpeed,
-        ySpeed: maxMovementSpeed
+        xSpeed: droneSpeed,
+        ySpeed: droneSpeed
     },
     offset: 0,
     gun: defaultBlasterGun leftLimit 270,
