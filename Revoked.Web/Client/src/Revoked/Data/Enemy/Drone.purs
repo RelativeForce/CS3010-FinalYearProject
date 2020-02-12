@@ -5,7 +5,7 @@ import Prelude
 import Assets.Sprites as S
 import Class.Object (size)
 import Data.Bullet (Bullet)
-import Data.Gun (Gun, defaultPistolGun, fireAndUpdateGun, setPositionAndRotation)
+import Data.Gun (Gun, defaultBlasterGun, fireAndUpdateGun, setPositionAndRotation)
 import Data.Player (Player(..))
 import Emo8.Data.Sprite (incrementFrame)
 import Data.Array (length)
@@ -25,7 +25,7 @@ type Drone = {
 }
 
 angleIncrement :: Int
-angleIncrement = 5
+angleIncrement = 10
 
 maxOffset :: Int
 maxOffset = 6
@@ -118,7 +118,7 @@ defaultDrone droneHealth leftLimit rightLimit = {
         ySpeed: maxMovementSpeed
     },
     offset: 0,
-    gun: defaultPistolGun true leftLimit 180,
+    gun: defaultBlasterGun leftLimit 270,
     health: 1
 }
 

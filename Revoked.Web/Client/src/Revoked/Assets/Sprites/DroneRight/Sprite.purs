@@ -14,8 +14,8 @@ droneRight = {
     framesPerSecond: 2,
     frameCount: 4,
     size: {
-        width: 32,
-        height: 10
+        width: 64,
+        height: 20
     },
     id: Id.droneRightId
 }
