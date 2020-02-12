@@ -100,9 +100,6 @@ marineShotCooldown = 10
 bulletSpeed :: Number
 bulletSpeed = 8.0
 
-playerShotCooldown :: Int
-playerShotCooldown = 10
-
 ghostAscentSpeed :: Int
 ghostAscentSpeed = 5
 

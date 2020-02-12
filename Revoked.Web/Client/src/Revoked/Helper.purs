@@ -31,10 +31,10 @@ drawScrollMap distance mapId = do
                 drawMap mId mapTileSize (-d) 0
 
 isCollideMapWalls :: forall a. Object a => Asset -> MapId -> X -> a -> Boolean
-isCollideMapWalls asset mapId distance o = isCollide (isWallsCollide asset) mapId distance o
+isCollideMapWalls asset = isCollide (isWallsCollide asset)
 
 isCollideMapHazards :: forall a. Object a => Asset -> MapId -> X -> a -> Boolean
-isCollideMapHazards asset mapId distance o = isCollide (isHazardCollide asset) mapId distance o
+isCollideMapHazards asset = isCollide (isHazardCollide asset)
 
 isCollide :: forall a. Object a => (MapId -> Size -> Size -> Position -> Boolean) -> MapId -> X -> a -> Boolean
 isCollide f mapId distance o =
