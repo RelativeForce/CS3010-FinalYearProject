@@ -5,7 +5,6 @@ import Prelude
 import Class.Object (class Object, position, size)
 import Collision (isWallsCollide, isHazardCollide)
 import Constants (leftBoundry, mapSizeInt, mapTileInMonitorSize, mapTileSize, mapSize, rightBoundry, hudTextHeight)
-import Emo8.Constants (defaultMonitorSize)
 import Data.Array ((!!))
 import Data.DateTime (DateTime, diff)
 import Data.Either (Either(..))
@@ -17,6 +16,7 @@ import Data.Particle (Particle, defaultMarineGhostParticle)
 import Data.Player (Player(..), playerShotCount, playerGunIsInfinite)
 import Data.Time.Duration (Milliseconds(..))
 import Emo8.Action.Draw (Draw, drawMap, drawText)
+import Emo8.Constants (defaultMonitorSize)
 import Emo8.Data.Color (Color(..))
 import Emo8.Types (MapId, X, Size, Position, PlayerScore, Asset)
 
@@ -123,6 +123,7 @@ drawScore ps = do
 
 enemyToParticle :: Enemy -> Particle
 enemyToParticle (EnemyMarine m) = defaultMarineGhostParticle m.pos
+enemyToParticle (EnemyDrone m) = defaultMarineGhostParticle m.pos
 
 drawPlayerShotCount :: Player -> Draw Unit
 drawPlayerShotCount p = do

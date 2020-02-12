@@ -42,8 +42,8 @@ angleOffset angle offset = mod (angle + aOffset) 360
 angleToPlayer :: Player -> Drone -> Deg
 angleToPlayer (Player p) drone = angle $ vectorTo drone.pos p.pos
 
-updateDrone :: (Drone -> Boolean) -> X -> Player -> Drone -> { enemy :: Drone, bullets :: Array Bullet }
-updateDrone collisionCheck distance p drone = { enemy: newDrone, bullets: newBullets } 
+updateDrone :: X -> Player -> Drone -> { enemy :: Drone, bullets :: Array Bullet }
+updateDrone distance p drone = { enemy: newDrone, bullets: newBullets } 
     where
         { gun: potentialyFiredGun, bullets: newBullets } = fireAndUpdateGun drone.gun
         hasFired = (length newBullets) > 0
