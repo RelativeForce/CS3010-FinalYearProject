@@ -591,3 +591,5 @@
 /Revoked.Web/Client/output/Data.Helper
 /Revoked.Web/Client/output/Assets.Sprites.HealthPack.Sprite
 /Revoked.Web/Client/output/Data.Enemy.Drone
+/Revoked.Web/Client/output/Assets.Sprites.DroneLeft.Sprite
+/Revoked.Web/Client/output/Assets.Sprites.DroneRight.Sprite

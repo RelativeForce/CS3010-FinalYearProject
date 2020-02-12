@@ -31,7 +31,7 @@ maxOffset :: Int
 maxOffset = 6
 
 maxMovementSpeed :: Number
-maxMovementSpeed = 3.0
+maxMovementSpeed = 1.0
 
 angleOffset :: Deg -> Int -> Deg
 angleOffset angle offset = mod (angle + aOffset) 360
@@ -50,12 +50,22 @@ updateDrone distance p drone = { enemy: newDrone, bullets: newBullets }
         newOffset = if hasFired then mod (drone.offset + 1) maxOffset else drone.offset
         updatedMotionDrone = updatePositionAndVelocity drone
         droneBasedOnVelocity = updatedMotionDrone {
-            sprite = incrementFrame drone.sprite,
+            sprite = updateSprite drone updatedMotionDrone,
             offset = newOffset,
             gun = potentialyFiredGun
         }
         gunAngle = angleOffset (angleToPlayer p droneBasedOnVelocity) newOffset
         newDrone = adjustGunPosition droneBasedOnVelocity gunAngle
+
+updateSprite :: Drone -> Drone -> Sprite
+updateSprite drone newDrone = newSprite
+    where 
+        sameDirection = newDrone.velocity.xSpeed == drone.velocity.xSpeed
+        newSprite = if sameDirection 
+            then incrementFrame drone.sprite 
+            else if newDrone.velocity.xSpeed < 0.0 
+                then S.droneLeft 
+                else S.droneRight
 
 adjustGunPosition :: Drone -> Deg -> Drone
 adjustGunPosition m a = marinWithAdjustedGun
@@ -102,7 +112,7 @@ defaultDrone droneHealth leftLimit rightLimit = {
     pos: leftLimit,
     leftLimit: ensureLeftLimit leftLimit rightLimit,
     rightLimit: ensureRightLimit leftLimit rightLimit,
-    sprite: S.marineLeft,
+    sprite: S.droneRight,
     velocity: {
         xSpeed: maxMovementSpeed,
         ySpeed: maxMovementSpeed
