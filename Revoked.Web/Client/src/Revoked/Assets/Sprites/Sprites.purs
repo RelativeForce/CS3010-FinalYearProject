@@ -18,6 +18,7 @@ module Assets.Sprites (
     module Assets.Sprites.AssaultRifleRight.Sprite,
     module Assets.Sprites.HealthPack.Sprite,
     module Assets.Sprites.DroneRight.Sprite,
+    module Assets.Sprites.Blaster.Sprite,
     module Assets.Sprites.DroneLeft.Sprite 
 ) where 
 
@@ -41,3 +42,4 @@ import Assets.Sprites.AssaultRifleRight.Sprite (assaultRifleRight)
 import Assets.Sprites.HealthPack.Sprite (healthPack)
 import Assets.Sprites.DroneLeft.Sprite (droneLeft)
 import Assets.Sprites.DroneRight.Sprite (droneRight)
+import Assets.Sprites.Blaster.Sprite (blaster)

@@ -29,8 +29,8 @@ instance objectDrawEnemy :: ObjectDraw Enemy where
         draw m.gun
         drawHealth o
     draw o@(EnemyDrone m) = do 
-        drawSprite m.sprite (position o).x (position o).y
         draw m.gun
+        drawSprite m.sprite (position o).x (position o).y
         drawHealth o
 
 instance mortalEntityPlayer :: MortalEntity Enemy where

@@ -11,7 +11,7 @@ import Emo8.Data.Sprite (incrementFrame)
 import Data.Array (length)
 import Data.Int (floor)
 import Emo8.Types (Position, Sprite, Velocity, X, Deg)
-import Emo8.Utils (vectorTo, angle, xComponent, yComponent)
+import Emo8.Utils (vectorTo, angle)
 
 type Drone = { 
     pos :: Position,
@@ -70,10 +70,9 @@ updateSprite drone newDrone = newSprite
 adjustGunPosition :: Drone -> Deg -> Drone
 adjustGunPosition m a = marinWithAdjustedGun
     where 
-        radius = 10.0
         gunSize = size m.gun
-        gunPosX = m.pos.x + (m.sprite.size.width / 2) + floor (xComponent a radius)
-        gunPosY = m.pos.y + (m.sprite.size.height / 2) - gunSize.height - (floor ((yComponent a radius) / 2.0))
+        gunPosX = m.pos.x + (m.sprite.size.width / 2)
+        gunPosY = m.pos.y + 5
         gunPos = { x: gunPosX, y: gunPosY }
         marinWithAdjustedGun = m {
             gun = setPositionAndRotation m.gun gunPos a

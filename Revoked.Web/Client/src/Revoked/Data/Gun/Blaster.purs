@@ -47,5 +47,5 @@ defaultBlaster pos angle = blaster
             pos: pos,
             angle: angle,
             shotCoolDown: 1,
-            sprite: S.pistolLeft
+            sprite: S.blaster
         }
