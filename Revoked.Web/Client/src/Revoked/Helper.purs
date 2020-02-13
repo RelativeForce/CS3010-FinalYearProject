@@ -12,7 +12,7 @@ import Data.Enemy (Enemy(..))
 import Data.Formatter.DateTime as F
 import Data.Int (floor)
 import Data.Maybe (Maybe(..))
-import Data.Particle (Particle, defaultMarineGhostParticle)
+import Data.Particle (Particle, defaultGhostParticle, defaultExplosionParticle)
 import Data.Player (Player(..), playerShotCount, playerGunIsInfinite)
 import Data.Time.Duration (Milliseconds(..))
 import Emo8.Action.Draw (Draw, drawMap, drawText)
@@ -122,8 +122,8 @@ drawScore ps = do
         y = startY - ((ps.position - 1) * (textHeight + paddingY))
 
 enemyToParticle :: Enemy -> Particle
-enemyToParticle (EnemyMarine m) = defaultMarineGhostParticle m.pos
-enemyToParticle (EnemyDrone m) = defaultMarineGhostParticle m.pos
+enemyToParticle (EnemyMarine m) = defaultGhostParticle m.pos
+enemyToParticle (EnemyDrone m) = defaultExplosionParticle m.pos
 
 drawPlayerShotCount :: Player -> Draw Unit
 drawPlayerShotCount p = do

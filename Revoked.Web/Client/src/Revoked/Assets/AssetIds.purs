@@ -106,3 +106,6 @@ droneLeftId = 34
 
 blasterId :: AssetId
 blasterId = 35
+
+droneExplosionId :: AssetId
+droneExplosionId = 36

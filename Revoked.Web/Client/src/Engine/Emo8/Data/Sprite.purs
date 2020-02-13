@@ -26,6 +26,9 @@ incrementFrame s = s { frameIndex = nextFrameIndex }
     where 
         nextFrameIndex = mod (s.frameIndex + 1) (frameLimit s)
 
+isLastFrame :: Sprite -> Boolean
+isLastFrame s = (s.frameIndex + 1) == frameLimit s
+
 frameLimit :: Sprite -> Int
 frameLimit s = s.framesPerSecond * s.frameCount
 
