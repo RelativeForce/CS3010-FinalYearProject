@@ -113,6 +113,6 @@ defaultDrone droneHealth leftLimit rightLimit = {
     },
     offset: 0,
     gun: defaultBlasterGun leftLimit 270,
-    health: 1
+    health: droneHealth
 }
 

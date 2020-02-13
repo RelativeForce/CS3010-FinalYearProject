@@ -14,19 +14,19 @@ data Particle =
 
 instance objectParticle :: Object Particle where
     size (GhostParticle g) = ghostSize g
-    size (ExplosionParticle g) = explosionSize g
+    size (ExplosionParticle e) = explosionSize e
     position (GhostParticle g) = ghostPosition g
-    position (ExplosionParticle g) = explosionPosition g
+    position (ExplosionParticle e) = explosionPosition e
     scroll offset (GhostParticle g) = GhostParticle $ scrollGhost offset g
-    scroll offset (ExplosionParticle g) = ExplosionParticle $ scrollExplosion offset g
+    scroll offset (ExplosionParticle e) = ExplosionParticle $ scrollExplosion offset e
 
 instance objectDrawParticle :: ObjectDraw Particle where
     draw o@(GhostParticle g) = drawSprite g.sprite (position o).x (position o).y
-    draw o@(ExplosionParticle g) = drawSprite g.sprite (position o).x (position o).y
+    draw o@(ExplosionParticle e) = drawSprite e.sprite (position o).x (position o).y
 
 updateParticle :: Particle -> Particle
 updateParticle (GhostParticle g) = GhostParticle $ updateGhost g
-updateParticle (ExplosionParticle g) = ExplosionParticle $ updateExplosion g
+updateParticle (ExplosionParticle e) = ExplosionParticle $ updateExplosion e
 
 defaultGhostParticle :: Position -> Particle
 defaultGhostParticle = defaultMarineGhost >>> GhostParticle

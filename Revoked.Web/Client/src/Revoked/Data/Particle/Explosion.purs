@@ -12,18 +12,18 @@ type Explosion = {
 }
 
 explosionSize :: Explosion -> Size
-explosionSize g = g.sprite.size
+explosionSize e = e.sprite.size
 
 explosionPosition :: Explosion -> Position
-explosionPosition g = g.pos
+explosionPosition e = e.pos
 
 scrollExplosion :: X -> Explosion -> Explosion
-scrollExplosion offset g = g { pos = { x: g.pos.x + offset, y: g.pos.y }}
+scrollExplosion offset e = e { pos = { x: e.pos.x + offset, y: e.pos.y }}
 
 updateExplosion :: Explosion -> Explosion
-updateExplosion g = g { pos = { x: g.pos.x , y: g.pos.y + deltaY }, sprite = incrementFrame g.sprite }
+updateExplosion e = e { pos = { x: e.pos.x , y: e.pos.y + deltaY }, sprite = incrementFrame e.sprite }
     where
-        moveOffScreen = isLastFrame g.sprite
+        moveOffScreen = isLastFrame e.sprite
         deltaY = if moveOffScreen then -5000 else 0
 
 defaultDroneExplosion :: Position -> Explosion
