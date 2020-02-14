@@ -5,7 +5,6 @@ import Prelude
 import Class.Object (class Object, position, size)
 import Collision (isWallsCollide, isHazardCollide)
 import Constants (leftBoundry, mapSizeInt, mapTileInMonitorSize, mapTileSize, mapSize, rightBoundry, hudTextHeight)
-import Emo8.Constants (defaultMonitorSize)
 import Data.Array ((!!))
 import Data.DateTime (DateTime, diff)
 import Data.Either (Either(..))
@@ -13,10 +12,11 @@ import Data.Enemy (Enemy(..))
 import Data.Formatter.DateTime as F
 import Data.Int (floor)
 import Data.Maybe (Maybe(..))
-import Data.Particle (Particle, defaultMarineGhostParticle)
+import Data.Particle (Particle, defaultGhostParticle, defaultExplosionParticle)
 import Data.Player (Player(..), playerShotCount, playerGunIsInfinite)
 import Data.Time.Duration (Milliseconds(..))
 import Emo8.Action.Draw (Draw, drawMap, drawText)
+import Emo8.Constants (defaultMonitorSize)
 import Emo8.Data.Color (Color(..))
 import Emo8.Types (MapId, X, Size, Position, PlayerScore, Asset)
 
@@ -31,10 +31,10 @@ drawScrollMap distance mapId = do
                 drawMap mId mapTileSize (-d) 0
 
 isCollideMapWalls :: forall a. Object a => Asset -> MapId -> X -> a -> Boolean
-isCollideMapWalls asset mapId distance o = isCollide (isWallsCollide asset) mapId distance o
+isCollideMapWalls asset = isCollide (isWallsCollide asset)
 
 isCollideMapHazards :: forall a. Object a => Asset -> MapId -> X -> a -> Boolean
-isCollideMapHazards asset mapId distance o = isCollide (isHazardCollide asset) mapId distance o
+isCollideMapHazards asset = isCollide (isHazardCollide asset)
 
 isCollide :: forall a. Object a => (MapId -> Size -> Size -> Position -> Boolean) -> MapId -> X -> a -> Boolean
 isCollide f mapId distance o =
@@ -122,7 +122,8 @@ drawScore ps = do
         y = startY - ((ps.position - 1) * (textHeight + paddingY))
 
 enemyToParticle :: Enemy -> Particle
-enemyToParticle (EnemyMarine m) = defaultMarineGhostParticle m.pos
+enemyToParticle (EnemyMarine m) = defaultGhostParticle m.pos
+enemyToParticle (EnemyDrone m) = defaultExplosionParticle m.pos
 
 drawPlayerShotCount :: Player -> Draw Unit
 drawPlayerShotCount p = do

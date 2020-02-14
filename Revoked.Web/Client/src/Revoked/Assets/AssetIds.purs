@@ -97,3 +97,15 @@ healthPackId = 31
 
 instructionsScreenId :: AssetId
 instructionsScreenId = 32
+
+droneRightId :: AssetId
+droneRightId = 33
+
+droneLeftId :: AssetId
+droneLeftId = 34
+
+blasterId :: AssetId
+blasterId = 35
+
+droneExplosionId :: AssetId
+droneExplosionId = 36

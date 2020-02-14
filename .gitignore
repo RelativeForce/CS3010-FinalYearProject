@@ -590,3 +590,10 @@
 /Revoked.Web/Client/output/Levels.Helper
 /Revoked.Web/Client/output/Data.Helper
 /Revoked.Web/Client/output/Assets.Sprites.HealthPack.Sprite
+/Revoked.Web/Client/output/Data.Enemy.Drone
+/Revoked.Web/Client/output/Assets.Sprites.DroneLeft.Sprite
+/Revoked.Web/Client/output/Assets.Sprites.DroneRight.Sprite
+/Revoked.Web/Client/output/Data.Gun.Blaster
+/Revoked.Web/Client/output/Assets.Sprites.Blaster.Sprite
+/Revoked.Web/Client/output/Assets.Sprites.DroneExplosion.Sprite
+/Revoked.Web/Client/output/Data.Particle.Explosion
