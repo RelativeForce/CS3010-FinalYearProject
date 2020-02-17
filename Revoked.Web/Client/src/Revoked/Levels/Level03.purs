@@ -5,7 +5,7 @@ import Emo8.Types (Position)
 import Data.Enemy (Enemy, defaultMarineEnemy)
 import Emo8.Parse (RawMap(..))
 import Data.Goal (Goal)
-import Levels.Helper (toTilePosition, shotgunSpawn, assaultRifleSpawn, ladderSection, chopper, healthPack, newDrone)
+import Levels.Helper (toTilePosition, shotgunSpawn, assaultRifleSpawn, ladderSection, chopper, healthPack, drone)
 
 mapData :: RawMap
 mapData = RawMap """
@@ -50,20 +50,20 @@ startPosition = toTilePosition 1 2
 
 enemies :: Array Enemy
 enemies = [
-    newDrone 10 8 5,
-    newDrone 18 12 (-5),
-    newDrone 24 9 3,
-    newDrone 34 11 (-3),
-    newDrone 43 9 7,
-    newDrone 64 13 (-5),
-    newDrone 67 15 8,
-    newDrone 76 7 5,
+    drone 10 8 5,
+    drone 18 12 (-5),
+    drone 24 9 3,
+    drone 34 11 (-3),
+    drone 43 9 7,
+    drone 64 13 (-5),
+    drone 67 15 8,
+    drone 76 7 5,
     defaultMarineEnemy 1 $ toTilePosition 89 2,
-    newDrone 91 7 (-5),
-    newDrone 93 11 7,
-    newDrone 114 9 (-5),
+    drone 91 7 (-5),
+    drone 93 11 7,
+    drone 114 9 (-5),
     defaultMarineEnemy 1 $ toTilePosition 129 4,
-    newDrone 135 12 (-5)
+    drone 135 12 (-5)
 ]
 
 chopperPosition :: Position

@@ -45,7 +45,7 @@ droneRange xBlock yBlock range = { leftLimit : leftLimit, rightLimit: rightLimit
         leftLimit = toTilePosition xBlock yBlock
         rightLimit = toTilePosition (xBlock + range) yBlock
 
-newDrone :: Int -> Int -> Int -> Enemy
-newDrone xBlock yBlock range = defaultDroneEnemy 1 l r
+drone :: Int -> Int -> Int -> Enemy
+drone xBlock yBlock range = defaultDroneEnemy 1 l r
     where
         { leftLimit : l, rightLimit: r } = droneRange xBlock yBlock range
