@@ -144,7 +144,7 @@ healthScoreMultipler = 5
 -- Drone
 
 droneAccuracyDeviationIncrements :: Int
-droneAccuracyDeviationIncrements = 10 
+droneAccuracyDeviationIncrements = 5
 
 droneSpeed :: Number
 droneSpeed = 2.0
