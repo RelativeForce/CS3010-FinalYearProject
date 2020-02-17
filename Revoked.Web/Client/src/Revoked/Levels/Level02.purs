@@ -65,10 +65,10 @@ enemies = [
 ]
 
 chopperPosition :: Position
-chopperPosition = {x: 6200, y: 400 }
+chopperPosition = { x: 6200, y: 400 }
 
 ladderPosition :: Position
-ladderPosition = {x: chopperPosition.x + 150, y: chopperPosition.y - 35 }
+ladderPosition = { x: chopperPosition.x + 150, y: chopperPosition.y - 35 }
 
 ladder :: Int -> Goal
 ladder = ladderSection ladderPosition
