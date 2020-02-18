@@ -142,8 +142,8 @@ newLevel mapId (Player p) score audioController elapsed start = {
     elapsed: elapsed
 }
 
-initialPlayState :: DateTime -> PlayState
-initialPlayState = newLevel 0 (initialPlayer (startPosition 0)) 0 (newAudioController "Play") "0:00"
+initialPlayState :: MapId -> DateTime -> PlayState
+initialPlayState mapId = newLevel mapId (initialPlayer (startPosition 0)) 0 (newAudioController "Play") "0:00"
 
 toBullets :: { enemy :: Enemy, bullets :: Array Bullet } -> Array Bullet
 toBullets enemyAndBullets = enemyAndBullets.bullets

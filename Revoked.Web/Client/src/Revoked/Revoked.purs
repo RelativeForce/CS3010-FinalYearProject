@@ -15,8 +15,9 @@ import Emo8.Action.Draw (drawScaledImage, drawText)
 import Emo8.Action.Update (nowDateTime)
 import Emo8.Class.Game (class Game)
 import Emo8.Data.Color (Color(..))
-import Emo8.Input (isCatchAny)
+import Emo8.Input (Input, isCatchAny)
 import Emo8.Utils (mkAsset)
+import Emo8.Types (MapId)
 import Helper (drawScrollMap, drawUsername, drawScore, formatDifference, drawPlayerShotCount)
 import Data.Helper (drawHealth)
 import Levels (allRawLevels)
@@ -25,7 +26,7 @@ import States.Victory (VictoryState, updateVictory, initialVictoryState)
 import States.Leaderboard (LeaderboardState, updateLeaderboard, initialLeaderboardState)
 
 data State = 
-    TitleScreen 
+    TitleScreen MapId
     | GameOver
     | Leaderboard LeaderboardState
     | Victory VictoryState
@@ -34,27 +35,28 @@ data State =
 
 instance gameState :: Game State where
     -- update TitleScreen state
-    update _ input TitleScreen = do
+    update _ input (TitleScreen currentStartLevel) = do
         startDateTime <- nowDateTime
 
         let
+            startLevel = applyCheatCode input currentStartLevel
             toLeaderboard = input.catched.isL
             toInstructions = input.catched.isI
             toPlay = input.catched.isEnter
 
         pure $ case toPlay, toLeaderboard, toInstructions of 
-            false, true, false -> Leaderboard initialLeaderboardState
-            true, false, false -> Play $ initialPlayState startDateTime
+            false, true, false -> Leaderboard initialLeaderboardState 
+            true, false, false -> Play $ initialPlayState startLevel startDateTime
             false, false, true -> Instructions
-            _, _, _ -> TitleScreen
+            _, _, _ -> TitleScreen startLevel
     
     -- update GameOver state
     update _ input GameOver =
-        pure $ if isCatchAny input then TitleScreen else GameOver
+        pure $ if isCatchAny input then TitleScreen firstLevel else GameOver
 
     -- update Instructions state
     update _ input Instructions =
-        pure $ if input.catched.isBackspace then TitleScreen else Instructions
+        pure $ if input.catched.isBackspace then TitleScreen firstLevel else Instructions
     
     -- update Leaderboard state
     update _ input (Leaderboard s) = do
@@ -64,7 +66,7 @@ instance gameState :: Game State where
         pure $ case leaderboardStateOrNextStateId of
             Left leaderboard -> Leaderboard leaderboard
             Right stateId -> if stateId == S.titleScreenId 
-                then TitleScreen
+                then TitleScreen firstLevel
                 else Leaderboard s
 
     -- update Victory state
@@ -75,7 +77,7 @@ instance gameState :: Game State where
         pure $ case victoryStateOrNextStateId of
             Left victory -> Victory victory
             Right stateId -> if stateId == S.titleScreenId 
-                then TitleScreen
+                then TitleScreen firstLevel
                 else Victory s
 
     -- update Play state
@@ -92,7 +94,7 @@ instance gameState :: Game State where
                     then Victory $ initialVictoryState (calculateEndScore s) s.start now
                     else Play s
 
-    draw TitleScreen = do
+    draw (TitleScreen _) = do
         drawScaledImage I.titleScreen 0 0
     draw GameOver = do
         drawScaledImage I.gameOverScreen 0 0
@@ -124,7 +126,21 @@ instance gameState :: Game State where
         drawHealth s.player
 
 initialState :: State
-initialState = TitleScreen
+initialState = TitleScreen firstLevel
+
+firstLevel :: MapId
+firstLevel = 0
+
+applyCheatCode :: Input -> MapId -> MapId
+applyCheatCode input current = levelId
+    where
+        levelId = if input.released.isC && input.released.isV
+            then 2 -- Level 3
+            else if input.released.isJ && input.released.isK
+                then 1 -- Level 2
+                else if input.released.isY && input.released.isU
+                    then 0 -- Level 1
+                    else current -- Current set
 
 calculateEndScore :: PlayState -> Int
 calculateEndScore play = score

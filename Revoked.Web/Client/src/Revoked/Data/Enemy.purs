@@ -21,7 +21,12 @@ instance objectEnemy :: Object Enemy where
     position (EnemyMarine s) = s.pos
     position (EnemyDrone s) = s.pos
     scroll offset (EnemyMarine s) = EnemyMarine $ s { pos = { x: s.pos.x + offset, y: s.pos.y }, gun = scroll offset s.gun }
-    scroll offset (EnemyDrone s) = EnemyDrone $ s { pos = { x: s.pos.x + offset, y: s.pos.y }, gun = scroll offset s.gun }
+    scroll offset (EnemyDrone s) = EnemyDrone $ s { 
+        pos = { x: s.pos.x + offset, y: s.pos.y }, 
+        rightLimit = { x: s.rightLimit.x + offset, y: s.rightLimit.y },
+        leftLimit = { x: s.leftLimit.x + offset, y: s.leftLimit.y },
+        gun = scroll offset s.gun 
+    }
 
 instance objectDrawEnemy :: ObjectDraw Enemy where
     draw o@(EnemyMarine m) = do 

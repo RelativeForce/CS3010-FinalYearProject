@@ -6,6 +6,7 @@ import Assets.Sprites as S
 import Constants (mapTileSize)
 import Data.Goal (Goal(..))
 import Data.Gun (defaultShotgunGun, defaultAssaultRifleGun)
+import Data.Enemy (Enemy, defaultDroneEnemy)
 import Emo8.Types (Position)
 
 toTilePosition :: Int -> Int -> Position
@@ -37,3 +38,14 @@ healthPack pos = HealthPack {
     pos: pos,
     sprite: S.healthPack
 }
+
+droneRange :: Int -> Int -> Int -> { leftLimit :: Position, rightLimit :: Position }
+droneRange xBlock yBlock range = { leftLimit : leftLimit, rightLimit: rightLimit }
+    where
+        leftLimit = toTilePosition xBlock yBlock
+        rightLimit = toTilePosition (xBlock + range) yBlock
+
+drone :: Int -> Int -> Int -> Enemy
+drone xBlock yBlock range = defaultDroneEnemy 1 l r
+    where
+        { leftLimit : l, rightLimit: r } = droneRange xBlock yBlock range
