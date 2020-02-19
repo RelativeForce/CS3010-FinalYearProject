@@ -31,8 +31,8 @@ goals = [
     -- Pickups
     shotgunSpawn $ toTilePosition 77 4,
     healthPack $ toTilePosition 64 5, 
-    healthPack $ toTilePosition 141 8,
-    assaultRifleSpawn $ toTilePosition 106 2, 
+    healthPack $ toTilePosition 141 10,
+    assaultRifleSpawn $ toTilePosition 143 2, 
 
     -- Chopper
     chopper chopperPosition, 
