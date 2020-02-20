@@ -3,16 +3,14 @@ module Data.Enemy.BigBertha.MortarPhase where
 import Prelude
 
 import Assets.Sprites as S
-import Collision (adjustX)
-import Constants (gravity)
-import Class.Object (size)
-import Data.Bullet (Bullet)
-import Data.Gun (Gun, defaultPistolGun, fireAndUpdateGun, setPositionAndRotation, updateGun)
+import Constants (gravity, mapTileSize)
+import Data.Bullet (Bullet, newArcBullet)
 import Data.Player (Player(..))
 import Emo8.Data.Sprite (incrementFrame)
-import Data.Int (floor)
-import Emo8.Types (Position, Sprite, Velocity, X, Deg)
-import Emo8.Utils (updatePosition, distanceBetween, vectorTo, angle, xComponent, yComponent)
+import Data.Int (floor, toNumber)
+import Emo8.Types (Position, Sprite, Velocity)
+import Math (sqrt, abs)
+import Emo8.Utils (distanceBetween)
 
 type MortarPhase = { 
     pos :: Position,
@@ -24,150 +22,85 @@ type MortarPhase = {
 }
 
 mortarPhaseAgroRange :: Number
-mortarPhaseAgroRange = 200
+mortarPhaseAgroRange = 200.0
+
+bigBerthaSpeed :: Number
+bigBerthaSpeed = 1.0
+
+mortarApex :: Number
+mortarApex = toNumber $ mapTileSize.height * 12
+
+horizontalVelocity :: Player -> MortarPhase -> Number
+horizontalVelocity (Player p) mortarPhase = (d * sqrt g) / ((sqrt (2.0 * h)) + (sqrt (2.0 * l)))
+    where
+        d = abs $ toNumber $ mortarPhase.pos.x - p.pos.x
+        h = mortarApex
+        l = abs $ toNumber $ mortarPhase.pos.y - p.pos.y
+        g = gravity
+
+verticalVelocity :: Number
+verticalVelocity = sqrt $ 2.0 * gravity * mortarApex
 
 playerInRange :: Player -> MortarPhase -> Boolean
 playerInRange (Player p) mortarPhase = mortarPhaseAgroRange > distanceBetween p.pos mortarPhase.pos
 
+canFire :: Player -> MortarPhase -> Boolean
+canFire p mortarPhase = mortarPhase.shotCoolDown == 0 && playerInRange p mortarPhase
 
-
-
-updateGunBasedOnRangeToPlayer :: Gun -> Boolean -> { gun :: Gun, bullets :: Array Bullet }
-updateGunBasedOnRangeToPlayer g shouldFire = if shouldFire
-    then fireAndUpdateGun g
-    else { gun: updateGun g, bullets: [] }
-
-
-updateMortarPhase :: (MortarPhase -> Boolean) -> X -> Player -> MortarPhase -> { enemy :: MortarPhase, bullets :: Array Bullet }
-updateMortarPhase collisionCheck distance p mortarPhase = { enemy: newMortarPhase, bullets: newBullets } 
-    where
-        shouldFire = playerInRange p mortarPhase
-        { gun: potentialyFiredGun, bullets: newBullets } = updateGunBasedOnRangeToPlayer mortarPhase.gun shouldFire
-        newVelocityBasedOnGravity = updateVelocity mortarPhase.appear mortarPhase.velocity
-        newPositionBasedOnVelocity = updatePosition mortarPhase.pos newVelocityBasedOnGravity
-        mortarPhaseBasedOnVelocity = {
-            pos: newPositionBasedOnVelocity,
-            sprite: incrementFrame mortarPhase.sprite,
-            appear: mortarPhase.appear,
-            velocity: newVelocityBasedOnGravity,
-            gun: potentialyFiredGun,
-            health: mortarPhase.health
-        }
-        mortarPhaseBasedOnMapCollision = collideMortarPhase mortarPhase.pos mortarPhaseBasedOnVelocity distance collisionCheck
-        mortarPhaseWithAdjustedVelocity = adjustVelocity mortarPhase.pos mortarPhaseBasedOnMapCollision
-        gunAngle = angleToPlayer p mortarPhaseWithAdjustedVelocity
-        newMortarPhase = adjustGunPosition mortarPhaseWithAdjustedVelocity gunAngle
-
-adjustGunPosition :: MortarPhase -> Deg -> MortarPhase
-adjustGunPosition m a = marinWithAdjustedGun
+bulletVelocity :: Player -> MortarPhase -> Velocity
+bulletVelocity p mortarPhase = { xSpeed: xSpeed, ySpeed: ySpeed }
     where 
-        radius = 10.0
-        gunSize = size m.gun
-        gunPosX = m.pos.x + (m.sprite.size.width / 2) + floor (xComponent a radius)
-        gunPosY = m.pos.y + (m.sprite.size.height / 2) - gunSize.height - (floor ((yComponent a radius) / 2.0))
-        gunPos = { x: gunPosX, y: gunPosY }
-        marinWithAdjustedGun = m {
-            gun = setPositionAndRotation m.gun gunPos a
-        }
+        xSpeed = - horizontalVelocity p mortarPhase
+        ySpeed = verticalVelocity
 
-updateVelocity :: MortarPhaseAppear -> Velocity -> Velocity
-updateVelocity appear currentVelocity = { xSpeed: xSpeed, ySpeed: ySpeed }
+updateMortarPhase :: Player -> MortarPhase -> { phase :: MortarPhase, bullets :: Array Bullet }
+updateMortarPhase p mortarPhase = { phase: newMortarPhase, bullets: newBullets } 
     where
-        xSpeed = velocityXBasedOnAppearance appear 
-        ySpeed = currentVelocity.ySpeed + gravity
+        shouldFire = canFire p mortarPhase
+        newBullets = if shouldFire then [] else [ newArcBullet mortarPhase.pos (bulletVelocity p mortarPhase) ]
+        movedMortarPhase = updatePositionAndVelocity mortarPhase
+        newMortarPhase = movedMortarPhase {
+            sprite = incrementFrame mortarPhase.sprite,
+            shotCoolDown = if shouldFire then movedMortarPhase.shotCoolDown else 20
+        }
 
-adjustVelocity :: Position -> MortarPhase -> MortarPhase
-adjustVelocity oldPos new = new { 
-    velocity = {
-        xSpeed: xSpeed,
-        ySpeed: ySpeed
-    }   
-} 
+updateVelocity :: Position -> Position -> Position -> Velocity -> Velocity
+updateVelocity leftLimit rightLimit currentPosition currentVelocity = { xSpeed: xSpeed, ySpeed: ySpeed }
     where
-        currentVelocity = new.velocity
-        newPos = new.pos
-        xSpeed = if oldPos.x == newPos.x
-            then 0.0
-            else currentVelocity.xSpeed
-        ySpeed = if oldPos.y == newPos.y
-            then 0.0
-            else currentVelocity.ySpeed
+        newX = currentPosition.x + floor currentVelocity.xSpeed
+        newY = currentPosition.y + floor currentVelocity.ySpeed
+        xSpeed = if newX < leftLimit.x then bigBerthaSpeed else if newX > rightLimit.x then -bigBerthaSpeed else currentVelocity.xSpeed
+        ySpeed = if newY < leftLimit.y then bigBerthaSpeed else if newY > rightLimit.y then -bigBerthaSpeed else currentVelocity.ySpeed
 
-velocityXBasedOnAppearance :: MortarPhaseAppear -> Number
-velocityXBasedOnAppearance appear = case appear of
-    WalkingLeft -> -mortarPhaseWalkSpeed
-    WalkingRight -> mortarPhaseWalkSpeed
-    Standing -> 0.0 
+updatePosition :: Position -> Position -> Position -> Velocity -> Position
+updatePosition leftLimit rightLimit currentPosition currentVelocity = { x: x, y: y }
+    where
+        newX = currentPosition.x + floor currentVelocity.xSpeed
+        newY = currentPosition.y + floor currentVelocity.ySpeed
+        x = if newX < leftLimit.x then leftLimit.x else if newX > rightLimit.x then rightLimit.x else newX
+        y = if newY < leftLimit.y then leftLimit.y else if newY > rightLimit.y then rightLimit.y else newY
 
-reverseDirection :: MortarPhase -> MortarPhase
-reverseDirection m = m {
-    sprite = case newAppear of
-        WalkingLeft -> S.mortarPhaseLeft
-        WalkingRight ->  S.mortarPhaseRight
-        Standing -> S.mortarPhaseStanding,
-    appear = newAppear,
-    velocity = {
-        xSpeed: velocityXBasedOnAppearance newAppear,
-        ySpeed: m.velocity.ySpeed
-    }
-}
-    where 
-        newAppear = case m.appear of
-            WalkingLeft -> WalkingRight
-            WalkingRight -> WalkingLeft
-            Standing -> Standing
+updatePositionAndVelocity :: MortarPhase -> MortarPhase
+updatePositionAndVelocity mortarPhase = mortarPhase { pos = newPos, velocity = newVelocity }
+    where
+        newPos = updatePosition mortarPhase.leftLimit mortarPhase.rightLimit mortarPhase.pos mortarPhase.velocity
+        newVelocity = updateVelocity mortarPhase.leftLimit mortarPhase.rightLimit mortarPhase.pos mortarPhase.velocity
 
-collideMortarPhase :: Position -> MortarPhase -> X -> (MortarPhase -> Boolean) -> MortarPhase
-collideMortarPhase oldPos newMortarPhase distance collisionCheck = collidedMortarPhase { pos = collidedPos }
-    where 
-        newPos = newMortarPhase.pos
-        size = newMortarPhase.sprite.size
-        movingLeft = newPos.x < oldPos.x
-        movingRight = newPos.x > oldPos.x
-        xChangePlayer = newMortarPhase { 
-            pos = { 
-                x: newPos.x, 
-                y: oldPos.y 
-            }
-        }
-        yChangePlayerLeft = newMortarPhase { 
-            pos = { 
-                x: oldPos.x - size.width, 
-                y: newPos.y 
-            }
-        }
-        yChangePlayerRight = newMortarPhase { 
-            pos = { 
-                x: oldPos.x + size.width, 
-                y: newPos.y 
-            }
-        }
-        xCollide = collisionCheck xChangePlayer
-        yCollideLeft = collisionCheck yChangePlayerLeft
-        yCollideRight = collisionCheck yChangePlayerRight
-        shouldReverse = xCollide || (movingLeft && not yCollideLeft) || (movingRight && not yCollideRight)
-        collidedPos = if shouldReverse
-            then { 
-                x: adjustX oldPos.x newPos.x distance size.width, 
-                y: oldPos.y 
-            }
-            else { 
-                x: newPos.x, 
-                y: oldPos.y 
-            } 
-        collidedMortarPhase = if shouldReverse 
-            then (reverseDirection newMortarPhase) 
-            else newMortarPhase
+ensureLeftLimit :: Position -> Position -> Position
+ensureLeftLimit leftLimit rightLimit  = if leftLimit.x < rightLimit.x then leftLimit else rightLimit
 
-defaultMortarPhase :: Int -> Position -> MortarPhase
-defaultMortarPhase mortarPhaseHealth pos = {
-    pos: pos,
-    sprite: S.mortarPhaseLeft,
-    appear: WalkingLeft,
+ensureRightLimit :: Position -> Position -> Position
+ensureRightLimit leftLimit rightLimit  = if leftLimit.x > rightLimit.x then leftLimit else rightLimit
+
+defaultMortarPhase :: Position -> Position -> MortarPhase
+defaultMortarPhase leftLimit rightLimit = {
+    pos: leftLimit,
+    leftLimit: ensureLeftLimit leftLimit rightLimit,
+    rightLimit: ensureRightLimit leftLimit rightLimit,
+    sprite: S.droneRight,
     velocity: {
-        xSpeed: 0.0,
+        xSpeed: bigBerthaSpeed,
         ySpeed: 0.0
     },
-    gun: defaultPistolGun true pos 180,
-    health: mortarPhaseHealth
+    shotCoolDown: 0
 }
