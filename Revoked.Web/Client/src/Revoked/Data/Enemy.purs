@@ -2,8 +2,9 @@ module Data.Enemy where
 
 import Prelude
 
-import Class.Object (class ObjectDraw, class Object, class MortalEntity, position, draw, scroll)
+import Class.Object (class ObjectDraw, class Object, class MortalEntity, position, draw, scroll, size)
 import Data.Bullet (Bullet)
+import Data.Enemy.BigBertha (BigBertha, defaultBigBertha, updateBigBertha, damageBigBertha)
 import Data.Enemy.Drone (Drone, defaultDrone, updateDrone)
 import Data.Enemy.Marine (Marine, updateMarine, defaultMarine)
 import Data.Helper (drawHealth)
@@ -13,13 +14,16 @@ import Emo8.Types (Position, Score, X)
 
 data Enemy = 
     EnemyMarine Marine |
-    EnemyDrone Drone
+    EnemyDrone Drone |
+    EnemyBigBertha BigBertha
 
 instance objectEnemy :: Object Enemy where
     size (EnemyMarine s) = s.sprite.size
     size (EnemyDrone s) = s.sprite.size
+    size (EnemyBigBertha s) = size s.phase
     position (EnemyMarine s) = s.pos
     position (EnemyDrone s) = s.pos
+    position (EnemyBigBertha s) = position s.phase
     scroll offset (EnemyMarine s) = EnemyMarine $ s { pos = { x: s.pos.x + offset, y: s.pos.y }, gun = scroll offset s.gun }
     scroll offset (EnemyDrone s) = EnemyDrone $ s { 
         pos = { x: s.pos.x + offset, y: s.pos.y }, 
@@ -27,6 +31,7 @@ instance objectEnemy :: Object Enemy where
         leftLimit = { x: s.leftLimit.x + offset, y: s.leftLimit.y },
         gun = scroll offset s.gun 
     }
+    scroll offset (EnemyBigBertha s) = EnemyBigBertha $ s { phase = scroll offset s.phase }
 
 instance objectDrawEnemy :: ObjectDraw Enemy where
     draw o@(EnemyMarine m) = do 
@@ -37,28 +42,39 @@ instance objectDrawEnemy :: ObjectDraw Enemy where
         draw m.gun
         drawSprite m.sprite (position o).x (position o).y
         drawHealth o
+    draw o@(EnemyBigBertha m) = do
+        draw m.phase
+        drawHealth o
 
 instance mortalEntityPlayer :: MortalEntity Enemy where
     health (EnemyMarine m) = m.health
     health (EnemyDrone m) = m.health
+    health (EnemyBigBertha m) = m.health
     damage (EnemyMarine m) healthLoss = EnemyMarine $ m { health = m.health - healthLoss }
     damage (EnemyDrone m) healthLoss = EnemyDrone $ m { health = m.health - healthLoss }
+    damage (EnemyBigBertha m) healthLoss = EnemyBigBertha $ damageBigBertha m healthLoss
     heal (EnemyMarine m) healthBonus = EnemyMarine $ m { health = m.health + healthBonus }
     heal (EnemyDrone m) healthBonus = EnemyDrone $ m { health = m.health + healthBonus }
+    heal (EnemyBigBertha m) healthBonus = EnemyBigBertha $ m { health = m.health + healthBonus }
 
 enemyToScore :: Enemy -> Score
 enemyToScore (EnemyMarine s) = 9
 enemyToScore (EnemyDrone s) = 15
+enemyToScore (EnemyBigBertha s) = 100
 
 updateEnemy :: (Enemy -> Boolean) -> X -> Player -> Enemy -> { enemy :: Enemy, bullets :: Array Bullet }
 updateEnemy collisionCheck distance playerObject (EnemyMarine marine) = (toEnemyAndBullets (EnemyMarine)) $ updateMarine (toMarineCollision collisionCheck) distance playerObject marine
-updateEnemy collisionCheck distance playerObject (EnemyDrone marine) = (toEnemyAndBullets (EnemyDrone)) $ updateDrone distance playerObject marine
+updateEnemy collisionCheck distance playerObject (EnemyDrone drone) = (toEnemyAndBullets (EnemyDrone)) $ updateDrone distance playerObject drone
+updateEnemy collisionCheck distance playerObject (EnemyBigBertha bigBertha) = (toEnemyAndBullets (EnemyBigBertha)) $ updateBigBertha playerObject bigBertha
 
 defaultMarineEnemy :: Int -> Position -> Enemy
 defaultMarineEnemy initialHealth pos = EnemyMarine $ defaultMarine initialHealth pos
 
 defaultDroneEnemy :: Int -> Position -> Position -> Enemy
-defaultDroneEnemy droneHealth leftLimit rightLimit = EnemyDrone $ defaultDrone droneHealth leftLimit rightLimit
+defaultDroneEnemy initialHealth leftLimit rightLimit = EnemyDrone $ defaultDrone initialHealth leftLimit rightLimit
+
+defaultBigBerthaEnemy :: Int -> Position -> Position -> Enemy
+defaultBigBerthaEnemy initialHealth leftLimit rightLimit = EnemyBigBertha $ defaultBigBertha initialHealth leftLimit rightLimit
 
 toMarineCollision :: (Enemy -> Boolean) -> Marine -> Boolean
 toMarineCollision check = check <<< EnemyMarine

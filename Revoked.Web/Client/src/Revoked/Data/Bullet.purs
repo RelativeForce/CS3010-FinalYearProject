@@ -43,11 +43,11 @@ updateBullet (LinearBullet b) = LinearBullet $ b { pos = newPos, sprite = newSpr
         newSprite = incrementFrame b.sprite
 updateBullet (ArcBullet b) = ArcBullet $ b { pos = newPos, sprite = newSprite, velocity = newVelocity }
     where
-        newVelocity = b.velocity { ySpeed = b.velocity.ySpeed + gravity }
         newPos = {
-            x: b.pos.x + floor newVelocity.xSpeed,
-            y: b.pos.y + floor newVelocity.ySpeed
+            x: b.pos.x + floor b.velocity.xSpeed,
+            y: b.pos.y + floor b.velocity.ySpeed
         } 
+        newVelocity = b.velocity { ySpeed = b.velocity.ySpeed + gravity }
         newSprite = incrementFrame b.sprite
 
 newLinearBullet :: Position -> Velocity -> Bullet

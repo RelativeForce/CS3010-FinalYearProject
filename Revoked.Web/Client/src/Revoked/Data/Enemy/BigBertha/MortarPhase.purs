@@ -22,7 +22,7 @@ type MortarPhase = {
 }
 
 mortarPhaseAgroRange :: Number
-mortarPhaseAgroRange = 200.0
+mortarPhaseAgroRange = 400.0
 
 bigBerthaSpeed :: Number
 bigBerthaSpeed = 1.0
@@ -31,15 +31,15 @@ mortarApex :: Number
 mortarApex = toNumber $ mapTileSize.height * 12
 
 horizontalVelocity :: Player -> MortarPhase -> Number
-horizontalVelocity (Player p) mortarPhase = (d * sqrt g) / ((sqrt (2.0 * h)) + (sqrt (2.0 * l)))
+horizontalVelocity (Player p) mortarPhase = (d * sqrt g) / (2.0 * ((sqrt (2.0 * h)) + (sqrt (2.0 * l))))
     where
         d = abs $ toNumber $ mortarPhase.pos.x - p.pos.x
         h = mortarApex
         l = abs $ toNumber $ mortarPhase.pos.y - p.pos.y
-        g = gravity
+        g = abs gravity
 
 verticalVelocity :: Number
-verticalVelocity = sqrt $ 2.0 * gravity * mortarApex
+verticalVelocity = sqrt $ 2.0 * (abs gravity) * mortarApex
 
 playerInRange :: Player -> MortarPhase -> Boolean
 playerInRange (Player p) mortarPhase = mortarPhaseAgroRange > distanceBetween p.pos mortarPhase.pos
@@ -53,15 +53,18 @@ bulletVelocity p mortarPhase = { xSpeed: xSpeed, ySpeed: ySpeed }
         xSpeed = - horizontalVelocity p mortarPhase
         ySpeed = verticalVelocity
 
+coolDownShot :: Int -> Int
+coolDownShot cooldown = if (cooldown - 1) < 0 then  0 else cooldown - 1
+
 updateMortarPhase :: Player -> MortarPhase -> { phase :: MortarPhase, bullets :: Array Bullet }
 updateMortarPhase p mortarPhase = { phase: newMortarPhase, bullets: newBullets } 
     where
         shouldFire = canFire p mortarPhase
-        newBullets = if shouldFire then [] else [ newArcBullet mortarPhase.pos (bulletVelocity p mortarPhase) ]
+        newBullets = if shouldFire then [ newArcBullet mortarPhase.pos (bulletVelocity p mortarPhase) ] else []
         movedMortarPhase = updatePositionAndVelocity mortarPhase
         newMortarPhase = movedMortarPhase {
             sprite = incrementFrame mortarPhase.sprite,
-            shotCoolDown = if shouldFire then movedMortarPhase.shotCoolDown else 20
+            shotCoolDown = if shouldFire then 20 else coolDownShot movedMortarPhase.shotCoolDown
         }
 
 updateVelocity :: Position -> Position -> Position -> Velocity -> Velocity

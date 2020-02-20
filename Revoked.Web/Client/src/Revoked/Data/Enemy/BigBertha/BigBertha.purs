@@ -2,21 +2,52 @@ module Data.Enemy.BigBertha where
 
 import Prelude
 
+
+import Class.Object (class ObjectDraw, class Object)
 import Data.Bullet (Bullet)
 import Data.Player (Player)
 import Emo8.Types (Position)
+import Emo8.Action.Draw (drawSprite)
 import Data.Enemy.BigBertha.MortarPhase (MortarPhase, updateMortarPhase, defaultMortarPhase)
 
 data Phase = 
     Phase1 MortarPhase | 
-    Phase2 Int | 
-    Phase3 Int
+    Phase2 MortarPhase | 
+    Phase3 MortarPhase
 
 type BigBertha = { 
     health :: Int,
     phase :: Phase,
     immuneCooldown :: Int
 }
+
+instance objectPhase :: Object Phase where
+    size (Phase1 s) = s.sprite.size
+    size (Phase2 s) = s.sprite.size
+    size (Phase3 s) = s.sprite.size
+    position (Phase1 s) = s.pos
+    position (Phase2 s) = s.pos
+    position (Phase3 s) = s.pos
+    scroll offset (Phase1 s) = Phase1 $ s { 
+        pos = { x: s.pos.x + offset, y: s.pos.y }, 
+        rightLimit = { x: s.rightLimit.x + offset, y: s.rightLimit.y },
+        leftLimit = { x: s.leftLimit.x + offset, y: s.leftLimit.y }
+    }
+    scroll offset (Phase2 s) = Phase2 $ s { 
+        pos = { x: s.pos.x + offset, y: s.pos.y }, 
+        rightLimit = { x: s.rightLimit.x + offset, y: s.rightLimit.y },
+        leftLimit = { x: s.leftLimit.x + offset, y: s.leftLimit.y }
+    }
+    scroll offset (Phase3 s) = Phase3 $ s { 
+        pos = { x: s.pos.x + offset, y: s.pos.y }, 
+        rightLimit = { x: s.rightLimit.x + offset, y: s.rightLimit.y },
+        leftLimit = { x: s.leftLimit.x + offset, y: s.leftLimit.y }
+    }
+
+instance objectDrawPhase :: ObjectDraw Phase where
+    draw o@(Phase1 m) = drawSprite m.sprite m.pos.x m.pos.y
+    draw o@(Phase2 m) = drawSprite m.sprite m.pos.x m.pos.y
+    draw o@(Phase3 m) = drawSprite m.sprite m.pos.x m.pos.y
 
 transitionPhase :: BigBertha -> BigBertha
 transitionPhase bb = bb { phase = phase, immuneCooldown = immuneCooldown }
@@ -47,17 +78,18 @@ healthGate (Phase2 _) = 5
 healthGate (Phase3 _) = 0
 
 nextPhase :: Phase -> Phase
-nextPhase (Phase1 p) = phase2
-nextPhase _ = phase3
+nextPhase (Phase1 p) = phase2 p.leftLimit p.rightLimit
+nextPhase (Phase2 p) = phase3 p.leftLimit p.rightLimit
+nextPhase (Phase3 p) = phase1 p.leftLimit p.rightLimit
 
 phase1 :: Position -> Position -> Phase
 phase1 leftLimit rightLimit = Phase1 $ defaultMortarPhase leftLimit rightLimit
 
-phase2 :: Phase
-phase2 = Phase2 0
+phase2 :: Position -> Position -> Phase
+phase2 leftLimit rightLimit = Phase2 $ defaultMortarPhase leftLimit rightLimit
 
-phase3 :: Phase
-phase3 = Phase3 1
+phase3 :: Position -> Position -> Phase
+phase3 leftLimit rightLimit = Phase3 $ defaultMortarPhase leftLimit rightLimit
 
 updateBigBertha :: Player -> BigBertha -> { enemy :: BigBertha, bullets :: Array Bullet }
 updateBigBertha p bigBertha = { enemy: newBigBertha, bullets: newBullets } 
@@ -67,14 +99,17 @@ updateBigBertha p bigBertha = { enemy: newBigBertha, bullets: newBullets }
             then nextPhase bigBertha.phase 
             else updatedPhase
         newBigBertha = bigBertha {
-            immuneCooldown = if (bigBertha.immuneCooldown - 1 < 0) then bigBertha.immuneCooldown - 1 else 0,
+            immuneCooldown = coolDownImmunity bigBertha.immuneCooldown,
             phase = newPhase
         }
 
+coolDownImmunity :: Int -> Int
+coolDownImmunity immunity = if (immunity - 1) < 0 then 0 else immunity - 1
+
 updatePhase :: Player -> Phase -> { phase :: Phase, bullets :: Array Bullet }
 updatePhase p (Phase1 mortarPhase) = toPhaseAndBullets (Phase1) (updateMortarPhase p mortarPhase)
-updatePhase p (Phase2 a) = { phase: Phase2 a, bullets: [] }
-updatePhase p (Phase3 b) = { phase: Phase3 b, bullets: [] }
+updatePhase p (Phase2 mortarPhase) = toPhaseAndBullets (Phase2) (updateMortarPhase p mortarPhase)
+updatePhase p (Phase3 mortarPhase) = toPhaseAndBullets (Phase3) (updateMortarPhase p mortarPhase)
 
 toPhaseAndBullets :: forall a. (a -> Phase) -> { phase :: a, bullets :: Array Bullet } -> { phase :: Phase, bullets :: Array Bullet }
 toPhaseAndBullets mapper r = { phase: mapper r.phase, bullets: r.bullets }

@@ -124,6 +124,7 @@ drawScore ps = do
 enemyToParticle :: Enemy -> Particle
 enemyToParticle (EnemyMarine m) = defaultGhostParticle m.pos
 enemyToParticle (EnemyDrone m) = defaultExplosionParticle m.pos
+enemyToParticle (EnemyBigBertha m) = defaultExplosionParticle $ position m.phase
 
 drawPlayerShotCount :: Player -> Draw Unit
 drawPlayerShotCount p = do
