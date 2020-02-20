@@ -11,12 +11,10 @@ playerInRange :: Player -> Position -> Boolean
 playerInRange (Player p) pos = bigBerthaAgroRange > distanceBetween p.pos pos
 
 updateVelocity :: Position -> Position -> Position -> Velocity -> Velocity
-updateVelocity leftLimit rightLimit currentPosition currentVelocity = { xSpeed: xSpeed, ySpeed: ySpeed }
+updateVelocity leftLimit rightLimit currentPosition currentVelocity = { xSpeed: xSpeed, ySpeed: 0.0 }
     where
         newX = currentPosition.x + floor currentVelocity.xSpeed
-        newY = currentPosition.y + floor currentVelocity.ySpeed
-        xSpeed = if newX < leftLimit.x then bigBerthaSpeed else if newX > rightLimit.x then -bigBerthaSpeed else currentVelocity.xSpeed
-        ySpeed = if newY < leftLimit.y then bigBerthaSpeed else if newY > rightLimit.y then -bigBerthaSpeed else currentVelocity.ySpeed
+        xSpeed = if newX < leftLimit.x then 0.0 else if newX > rightLimit.x then -bigBerthaSpeed else currentVelocity.xSpeed
 
 updatePosition :: Position -> Position -> Position -> Velocity -> Position
 updatePosition leftLimit rightLimit currentPosition currentVelocity = { x: x, y: y }

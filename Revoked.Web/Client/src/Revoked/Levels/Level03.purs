@@ -64,7 +64,7 @@ enemies = [
     drone 114 9 (-5),
     defaultMarineEnemy 1 $ toTilePosition 129 4,
     drone 135 12 (-5),
-    defaultBigBerthaEnemy (toTilePosition 100 2) (toTilePosition 182 2)
+    defaultBigBerthaEnemy (toTilePosition 96 2) (toTilePosition 182 2)
 ]
 
 chopperPosition :: Position

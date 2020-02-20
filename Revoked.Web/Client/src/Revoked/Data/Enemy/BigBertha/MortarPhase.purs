@@ -25,7 +25,7 @@ mortarApex :: Number
 mortarApex = toNumber $ mapTileSize.height * 12
 
 shotCooldown :: Int
-shotCooldown = 20
+shotCooldown = 10
 
 horizontalVelocity :: Player -> MortarPhase -> Number
 horizontalVelocity (Player p) mortarPhase = (d * g) / ((2.0 * g * sqrt (2.0 * h)) - sqrt (h + l))
