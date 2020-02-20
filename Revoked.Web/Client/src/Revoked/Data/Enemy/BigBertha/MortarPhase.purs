@@ -49,7 +49,10 @@ bulletVelocity p mortarPhase = { xSpeed: xSpeed, ySpeed: ySpeed }
         ySpeed = verticalVelocity
 
 mortarPosition :: MortarPhase -> Position
-mortarPosition mortarPhase = mortarPhase.pos
+mortarPosition mortarPhase = {
+    x: mortarPhase.pos.x + 110,
+    y: mortarPhase.pos.y + 45
+}
 
 newShell :: Player -> MortarPhase -> Bullet
 newShell p mortarPhase = newArcBullet (mortarPosition mortarPhase) (bulletVelocity p mortarPhase)
@@ -76,7 +79,7 @@ defaultMortarPhase pos leftLimit rightLimit = {
     pos: pos,
     leftLimit: ensureLeftLimit leftLimit rightLimit,
     rightLimit: ensureRightLimit leftLimit rightLimit,
-    sprite: S.droneRight,
+    sprite: S.bigBerthaNormal,
     velocity: {
         xSpeed: bigBerthaSpeed,
         ySpeed: 0.0

@@ -56,8 +56,12 @@ transitionPhase :: BigBertha -> BigBertha
 transitionPhase bb = bb { phase = phase, immuneCooldown = immuneCooldown }
     where
         goToNext = shouldTransition bb  
-        phase = if goToNext then nextPhase bb.phase else bb.phase
-        immuneCooldown = if goToNext then bigBerthaImmunityCooldown else bb.immuneCooldown
+        phase = if goToNext 
+            then nextPhase bb.phase 
+            else bb.phase
+        immuneCooldown = if goToNext 
+            then bigBerthaImmunityCooldown 
+            else coolDownImmunity bb.immuneCooldown
 
 isImmune :: BigBertha -> Boolean
 isImmune bb = bb.immuneCooldown <= 0
@@ -70,10 +74,7 @@ damageBigBertha bb healthLoss = bb { health = newHealth }
         newHealth = if damageAppliedHealth < hg then hg else damageAppliedHealth
 
 shouldTransition :: BigBertha -> Boolean
-shouldTransition bb = isAtHealthGate && noImmuneCooldown
-    where
-        isAtHealthGate = bb.health == healthGate bb.phase
-        noImmuneCooldown = not $ isImmune bb
+shouldTransition bb = bb.health == healthGate bb.phase
 
 healthGate :: Phase -> Int
 healthGate (Phase1 _) = 10
@@ -98,13 +99,7 @@ updateBigBertha :: Player -> BigBertha -> { enemy :: BigBertha, bullets :: Array
 updateBigBertha p bigBertha = { enemy: newBigBertha, bullets: newBullets } 
     where
         { phase: updatedPhase, bullets: newBullets } = updatePhase p bigBertha.phase
-        newPhase = if shouldTransition bigBertha
-            then nextPhase bigBertha.phase 
-            else updatedPhase
-        newBigBertha = bigBertha {
-            immuneCooldown = coolDownImmunity bigBertha.immuneCooldown,
-            phase = newPhase
-        }
+        newBigBertha = transitionPhase $ bigBertha { phase = updatedPhase }
 
 coolDownImmunity :: Int -> Int
 coolDownImmunity immunity = if (immunity - 1) < 0 then 0 else immunity - 1
@@ -117,10 +112,10 @@ updatePhase p (Phase3 cannonPhase) = toPhaseAndBullets (Phase3) (updateCannonPha
 toPhaseAndBullets :: forall a. (a -> Phase) -> { phase :: a, bullets :: Array Bullet } -> { phase :: Phase, bullets :: Array Bullet }
 toPhaseAndBullets mapper r = { phase: mapper r.phase, bullets: r.bullets }
 
-defaultBigBertha :: Int -> Position -> Position -> BigBertha
-defaultBigBertha bigBerthaHealth leftLimit rightLimit = {
-    phase: phase1 leftLimit leftLimit rightLimit,
-    health: bigBerthaHealth,
+defaultBigBertha :: Position -> Position -> BigBertha
+defaultBigBertha leftLimit rightLimit = {
+    phase: phase1 rightLimit leftLimit rightLimit,
+    health: 15,
     immuneCooldown: 0
 }
         

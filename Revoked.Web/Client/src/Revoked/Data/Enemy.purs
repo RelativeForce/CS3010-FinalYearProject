@@ -73,8 +73,8 @@ defaultMarineEnemy initialHealth pos = EnemyMarine $ defaultMarine initialHealth
 defaultDroneEnemy :: Int -> Position -> Position -> Enemy
 defaultDroneEnemy initialHealth leftLimit rightLimit = EnemyDrone $ defaultDrone initialHealth leftLimit rightLimit
 
-defaultBigBerthaEnemy :: Int -> Position -> Position -> Enemy
-defaultBigBerthaEnemy initialHealth leftLimit rightLimit = EnemyBigBertha $ defaultBigBertha initialHealth leftLimit rightLimit
+defaultBigBerthaEnemy :: Position -> Position -> Enemy
+defaultBigBerthaEnemy leftLimit rightLimit = EnemyBigBertha $ defaultBigBertha leftLimit rightLimit
 
 toMarineCollision :: (Enemy -> Boolean) -> Marine -> Boolean
 toMarineCollision check = check <<< EnemyMarine

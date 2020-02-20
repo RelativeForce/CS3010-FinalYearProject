@@ -2,7 +2,7 @@ module Levels.Level03 where
 
 import Prelude
 import Emo8.Types (Position)
-import Data.Enemy (Enemy, defaultMarineEnemy)
+import Data.Enemy (Enemy, defaultMarineEnemy, defaultBigBerthaEnemy)
 import Emo8.Parse (RawMap(..))
 import Data.Goal (Goal)
 import Levels.Helper (toTilePosition, shotgunSpawn, assaultRifleSpawn, ladderSection, chopper, healthPack, drone)
@@ -32,7 +32,7 @@ goals = [
     shotgunSpawn $ toTilePosition 77 4,
     healthPack $ toTilePosition 64 5, 
     healthPack $ toTilePosition 141 10,
-    assaultRifleSpawn $ toTilePosition 143 2, 
+    assaultRifleSpawn $ toTilePosition 144 2, 
 
     -- Chopper
     chopper chopperPosition, 
@@ -63,7 +63,8 @@ enemies = [
     drone 93 11 7,
     drone 114 9 (-5),
     defaultMarineEnemy 1 $ toTilePosition 129 4,
-    drone 135 12 (-5)
+    drone 135 12 (-5),
+    defaultBigBerthaEnemy (toTilePosition 100 2) (toTilePosition 182 2)
 ]
 
 chopperPosition :: Position

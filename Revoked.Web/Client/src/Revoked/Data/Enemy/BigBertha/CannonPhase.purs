@@ -51,7 +51,10 @@ angleToPlayer :: Player -> CannonPhase -> Deg
 angleToPlayer (Player p) cannonPhase = angle $ vectorTo (machineGunPosition cannonPhase) p.pos
 
 machineGunPosition :: CannonPhase -> Position
-machineGunPosition cannonPhase = cannonPhase.pos
+machineGunPosition cannonPhase = {
+    x: cannonPhase.pos.x,
+    y: cannonPhase.pos.y + 40
+}
 
 newBullet :: Deg -> CannonPhase -> Bullet
 newBullet angle cannonPhase = nb
@@ -65,11 +68,11 @@ updateCannonPhase p cannonPhase = { phase: newCannonPhase, bullets: newBullets }
         shouldFire = canFire p cannonPhase
         newBullets = if shouldFire 
             then [ 
-                newBullet 170 cannonPhase,
-                newBullet 160 cannonPhase,
-                newBullet 180 cannonPhase,
-                newBullet 190 cannonPhase,
-                newBullet 200 cannonPhase
+                newBullet 159 cannonPhase,
+                newBullet 168 cannonPhase,
+                newBullet 178 cannonPhase,
+                newBullet 188 cannonPhase,
+                newBullet 198 cannonPhase
             ] 
             else []
         movedCannonPhase = updatePositionAndVelocity cannonPhase
@@ -91,7 +94,7 @@ defaultCannonPhase pos leftLimit rightLimit = {
     pos: pos,
     leftLimit: ensureLeftLimit leftLimit rightLimit,
     rightLimit: ensureRightLimit leftLimit rightLimit,
-    sprite: S.droneRight,
+    sprite: S.bigBerthaNormal,
     offset: 0,
     velocity: {
         xSpeed: bigBerthaSpeed,

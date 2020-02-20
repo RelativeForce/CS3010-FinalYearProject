@@ -51,7 +51,10 @@ angleToPlayer :: Player -> MachineGunPhase -> Deg
 angleToPlayer (Player p) machineGunPhase = angle $ vectorTo (machineGunPosition machineGunPhase) p.pos
 
 machineGunPosition :: MachineGunPhase -> Position
-machineGunPosition machineGunPhase = machineGunPhase.pos
+machineGunPosition machineGunPhase = {
+    x: machineGunPhase.pos.x + 78,
+    y: machineGunPhase.pos.y + 27
+}
 
 newBullet :: Player -> MachineGunPhase -> Bullet
 newBullet p machineGunPhase = nb
@@ -84,7 +87,7 @@ defaultMachineGunPhase pos leftLimit rightLimit = {
     pos: pos,
     leftLimit: ensureLeftLimit leftLimit rightLimit,
     rightLimit: ensureRightLimit leftLimit rightLimit,
-    sprite: S.droneRight,
+    sprite: S.bigBerthaNormal,
     offset: 0,
     velocity: {
         xSpeed: bigBerthaSpeed,
