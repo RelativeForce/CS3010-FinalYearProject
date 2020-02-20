@@ -4,25 +4,23 @@ import Prelude
 import Constants (bigBerthaSpeed, bigBerthaAgroRange)
 import Data.Player (Player(..))
 import Data.Int (floor)
-import Emo8.Types (Position, Velocity)
+import Emo8.Types (Position, Velocity, X)
 import Emo8.Utils (distanceBetween)
 
 playerInRange :: Player -> Position -> Boolean
 playerInRange (Player p) pos = bigBerthaAgroRange > distanceBetween p.pos pos
 
-updateVelocity :: Position -> Position -> Position -> Velocity -> Velocity
-updateVelocity leftLimit rightLimit currentPosition currentVelocity = { xSpeed: xSpeed, ySpeed: 0.0 }
+updateVelocity :: X -> Position -> Position -> Position -> Velocity -> Velocity
+updateVelocity distance leftLimit rightLimit currentPosition currentVelocity = { xSpeed: xSpeed, ySpeed: 0.0 }
     where
         newX = currentPosition.x + floor currentVelocity.xSpeed
-        xSpeed = if newX < leftLimit.x then 0.0 else if newX > rightLimit.x then -bigBerthaSpeed else currentVelocity.xSpeed
+        xSpeed = if (newX + distance) < leftLimit.x then 0.0 else if (newX + distance) > rightLimit.x then -bigBerthaSpeed else currentVelocity.xSpeed
 
-updatePosition :: Position -> Position -> Position -> Velocity -> Position
-updatePosition leftLimit rightLimit currentPosition currentVelocity = { x: x, y: y }
+updatePosition :: X -> Position -> Position -> Position -> Velocity -> Position
+updatePosition distance leftLimit rightLimit currentPosition currentVelocity = { x: x, y: currentPosition.y }
     where
         newX = currentPosition.x + floor currentVelocity.xSpeed
-        newY = currentPosition.y + floor currentVelocity.ySpeed
-        x = if newX < leftLimit.x then leftLimit.x else if newX > rightLimit.x then rightLimit.x else newX
-        y = if newY < leftLimit.y then leftLimit.y else if newY > rightLimit.y then rightLimit.y else newY
+        x = if (newX + distance) < leftLimit.x then currentPosition.x else if (newX + distance) > rightLimit.x then currentPosition.x else newX
 
 ensureLeftLimit :: Position -> Position -> Position
 ensureLeftLimit leftLimit rightLimit  = if leftLimit.x < rightLimit.x then leftLimit else rightLimit

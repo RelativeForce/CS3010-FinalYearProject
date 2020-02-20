@@ -8,7 +8,7 @@ import Data.Bullet (Bullet, newArcBullet)
 import Data.Player (Player(..))
 import Emo8.Data.Sprite (incrementFrame)
 import Data.Int (toNumber)
-import Emo8.Types (Position, Sprite, Velocity)
+import Emo8.Types (Position, Sprite, Velocity, X)
 import Math (sqrt, abs)
 import Data.Enemy.BigBertha.Helper (playerInRange, updateVelocity, updatePosition, ensureLeftLimit, ensureRightLimit, coolDownShot)
 
@@ -57,22 +57,22 @@ mortarPosition mortarPhase = {
 newShell :: Player -> MortarPhase -> Bullet
 newShell p mortarPhase = newArcBullet (mortarPosition mortarPhase) (bulletVelocity p mortarPhase)
 
-updateMortarPhase :: Player -> MortarPhase -> { phase :: MortarPhase, bullets :: Array Bullet }
-updateMortarPhase p mortarPhase = { phase: newMortarPhase, bullets: newBullets } 
+updateMortarPhase :: X -> Player -> MortarPhase -> { phase :: MortarPhase, bullets :: Array Bullet }
+updateMortarPhase distance p mortarPhase = { phase: newMortarPhase, bullets: newBullets } 
     where
         shouldFire = canFire p mortarPhase
         newBullets = if shouldFire then [ newShell p mortarPhase ] else []
-        movedMortarPhase = updatePositionAndVelocity mortarPhase
+        movedMortarPhase = updatePositionAndVelocity distance mortarPhase
         newMortarPhase = movedMortarPhase {
             sprite = incrementFrame mortarPhase.sprite,
             shotCoolDown = if shouldFire then shotCooldown else coolDownShot movedMortarPhase.shotCoolDown
         }
 
-updatePositionAndVelocity :: MortarPhase -> MortarPhase
-updatePositionAndVelocity mortarPhase = mortarPhase { pos = newPos, velocity = newVelocity }
+updatePositionAndVelocity :: X -> MortarPhase -> MortarPhase
+updatePositionAndVelocity distance mortarPhase = mortarPhase { pos = newPos, velocity = newVelocity }
     where
-        newPos = updatePosition mortarPhase.leftLimit mortarPhase.rightLimit mortarPhase.pos mortarPhase.velocity
-        newVelocity = updateVelocity mortarPhase.leftLimit mortarPhase.rightLimit mortarPhase.pos mortarPhase.velocity
+        newPos = updatePosition distance mortarPhase.leftLimit mortarPhase.rightLimit mortarPhase.pos mortarPhase.velocity
+        newVelocity = updateVelocity distance mortarPhase.leftLimit mortarPhase.rightLimit mortarPhase.pos mortarPhase.velocity
 
 defaultMortarPhase :: Position -> Position -> Position -> MortarPhase
 defaultMortarPhase pos leftLimit rightLimit = {

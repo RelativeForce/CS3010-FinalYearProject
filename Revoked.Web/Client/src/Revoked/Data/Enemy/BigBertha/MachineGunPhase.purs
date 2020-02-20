@@ -7,7 +7,7 @@ import Constants (bulletSpeed, bigBerthaSpeed)
 import Data.Bullet (Bullet, newLinearBullet)
 import Data.Player (Player(..))
 import Emo8.Data.Sprite (incrementFrame)
-import Emo8.Types (Position, Sprite, Velocity, Deg)
+import Emo8.Types (Position, Sprite, Velocity, Deg, X)
 import Emo8.Utils (xComponent, yComponent, angle, vectorTo)
 import Data.Enemy.BigBertha.Helper (playerInRange, updateVelocity, updatePosition, ensureLeftLimit, ensureRightLimit, coolDownShot)
 
@@ -63,12 +63,12 @@ newBullet p machineGunPhase = nb
         velocity = bulletVelocity angle
         nb = newLinearBullet (machineGunPosition machineGunPhase) velocity
 
-updateMachineGunPhase :: Player -> MachineGunPhase -> { phase :: MachineGunPhase, bullets :: Array Bullet }
-updateMachineGunPhase p machineGunPhase = { phase: newMachineGunPhase, bullets: newBullets } 
+updateMachineGunPhase :: X -> Player -> MachineGunPhase -> { phase :: MachineGunPhase, bullets :: Array Bullet }
+updateMachineGunPhase distance p machineGunPhase = { phase: newMachineGunPhase, bullets: newBullets } 
     where
         shouldFire = canFire p machineGunPhase
         newBullets = if shouldFire then [ newBullet p machineGunPhase ] else []
-        movedMachineGunPhase = updatePositionAndVelocity machineGunPhase
+        movedMachineGunPhase = updatePositionAndVelocity distance machineGunPhase
         newOffset = if shouldFire then mod (machineGunPhase.offset + 1) maxOffset else machineGunPhase.offset
         newMachineGunPhase = movedMachineGunPhase {
             sprite = incrementFrame machineGunPhase.sprite,
@@ -76,11 +76,11 @@ updateMachineGunPhase p machineGunPhase = { phase: newMachineGunPhase, bullets: 
             shotCoolDown = if shouldFire then shotCooldown else coolDownShot movedMachineGunPhase.shotCoolDown
         }
 
-updatePositionAndVelocity :: MachineGunPhase -> MachineGunPhase
-updatePositionAndVelocity machineGunPhase = machineGunPhase { pos = newPos, velocity = newVelocity }
+updatePositionAndVelocity :: X -> MachineGunPhase -> MachineGunPhase
+updatePositionAndVelocity distance machineGunPhase = machineGunPhase { pos = newPos, velocity = newVelocity }
     where
-        newPos = updatePosition machineGunPhase.leftLimit machineGunPhase.rightLimit machineGunPhase.pos machineGunPhase.velocity
-        newVelocity = updateVelocity machineGunPhase.leftLimit machineGunPhase.rightLimit machineGunPhase.pos machineGunPhase.velocity
+        newPos = updatePosition distance machineGunPhase.leftLimit machineGunPhase.rightLimit machineGunPhase.pos machineGunPhase.velocity
+        newVelocity = updateVelocity distance machineGunPhase.leftLimit machineGunPhase.rightLimit machineGunPhase.pos machineGunPhase.velocity
 
 defaultMachineGunPhase :: Position -> Position -> Position -> MachineGunPhase
 defaultMachineGunPhase pos leftLimit rightLimit = {

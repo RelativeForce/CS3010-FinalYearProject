@@ -7,7 +7,7 @@ import Constants (bulletSpeed, bigBerthaSpeed)
 import Data.Bullet (Bullet, newLinearBullet)
 import Data.Player (Player(..))
 import Emo8.Data.Sprite (incrementFrame)
-import Emo8.Types (Position, Sprite, Velocity, Deg)
+import Emo8.Types (Position, Sprite, Velocity, Deg, X)
 import Emo8.Utils (xComponent, yComponent, angle, vectorTo)
 import Data.Enemy.BigBertha.Helper (playerInRange, updateVelocity, updatePosition, ensureLeftLimit, ensureRightLimit, coolDownShot)
 
@@ -62,8 +62,8 @@ newBullet angle cannonPhase = nb
         velocity = bulletVelocity angle
         nb = newLinearBullet (machineGunPosition cannonPhase) velocity
 
-updateCannonPhase :: Player -> CannonPhase -> { phase :: CannonPhase, bullets :: Array Bullet }
-updateCannonPhase p cannonPhase = { phase: newCannonPhase, bullets: newBullets } 
+updateCannonPhase :: X -> Player -> CannonPhase -> { phase :: CannonPhase, bullets :: Array Bullet }
+updateCannonPhase distance p cannonPhase = { phase: newCannonPhase, bullets: newBullets } 
     where
         shouldFire = canFire p cannonPhase
         newBullets = if shouldFire 
@@ -75,7 +75,7 @@ updateCannonPhase p cannonPhase = { phase: newCannonPhase, bullets: newBullets }
                 newBullet 198 cannonPhase
             ] 
             else []
-        movedCannonPhase = updatePositionAndVelocity cannonPhase
+        movedCannonPhase = updatePositionAndVelocity distance cannonPhase
         newOffset = if shouldFire then mod (cannonPhase.offset + 1) maxOffset else cannonPhase.offset
         newCannonPhase = movedCannonPhase {
             sprite = incrementFrame cannonPhase.sprite,
@@ -83,11 +83,11 @@ updateCannonPhase p cannonPhase = { phase: newCannonPhase, bullets: newBullets }
             shotCoolDown = if shouldFire then shotCooldown else coolDownShot movedCannonPhase.shotCoolDown
         }
 
-updatePositionAndVelocity :: CannonPhase -> CannonPhase
-updatePositionAndVelocity cannonPhase = cannonPhase { pos = newPos, velocity = newVelocity }
+updatePositionAndVelocity :: X -> CannonPhase -> CannonPhase
+updatePositionAndVelocity distance cannonPhase = cannonPhase { pos = newPos, velocity = newVelocity }
     where
-        newPos = updatePosition cannonPhase.leftLimit cannonPhase.rightLimit cannonPhase.pos cannonPhase.velocity
-        newVelocity = updateVelocity cannonPhase.leftLimit cannonPhase.rightLimit cannonPhase.pos cannonPhase.velocity
+        newPos = updatePosition distance cannonPhase.leftLimit cannonPhase.rightLimit cannonPhase.pos cannonPhase.velocity
+        newVelocity = updateVelocity distance cannonPhase.leftLimit cannonPhase.rightLimit cannonPhase.pos cannonPhase.velocity
 
 defaultCannonPhase :: Position -> Position -> Position -> CannonPhase
 defaultCannonPhase pos leftLimit rightLimit = {

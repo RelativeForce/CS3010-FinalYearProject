@@ -65,7 +65,7 @@ enemyToScore (EnemyBigBertha s) = 100
 updateEnemy :: (Enemy -> Boolean) -> X -> Player -> Enemy -> { enemy :: Enemy, bullets :: Array Bullet }
 updateEnemy collisionCheck distance playerObject (EnemyMarine marine) = (toEnemyAndBullets (EnemyMarine)) $ updateMarine (toMarineCollision collisionCheck) distance playerObject marine
 updateEnemy collisionCheck distance playerObject (EnemyDrone drone) = (toEnemyAndBullets (EnemyDrone)) $ updateDrone distance playerObject drone
-updateEnemy collisionCheck distance playerObject (EnemyBigBertha bigBertha) = (toEnemyAndBullets (EnemyBigBertha)) $ updateBigBertha playerObject bigBertha
+updateEnemy collisionCheck distance playerObject (EnemyBigBertha bigBertha) = (toEnemyAndBullets (EnemyBigBertha)) $ updateBigBertha distance playerObject bigBertha
 
 defaultMarineEnemy :: Int -> Position -> Enemy
 defaultMarineEnemy initialHealth pos = EnemyMarine $ defaultMarine initialHealth pos

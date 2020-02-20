@@ -6,7 +6,7 @@ import Prelude
 import Class.Object (class ObjectDraw, class Object)
 import Data.Bullet (Bullet)
 import Data.Player (Player)
-import Emo8.Types (Position)
+import Emo8.Types (Position, X)
 import Emo8.Action.Draw (drawSprite)
 import Constants (bigBerthaImmunityCooldown)
 import Data.Enemy.BigBertha.MortarPhase (MortarPhase, updateMortarPhase, defaultMortarPhase)
@@ -31,21 +31,9 @@ instance objectPhase :: Object Phase where
     position (Phase1 s) = s.pos
     position (Phase2 s) = s.pos
     position (Phase3 s) = s.pos
-    scroll offset (Phase1 s) = Phase1 $ s { 
-        pos = { x: s.pos.x + offset, y: s.pos.y }, 
-        rightLimit = { x: s.rightLimit.x + offset, y: s.rightLimit.y },
-        leftLimit = { x: s.leftLimit.x + offset, y: s.leftLimit.y }
-    }
-    scroll offset (Phase2 s) = Phase2 $ s { 
-        pos = { x: s.pos.x + offset, y: s.pos.y }, 
-        rightLimit = { x: s.rightLimit.x + offset, y: s.rightLimit.y },
-        leftLimit = { x: s.leftLimit.x + offset, y: s.leftLimit.y }
-    }
-    scroll offset (Phase3 s) = Phase3 $ s { 
-        pos = { x: s.pos.x + offset, y: s.pos.y }, 
-        rightLimit = { x: s.rightLimit.x + offset, y: s.rightLimit.y },
-        leftLimit = { x: s.leftLimit.x + offset, y: s.leftLimit.y }
-    }
+    scroll offset (Phase1 s) = Phase1 $ s { pos = { x: s.pos.x + offset, y: s.pos.y } }
+    scroll offset (Phase2 s) = Phase2 $ s { pos = { x: s.pos.x + offset, y: s.pos.y } }
+    scroll offset (Phase3 s) = Phase3 $ s { pos = { x: s.pos.x + offset, y: s.pos.y } }
 
 instance objectDrawPhase :: ObjectDraw Phase where
     draw o@(Phase1 m) = drawSprite m.sprite m.pos.x m.pos.y
@@ -95,19 +83,19 @@ phase2 pos leftLimit rightLimit = Phase2 $ defaultMachineGunPhase pos leftLimit 
 phase3 :: Position -> Position -> Position -> Phase
 phase3 pos leftLimit rightLimit = Phase3 $ defaultCannonPhase pos leftLimit rightLimit
 
-updateBigBertha :: Player -> BigBertha -> { enemy :: BigBertha, bullets :: Array Bullet }
-updateBigBertha p bigBertha = { enemy: newBigBertha, bullets: newBullets } 
+updateBigBertha :: X -> Player -> BigBertha -> { enemy :: BigBertha, bullets :: Array Bullet }
+updateBigBertha distance p bigBertha = { enemy: newBigBertha, bullets: newBullets } 
     where
-        { phase: updatedPhase, bullets: newBullets } = updatePhase p bigBertha.phase
+        { phase: updatedPhase, bullets: newBullets } = updatePhase distance p bigBertha.phase
         newBigBertha = transitionPhase $ bigBertha { phase = updatedPhase }
 
 coolDownImmunity :: Int -> Int
 coolDownImmunity immunity = if (immunity - 1) < 0 then 0 else immunity - 1
 
-updatePhase :: Player -> Phase -> { phase :: Phase, bullets :: Array Bullet }
-updatePhase p (Phase1 mortarPhase) = toPhaseAndBullets (Phase1) (updateMortarPhase p mortarPhase)
-updatePhase p (Phase2 machineGunPhase) = toPhaseAndBullets (Phase2) (updateMachineGunPhase p machineGunPhase)
-updatePhase p (Phase3 cannonPhase) = toPhaseAndBullets (Phase3) (updateCannonPhase p cannonPhase)
+updatePhase :: X -> Player -> Phase -> { phase :: Phase, bullets :: Array Bullet }
+updatePhase distance p (Phase1 mortarPhase) = toPhaseAndBullets (Phase1) (updateMortarPhase distance p mortarPhase)
+updatePhase distance p (Phase2 machineGunPhase) = toPhaseAndBullets (Phase2) (updateMachineGunPhase distance p machineGunPhase)
+updatePhase distance p (Phase3 cannonPhase) = toPhaseAndBullets (Phase3) (updateCannonPhase distance p cannonPhase)
 
 toPhaseAndBullets :: forall a. (a -> Phase) -> { phase :: a, bullets :: Array Bullet } -> { phase :: Phase, bullets :: Array Bullet }
 toPhaseAndBullets mapper r = { phase: mapper r.phase, bullets: r.bullets }
