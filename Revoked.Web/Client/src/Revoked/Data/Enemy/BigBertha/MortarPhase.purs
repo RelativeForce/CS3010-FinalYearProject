@@ -31,12 +31,12 @@ mortarApex :: Number
 mortarApex = toNumber $ mapTileSize.height * 12
 
 horizontalVelocity :: Player -> MortarPhase -> Number
-horizontalVelocity (Player p) mortarPhase = (d * sqrt g) / (2.0 * ((sqrt (2.0 * h)) + (sqrt (2.0 * l))))
+horizontalVelocity (Player p) mortarPhase = (d * g) / ((2.0 * g * sqrt (2.0 * h)) - sqrt (h + l))
     where
         d = abs $ toNumber $ mortarPhase.pos.x - p.pos.x
         h = mortarApex
-        l = abs $ toNumber $ mortarPhase.pos.y - p.pos.y
-        g = abs gravity
+        l = toNumber $ p.pos.y - mortarPhase.pos.y
+        g = gravity
 
 verticalVelocity :: Number
 verticalVelocity = sqrt $ 2.0 * (abs gravity) * mortarApex
