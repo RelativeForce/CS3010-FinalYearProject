@@ -151,3 +151,11 @@ droneSpeed = 2.0
 
 droneShotCooldown :: Int
 droneShotCooldown = 20
+
+-- Big Bertha
+
+bigBerthaSpeed :: Number
+bigBerthaSpeed = 1.0
+
+bigBerthaAgroRange :: Number
+bigBerthaAgroRange = 400.0

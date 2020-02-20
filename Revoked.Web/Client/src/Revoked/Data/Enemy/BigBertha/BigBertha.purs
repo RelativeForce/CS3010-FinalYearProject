@@ -9,10 +9,11 @@ import Data.Player (Player)
 import Emo8.Types (Position)
 import Emo8.Action.Draw (drawSprite)
 import Data.Enemy.BigBertha.MortarPhase (MortarPhase, updateMortarPhase, defaultMortarPhase)
+import Data.Enemy.BigBertha.MachineGunPhase (MachineGunPhase, updateMachineGunPhase, defaultMachineGunPhase)
 
 data Phase = 
     Phase1 MortarPhase | 
-    Phase2 MortarPhase | 
+    Phase2 MachineGunPhase | 
     Phase3 MortarPhase
 
 type BigBertha = { 
@@ -78,18 +79,18 @@ healthGate (Phase2 _) = 5
 healthGate (Phase3 _) = 0
 
 nextPhase :: Phase -> Phase
-nextPhase (Phase1 p) = phase2 p.leftLimit p.rightLimit
-nextPhase (Phase2 p) = phase3 p.leftLimit p.rightLimit
-nextPhase (Phase3 p) = phase1 p.leftLimit p.rightLimit
+nextPhase (Phase1 p) = phase2 p.pos p.leftLimit p.rightLimit
+nextPhase (Phase2 p) = phase3 p.pos p.leftLimit p.rightLimit
+nextPhase (Phase3 p) = phase1 p.pos p.leftLimit p.rightLimit
 
-phase1 :: Position -> Position -> Phase
-phase1 leftLimit rightLimit = Phase1 $ defaultMortarPhase leftLimit rightLimit
+phase1 :: Position -> Position -> Position -> Phase
+phase1 pos leftLimit rightLimit = Phase1 $ defaultMortarPhase pos leftLimit rightLimit
 
-phase2 :: Position -> Position -> Phase
-phase2 leftLimit rightLimit = Phase2 $ defaultMortarPhase leftLimit rightLimit
+phase2 :: Position -> Position -> Position -> Phase
+phase2 pos leftLimit rightLimit = Phase2 $ defaultMachineGunPhase pos leftLimit rightLimit
 
-phase3 :: Position -> Position -> Phase
-phase3 leftLimit rightLimit = Phase3 $ defaultMortarPhase leftLimit rightLimit
+phase3 :: Position -> Position -> Position -> Phase
+phase3 pos leftLimit rightLimit = Phase3 $ defaultMortarPhase pos leftLimit rightLimit
 
 updateBigBertha :: Player -> BigBertha -> { enemy :: BigBertha, bullets :: Array Bullet }
 updateBigBertha p bigBertha = { enemy: newBigBertha, bullets: newBullets } 
@@ -108,7 +109,7 @@ coolDownImmunity immunity = if (immunity - 1) < 0 then 0 else immunity - 1
 
 updatePhase :: Player -> Phase -> { phase :: Phase, bullets :: Array Bullet }
 updatePhase p (Phase1 mortarPhase) = toPhaseAndBullets (Phase1) (updateMortarPhase p mortarPhase)
-updatePhase p (Phase2 mortarPhase) = toPhaseAndBullets (Phase2) (updateMortarPhase p mortarPhase)
+updatePhase p (Phase2 machineGunPhase) = toPhaseAndBullets (Phase2) (updateMachineGunPhase p machineGunPhase)
 updatePhase p (Phase3 mortarPhase) = toPhaseAndBullets (Phase3) (updateMortarPhase p mortarPhase)
 
 toPhaseAndBullets :: forall a. (a -> Phase) -> { phase :: a, bullets :: Array Bullet } -> { phase :: Phase, bullets :: Array Bullet }
@@ -116,7 +117,7 @@ toPhaseAndBullets mapper r = { phase: mapper r.phase, bullets: r.bullets }
 
 defaultBigBertha :: Int -> Position -> Position -> BigBertha
 defaultBigBertha bigBerthaHealth leftLimit rightLimit = {
-    phase: phase1 leftLimit rightLimit,
+    phase: phase1 leftLimit leftLimit rightLimit,
     health: bigBerthaHealth,
     immuneCooldown: 0
 }
