@@ -8,13 +8,15 @@ import Data.Bullet (Bullet)
 import Data.Player (Player)
 import Emo8.Types (Position)
 import Emo8.Action.Draw (drawSprite)
+import Constants (bigBerthaImmunityCooldown)
 import Data.Enemy.BigBertha.MortarPhase (MortarPhase, updateMortarPhase, defaultMortarPhase)
 import Data.Enemy.BigBertha.MachineGunPhase (MachineGunPhase, updateMachineGunPhase, defaultMachineGunPhase)
+import Data.Enemy.BigBertha.CannonPhase (CannonPhase, updateCannonPhase, defaultCannonPhase)
 
 data Phase = 
     Phase1 MortarPhase | 
     Phase2 MachineGunPhase | 
-    Phase3 MortarPhase
+    Phase3 CannonPhase
 
 type BigBertha = { 
     health :: Int,
@@ -55,7 +57,7 @@ transitionPhase bb = bb { phase = phase, immuneCooldown = immuneCooldown }
     where
         goToNext = shouldTransition bb  
         phase = if goToNext then nextPhase bb.phase else bb.phase
-        immuneCooldown = if goToNext then 60 else bb.immuneCooldown
+        immuneCooldown = if goToNext then bigBerthaImmunityCooldown else bb.immuneCooldown
 
 isImmune :: BigBertha -> Boolean
 isImmune bb = bb.immuneCooldown <= 0
@@ -90,7 +92,7 @@ phase2 :: Position -> Position -> Position -> Phase
 phase2 pos leftLimit rightLimit = Phase2 $ defaultMachineGunPhase pos leftLimit rightLimit
 
 phase3 :: Position -> Position -> Position -> Phase
-phase3 pos leftLimit rightLimit = Phase3 $ defaultMortarPhase pos leftLimit rightLimit
+phase3 pos leftLimit rightLimit = Phase3 $ defaultCannonPhase pos leftLimit rightLimit
 
 updateBigBertha :: Player -> BigBertha -> { enemy :: BigBertha, bullets :: Array Bullet }
 updateBigBertha p bigBertha = { enemy: newBigBertha, bullets: newBullets } 
@@ -110,7 +112,7 @@ coolDownImmunity immunity = if (immunity - 1) < 0 then 0 else immunity - 1
 updatePhase :: Player -> Phase -> { phase :: Phase, bullets :: Array Bullet }
 updatePhase p (Phase1 mortarPhase) = toPhaseAndBullets (Phase1) (updateMortarPhase p mortarPhase)
 updatePhase p (Phase2 machineGunPhase) = toPhaseAndBullets (Phase2) (updateMachineGunPhase p machineGunPhase)
-updatePhase p (Phase3 mortarPhase) = toPhaseAndBullets (Phase3) (updateMortarPhase p mortarPhase)
+updatePhase p (Phase3 cannonPhase) = toPhaseAndBullets (Phase3) (updateCannonPhase p cannonPhase)
 
 toPhaseAndBullets :: forall a. (a -> Phase) -> { phase :: a, bullets :: Array Bullet } -> { phase :: Phase, bullets :: Array Bullet }
 toPhaseAndBullets mapper r = { phase: mapper r.phase, bullets: r.bullets }

@@ -159,3 +159,6 @@ bigBerthaSpeed = 1.0
 
 bigBerthaAgroRange :: Number
 bigBerthaAgroRange = 400.0
+
+bigBerthaImmunityCooldown :: Int
+bigBerthaImmunityCooldown = 60
