@@ -86,7 +86,7 @@ updatePosition distance leftLimit rightLimit currentPosition currentVelocity = {
     where
         newX = currentPosition.x + floor currentVelocity.xSpeed
         newY = currentPosition.y + floor currentVelocity.ySpeed
-        x = if (newX + distance) < leftLimit.x then leftLimit.x else if (newX + distance) > rightLimit.x then rightLimit.x else newX
+        x = if (newX + distance) < leftLimit.x then (leftLimit.x - distance) else if (newX + distance) > rightLimit.x then (rightLimit.x - distance) else newX
         y = if newY < leftLimit.y then leftLimit.y else if newY > rightLimit.y then rightLimit.y else newY
 
 updatePositionAndVelocity :: Drone -> X -> Drone

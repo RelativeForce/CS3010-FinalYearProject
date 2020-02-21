@@ -5,8 +5,8 @@ import Prelude
 import Constants (gravity, mapTileSize, bigBerthaSpeed)
 import Data.Bullet (Bullet, newArcBullet)
 import Data.Player (Player(..))
-import Data.Int (toNumber)
-import Emo8.Types (Position, Sprite, Velocity, X)
+import Data.Int (toNumber, floor)
+import Emo8.Types (Position, Velocity, X)
 import Math (sqrt, abs)
 import Data.Enemy.BigBertha.Helper (playerInRange, updateVelocity, updatePosition, ensureLeftLimit, ensureRightLimit, coolDownShot)
 
@@ -24,17 +24,32 @@ mortarApex = toNumber $ mapTileSize.height * 12
 shotCooldown :: Int
 shotCooldown = 10
 
-horizontalVelocity :: Player -> MortarPhase -> Number
-horizontalVelocity (Player p) mortarPhase = (d * g) / ((2.0 * g * sqrt (2.0 * h)) - sqrt (h + l))
+horizontalVelocity :: Position -> MortarPhase -> Number
+horizontalVelocity target mortarPhase = (d * g) / ((2.0 * g * sqrt (2.0 * h)) - sqrt (h + l))
     where
         mortarPos = mortarPosition mortarPhase
-        d = abs $ toNumber $ mortarPos.x - p.pos.x
+        d = abs $ toNumber $ mortarPos.x - target.x
         h = mortarApex
-        l = toNumber $ p.pos.y - mortarPos.y
+        l = toNumber $ target.y - mortarPos.y
         g = gravity
 
 verticalVelocity :: Number
 verticalVelocity = sqrt $ 2.0 * (abs gravity) * mortarApex
+
+predictPlayerPosition :: Player -> MortarPhase -> Position
+predictPlayerPosition (Player p) mortarPhase = pos
+    where
+        timeUnits = framesToIntercept p.pos mortarPhase
+        pos = {
+            x: p.pos.x + floor (timeUnits * p.velocity.xSpeed),
+            y: p.pos.y + floor (timeUnits * p.velocity.ySpeed)
+        }
+
+framesToIntercept :: Position -> MortarPhase -> Number
+framesToIntercept target mortarPhase = verticalVelocity * ((mortarApex * 2.0) + l)
+    where
+        mortarPos = mortarPosition mortarPhase
+        l = toNumber $ target.y - mortarPhase.pos.y
 
 canFire :: Player -> MortarPhase -> Boolean
 canFire p mortarPhase = mortarPhase.shotCoolDown == 0 && playerInRange p mortarPhase.pos
@@ -42,7 +57,7 @@ canFire p mortarPhase = mortarPhase.shotCoolDown == 0 && playerInRange p mortarP
 bulletVelocity :: Player -> MortarPhase -> Velocity
 bulletVelocity p mortarPhase = { xSpeed: xSpeed, ySpeed: ySpeed }
     where 
-        xSpeed = - horizontalVelocity p mortarPhase
+        xSpeed = - horizontalVelocity (predictPlayerPosition p mortarPhase) mortarPhase
         ySpeed = verticalVelocity
 
 mortarPosition :: MortarPhase -> Position
