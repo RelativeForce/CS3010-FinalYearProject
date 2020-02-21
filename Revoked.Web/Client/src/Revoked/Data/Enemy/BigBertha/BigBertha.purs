@@ -2,12 +2,12 @@ module Data.Enemy.BigBertha where
 
 import Prelude
 
-
-import Class.Object (class ObjectDraw, class Object)
+import Assets.Sprites as S
+import Class.Object (class Object)
 import Data.Bullet (Bullet)
 import Data.Player (Player)
-import Emo8.Types (Position, X)
-import Emo8.Action.Draw (drawSprite)
+import Emo8.Types (Position, X, Sprite)
+import Emo8.Data.Sprite (incrementFrame)
 import Constants (bigBerthaImmunityCooldown)
 import Data.Enemy.BigBertha.MortarPhase (MortarPhase, updateMortarPhase, defaultMortarPhase)
 import Data.Enemy.BigBertha.MachineGunPhase (MachineGunPhase, updateMachineGunPhase, defaultMachineGunPhase)
@@ -21,24 +21,20 @@ data Phase =
 type BigBertha = { 
     health :: Int,
     phase :: Phase,
+    sprite :: Sprite,
     immuneCooldown :: Int
 }
 
 instance objectPhase :: Object Phase where
-    size (Phase1 s) = s.sprite.size
-    size (Phase2 s) = s.sprite.size
-    size (Phase3 s) = s.sprite.size
+    size (Phase1 s) = defaultSprite.size
+    size (Phase2 s) = defaultSprite.size
+    size (Phase3 s) = defaultSprite.size
     position (Phase1 s) = s.pos
     position (Phase2 s) = s.pos
     position (Phase3 s) = s.pos
     scroll offset (Phase1 s) = Phase1 $ s { pos = { x: s.pos.x + offset, y: s.pos.y } }
     scroll offset (Phase2 s) = Phase2 $ s { pos = { x: s.pos.x + offset, y: s.pos.y } }
     scroll offset (Phase3 s) = Phase3 $ s { pos = { x: s.pos.x + offset, y: s.pos.y } }
-
-instance objectDrawPhase :: ObjectDraw Phase where
-    draw o@(Phase1 m) = drawSprite m.sprite m.pos.x m.pos.y
-    draw o@(Phase2 m) = drawSprite m.sprite m.pos.x m.pos.y
-    draw o@(Phase3 m) = drawSprite m.sprite m.pos.x m.pos.y
 
 transitionPhase :: BigBertha -> BigBertha
 transitionPhase bb = bb { phase = phase, immuneCooldown = immuneCooldown }
@@ -87,7 +83,10 @@ updateBigBertha :: X -> Player -> BigBertha -> { enemy :: BigBertha, bullets :: 
 updateBigBertha distance p bigBertha = { enemy: newBigBertha, bullets: newBullets } 
     where
         { phase: updatedPhase, bullets: newBullets } = updatePhase distance p bigBertha.phase
-        newBigBertha = transitionPhase $ bigBertha { phase = updatedPhase }
+        newBigBertha = transitionPhase $ bigBertha { 
+            phase = updatedPhase,
+            sprite = incrementFrame bigBertha.sprite 
+        }
 
 coolDownImmunity :: Int -> Int
 coolDownImmunity immunity = if (immunity - 1) < 0 then 0 else immunity - 1
@@ -100,10 +99,14 @@ updatePhase distance p (Phase3 cannonPhase) = toPhaseAndBullets (Phase3) (update
 toPhaseAndBullets :: forall a. (a -> Phase) -> { phase :: a, bullets :: Array Bullet } -> { phase :: Phase, bullets :: Array Bullet }
 toPhaseAndBullets mapper r = { phase: mapper r.phase, bullets: r.bullets }
 
+defaultSprite :: Sprite
+defaultSprite = S.bigBerthaNormal
+
 defaultBigBertha :: Position -> Position -> BigBertha
 defaultBigBertha leftLimit rightLimit = {
     phase: phase1 rightLimit leftLimit rightLimit,
     health: 15,
+    sprite: defaultSprite,
     immuneCooldown: 0
 }
         

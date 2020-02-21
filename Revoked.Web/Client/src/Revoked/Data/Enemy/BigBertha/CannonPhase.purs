@@ -2,11 +2,9 @@ module Data.Enemy.BigBertha.CannonPhase where
 
 import Prelude
 
-import Assets.Sprites as S
 import Constants (bulletSpeed, bigBerthaSpeed)
 import Data.Bullet (Bullet, newLinearBullet)
 import Data.Player (Player(..))
-import Emo8.Data.Sprite (incrementFrame)
 import Emo8.Types (Position, Sprite, Velocity, Deg, X)
 import Emo8.Utils (xComponent, yComponent, angle, vectorTo)
 import Data.Enemy.BigBertha.Helper (playerInRange, updateVelocity, updatePosition, ensureLeftLimit, ensureRightLimit, coolDownShot)
@@ -16,7 +14,6 @@ type CannonPhase = {
     rightLimit :: Position,
     leftLimit :: Position,
     velocity :: Velocity,
-    sprite :: Sprite,
     offset :: Int,
     shotCoolDown :: Int
 }
@@ -78,7 +75,6 @@ updateCannonPhase distance p cannonPhase = { phase: newCannonPhase, bullets: new
         movedCannonPhase = updatePositionAndVelocity distance cannonPhase
         newOffset = if shouldFire then mod (cannonPhase.offset + 1) maxOffset else cannonPhase.offset
         newCannonPhase = movedCannonPhase {
-            sprite = incrementFrame cannonPhase.sprite,
             offset = newOffset,
             shotCoolDown = if shouldFire then shotCooldown else coolDownShot movedCannonPhase.shotCoolDown
         }
@@ -94,7 +90,6 @@ defaultCannonPhase pos leftLimit rightLimit = {
     pos: pos,
     leftLimit: ensureLeftLimit leftLimit rightLimit,
     rightLimit: ensureRightLimit leftLimit rightLimit,
-    sprite: S.bigBerthaNormal,
     offset: 0,
     velocity: {
         xSpeed: bigBerthaSpeed,

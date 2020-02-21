@@ -14,13 +14,21 @@ updateVelocity :: X -> Position -> Position -> Position -> Velocity -> Velocity
 updateVelocity distance leftLimit rightLimit currentPosition currentVelocity = { xSpeed: xSpeed, ySpeed: 0.0 }
     where
         newX = currentPosition.x + floor currentVelocity.xSpeed
-        xSpeed = if (newX + distance) < leftLimit.x then 0.0 else if (newX + distance) > rightLimit.x then -bigBerthaSpeed else currentVelocity.xSpeed
+        xSpeed = if (newX + distance) < leftLimit.x 
+            then 0.0 
+            else if (newX + distance) > rightLimit.x 
+                then -bigBerthaSpeed 
+                else currentVelocity.xSpeed
 
 updatePosition :: X -> Position -> Position -> Position -> Velocity -> Position
 updatePosition distance leftLimit rightLimit currentPosition currentVelocity = { x: x, y: currentPosition.y }
     where
         newX = currentPosition.x + floor currentVelocity.xSpeed
-        x = if (newX + distance) < leftLimit.x then currentPosition.x else if (newX + distance) > rightLimit.x then currentPosition.x else newX
+        x = if (newX + distance) < leftLimit.x 
+            then currentPosition.x 
+            else if (newX + distance) > rightLimit.x 
+                then currentPosition.x 
+                else newX
 
 ensureLeftLimit :: Position -> Position -> Position
 ensureLeftLimit leftLimit rightLimit  = if leftLimit.x < rightLimit.x then leftLimit else rightLimit

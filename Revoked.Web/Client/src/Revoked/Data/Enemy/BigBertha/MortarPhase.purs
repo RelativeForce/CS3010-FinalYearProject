@@ -2,11 +2,9 @@ module Data.Enemy.BigBertha.MortarPhase where
 
 import Prelude
 
-import Assets.Sprites as S
 import Constants (gravity, mapTileSize, bigBerthaSpeed)
 import Data.Bullet (Bullet, newArcBullet)
 import Data.Player (Player(..))
-import Emo8.Data.Sprite (incrementFrame)
 import Data.Int (toNumber)
 import Emo8.Types (Position, Sprite, Velocity, X)
 import Math (sqrt, abs)
@@ -17,7 +15,6 @@ type MortarPhase = {
     rightLimit :: Position,
     leftLimit :: Position,
     velocity :: Velocity,
-    sprite :: Sprite,
     shotCoolDown :: Int
 }
 
@@ -64,7 +61,6 @@ updateMortarPhase distance p mortarPhase = { phase: newMortarPhase, bullets: new
         newBullets = if shouldFire then [ newShell p mortarPhase ] else []
         movedMortarPhase = updatePositionAndVelocity distance mortarPhase
         newMortarPhase = movedMortarPhase {
-            sprite = incrementFrame mortarPhase.sprite,
             shotCoolDown = if shouldFire then shotCooldown else coolDownShot movedMortarPhase.shotCoolDown
         }
 
@@ -79,7 +75,6 @@ defaultMortarPhase pos leftLimit rightLimit = {
     pos: pos,
     leftLimit: ensureLeftLimit leftLimit rightLimit,
     rightLimit: ensureRightLimit leftLimit rightLimit,
-    sprite: S.bigBerthaNormal,
     velocity: {
         xSpeed: bigBerthaSpeed,
         ySpeed: 0.0

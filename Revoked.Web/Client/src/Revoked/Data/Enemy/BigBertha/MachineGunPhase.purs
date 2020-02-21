@@ -2,11 +2,9 @@ module Data.Enemy.BigBertha.MachineGunPhase where
 
 import Prelude
 
-import Assets.Sprites as S
 import Constants (bulletSpeed, bigBerthaSpeed)
 import Data.Bullet (Bullet, newLinearBullet)
 import Data.Player (Player(..))
-import Emo8.Data.Sprite (incrementFrame)
 import Emo8.Types (Position, Sprite, Velocity, Deg, X)
 import Emo8.Utils (xComponent, yComponent, angle, vectorTo)
 import Data.Enemy.BigBertha.Helper (playerInRange, updateVelocity, updatePosition, ensureLeftLimit, ensureRightLimit, coolDownShot)
@@ -16,7 +14,6 @@ type MachineGunPhase = {
     rightLimit :: Position,
     leftLimit :: Position,
     velocity :: Velocity,
-    sprite :: Sprite,
     offset :: Int,
     shotCoolDown :: Int
 }
@@ -71,7 +68,6 @@ updateMachineGunPhase distance p machineGunPhase = { phase: newMachineGunPhase, 
         movedMachineGunPhase = updatePositionAndVelocity distance machineGunPhase
         newOffset = if shouldFire then mod (machineGunPhase.offset + 1) maxOffset else machineGunPhase.offset
         newMachineGunPhase = movedMachineGunPhase {
-            sprite = incrementFrame machineGunPhase.sprite,
             offset = newOffset,
             shotCoolDown = if shouldFire then shotCooldown else coolDownShot movedMachineGunPhase.shotCoolDown
         }
@@ -87,7 +83,6 @@ defaultMachineGunPhase pos leftLimit rightLimit = {
     pos: pos,
     leftLimit: ensureLeftLimit leftLimit rightLimit,
     rightLimit: ensureRightLimit leftLimit rightLimit,
-    sprite: S.bigBerthaNormal,
     offset: 0,
     velocity: {
         xSpeed: bigBerthaSpeed,

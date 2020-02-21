@@ -2,7 +2,7 @@ module Data.Enemy where
 
 import Prelude
 
-import Class.Object (class ObjectDraw, class Object, class MortalEntity, position, draw, scroll, size)
+import Class.Object (class ObjectDraw, class Object, class MortalEntity, position, draw, scroll)
 import Data.Bullet (Bullet)
 import Data.Enemy.BigBertha (BigBertha, defaultBigBertha, updateBigBertha, damageBigBertha)
 import Data.Enemy.Drone (Drone, defaultDrone, updateDrone)
@@ -20,7 +20,7 @@ data Enemy =
 instance objectEnemy :: Object Enemy where
     size (EnemyMarine s) = s.sprite.size
     size (EnemyDrone s) = s.sprite.size
-    size (EnemyBigBertha s) = size s.phase
+    size (EnemyBigBertha s) = s.sprite.size
     position (EnemyMarine s) = s.pos
     position (EnemyDrone s) = s.pos
     position (EnemyBigBertha s) = position s.phase
@@ -43,7 +43,7 @@ instance objectDrawEnemy :: ObjectDraw Enemy where
         drawSprite m.sprite (position o).x (position o).y
         drawHealth o
     draw o@(EnemyBigBertha m) = do
-        draw m.phase
+        drawSprite m.sprite (position m.phase).x (position m.phase).y
         drawHealth o
 
 instance mortalEntityPlayer :: MortalEntity Enemy where

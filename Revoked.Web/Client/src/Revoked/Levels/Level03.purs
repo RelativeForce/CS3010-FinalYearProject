@@ -30,7 +30,7 @@ goals :: Array Goal
 goals = [
     -- Pickups
     shotgunSpawn $ toTilePosition 77 4,
-    healthPack $ toTilePosition 64 5, 
+    healthPack $ toTilePosition 64 4, 
     healthPack $ toTilePosition 141 10,
     assaultRifleSpawn $ toTilePosition 144 2, 
 
@@ -64,7 +64,7 @@ enemies = [
     drone 114 9 (-5),
     defaultMarineEnemy 1 $ toTilePosition 129 4,
     drone 135 12 (-5),
-    defaultBigBerthaEnemy (toTilePosition 96 2) (toTilePosition 182 2)
+    defaultBigBerthaEnemy (toTilePosition 150 2) (toTilePosition 182 2)
 ]
 
 chopperPosition :: Position
