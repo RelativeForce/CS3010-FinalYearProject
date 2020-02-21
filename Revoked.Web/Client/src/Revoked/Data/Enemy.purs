@@ -25,12 +25,7 @@ instance objectEnemy :: Object Enemy where
     position (EnemyDrone s) = s.pos
     position (EnemyBigBertha s) = position s.phase
     scroll offset (EnemyMarine s) = EnemyMarine $ s { pos = { x: s.pos.x + offset, y: s.pos.y }, gun = scroll offset s.gun }
-    scroll offset (EnemyDrone s) = EnemyDrone $ s { 
-        pos = { x: s.pos.x + offset, y: s.pos.y }, 
-        rightLimit = { x: s.rightLimit.x + offset, y: s.rightLimit.y },
-        leftLimit = { x: s.leftLimit.x + offset, y: s.leftLimit.y },
-        gun = scroll offset s.gun 
-    }
+    scroll offset (EnemyDrone s) = EnemyDrone $ s { pos = { x: s.pos.x + offset, y: s.pos.y }, gun = scroll offset s.gun }
     scroll offset (EnemyBigBertha s) = EnemyBigBertha $ s { phase = scroll offset s.phase }
 
 instance objectDrawEnemy :: ObjectDraw Enemy where
