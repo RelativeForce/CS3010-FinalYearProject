@@ -12,7 +12,7 @@ class Game s where
 
 Each functions are executed in order update, draw, sound at every frame.
 
-## Update Action
+## Action - Update
 
 ### Input
 
@@ -35,40 +35,83 @@ type Input = {
 }
 ```
 
-## Draw Action
+## Action - Draw
 
 Note: Screen origin is bottom left.
 
 ### Draw Image with No Scaling
-
 ```PureScript
 drawImageNoScaling :: Image -> X -> Y -> Draw Unit
 ```
-
 Arguments
-
 - `Image`: data-URI OR path to image
 - `X`: horizontal displacement in pixels from the origin
 - `Y`: vertical displacement in pixels from the origin
 
 ### Draw Scaled Image
-
 ```PureScript
 drawScaledImage :: ScaledImage -> X -> Y -> Draw Unit
 ```
-
 Arguments
-
-- `ScaledImage`: image to be displayed
+- `ScaledImage`: image to be drawn
 - `X`: horizontal displacement in pixels from the origin
 - `Y`: vertical displacement in pixels from the origin
 
+### Draw Rotated and Scaled Image
+```PureScript
+drawRotatedScaledImage :: ScaledImage -> X -> Y -> Deg -> Draw Unit
+```
+Arguments
+- `ScaledImage`: image to be drawn
+- `X`: horizontal displacement in pixels from the origin
+- `Y`: vertical displacement in pixels from the origin
+- `Deg`: angle from positive horizontal axis (right)
 
-## Map Edit
+### Draw Sprite
+```PureScript
+drawSprite :: Sprite -> X -> Y -> Draw Unit
+```
+Arguments
+- `Sprite`: [Sprite](types.md\#Sprite) to be drawn
+- `X`: horizontal displacement in pixels from the origin
+- `Y`: vertical displacement in pixels from the origin
+
+### Draw Rotated Sprite
+```PureScript
+drawRotatedSprite :: Sprite -> X -> Y -> Deg -> Draw Unit
+```
+Arguments
+- `Sprite`: [Sprite](types.md\#Sprite) to be drawn
+- `X`: horizontal displacement in pixels from the origin
+- `Y`: vertical displacement in pixels from the origin
+- `Deg`: angle from positive horizontal axis (right)
+
+### Draw Text
+```PureScript
+drawText :: String -> TextHeight -> X -> Y -> Color -> Draw Unit
+```
+Arguments
+- `String`: text to be drawn
+- `TextHeight`: see [TextHeight](types.md\#TextHeight)
+- `X`: horizontal displacement in pixels from the origin
+- `Y`: vertical displacement in pixels from the origin
+- `Color`: hex-code color of the text
+
+### Draw Map
+```PureScript
+drawMap :: MapId -> Size -> X -> Y -> Draw Unit
+```
+Arguments
+- `MapId`: the id of the map to be drawn
+- `Size`: the size of the map
+- `X`: horizontal displacement in pixels from the origin
+- `Y`: vertical displacement in pixels from the origin
+
+## Map
 
 ```PureScript
-map0 :: RawMap
-map0 = RawMap """
+exampleMap :: RawMap
+exampleMap = RawMap """
 🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳
 🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳
 🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳
@@ -87,108 +130,57 @@ map0 = RawMap """
 🈵🈵🈵🈵🈵🈵🈵🈵🈵🈵🈵🈵🈵🈵🈵🈵
 """
 ```
-
-※ 🈳 is the special emoji that represents vacant space.
-
-## Sound Edit
-
-```PureScript
-sound0 :: RawSound
-sound0 = RawSound """
-🎼🔈5️⃣🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳
-🎼🔈5️⃣🈳🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳
-🎼🔈5️⃣🈳🈳🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳
-🎼🔈5️⃣🈳🈳🈳🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳
-🎼🔈5️⃣🈳🈳🈳🈳🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳
-🎼🔈5️⃣🈳🈳🈳🈳🈳🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳
-🎼🔈5️⃣🈳🈳🈳🈳🈳🈳🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳
-🎼🔈5️⃣🈳🈳🈳🈳🈳🈳🈳🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳
-🎼🔈5️⃣🈳🈳🈳🈳🈳🈳🈳🈳🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳
-🎼🔈5️⃣🈳🈳🈳🈳🈳🈳🈳🈳🈳🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳
-🎼🔈5️⃣🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳
-🎼🔈5️⃣🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳
-🎼🔈5️⃣🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳
-"""
-```
-
-- First column: effect (🎼: None, 🎛: Detune)
-- Second column: Volume (🔇: Mute ~ 🔊: High)
-- Third column: octave (1️⃣: Octave 1 ~ 7️⃣: Octave 7)
-- Forth~ columns: codes (🎹: play, 🈳: not play)
-
-※ Max play codes per line: 5
-
-※ Octave orders: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 1 (loop)
-
-### Code Mean Examples
-
-```plain
-4️⃣🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳: means C4 (261.626xxx Hz)
-4️⃣🈳🈳🈳🈳🈳🈳🈳🈳🈳🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳: means A4 (440 Hz)
-5️⃣🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳: means C5 (523.251xxx Hz)
-5️⃣🈳🈳🈳🈳🈳🈳🈳🈳🈳🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳: means A5 (880 Hz)
-
-4️⃣🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳: means C5 (523.251xxx Hz)
-5️⃣🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳: means C5 (523.251xxx Hz)
-5️⃣🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳: means C6 (1046.502xxx Hz)
-6️⃣🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳: means C6 (1046.502xxx Hz)
-
-5️⃣🎹🈳🈳🈳🎹🈳🈳🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳: means C5 major chord
-5️⃣🈳🈳🎹🈳🈳🎹🈳🈳🈳🎹🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳: means D5 minor chord
-```
+Each emoji is mapped to a tile image and drawn in the position shown. Line wrapping may effect how the map is displayed in the code editor but will not effect how it is parsed. <br>
+**Note:** 🈳 is the special emoji that represents vacant space.
 
 ## Asset
 
-```PureScript
-type Asset =
-  { mapData :: Array EmojiMap
-  , soundData :: Array Sound
-  }
-```
-
-It contains map data and sound data.
-
-Use `mkAsset` function for loading map and sound data that you edited.
+See type [Asset](types.md\#Asset) and use `mkAsset` function for loading map that you edited.
 
 ```PureScript
-mkAsset :: Array RawMap -> Array RawSound -> Effect Asset
+mkAsset :: Array RawMap -> Effect Asset
 ```
 
-## Development And Production
+## Game Loop
 
-### Production
-
-Main game loop function.
+Starts the main game loop that will continuously render the game on the canvas until the web page is closed or the canvas becomes unavaiable.
 
 ```PureScript
 emo8 :: forall s. Game s => s -> Asset -> MonitorSize -> Effect Unit
 ```
 
-### Development
+## ServerIO
 
-Main game loop function for development.
+Requires `var serverLocalStore = [];` to be defined on the web page (or a preceeding JavaScript file).
 
-```PureScript
-emo8Dev :: forall s. GameDev s => s -> Asset -> MonitorSize -> Effect Unit
-```
-
-### GameDev Class
+Sends a [Request](types.md\#Request) object to via a AJAX request. This function should be repeatedly polled. If the request does not exist in the local store when polled, the specified request will be sent to the server and `Left "Waiting"` will be returned meaning that the request is still waiting for a response. When the response is received from the server it is stored in the local store. When the function is next polled the response obeject will be returned as `Right a` where `a` is the expected response.
 
 ```PureScript
-class (Game s, Encode s, Decode s) <= GameDev s where
-    saveLocal :: s -> Array LocalKey
+send :: forall a. Request -> Effect (Either String a)
 ```
 
-saveLocal function is executed after Game class's functions at every frame.
-It saves state json text to localstorage with the given LocalKey array(for multiple savepoints).
-
-### Load Saved State
+## AudioController
 
 ```PureScript
-loadStateWithDefault :: forall s. GameDev s => s -> LocalKey -> Effect s
+newAudioController :: String -> AudioController
 ```
 
-Arguments
+```PureScript
+muteAudio :: AudioController -> Effect AudioController
+```
 
-- s: fallback state which is used when localstorage key is not found.
-- LocalKey: localstorage key which you saved with saveLocal function.
+```PureScript
+unmuteAudio :: AudioController -> Effect AudioController
+```
+
+```PureScript
+addAudioStream :: AudioController -> String -> Effect AudioController
+```
+
+```PureScript
+isAudioStreamPlaying :: AudioController -> String -> Effect Boolean
+```
+
+```PureScript
+stopAudioStream :: AudioController -> String -> Effect AudioController
+```

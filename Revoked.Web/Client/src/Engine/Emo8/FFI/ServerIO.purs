@@ -1,4 +1,4 @@
-module Emo8.FFI.ServerIO where
+module Emo8.FFI.ServerIO (send) where
 
 import Emo8.Types (Request)
 import Data.Either (Either(..))
