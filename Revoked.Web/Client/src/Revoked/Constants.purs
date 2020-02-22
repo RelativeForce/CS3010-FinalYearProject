@@ -161,4 +161,4 @@ bigBerthaAgroRange :: Number
 bigBerthaAgroRange = 1000.0
 
 bigBerthaImmunityCooldown :: Int
-bigBerthaImmunityCooldown = 180
+bigBerthaImmunityCooldown = 120

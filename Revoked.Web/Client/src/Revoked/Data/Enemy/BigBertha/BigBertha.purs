@@ -48,14 +48,18 @@ transitionPhase bb = bb { phase = phase, immuneCooldown = immuneCooldown }
             else coolDownImmunity bb.immuneCooldown
 
 isImmune :: BigBertha -> Boolean
-isImmune bb = bb.immuneCooldown <= 0
+isImmune bb = bb.immuneCooldown > 0
 
 damageBigBertha :: BigBertha -> Int -> BigBertha
 damageBigBertha bb healthLoss = bb { health = newHealth }
     where  
         hg = healthGate bb.phase
         damageAppliedHealth = (bb.health - healthLoss)
-        newHealth = if damageAppliedHealth < hg then hg else damageAppliedHealth
+        newHealth = if isImmune bb 
+            then bb.health 
+            else if damageAppliedHealth < hg 
+                then hg 
+                else damageAppliedHealth
 
 shouldTransition :: BigBertha -> Boolean
 shouldTransition bb = bb.health == healthGate bb.phase
@@ -83,10 +87,16 @@ updateBigBertha :: X -> Player -> BigBertha -> { enemy :: BigBertha, bullets :: 
 updateBigBertha distance p bigBertha = { enemy: newBigBertha, bullets: newBullets } 
     where
         { phase: updatedPhase, bullets: newBullets } = updatePhase distance p bigBertha.phase
-        newBigBertha = transitionPhase $ bigBertha { 
-            phase = updatedPhase,
-            sprite = incrementFrame bigBertha.sprite 
+        phaseTransitionedBigBertha = transitionPhase $ bigBertha { phase = updatedPhase }
+        oldImmunity = (isImmune bigBertha)
+        newImmunity = (isImmune phaseTransitionedBigBertha)
+        immunityChanged = oldImmunity /= newImmunity
+        newBigBertha = phaseTransitionedBigBertha {
+            sprite = if immunityChanged then spriteBasedOnImmunity newImmunity else incrementFrame bigBertha.sprite 
         }
+
+spriteBasedOnImmunity :: Boolean -> Sprite
+spriteBasedOnImmunity immunity = if immunity then S.bigBerthaImmune else S.bigBerthaNormal
 
 coolDownImmunity :: Int -> Int
 coolDownImmunity immunity = if (immunity - 1) < 0 then 0 else immunity - 1
