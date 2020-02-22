@@ -109,4 +109,3 @@ defaultBigBertha leftLimit rightLimit = {
     sprite: defaultSprite,
     immuneCooldown: 0
 }
-        

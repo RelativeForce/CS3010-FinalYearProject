@@ -22,7 +22,7 @@ mortarApex :: Number
 mortarApex = toNumber $ mapTileSize.height * 12
 
 shotCooldown :: Int
-shotCooldown = 10
+shotCooldown = 8
 
 horizontalVelocity :: Position -> MortarPhase -> Number
 horizontalVelocity target mortarPhase = (d * g) / ((2.0 * g * sqrt (2.0 * h)) - sqrt (h + l))
@@ -40,16 +40,18 @@ predictPlayerPosition :: Player -> MortarPhase -> Position
 predictPlayerPosition (Player p) mortarPhase = pos
     where
         timeUnits = framesToIntercept p.pos mortarPhase
+        xOffset = if atLeftLimit mortarPhase then 0 else floor (timeUnits * p.velocity.xSpeed)
+        yOffset = if atLeftLimit mortarPhase then 0 else floor (timeUnits * p.velocity.ySpeed)
         pos = {
-            x: p.pos.x + floor (timeUnits * p.velocity.xSpeed),
-            y: p.pos.y + floor (timeUnits * p.velocity.ySpeed)
+            x: p.pos.x + xOffset,
+            y: p.pos.y + yOffset
         }
 
 framesToIntercept :: Position -> MortarPhase -> Number
-framesToIntercept target mortarPhase = verticalVelocity * ((mortarApex * 2.0) + l)
+framesToIntercept target mortarPhase = (((mortarApex * 2.0) + l) * 2.0) / verticalVelocity
     where
         mortarPos = mortarPosition mortarPhase
-        l = toNumber $ target.y - mortarPhase.pos.y
+        l = toNumber $ mortarPhase.pos.y - target.y
 
 canFire :: Player -> MortarPhase -> Boolean
 canFire p mortarPhase = mortarPhase.shotCoolDown == 0 && playerInRange p mortarPhase.pos
@@ -85,13 +87,16 @@ updatePositionAndVelocity distance mortarPhase = mortarPhase { pos = newPos, vel
         newPos = updatePosition distance mortarPhase.leftLimit mortarPhase.rightLimit mortarPhase.pos mortarPhase.velocity
         newVelocity = updateVelocity distance mortarPhase.leftLimit mortarPhase.rightLimit mortarPhase.pos mortarPhase.velocity
 
+atLeftLimit :: MortarPhase -> Boolean
+atLeftLimit mortarPhase = mortarPhase.leftLimit.x == mortarPhase.pos.x
+
 defaultMortarPhase :: Position -> Position -> Position -> MortarPhase
 defaultMortarPhase pos leftLimit rightLimit = {
     pos: pos,
     leftLimit: ensureLeftLimit leftLimit rightLimit,
     rightLimit: ensureRightLimit leftLimit rightLimit,
     velocity: {
-        xSpeed: bigBerthaSpeed,
+        xSpeed: -bigBerthaSpeed,
         ySpeed: 0.0
     },
     shotCoolDown: 0

@@ -25,9 +25,9 @@ updatePosition distance leftLimit rightLimit currentPosition currentVelocity = {
     where
         newX = currentPosition.x + floor currentVelocity.xSpeed
         x = if (newX + distance) < leftLimit.x 
-            then currentPosition.x 
+            then leftLimit.x - distance
             else if (newX + distance) > rightLimit.x 
-                then currentPosition.x 
+                then rightLimit.x - distance
                 else newX
 
 ensureLeftLimit :: Position -> Position -> Position

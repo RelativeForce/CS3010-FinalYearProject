@@ -5,7 +5,7 @@ import Prelude
 import Constants (bulletSpeed, bigBerthaSpeed)
 import Data.Bullet (Bullet, newLinearBullet)
 import Data.Player (Player(..))
-import Emo8.Types (Position, Sprite, Velocity, Deg, X)
+import Emo8.Types (Position, Velocity, Deg, X)
 import Emo8.Utils (xComponent, yComponent, angle, vectorTo)
 import Data.Enemy.BigBertha.Helper (playerInRange, updateVelocity, updatePosition, ensureLeftLimit, ensureRightLimit, coolDownShot)
 
@@ -92,7 +92,7 @@ defaultCannonPhase pos leftLimit rightLimit = {
     rightLimit: ensureRightLimit leftLimit rightLimit,
     offset: 0,
     velocity: {
-        xSpeed: bigBerthaSpeed,
+        xSpeed: -bigBerthaSpeed,
         ySpeed: 0.0
     },
     shotCoolDown: 0
