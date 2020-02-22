@@ -17,8 +17,6 @@ import Emo8.Data.Color (Color, colorToCode)
 import Emo8.FFI.TextBaseline (TextBaseline(..), setTextBaseline)
 import Emo8.Types (
     Deg, 
-    IdX, 
-    IdY, 
     MapId, 
     MonitorSize, 
     Size, 
@@ -112,7 +110,7 @@ drawMapWithF f mId size x y =
             Nothing -> false
             Just img -> true
 
-        isVisible :: MonitorSize -> IdX -> IdY -> Boolean
+        isVisible :: MonitorSize -> X -> Y -> Boolean
         isVisible ms xId yId =
             ( xId >= xlBoundId
             && xId <= xrBoundId ms

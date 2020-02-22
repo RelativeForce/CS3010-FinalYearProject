@@ -1,17 +1,14 @@
-# Usage
-
-For concrete implementation, see [examples](../examples) and [endpoint folder](../endpoint)
+# Engine Usage Guide
 
 ## Game Class
 
 ```PureScript
 class Game s where
-  update :: Input -> s -> Update s
+  update :: Asset -> Input -> s -> Update s
   draw :: s -> Draw Unit
-  sound :: s -> Sound Unit
 ```
 
-`s` is a game state data type which you can flexibly define.
+`s` is a game state data type which can be flexibly defined.
 
 Each functions are executed in order update, draw, sound at every frame.
 
@@ -20,79 +17,52 @@ Each functions are executed in order update, draw, sound at every frame.
 ### Input
 
 ```PureScript
-type Input =
-  { isLeft :: Boolean
-  , isRight :: Boolean
-  , isUp :: Boolean
-  , isDown :: Boolean
-  , isW :: Boolean
-  , isA :: Boolean
-  , isS :: Boolean
-  , isD :: Boolean
+type InputFlags = {
+  isSpace :: Boolean,
+  isEnter :: Boolean,
+  isBackspace :: Boolean,
+  isA :: Boolean,
+  isB :: Boolean,  
+  isC :: Boolean, 
+  isD :: Boolean,
   ...
-  }
+}
+
+type Input = { 
+  active :: InputFlags,
+  catched :: InputFlags, 
+  released :: InputFlags
+}
 ```
-
-### Get Random Value (An example)
-
-```PureScript
-randomInt :: Int -> Int -> Update Int
-```
-
-Arguments
-
-- First Int: min value
-- Second Int: max value
-
-After describing some actions, return next `s` at the end of update function.
 
 ## Draw Action
 
-### Draw Emoji (An example)
+Note: Screen origin is bottom left.
+
+### Draw Image with No Scaling
 
 ```PureScript
-emo :: Emoji -> Size -> X -> Y -> Draw Unit
+drawImageNoScaling :: Image -> X -> Y -> Draw Unit
 ```
 
 Arguments
 
-- Emoji: specify one of supported emoji
-- Size: emoji size (length of one side of square)
-- X: square's left position
-- Y: square's bottom position
+- `Image`: data-URI OR path to image
+- `X`: horizontal displacement in pixels from the origin
+- `Y`: vertical displacement in pixels from the origin
 
-※ Origin is based on left bottom. (not left top)
-
-※ All emojis are treated as square.
-Because these appearances depend on running device or browser.
-
-### Draw Map (An example)
+### Draw Scaled Image
 
 ```PureScript
-emap :: MapId -> Size -> X -> Y -> Draw Unit
+drawScaledImage :: ScaledImage -> X -> Y -> Draw Unit
 ```
 
 Arguments
 
-- MapId: index of map data that you edited.
-- Size: map element (emoji) size. (not whole map size)
-- X: map's left position
-- Y: map's bottom position
+- `ScaledImage`: image to be displayed
+- `X`: horizontal displacement in pixels from the origin
+- `Y`: vertical displacement in pixels from the origin
 
-## Sound Action
-
-### Play Sound (An example)
-
-```PureScript
-play :: Channel -> SoundId -> Tone -> Bpm -> Sound Unit
-```
-
-Arguments
-
-- Channel: channel type (select one of [CH1, CH2, CH3, CH4])
-- SoundId: index of sound data that you edited.
-- Tone: oscillation type (select one of [Sin, Sq, Tri, Saw, Noise])
-- Bpm: tempo (beat per minute)
 
 ## Map Edit
 

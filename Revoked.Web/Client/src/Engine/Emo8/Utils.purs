@@ -8,7 +8,7 @@ import Emo8.Excepiton (orErrMsg)
 import Emo8.Parse (RawMap, parseTileMap)
 import Data.Int (toNumber, floor)
 import Assets.AssetMapper (emojiToImage)
-import Emo8.Types (Asset, MonitorSize, Size, Position, Velocity, IdX, IdY, MapId, ScaledImage, AssetId, Deg, Vector)
+import Emo8.Types (Asset, MonitorSize, Size, Position, Velocity, X, Y, MapId, ScaledImage, AssetId, Deg, Vector)
 import Data.Array (reverse, (!!))
 import Data.Foldable (elem, foldr)
 import Data.Maybe (Maybe(..))
@@ -107,7 +107,7 @@ isMapCollide asset mId mSize collidableObjectIds size pos = foldr f false [lbE, 
         ltE = getMapTile asset mId (lx / mSize.width) (ty / mSize.height)
         rtE = getMapTile asset mId (rx / mSize.width) (ty / mSize.height)
 
-getMapTile :: Asset -> MapId -> IdX -> IdY -> Maybe ScaledImage
+getMapTile :: Asset -> MapId -> X -> Y -> Maybe ScaledImage
 getMapTile ass mId xId yId = maybeTile
     where 
         map = case ass.mapData !! mId of
