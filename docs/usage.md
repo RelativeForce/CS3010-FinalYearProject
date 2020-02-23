@@ -12,6 +12,8 @@ class Game s where
 
 Each functions are executed in order update, draw, sound at every frame.
 
+See [Action and Interpreter Guide](\action.md)
+
 ## Map
 
 ```PureScript

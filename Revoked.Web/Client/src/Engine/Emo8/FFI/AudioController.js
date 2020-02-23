@@ -20,12 +20,10 @@ exports.isPlaying = function(audio){
 
 exports.mute = function(controller){
   return function(){
-
     for (var index = 0; index < controller.audioStreams.length; index++) {
       controller.audioStreams[index].mute();
     }
 
-    
     return controller;
   }
 }
