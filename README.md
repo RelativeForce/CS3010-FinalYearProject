@@ -29,13 +29,13 @@ This game uses a heavily altered version of the Emo8 PureScript game engine. Ori
 ## Specification
 
 - Display: Variable size (recommended 720px 16:9)
-- Input: 8 buttons（up down left right 4 buttons x 2）
 - Map: No limit Emoji map - [Map Edit](docs/usage.md#map-edit)
 - Language: [PureScript](http://www.purescript.org/)
 - Deployed https://revoked.azurewebsites.net
 - Target Frame Rate: 60 FPS (Depending on hardware acceleration)
 - Operating Environment: Web browser
 - Development Environment: Visual Studio 2019 (.Net Core) and Visual Studio Code (PureScript)
+- Source Control: GitHub with ZenHub plugin (https://www.zenhub.com/)
 
 [Updated engine usage guide](docs/usage.md)
 
