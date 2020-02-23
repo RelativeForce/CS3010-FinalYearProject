@@ -14,18 +14,18 @@ send :: forall a. Request -> Effect (Either String a)
 
 ## AudioController
 
-An abstraction for the audio context which allows `AudioStream`s to be created, stopped, muted and unmuted. The audio elements are appended to the body and stored in the `AudioController`.
+An abstraction for the audio context which allows `AudioStream`s to be created, stopped, muted and unmuted. The audio elements are appended to the body and stored in the `AudioContext`.
 
 ```PureScript
-newAudioController :: String -> AudioController
+newAudioContext :: String -> AudioContext
 
-muteAudio :: AudioController -> Effect AudioController
+muteAudio :: AudioContext -> Effect AudioContext
 
-unmuteAudio :: AudioController -> Effect AudioController
+unmuteAudio :: AudioContext -> Effect AudioContext
 
-addAudioStream :: AudioController -> String -> Effect AudioController
+addAudioStream :: AudioContext -> String -> Effect AudioContext
 
-isAudioStreamPlaying :: AudioController -> String -> Effect Boolean
+isAudioStreamPlaying :: AudioContext -> String -> Effect Boolean
 
-stopAudioStream :: AudioController -> String -> Effect AudioController
+stopAudioStream :: AudioContext -> String -> Effect AudioContext
 ```

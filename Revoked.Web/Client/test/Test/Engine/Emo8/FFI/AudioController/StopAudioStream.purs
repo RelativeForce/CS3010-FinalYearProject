@@ -3,7 +3,7 @@ module Test.Engine.Emo8.FFI.AudioController.StopAudioStream (
 ) where
 
 import Prelude
-import Emo8.FFI.AudioController (_stopAudioStream, newAudioController, AudioStream, AudioController)
+import Emo8.FFI.AudioController (_stopAudioStream, newAudioContext, AudioStream, AudioContext)
 import Data.Array(length, head)
 import Data.Maybe (Maybe(..))
 import Test.Unit (suite, test)
@@ -33,19 +33,19 @@ stopAudioStreamTests = do
                     Nothing -> "error"
                     Just as -> as.src
 
-shouldNotRemoveAudioStreamWhenStopperFailsSetup :: String -> Effect AudioController
+shouldNotRemoveAudioStreamWhenStopperFailsSetup :: String -> Effect AudioContext
 shouldNotRemoveAudioStreamWhenStopperFailsSetup src = do
     let 
-        controller = (newAudioController "test") { audioStreams = [ { src: src } ] }
+        controller = (newAudioContext "test") { audioStreams = [ { src: src } ] }
         stopperSucceeds = false
         
     _stopAudioStream (mockAudioStopper stopperSucceeds) controller src
 
-shouldStopAndRemoveAudioStreamWhenThatStreamIsActiveSetup :: String -> Effect AudioController
+shouldStopAndRemoveAudioStreamWhenThatStreamIsActiveSetup :: String -> Effect AudioContext
 shouldStopAndRemoveAudioStreamWhenThatStreamIsActiveSetup src = do
   
     let 
-        controller = (newAudioController "test") { audioStreams = [ { src: src } ] }
+        controller = (newAudioContext "test") { audioStreams = [ { src: src } ] }
         stopperSucceeds = true
         
     _stopAudioStream (mockAudioStopper stopperSucceeds) controller src

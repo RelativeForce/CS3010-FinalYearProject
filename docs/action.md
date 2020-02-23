@@ -94,23 +94,23 @@ listTopScores :: Update (Either String (Array PlayerScore))
 ### Start an AudioStream
 
 ```PureScript
-addAudioStream :: AudioController -> String -> Update AudioController
+addAudioStream :: AudioContext -> String -> Update AudioContext
 ```
 
 ### Check if AudioStream is Playing
 
 ```PureScript
-isAudioStreamPlaying :: AudioController -> String -> Update Boolean
+isAudioStreamPlaying :: AudioContext -> String -> Update Boolean
 ```
 
 ```PureScript
-stopAudioStream :: AudioController -> String -> Update AudioController
+stopAudioStream :: AudioContext -> String -> Update AudioContext
 ```
 
 ```PureScript
-muteAudio :: AudioController -> Update AudioController
+muteAudio :: AudioContext -> Update AudioContext
 ```
 
 ```PureScript
-unmuteAudio :: AudioController -> Update AudioController
+unmuteAudio :: AudioContext -> Update AudioContext
 ```

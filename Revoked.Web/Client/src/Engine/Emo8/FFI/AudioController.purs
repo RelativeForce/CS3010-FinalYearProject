@@ -1,7 +1,7 @@
 module Emo8.FFI.AudioController (
-    AudioController,
+    AudioContext,
     AudioStream,
-    newAudioController,
+    newAudioContext,
     addAudioStream,
     _addAudioStream,
     isAudioStreamPlaying,
@@ -17,7 +17,7 @@ import Data.Maybe (Maybe(..))
 import Data.Array (filter, find)
 import Effect (Effect)
 
-type AudioController = {
+type AudioContext = {
     id :: String,
     muted :: Boolean,
     audioStreams :: Array AudioStream
@@ -33,34 +33,34 @@ foreign import isPlaying :: AudioStream -> Effect Boolean
 
 foreign import stop :: AudioStream -> Effect Boolean
 
-foreign import mute :: AudioController -> Effect AudioController
+foreign import mute :: AudioContext -> Effect AudioContext
 
-foreign import unmute :: AudioController -> Effect AudioController
+foreign import unmute :: AudioContext -> Effect AudioContext
 
-newAudioController :: String -> AudioController
-newAudioController controllerId = {
+newAudioContext :: String -> AudioContext
+newAudioContext controllerId = {
     id: controllerId,
     muted: false,
     audioStreams: []
 }
 
-muteAudio :: AudioController -> Effect AudioController
+muteAudio :: AudioContext -> Effect AudioContext
 muteAudio controller = do
     mutedController <- mute controller
     pure $ mutedController { muted = true }
 
-unmuteAudio :: AudioController -> Effect AudioController
+unmuteAudio :: AudioContext -> Effect AudioContext
 unmuteAudio controller = do
     unmutedController <- unmute controller
     pure $ unmutedController { muted = false }
 
-findStreamBySource :: AudioController -> String -> Maybe AudioStream
+findStreamBySource :: AudioContext -> String -> Maybe AudioStream
 findStreamBySource controller src = find (\a -> a.src == src) controller.audioStreams
 
-filterOutStreamsBySource :: AudioController -> String -> Array AudioStream
+filterOutStreamsBySource :: AudioContext -> String -> Array AudioStream
 filterOutStreamsBySource controller src = filter (\a -> a.src /= src) controller.audioStreams
 
-_addAudioStream :: (Boolean -> String -> Effect (Maybe AudioStream)) -> AudioController -> String -> Effect AudioController
+_addAudioStream :: (Boolean -> String -> Effect (Maybe AudioStream)) -> AudioContext -> String -> Effect AudioContext
 _addAudioStream player controller src = do
     
     maybeAudioStream <- player controller.muted src
@@ -71,20 +71,20 @@ _addAudioStream player controller src = do
 
     pure $ controller { audioStreams = newAudioStreams }        
 
-addAudioStream :: AudioController -> String -> Effect AudioController
+addAudioStream :: AudioContext -> String -> Effect AudioContext
 addAudioStream = _addAudioStream $ play (Just) (Nothing)
 
-_isAudioStreamPlaying :: (AudioStream -> Effect Boolean) -> AudioController -> String -> Effect Boolean
+_isAudioStreamPlaying :: (AudioStream -> Effect Boolean) -> AudioContext -> String -> Effect Boolean
 _isAudioStreamPlaying checker controller src = do
     let maybeAudioStream = findStreamBySource controller src
     case maybeAudioStream of
         Nothing -> pure false
         Just audioStream -> checker audioStream
 
-isAudioStreamPlaying :: AudioController -> String -> Effect Boolean
+isAudioStreamPlaying :: AudioContext -> String -> Effect Boolean
 isAudioStreamPlaying = _isAudioStreamPlaying isPlaying
 
-_stopAudioStream :: (AudioStream -> Effect Boolean) -> AudioController -> String -> Effect AudioController
+_stopAudioStream :: (AudioStream -> Effect Boolean) -> AudioContext -> String -> Effect AudioContext
 _stopAudioStream stopper controller src = do
     
     let maybeAudioStream = findStreamBySource controller src
@@ -99,5 +99,5 @@ _stopAudioStream stopper controller src = do
     
     pure $ controller { audioStreams = newAudioStreams }        
 
-stopAudioStream :: AudioController -> String -> Effect AudioController
+stopAudioStream :: AudioContext -> String -> Effect AudioContext
 stopAudioStream = _stopAudioStream stop

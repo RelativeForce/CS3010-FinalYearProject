@@ -3,7 +3,7 @@ module Test.Engine.Emo8.FFI.AudioController.AddAudioStream (
 ) where
 
 import Prelude
-import Emo8.FFI.AudioController (_addAudioStream, newAudioController, AudioStream, AudioController)
+import Emo8.FFI.AudioController (_addAudioStream, newAudioContext, AudioStream, AudioContext)
 import Data.Array(head)
 import Data.Maybe (Maybe(..))
 import Test.Unit (suite, test)
@@ -33,16 +33,16 @@ addAudioStreamTests = do
 
                 equal Nothing resultControllerFirstAudioStream 
 
-shouldNotAddAudioStreamWhenPlayerFailsSetup :: String -> Effect AudioController
+shouldNotAddAudioStreamWhenPlayerFailsSetup :: String -> Effect AudioContext
 shouldNotAddAudioStreamWhenPlayerFailsSetup src = do
-    let controller = newAudioController "test"
+    let controller = newAudioContext "test"
         
     _addAudioStream mockAudioPlayerThatFails controller src
 
-shouldAddAudioStreamWhenThereIsNoAudioStreamsActiveSetup :: String -> Effect AudioController
+shouldAddAudioStreamWhenThereIsNoAudioStreamsActiveSetup :: String -> Effect AudioContext
 shouldAddAudioStreamWhenThereIsNoAudioStreamsActiveSetup src = do
     let 
-        controller = newAudioController "test"
+        controller = newAudioContext "test"
 
     _addAudioStream mockAudioPlayer controller src
 
