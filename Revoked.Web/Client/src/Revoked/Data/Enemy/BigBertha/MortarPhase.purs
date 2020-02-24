@@ -25,13 +25,13 @@ shotCooldown :: Int
 shotCooldown = 8
 
 horizontalVelocity :: Position -> MortarPhase -> Number
-horizontalVelocity target mortarPhase = (d * g) / ((2.0 * g * sqrt (2.0 * h)) - sqrt (h + l))
+horizontalVelocity target mortarPhase = (d * sqrt g) / ((sqrt (2.0 * h)) + sqrt (2.0 * (h - l)))
     where
         mortarPos = mortarPosition mortarPhase
         d = abs $ toNumber $ mortarPos.x - target.x
         h = mortarApex
         l = toNumber $ target.y - mortarPos.y
-        g = gravity
+        g = abs gravity
 
 verticalVelocity :: Number
 verticalVelocity = sqrt $ 2.0 * (abs gravity) * mortarApex
