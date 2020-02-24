@@ -47,13 +47,13 @@ updateLeaderboardTests =
                     position: 1
                 }
 
+                response = Right [ testScore ]
+
                 expected = Left {
                     scores: [ testScore ],
                     isWaiting: false,
                     isLoaded: true
                 }
-
-                response = Right [ testScore ]
     
             result <- liftEffect $ runTestUpdate (interpreterForLeaderboard response) $ updateLeaderboard input state
 
@@ -64,13 +64,13 @@ updateLeaderboardTests =
                 state = initialLeaderboardState
                 input = buildInput pressingBackspacePressed
 
+                response = Left "Waiting"
+
                 expected = Left {
                     scores: [],
                     isWaiting: true,
                     isLoaded: false
                 }
-
-                response = Left "Waiting"
     
             result <- liftEffect $ runTestUpdate (interpreterForLeaderboard response) $ updateLeaderboard input state
 

@@ -6,9 +6,8 @@ import Prelude
 
 import Data.Either (Either(..))
 import Effect.Class(liftEffect)
-import Emo8.Types (PlayerScore)
 import Emo8.Input (Input)
-import States.Victory (updateVictory, initialVictoryState, inputInterval)
+import States.Victory (updateVictory, inputInterval)
 import States.StateIds as S
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
@@ -19,10 +18,11 @@ import Test.Revoked.State.Helper (runTestUpdateAllFail, runTestUpdate, interpret
 updateVictoryTests :: TestSuite
 updateVictoryTests =
     suite "Test.Revoked.State.Victory - updateVictory" do
-        test "shouldAddUsernameCharacterWhenInputIsPressedAndUsernameIsEmpty" do
+        test "shouldAddUsernameCharacterWhenCharacterInputIsPressedAndUsernameIsEmpty" do
             let 
                 pressingBackspacePressed = false
                 pressingAButton = true
+                pressingEnterButton = false
                 initialInputInterval = 0 
                 start = bottom
                 end = top
@@ -35,7 +35,7 @@ updateVictoryTests =
                     end: end,
                     isWaiting: waiting
                 }
-                input = buildInput pressingBackspacePressed pressingAButton
+                input = buildInput pressingBackspacePressed pressingAButton pressingEnterButton
 
                 expected = Left {
                     username: ["A"],
@@ -49,10 +49,11 @@ updateVictoryTests =
             result <- liftEffect $ runTestUpdateAllFail $ updateVictory input state
 
             equal expected result
-        test "shouldNOTAddUsernameCharacterWhenInputIsPressedAndInputIntervalIsNOTZero" do
+        test "shouldNOTAddUsernameCharacterWhenCharacterInputIsPressedAndInputIntervalIsNOTZero" do
             let 
                 pressingBackspacePressed = false
                 pressingAButton = true
+                pressingEnterButton = false
                 initialInputInterval = 0 
                 start = bottom
                 end = top
@@ -65,7 +66,7 @@ updateVictoryTests =
                     end: end,
                     isWaiting: waiting
                 }
-                input = buildInput pressingBackspacePressed pressingAButton
+                input = buildInput pressingBackspacePressed pressingAButton pressingEnterButton
 
                 expected = Left {
                     username: ["A"],
@@ -79,16 +80,135 @@ updateVictoryTests =
             result <- liftEffect $ runTestUpdateAllFail $ updateVictory input state
 
             equal expected result
+        test "shouldNOTSubmitScoreWhenEnterIsPressedAndUsernameIsNOTThreeCharactersLong" do
+            let 
+                pressingBackspacePressed = false
+                pressingAButton = false
+                pressingEnterButton = true
+                initialInputInterval = 0 
+                start = bottom
+                end = top
+                waiting = false
+                state = {
+                    username: ["A"],
+                    score: 10,
+                    inputInterval: initialInputInterval,
+                    start: start,
+                    end: end,
+                    isWaiting: waiting
+                }
+                input = buildInput pressingBackspacePressed pressingAButton pressingEnterButton
+
+                expected = Left {
+                    username: ["A"],
+                    score: 10,
+                    inputInterval: initialInputInterval,
+                    start: start,
+                    end: end,
+                    isWaiting: waiting
+                }
+    
+            result <- liftEffect $ runTestUpdateAllFail $ updateVictory input state
+
+            equal expected result
+        test "shouldNOTAddUsernameCharacterWhenCharacterInputIsPressedAndUsernameIsThreeCharactersLong" do
+            let 
+                pressingBackspacePressed = false
+                pressingAButton = true
+                pressingEnterButton = false
+                initialInputInterval = 0 
+                start = bottom
+                end = top
+                waiting = false
+                state = {
+                    username: ["A", "B", "C"],
+                    score: 10,
+                    inputInterval: initialInputInterval,
+                    start: start,
+                    end: end,
+                    isWaiting: waiting
+                }
+                input = buildInput pressingBackspacePressed pressingAButton pressingEnterButton
+
+                expected = Left {
+                    username: ["A", "B", "C"],
+                    score: 10,
+                    inputInterval: initialInputInterval,
+                    start: start,
+                    end: end,
+                    isWaiting: waiting
+                }
+    
+            result <- liftEffect $ runTestUpdateAllFail $ updateVictory input state
+
+            equal expected result
+        test "shouldSubmitScoreAndWaitWhenEnterInputIsPressedAndUsernameIsThreeCharactersLong" do
+            let 
+                pressingBackspacePressed = false
+                pressingAButton = false
+                pressingEnterButton = true
+                initialInputInterval = 0 
+                start = bottom
+                end = top
+                waiting = false
+                state = {
+                    username: ["A", "B", "C"],
+                    score: 10,
+                    inputInterval: initialInputInterval,
+                    start: start,
+                    end: end,
+                    isWaiting: waiting
+                }
+                input = buildInput pressingBackspacePressed pressingAButton pressingEnterButton
+                response = Left "Waiting"
+
+                expected = Left {
+                    username: ["A", "B", "C"],
+                    score: 10,
+                    inputInterval: initialInputInterval,
+                    start: start,
+                    end: end,
+                    isWaiting: true
+                }
+    
+            result <- liftEffect $ runTestUpdate (interpreterForVictory response) $ updateVictory input state
+
+            equal expected result
+        test "shouldTransitionStateWhenWaitingAndRecievesSumbitSuccess" do
+            let 
+                pressingBackspacePressed = false
+                pressingAButton = false
+                pressingEnterButton = false
+                initialInputInterval = 0 
+                start = bottom
+                end = top
+                waiting = true
+                state = {
+                    username: ["A", "B", "C"],
+                    score: 10,
+                    inputInterval: initialInputInterval,
+                    start: start,
+                    end: end,
+                    isWaiting: waiting
+                }
+                input = buildInput pressingBackspacePressed pressingAButton pressingEnterButton
+                response = Right true
+
+                expected = Right S.titleScreenId 
+
+            result <- liftEffect $ runTestUpdate (interpreterForVictory response) $ updateVictory input state
+
+            equal expected result
 
 interpreterForVictory :: Either String Boolean -> (UpdateF ~> Effect)
 interpreterForVictory response (StorePlayerScore request f) = f <$> pure response
 interpreterForVictory _ a = interpretAllFail a
 
-buildInput :: Boolean -> Boolean -> Input
-buildInput pressingBackspaceButton pressingAButton = { 
+buildInput :: Boolean -> Boolean -> Boolean -> Input
+buildInput pressingBackspaceButton pressingAButton pressingEnterButton = { 
     active: { 
         isSpace: false,
-        isEnter: false,
+        isEnter: pressingEnterButton,
         isBackspace: pressingBackspaceButton,
         isA: pressingAButton,
         isB: false,  
