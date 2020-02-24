@@ -1,5 +1,5 @@
-module Test.Revoked.State.Leaderboard.UpdateLeaderboard (
-    updateLeaderboardTests
+module Test.Revoked.State.Victory.UpdateVictory (
+    updateVictoryTests
 ) where
 
 import Prelude
@@ -8,7 +8,7 @@ import Data.Either (Either(..))
 import Effect.Class(liftEffect)
 import Emo8.Types (PlayerScore)
 import Emo8.Input (Input)
-import States.Leaderboard (updateLeaderboard, initialLeaderboardState)
+import States.Victory (updateVictory, initialVictoryState, inputInterval)
 import States.StateIds as S
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
@@ -16,77 +16,81 @@ import Emo8.Action.Update (UpdateF(..))
 import Effect (Effect)
 import Test.Revoked.State.Helper (runTestUpdateAllFail, runTestUpdate, interpretAllFail)
 
-updateLeaderboardTests :: TestSuite
-updateLeaderboardTests =
-    suite "Test.Revoked.State.Leaderboard - updateLeaderboard" do
-        test "shouldReturnTitleScreenIdWithoutRetrievingTopScoresWhenBackSpaceIsPressedAndScoresAreAlreadyLoaded" do
+updateVictoryTests :: TestSuite
+updateVictoryTests =
+    suite "Test.Revoked.State.Victory - updateVictory" do
+        test "shouldAddUsernameCharacterWhenInputIsPressedAndUsernameIsEmpty" do
             let 
-                pressingBackspacePressed = true
+                pressingBackspacePressed = false
+                pressingAButton = true
+                initialInputInterval = 0 
+                start = bottom
+                end = top
+                waiting = false
                 state = {
-                    scores: [],
-                    isWaiting: false,
-                    isLoaded: true
-                }
-                input = buildInput pressingBackspacePressed
-
-                expected = Right S.titleScreenId 
-    
-            result <- liftEffect $ runTestUpdateAllFail $ updateLeaderboard input state
-
-            equal expected result
-        test "shouldRetrieveTopScoresWhenInDefaultState" do
-            let 
-                pressingBackspacePressed = false
-                state = initialLeaderboardState
-                input = buildInput pressingBackspacePressed
-
-                testScore = {
-                    username: "TES",
+                    username: [],
                     score: 10,
-                    time: "00:05:00",
-                    position: 1
+                    inputInterval: initialInputInterval,
+                    start: start,
+                    end: end,
+                    isWaiting: waiting
                 }
+                input = buildInput pressingBackspacePressed pressingAButton
 
                 expected = Left {
-                    scores: [ testScore ],
-                    isWaiting: false,
-                    isLoaded: true
+                    username: ["A"],
+                    score: 10,
+                    inputInterval: inputInterval,
+                    start: start,
+                    end: end,
+                    isWaiting: waiting
                 }
-
-                response = Right [ testScore ]
     
-            result <- liftEffect $ runTestUpdate (interpreterForLeaderboard response) $ updateLeaderboard input state
+            result <- liftEffect $ runTestUpdateAllFail $ updateVictory input state
 
             equal expected result
-        test "shouldWaitWhenScoresAreNotRetreivedWhenInDefaultState" do
+        test "shouldNOTAddUsernameCharacterWhenInputIsPressedAndInputIntervalIsNOTZero" do
             let 
                 pressingBackspacePressed = false
-                state = initialLeaderboardState
-                input = buildInput pressingBackspacePressed
+                pressingAButton = true
+                initialInputInterval = 0 
+                start = bottom
+                end = top
+                waiting = false
+                state = {
+                    username: ["A"],
+                    score: 10,
+                    inputInterval: inputInterval,
+                    start: start,
+                    end: end,
+                    isWaiting: waiting
+                }
+                input = buildInput pressingBackspacePressed pressingAButton
 
                 expected = Left {
-                    scores: [],
-                    isWaiting: true,
-                    isLoaded: false
+                    username: ["A"],
+                    score: 10,
+                    inputInterval: inputInterval - 1,
+                    start: start,
+                    end: end,
+                    isWaiting: waiting
                 }
-
-                response = Left "Waiting"
     
-            result <- liftEffect $ runTestUpdate (interpreterForLeaderboard response) $ updateLeaderboard input state
+            result <- liftEffect $ runTestUpdateAllFail $ updateVictory input state
 
             equal expected result
 
-interpreterForLeaderboard :: Either String (Array PlayerScore) -> (UpdateF ~> Effect)
-interpreterForLeaderboard response (ListTopScores f) = f <$> pure response
-interpreterForLeaderboard _ a = interpretAllFail a
+interpreterForVictory :: Either String Boolean -> (UpdateF ~> Effect)
+interpreterForVictory response (StorePlayerScore request f) = f <$> pure response
+interpreterForVictory _ a = interpretAllFail a
 
-buildInput :: Boolean -> Input
-buildInput pressingBackspaceButton = { 
+buildInput :: Boolean -> Boolean -> Input
+buildInput pressingBackspaceButton pressingAButton = { 
     active: { 
         isSpace: false,
         isEnter: false,
         isBackspace: pressingBackspaceButton,
-        isA: false,
+        isA: pressingAButton,
         isB: false,  
         isC: false, 
         isD: false,
