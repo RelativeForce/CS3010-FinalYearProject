@@ -14,7 +14,7 @@ accuracyTolerance = 0.001
 
 bulletVelocityTests :: TestSuite
 bulletVelocityTests =
-    suite "Test.Revoked.Data.Gun.Pistol - bulletVelocity" do
+    suite "Revoked.Data.Gun.Pistol - bulletVelocity" do
         test "shouldFullSpeedInXWhenAimedRight" do
             let 
                 angle = 0

@@ -611,3 +611,8 @@
 /Revoked.Web/Client/output/Test.Revoked.State.Helper
 /Revoked.Web/Client/output/Test.Revoked.State.Victory
 /Revoked.Web/Client/output/Test.Revoked.State.Victory.UpdateVictory
+/Revoked.Web/Client/output/Test.Revoked.Data.Enemy.BigBertha
+/Revoked.Web/Client/output/Test.Revoked.Data.Enemy.BigBertha.DefaultBigBertha
+/Revoked.Web/Client/output/Test.Revoked.Data.Enemy.BigBertha.HealthGate
+/Revoked.Web/Client/output/Test.Revoked.Data.Enemy.BigBertha.IsImmune
+/Revoked.Web/Client/output/Test.Revoked.Data.Enemy.BigBertha.NextPhase

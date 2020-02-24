@@ -17,7 +17,7 @@ import Test.Revoked.State.Helper (runTestUpdateAllFail, runTestUpdate, interpret
 
 updateVictoryTests :: TestSuite
 updateVictoryTests =
-    suite "Test.Revoked.State.Victory - updateVictory" do
+    suite "Revoked.State.Victory - updateVictory" do
         test "shouldAddUsernameCharacterWhenCharacterInputIsPressedAndUsernameIsEmpty" do
             let 
                 pressingBackspacePressed = false

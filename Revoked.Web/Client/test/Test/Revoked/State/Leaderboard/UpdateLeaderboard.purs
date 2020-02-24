@@ -18,7 +18,7 @@ import Test.Revoked.State.Helper (runTestUpdateAllFail, runTestUpdate, interpret
 
 updateLeaderboardTests :: TestSuite
 updateLeaderboardTests =
-    suite "Test.Revoked.State.Leaderboard - updateLeaderboard" do
+    suite "Revoked.State.Leaderboard - updateLeaderboard" do
         test "shouldReturnTitleScreenIdWithoutRetrievingTopScoresWhenBackSpaceIsPressedAndScoresAreAlreadyLoaded" do
             let 
                 pressingBackspacePressed = true
