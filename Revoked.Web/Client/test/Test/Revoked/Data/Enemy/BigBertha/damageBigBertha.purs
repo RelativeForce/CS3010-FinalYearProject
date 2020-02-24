@@ -4,7 +4,7 @@ module Test.Revoked.Data.Enemy.BigBertha.DamageBigBertha (
 
 import Prelude
 
-import Data.Enemy.BigBertha (phase1, phase2, phase3, damageBigBertha, healthGate, defaultBigBertha)
+import Data.Enemy.BigBertha (damageBigBertha, healthGate, defaultBigBertha)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 

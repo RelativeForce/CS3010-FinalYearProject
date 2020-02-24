@@ -10,6 +10,7 @@ import Test.Revoked.Data.Enemy.BigBertha.IsImmune (isImmuneTests)
 import Test.Revoked.Data.Enemy.BigBertha.HealthGate (healthGateTests)
 import Test.Revoked.Data.Enemy.BigBertha.NextPhase (nextPhaseTests)
 import Test.Revoked.Data.Enemy.BigBertha.DamageBigBertha (damageBigBerthaTests)
+import Test.Revoked.Data.Enemy.BigBertha.TransitionPhase (transitionPhaseTests)
 import Test.Unit.Main (runTest)
 
 bigBerthaTests :: Effect Unit
@@ -23,4 +24,5 @@ bigBerthaTests = do
         healthGateTests
         nextPhaseTests
         damageBigBerthaTests
+        transitionPhaseTests
     
