@@ -24,7 +24,7 @@ updateLeaderboard input s = do
         else pure $ Left "AllowInput"
 
     let
-        backToTitleScreen = input.catched.isBackspace
+        backToTitleScreen = input.active.isBackspace
         isWaiting = case result of
             Left "Waiting" -> true
             _-> false

@@ -6,6 +6,7 @@ import Prelude
 
 import Effect (Effect)
 import Test.Revoked.Data.Enemy.Marine (marineTests)
+import Test.Revoked.Data.Enemy.BigBertha (bigBerthaTests)
 
 enemyTests :: Effect Unit
 enemyTests = do
@@ -13,3 +14,4 @@ enemyTests = do
 
     -- Sub Modules
     marineTests
+    bigBerthaTests

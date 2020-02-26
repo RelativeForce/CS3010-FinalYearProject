@@ -3,7 +3,7 @@ module Test.Engine.Emo8.FFI.AudioController.IsAudioStreamPlaying (
 ) where
 
 import Prelude
-import Emo8.FFI.AudioController (_isAudioStreamPlaying, newAudioController, AudioStream)
+import Emo8.FFI.AudioController (_isAudioStreamPlaying, newAudioContext, AudioStream)
 import Test.Unit (suite, test)
 import Test.Unit.Assert (equal)
 import Test.Unit.Main (runTest)
@@ -33,7 +33,7 @@ shouldReturnNotPlayingAudioStreamWhenCheckerReturnsFalseSetup :: Effect Boolean
 shouldReturnNotPlayingAudioStreamWhenCheckerReturnsFalseSetup = do
     let 
         src = "testAudioFile"
-        controller = (newAudioController "test") { audioStreams = [ { src: src } ] }
+        controller = (newAudioContext "test") { audioStreams = [ { src: src } ] }
         checkerSucceeds = false
         
     _isAudioStreamPlaying (mockAudioChecker checkerSucceeds) controller src
@@ -42,7 +42,7 @@ shouldReturnPlayingAudioStreamWhenCheckerReturnsTrueSetup :: Effect Boolean
 shouldReturnPlayingAudioStreamWhenCheckerReturnsTrueSetup = do
     let 
         src = "testAudioFile"
-        controller = (newAudioController "test") { audioStreams = [ { src: src } ] }
+        controller = (newAudioContext "test") { audioStreams = [ { src: src } ] }
         checkerSucceeds = true
         
     _isAudioStreamPlaying (mockAudioChecker checkerSucceeds) controller src

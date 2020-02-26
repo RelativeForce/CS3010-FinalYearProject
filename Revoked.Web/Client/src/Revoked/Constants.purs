@@ -128,7 +128,7 @@ shotgunShotCooldown = 20
 -- Assault rifle
 
 assaultRifleMagazineSize :: Int
-assaultRifleMagazineSize = 25
+assaultRifleMagazineSize = 15
 
 assaultRifleShotCooldown :: Int
 assaultRifleShotCooldown = 1
@@ -151,3 +151,14 @@ droneSpeed = 2.0
 
 droneShotCooldown :: Int
 droneShotCooldown = 20
+
+-- Big Bertha
+
+bigBerthaSpeed :: Number
+bigBerthaSpeed = 2.0
+
+bigBerthaAgroRange :: Number
+bigBerthaAgroRange = 1000.0
+
+bigBerthaImmunityCooldown :: Int
+bigBerthaImmunityCooldown = 120

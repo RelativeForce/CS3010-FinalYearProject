@@ -201,12 +201,12 @@ mkSubInput s f = {
 
 mkInput :: InputState -> Input
 mkInput s = { 
-  active : mkSubInput s isOn,
+  active : mkSubInput s isActive,
   catched: mkSubInput s isCatched, 
   released: mkSubInput s isReleased
 }
   where
-    isOn ps = ps == Catched || ps == Pressed
+    isActive ps = ps == Catched || ps == Pressed
     isCatched ps = ps == Catched
     isReleased ps = ps == Released
 

@@ -43,7 +43,7 @@ updateDrone distance p drone = { enemy: newDrone, bullets: newBullets }
         { gun: potentialyFiredGun, bullets: newBullets } = fireAndUpdateGun drone.gun
         hasFired = (length newBullets) > 0
         newOffset = if hasFired then mod (drone.offset + 1) maxOffset else drone.offset
-        updatedMotionDrone = updatePositionAndVelocity drone
+        updatedMotionDrone = updatePositionAndVelocity drone distance
         droneBasedOnVelocity = updatedMotionDrone {
             sprite = updateSprite drone updatedMotionDrone,
             offset = newOffset,
@@ -73,27 +73,27 @@ adjustGunPosition m a = marinWithAdjustedGun
             gun = setPositionAndRotation m.gun gunPos a
         }
 
-updateVelocity :: Position -> Position -> Position -> Velocity -> Velocity
-updateVelocity leftLimit rightLimit currentPosition currentVelocity = { xSpeed: xSpeed, ySpeed: ySpeed }
+updateVelocity :: X -> Position -> Position -> Position -> Velocity -> Velocity
+updateVelocity distance leftLimit rightLimit currentPosition currentVelocity = { xSpeed: xSpeed, ySpeed: ySpeed }
     where
         newX = currentPosition.x + floor currentVelocity.xSpeed
         newY = currentPosition.y + floor currentVelocity.ySpeed
-        xSpeed = if newX < leftLimit.x then droneSpeed else if newX > rightLimit.x then -droneSpeed else currentVelocity.xSpeed
+        xSpeed = if (newX + distance) < leftLimit.x then droneSpeed else if (newX + distance) > rightLimit.x then -droneSpeed else currentVelocity.xSpeed
         ySpeed = if newY < leftLimit.y then droneSpeed else if newY > rightLimit.y then -droneSpeed else currentVelocity.ySpeed
 
-updatePosition :: Position -> Position -> Position -> Velocity -> Position
-updatePosition leftLimit rightLimit currentPosition currentVelocity = { x: x, y: y }
+updatePosition :: X -> Position -> Position -> Position -> Velocity -> Position
+updatePosition distance leftLimit rightLimit currentPosition currentVelocity = { x: x, y: y }
     where
         newX = currentPosition.x + floor currentVelocity.xSpeed
         newY = currentPosition.y + floor currentVelocity.ySpeed
-        x = if newX < leftLimit.x then leftLimit.x else if newX > rightLimit.x then rightLimit.x else newX
+        x = if (newX + distance) < leftLimit.x then (leftLimit.x - distance) else if (newX + distance) > rightLimit.x then (rightLimit.x - distance) else newX
         y = if newY < leftLimit.y then leftLimit.y else if newY > rightLimit.y then rightLimit.y else newY
 
-updatePositionAndVelocity :: Drone -> Drone
-updatePositionAndVelocity drone = drone { pos = newPos, velocity = newVelocity }
+updatePositionAndVelocity :: Drone -> X -> Drone
+updatePositionAndVelocity drone distance = drone { pos = newPos, velocity = newVelocity }
     where
-        newPos = updatePosition drone.leftLimit drone.rightLimit drone.pos drone.velocity
-        newVelocity = updateVelocity drone.leftLimit drone.rightLimit drone.pos drone.velocity
+        newPos = updatePosition distance drone.leftLimit drone.rightLimit drone.pos drone.velocity
+        newVelocity = updateVelocity distance drone.leftLimit drone.rightLimit drone.pos drone.velocity
 
 ensureLeftLimit :: Position -> Position -> Position
 ensureLeftLimit leftLimit rightLimit  = if leftLimit.x < rightLimit.x then leftLimit else rightLimit

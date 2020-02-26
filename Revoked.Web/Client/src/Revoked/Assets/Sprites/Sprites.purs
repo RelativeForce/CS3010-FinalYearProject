@@ -20,7 +20,9 @@ module Assets.Sprites (
     module Assets.Sprites.DroneRight.Sprite,
     module Assets.Sprites.Blaster.Sprite,
     module Assets.Sprites.DroneLeft.Sprite,
-    module Assets.Sprites.DroneExplosion.Sprite 
+    module Assets.Sprites.DroneExplosion.Sprite,
+    module Assets.Sprites.BigBerthaNormal.Sprite,
+    module Assets.Sprites.BigBerthaImmune.Sprite 
 ) where 
 
 import Assets.Sprites.PistolBullet.Sprite (pistolBullet)
@@ -45,3 +47,5 @@ import Assets.Sprites.DroneLeft.Sprite (droneLeft)
 import Assets.Sprites.DroneRight.Sprite (droneRight)
 import Assets.Sprites.Blaster.Sprite (blaster)
 import Assets.Sprites.DroneExplosion.Sprite (droneExplosion)
+import Assets.Sprites.BigBerthaNormal.Sprite (bigBerthaNormal)
+import Assets.Sprites.BigBerthaImmune.Sprite (bigBerthaImmune)

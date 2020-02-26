@@ -8,32 +8,57 @@ import Data.Int (floor)
 import Assets.Sprites as S
 import Emo8.Types (Position, Sprite, Velocity)
 import Emo8.Data.Sprite (incrementFrame)
+import Constants (gravity)
 
-data Bullet = Bullet { 
+type BaseBullet = { 
     pos :: Position,
     sprite :: Sprite,
     velocity :: Velocity
 }
 
+data Bullet = 
+    LinearBullet BaseBullet | 
+    ArcBullet BaseBullet
+
 instance objectBullet :: Object Bullet where
-    size (Bullet b) = b.sprite.size
-    position (Bullet b) = b.pos
-    scroll offset (Bullet b) = Bullet $ b { pos = { x: b.pos.x + offset, y: b.pos.y }}
+    size (LinearBullet b) = b.sprite.size
+    size (ArcBullet b) = b.sprite.size
+    position (LinearBullet b) = b.pos
+    position (ArcBullet b) = b.pos
+    scroll offset (LinearBullet b) = LinearBullet $ b { pos = { x: b.pos.x + offset, y: b.pos.y }}
+    scroll offset (ArcBullet b) = ArcBullet $ b { pos = { x: b.pos.x + offset, y: b.pos.y }}
+
 
 instance objectDrawBullet :: ObjectDraw Bullet where
-    draw (Bullet b) = drawSprite b.sprite b.pos.x b.pos.y
+    draw (LinearBullet b) = drawSprite b.sprite b.pos.x b.pos.y
+    draw (ArcBullet b) = drawSprite b.sprite b.pos.x b.pos.y
 
 updateBullet :: Bullet -> Bullet
-updateBullet (Bullet b) = Bullet $ b { pos = newPos, sprite = newSprite }
+updateBullet (LinearBullet b) = LinearBullet $ b { pos = newPos, sprite = newSprite }
     where
         newPos = {
             x: b.pos.x + floor b.velocity.xSpeed,
             y: b.pos.y + floor b.velocity.ySpeed
         } 
         newSprite = incrementFrame b.sprite
+updateBullet (ArcBullet b) = ArcBullet $ b { pos = newPos, sprite = newSprite, velocity = newVelocity }
+    where
+        newPos = {
+            x: b.pos.x + floor b.velocity.xSpeed,
+            y: b.pos.y + floor b.velocity.ySpeed
+        } 
+        newVelocity = b.velocity { ySpeed = b.velocity.ySpeed + gravity }
+        newSprite = incrementFrame b.sprite
 
-newBullet :: Position -> Velocity -> Bullet
-newBullet pos velocity = Bullet $ {
+newLinearBullet :: Position -> Velocity -> Bullet
+newLinearBullet pos velocity = LinearBullet $ {
+    pos: pos,
+    velocity: velocity,
+    sprite: S.pistolBullet 
+}
+
+newArcBullet :: Position -> Velocity -> Bullet
+newArcBullet pos velocity = ArcBullet $ {
     pos: pos,
     velocity: velocity,
     sprite: S.pistolBullet 

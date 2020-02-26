@@ -7,7 +7,6 @@ import Effect (Effect)
 import Emo8.Action.Update (Update, UpdateF(..))
 import Emo8.Class.Game (class Game)
 import Emo8.Types (PlayerScoreCreateRequestData, PlayerScore, Request)
-import Random.PseudoRandom (randomREff)
 import Effect.Now (nowDateTime)
 import Emo8.FFI.ServerIO (send)
 import Data.Argonaut.Encode (encodeJson)
@@ -19,8 +18,6 @@ runUpdate :: forall s. Game s => Update s -> Effect s
 runUpdate = foldFree interpret
   where
     interpret :: UpdateF ~> Effect
-    interpret (RandomInt min max f) = f <$> randomREff min max
-    interpret (RandomNumber min max f) = f <$> randomREff min max
     interpret (NowDateTime f) = f <$> nowDateTime
     interpret (StorePlayerScore request f) = f <$> sendPlayerScore request
     interpret (ListTopScores f) = f <$> listTopScores

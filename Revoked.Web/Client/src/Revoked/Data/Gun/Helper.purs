@@ -4,7 +4,7 @@ import Prelude
 
 import Emo8.Types (Position, Deg, Size, Velocity)
 import Constants (bulletSpeed)
-import Data.Bullet (Bullet, newBullet)
+import Data.Bullet (Bullet, newLinearBullet)
 import Emo8.Utils (xComponent, yComponent, inLeftDirection)
 import Data.Int (toNumber, floor)
 
@@ -41,4 +41,4 @@ newGunBullet angle pos s = bullet
     where
         velocity = bulletVelocity angle
         position = bulletPosition angle pos s
-        bullet = newBullet position velocity 
+        bullet = newLinearBullet position velocity 

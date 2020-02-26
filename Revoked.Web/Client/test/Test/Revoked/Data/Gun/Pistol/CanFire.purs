@@ -10,7 +10,7 @@ import Test.Unit.Assert (equal)
 
 canFireTests :: TestSuite
 canFireTests =
-    suite "Test.Revoked.Data.Gun.Pistol - canFire" do
+    suite "Revoked.Data.Gun.Pistol - canFire" do
         test "canNotFireWhenOutOfAmmoAndNotInfiniteAmmo" do
             let 
                 isInfinite = false

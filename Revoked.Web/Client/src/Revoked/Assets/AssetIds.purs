@@ -109,3 +109,9 @@ blasterId = 35
 
 droneExplosionId :: AssetId
 droneExplosionId = 36
+
+bigBerthaNormalId :: AssetId
+bigBerthaNormalId = 37
+
+bigBerthaImmuneId :: AssetId
+bigBerthaImmuneId = 38

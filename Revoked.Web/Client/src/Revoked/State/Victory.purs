@@ -23,6 +23,9 @@ type VictoryState = {
     isWaiting :: Boolean
 }
 
+inputInterval :: Int
+inputInterval = 15
+
 updateVictory :: Input -> VictoryState -> Update (Either VictoryState StateId)
 updateVictory input s = do
     let 
@@ -39,7 +42,11 @@ updateVictory input s = do
                 Just username -> username
                 Nothing -> s.username
             _, _ -> s.username 
-        newInputInterval = if addCharacter || removeCharacter then 15 else if s.inputInterval == 0 then 0 else s.inputInterval - 1
+        newInputInterval = if addCharacter || removeCharacter 
+            then inputInterval 
+            else if s.inputInterval == 0 
+                then 0 
+                else s.inputInterval - 1
         request = {
             username: joinWith "" s.username,
             score: s.score,

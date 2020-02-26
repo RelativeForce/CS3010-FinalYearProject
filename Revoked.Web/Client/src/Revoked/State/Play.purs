@@ -16,7 +16,7 @@ import Data.Particle (Particle, updateParticle)
 import Data.Player (Player(..), initialPlayer, updatePlayer, updatePlayerGun)
 import Emo8.Action.Update (Update, isAudioStreamPlaying, stopAudioStream, addAudioStream, nowDateTime, muteAudio, unmuteAudio)
 import Data.DateTime (DateTime)
-import Emo8.FFI.AudioController (AudioController, newAudioController)
+import Emo8.FFI.AudioController (AudioContext, newAudioContext)
 import Emo8.Input (Input)
 import Emo8.Types (MapId, Score, StateId, Asset)
 import Data.Helper (isDead)
@@ -33,7 +33,7 @@ type PlayState = {
     goals :: Array Goal,
     mapId :: MapId,
     score :: Score,
-    audioController :: AudioController,
+    audioController :: AudioContext,
     start :: DateTime,
     elapsed :: String
 }
@@ -102,7 +102,7 @@ updatePlay asset input s = do
 
     -- update music
     isBackgroundMusicPlaying <- isAudioStreamPlaying s.audioController A.backgroundMusicId
-    newAudioController <- updateAudioController s.audioController input (isGameOver || (isNextLevel && isLastLevel))
+    newAudioContext <- updateAudioContext s.audioController input (isGameOver || (isNextLevel && isLastLevel))
     
     now <- nowDateTime
     
@@ -121,12 +121,12 @@ updatePlay asset input s = do
             goals = notCollidedGoals,
             mapId = s.mapId,
             score = s.score + newScore,
-            audioController = newAudioController,
+            audioController = newAudioContext,
             start = s.start,
             elapsed = formatDifference s.start now
         }
 
-newLevel :: MapId -> Player -> Score -> AudioController -> String -> DateTime -> PlayState
+newLevel :: MapId -> Player -> Score -> AudioContext -> String -> DateTime -> PlayState
 newLevel mapId (Player p) score audioController elapsed start = { 
     distance: 0, 
     player: Player $ p { pos = startPosition mapId }, 
@@ -143,7 +143,7 @@ newLevel mapId (Player p) score audioController elapsed start = {
 }
 
 initialPlayState :: MapId -> DateTime -> PlayState
-initialPlayState mapId = newLevel mapId (initialPlayer (startPosition 0)) 0 (newAudioController "Play") "0:00"
+initialPlayState mapId = newLevel mapId (initialPlayer (startPosition 0)) 0 (newAudioContext "Play") "0:00"
 
 toBullets :: { enemy :: Enemy, bullets :: Array Bullet } -> Array Bullet
 toBullets enemyAndBullets = enemyAndBullets.bullets
@@ -151,8 +151,8 @@ toBullets enemyAndBullets = enemyAndBullets.bullets
 toEnemy :: { enemy :: Enemy, bullets :: Array Bullet } -> Enemy
 toEnemy enemyAndBullets = enemyAndBullets.enemy
 
-updateAudioController :: AudioController -> Input -> Boolean -> Update AudioController
-updateAudioController controller input shouldStop = do
+updateAudioContext :: AudioContext -> Input -> Boolean -> Update AudioContext
+updateAudioContext controller input shouldStop = do
 
     isBackgroundMusicPlaying <- isAudioStreamPlaying controller A.backgroundMusicId
 
