@@ -5,6 +5,11 @@ module Test.Revoked.Data.Enemy.BigBertha (
 import Prelude
 
 import Effect (Effect)
+
+-- Sub Modules
+import Test.Revoked.Data.Enemy.BigBertha.MortarPhase (mortarPhaseTests)
+
+-- Tests
 import Test.Revoked.Data.Enemy.BigBertha.DefaultBigBertha (defaultBigBerthaTests)
 import Test.Revoked.Data.Enemy.BigBertha.IsImmune (isImmuneTests)
 import Test.Revoked.Data.Enemy.BigBertha.HealthGate (healthGateTests)
@@ -16,6 +21,7 @@ import Test.Unit.Main (runTest)
 bigBerthaTests :: Effect Unit
 bigBerthaTests = do
     -- Sub Modules
+    mortarPhaseTests
 
     -- Tests
     runTest do
