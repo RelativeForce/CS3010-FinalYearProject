@@ -134,11 +134,11 @@ firstLevel = 0
 applyCheatCode :: Input -> MapId -> MapId
 applyCheatCode input current = levelId
     where
-        levelId = if input.released.isC && input.released.isV
+        levelId = if input.active.isC && input.active.isV
             then 2 -- Level 3
-            else if input.released.isJ && input.released.isK
+            else if input.active.isJ && input.active.isK
                 then 1 -- Level 2
-                else if input.released.isY && input.released.isU
+                else if input.active.isY && input.active.isU
                     then 0 -- Level 1
                     else current -- Current set
 

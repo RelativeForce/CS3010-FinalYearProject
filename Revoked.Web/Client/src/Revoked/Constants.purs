@@ -162,3 +162,6 @@ bigBerthaAgroRange = 1000.0
 
 bigBerthaImmunityCooldown :: Int
 bigBerthaImmunityCooldown = 120
+
+bigBerthaMortarPhaseShotCooldown :: Int
+bigBerthaMortarPhaseShotCooldown = 8
