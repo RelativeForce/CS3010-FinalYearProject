@@ -11,7 +11,7 @@ import Emo8.Action.Update (Update, UpdateF(..))
 import Emo8.FFI.AudioController (AudioContext, newAudioContext)
 import Data.DateTime (DateTime)
 
--- | Interprets a `Update` into an `Effect` where all of the `UpdateF` functors throw a `JavaScript` exception when 
+-- | Interprets a `Update` into an `Effect` where all of the `UpdateF` functors throw a `JavaScript` exception WHEN 
 -- | evaluated. The intended use for this is during tests where non of the `UpdateF` functors are expected to be used.
 -- | A default value will be returned by each functor however this will never be used.
 runTestUpdateAllFail :: forall a. Update a -> Effect a
@@ -21,7 +21,7 @@ runTestUpdateAllFail = runTestUpdate interpretAllFail
 runTestUpdate :: forall a. (UpdateF ~> Effect) -> Update a -> Effect a
 runTestUpdate interpreter = foldFree interpreter
 
--- | Interprets `UpdateF` functors into an `Effect` where a `JavaScript` exception is thrown when 
+-- | Interprets `UpdateF` functors into an `Effect` where a `JavaScript` exception is thrown WHEN 
 -- | evaluated. The intended use for this is during tests where non of the `UpdateF` functors are expected to be used.
 -- | A default value will be returned by each functor however this will never be used.
 interpretAllFail :: UpdateF ~> Effect

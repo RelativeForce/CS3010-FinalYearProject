@@ -3,48 +3,40 @@ module Test.Engine.Emo8.FFI.AudioController.AddAudioStream (
 ) where
 
 import Prelude
-import Emo8.FFI.AudioController (_addAudioStream, newAudioContext, AudioStream, AudioContext)
-import Data.Array(head)
+import Emo8.FFI.AudioController (_addAudioStream, newAudioContext, AudioStream)
+import Data.Array (head)
 import Data.Maybe (Maybe(..))
-import Test.Unit (suite, test)
+import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
-import Test.Unit.Main (runTest)
+import Effect.Class (liftEffect)
 import Effect (Effect)
 
-addAudioStreamTests :: Effect Unit
-addAudioStreamTests = do
+addAudioStreamTests :: TestSuite
+addAudioStreamTests =
+    suite "Engine.Emo8.FFI.AudioController - _addAudioStream" do
+        test "SHOULD add audio stream WHEN no audio streams are active" do
 
-    let testSrc = "testAudioFile"
-    shouldAddAudioStreamWhenThereIsNoAudioStreamsActiveResult <- shouldAddAudioStreamWhenThereIsNoAudioStreamsActiveSetup testSrc
-    shouldNotAddAudioStreamWhenPlayerFailsResult <- shouldNotAddAudioStreamWhenPlayerFailsSetup testSrc
+            let
+                testSrc = "testAudioFile"
+                controller = newAudioContext "test" 
+            
+            resultController <- liftEffect $ _addAudioStream mockAudioPlayer controller testSrc
 
-    runTest do
-        suite "Engine.Emo8.FFI.AudioController - _addAudioStream" do
-            test "shouldAddAudioStreamWhenThereIsNoAudioStreamsActive" do
-
-                let resultControllerFirstAudioStream = head shouldAddAudioStreamWhenThereIsNoAudioStreamsActiveResult.audioStreams
-
-                equal testSrc $ case resultControllerFirstAudioStream of 
+            let 
+                resultSrc = case head resultController.audioStreams of 
                     Nothing -> "error"
                     Just as -> as.src
-            test "shouldNotAddAudioStreamWhenPlayerFails" do
 
-                let resultControllerFirstAudioStream = head shouldNotAddAudioStreamWhenPlayerFailsResult.audioStreams
+            equal testSrc resultSrc
+        test "SHOULD not add audio stream WHEN player fails" do
 
-                equal Nothing resultControllerFirstAudioStream 
+            let 
+                testSrc = "testAudioFile"
+                controller = newAudioContext "test"
 
-shouldNotAddAudioStreamWhenPlayerFailsSetup :: String -> Effect AudioContext
-shouldNotAddAudioStreamWhenPlayerFailsSetup src = do
-    let controller = newAudioContext "test"
-        
-    _addAudioStream mockAudioPlayerThatFails controller src
+            resultController <- liftEffect $ _addAudioStream mockAudioPlayerThatFails controller testSrc
 
-shouldAddAudioStreamWhenThereIsNoAudioStreamsActiveSetup :: String -> Effect AudioContext
-shouldAddAudioStreamWhenThereIsNoAudioStreamsActiveSetup src = do
-    let 
-        controller = newAudioContext "test"
-
-    _addAudioStream mockAudioPlayer controller src
+            equal Nothing $ head resultController.audioStreams     
 
 mockAudioPlayer :: Boolean -> String -> Effect (Maybe AudioStream)
 mockAudioPlayer _ src = pure $ Just { src: src }

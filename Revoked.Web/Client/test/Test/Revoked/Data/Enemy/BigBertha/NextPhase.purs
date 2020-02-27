@@ -11,7 +11,7 @@ import Test.Unit.Assert (equal)
 nextPhaseTests :: TestSuite
 nextPhaseTests =
     suite "Revoked.Data.Enemy.BigBertha - nextPhase" do
-        test "nextPhaseIsPhase2GivenPhase1" do
+        test "SHOULD be phase 2 WHEN given phase 1" do
             let 
                 leftLimit = {  x: 0, y: 5 }
                 rightLimit = { x: 15, y: 5 } 
@@ -21,7 +21,7 @@ nextPhaseTests =
 
                 result = nextPhase phase
             equal true $ phaseEqual expected result  
-        test "nextPhaseIsPhase3GivenPhase2" do
+        test "SHOULD be phase 3 WHEN given phase 2" do
             let 
                 leftLimit = {  x: 0, y: 5 }
                 rightLimit = { x: 15, y: 5 } 
@@ -31,7 +31,7 @@ nextPhaseTests =
 
                 result = nextPhase phase
             equal true $ phaseEqual expected result   
-        test "nextPhaseIsPhase1GivenPhase3" do
+        test "SHOULD be phase 1 WHEN given phase 3" do
             let 
                 leftLimit = {  x: 0, y: 5 }
                 rightLimit = { x: 15, y: 5 } 

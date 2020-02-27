@@ -18,7 +18,7 @@ import Test.Revoked.State.Helper (runTestUpdateAllFail, runTestUpdate, interpret
 updateVictoryTests :: TestSuite
 updateVictoryTests =
     suite "Revoked.State.Victory - updateVictory" do
-        test "shouldAddUsernameCharacterWhenCharacterInputIsPressedAndUsernameIsEmpty" do
+        test "SHOULD add username character WHEN character input is pressed AND username is empty" do
             let 
                 pressingBackspacePressed = false
                 pressingAButton = true
@@ -49,7 +49,7 @@ updateVictoryTests =
             result <- liftEffect $ runTestUpdateAllFail $ updateVictory input state
 
             equal expected result
-        test "shouldNOTAddUsernameCharacterWhenCharacterInputIsPressedAndInputIntervalIsNOTZero" do
+        test "SHOULD not add username character WHEN character input is pressed AND input interval > 0" do
             let 
                 pressingBackspacePressed = false
                 pressingAButton = true
@@ -80,7 +80,7 @@ updateVictoryTests =
             result <- liftEffect $ runTestUpdateAllFail $ updateVictory input state
 
             equal expected result
-        test "shouldNOTSubmitScoreWhenEnterIsPressedAndUsernameIsNOTThreeCharactersLong" do
+        test "SHOULD not submit score WHEN enter is pressed AND username is not 3 characters long" do
             let 
                 pressingBackspacePressed = false
                 pressingAButton = false
@@ -111,7 +111,7 @@ updateVictoryTests =
             result <- liftEffect $ runTestUpdateAllFail $ updateVictory input state
 
             equal expected result
-        test "shouldNOTAddUsernameCharacterWhenCharacterInputIsPressedAndUsernameIsThreeCharactersLong" do
+        test "SHOULD not add username character WHEN character input is pressed AND username is 3 characters long" do
             let 
                 pressingBackspacePressed = false
                 pressingAButton = true
@@ -142,7 +142,7 @@ updateVictoryTests =
             result <- liftEffect $ runTestUpdateAllFail $ updateVictory input state
 
             equal expected result
-        test "shouldSubmitScoreAndWaitWhenEnterInputIsPressedAndUsernameIsThreeCharactersLong" do
+        test "SHOULD submit score AND wait WHEN enter is pressed AND username is 3 characters long" do
             let 
                 pressingBackspacePressed = false
                 pressingAButton = false
@@ -174,7 +174,7 @@ updateVictoryTests =
             result <- liftEffect $ runTestUpdate (interpreterForVictory response) $ updateVictory input state
 
             equal expected result
-        test "shouldTransitionStateWhenWaitingAndRecievesSumbitSuccess" do
+        test "SHOULD go to title screen WHEN waiting AND recieves sumbit success" do
             let 
                 pressingBackspacePressed = false
                 pressingAButton = false

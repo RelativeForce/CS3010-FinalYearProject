@@ -10,7 +10,7 @@ import Test.Unit.Assert (equal)
 angleTests :: TestSuite
 angleTests =
     suite "Emo8.Utils - angle" do
-        test "assert angle = 45 when x = 5, y = 5" do
+        test "ASSERT angle = 45 WHEN x = 5, y = 5" do
             let 
                 vector = { x: 5, y: 5 }
 
@@ -18,7 +18,7 @@ angleTests =
 
                 result = mod (angle vector) 360
             equal expectedAngle result
-        test "assert angle = 315 when x = 5, y = -5"  do
+        test "ASSERT angle = 315 WHEN x = 5, y = -5"  do
             let 
                 vector = { x: 5, y: -5 }
 
@@ -26,7 +26,7 @@ angleTests =
 
                 result = mod (angle vector) 360
             equal expectedAngle result
-        test "assert angle = 0 when x = 0, y = 0"  do
+        test "ASSERT angle = 0 WHEN x = 0, y = 0"  do
             let 
                 vector = { x: 0, y: 0 }
 
@@ -34,7 +34,7 @@ angleTests =
 
                 result = mod (angle vector) 360
             equal expectedAngle result
-        test "assert angle = 0 when x = 5, y = 0"  do
+        test "ASSERT angle = 0 WHEN x = 5, y = 0"  do
             let 
                 vector = { x: 5, y: 0 }
 
@@ -42,7 +42,7 @@ angleTests =
 
                 result = mod (angle vector) 360
             equal expectedAngle result
-        test "assert angle = 180 when x = -5, y = 0"  do
+        test "ASSERT angle = 180 WHEN x = -5, y = 0"  do
             let 
                 vector = { x: -5, y: 0 }
 
@@ -50,7 +50,7 @@ angleTests =
 
                 result = mod (angle vector) 360
             equal expectedAngle result
-        test "assert angle = 90 when x = 0, y = 5"  do
+        test "ASSERT angle = 90 WHEN x = 0, y = 5"  do
             let 
                 vector = { x: 0, y: 5 }
 
@@ -58,7 +58,7 @@ angleTests =
 
                 result = mod (angle vector) 360
             equal expectedAngle result
-        test "assert angle = 270 when x = 0, y = -5"  do
+        test "ASSERT angle = 270 WHEN x = 0, y = -5"  do
             let 
                 vector = { x: 0, y: -5 }
 
@@ -66,7 +66,7 @@ angleTests =
 
                 result = mod (angle vector) 360
             equal expectedAngle result
-        test "assert angle = 329 when x = 5, y = -3"  do
+        test "ASSERT angle = 329 WHEN x = 5, y = -3"  do
             let 
                 vector = { x: 5, y: -3 }
 
@@ -74,7 +74,7 @@ angleTests =
 
                 result = mod (angle vector) 360
             equal expectedAngle result
-        test "assert angle = 30 when x = 5, y = 3"  do
+        test "ASSERT angle = 30 WHEN x = 5, y = 3"  do
             let 
                 vector = { x: 5, y: 3 }
 
@@ -82,7 +82,7 @@ angleTests =
 
                 result = mod (angle vector) 360
             equal expectedAngle result
-        test "assert angle = 149 when x = -5, y = 3"  do
+        test "ASSERT angle = 149 WHEN x = -5, y = 3"  do
             let 
                 vector = { x: -5, y: 3 }
 
@@ -90,7 +90,7 @@ angleTests =
 
                 result = mod (angle vector) 360
             equal expectedAngle result
-        test "assert angle = 210 when x = -5, y = -3"  do
+        test "ASSERT angle = 210 WHEN x = -5, y = -3"  do
             let 
                 vector = { x: -5, y: -3 }
 
@@ -98,7 +98,7 @@ angleTests =
 
                 result = mod (angle vector) 360
             equal expectedAngle result
-        test "assert angle = 59 when x = 3, y = 5"  do
+        test "ASSERT angle = 59 WHEN x = 3, y = 5"  do
             let 
                 vector = { x: 3, y: 5 }
 
@@ -106,7 +106,7 @@ angleTests =
 
                 result = mod (angle vector) 360
             equal expectedAngle result
-        test "assert angle = 300 when x = 3, y = -5"  do
+        test "ASSERT angle = 300 WHEN x = 3, y = -5"  do
             let 
                 vector = { x: 3, y: -5 }
 
@@ -114,7 +114,7 @@ angleTests =
 
                 result = mod (angle vector) 360
             equal expectedAngle result
-        test "assert angle = 120 when x = -3, y = 5"  do
+        test "ASSERT angle = 120 WHEN x = -3, y = 5"  do
             let 
                 vector = { x: -3, y: 5 }
 
@@ -122,7 +122,7 @@ angleTests =
 
                 result = mod (angle vector) 360
             equal expectedAngle result
-        test "assert angle = 239 when x = -3, y = -5"  do
+        test "ASSERT angle = 239 WHEN x = -3, y = -5"  do
             let 
                 vector = { x: -3, y: -5 }
 
@@ -130,7 +130,7 @@ angleTests =
 
                 result = mod (angle vector) 360
             equal expectedAngle result
-        test "assert angle = 121 when x = -78, y = 128"  do
+        test "ASSERT angle = 121 WHEN x = -78, y = 128"  do
             let 
                 vector = { x: -78, y: 128 }
 

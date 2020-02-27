@@ -12,7 +12,7 @@ import Test.Helper (equalTolerance)
 bulletVelocityTests :: TestSuite
 bulletVelocityTests =
     suite "Revoked.Data.Gun.Pistol - bulletVelocity" do
-        test "shouldFullSpeedInXWhenAimedRight" do
+        test "SHOULD have full speed in X WHEN aimed right" do
             let 
                 angle = 0
 
@@ -24,7 +24,7 @@ bulletVelocityTests =
                 result = bulletVelocity angle
             equalTolerance expected.xSpeed result.xSpeed
             equalTolerance expected.ySpeed result.ySpeed    
-        test "shouldFullSpeedInYWhenAimedUp" do
+        test "SHOULD have full speed in Y WHEN aimed up" do
             let 
                 angle = 90
 
@@ -36,7 +36,7 @@ bulletVelocityTests =
                 result = bulletVelocity angle
             equalTolerance expected.xSpeed result.xSpeed
             equalTolerance expected.ySpeed result.ySpeed    
-        test "shouldHalfSpeedInXandYWhenAimedDiagonallyRightAndUp" do
+        test "SHOULD have half speed in X AND half speed in Y WHEN aimed diagonally right and up" do
             let 
                 angle = 45
 

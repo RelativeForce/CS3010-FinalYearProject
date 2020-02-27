@@ -32,7 +32,7 @@ updateMortarPhaseTests =
                 { phase: resultPhase, bullets: resultBullets } = updateMortarPhase distance player phase
             equal expectedPos resultPhase.pos
             equal expectedShotCoolDown resultPhase.shotCoolDown
-        test "SHOULD move AND fire WHEN ShotCooldown = 0 AND player is in range" do
+        test "SHOULD move AND fire WHEN ShotCooldown is 0 AND player is in range" do
             let 
                 shotCoolDown = 0
                 mortarPos = { x: 100, y: 40 }

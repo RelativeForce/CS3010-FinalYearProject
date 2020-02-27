@@ -11,7 +11,7 @@ import Test.Unit.Assert (equal)
 canFireTests :: TestSuite
 canFireTests =
     suite "Revoked.Data.Gun.Pistol - canFire" do
-        test "canNotFireWhenOutOfAmmoAndNotInfiniteAmmo" do
+        test "SHOULD be false WHEN out of ammo AND not infinite ammo" do
             let 
                 isInfinite = false
                 shotCount = 0
@@ -21,7 +21,7 @@ canFireTests =
 
                 result = canFire $ buildPistol isInfinite shotCount shotCoolDown
             equal expected result
-        test "canNotFireWhenCoolingDownAndNotInfiniteAmmo" do
+        test "SHOULD be false WHEN cooling down AND not infinite ammo" do
             let 
                 isInfinite = false
                 shotCount = 1
@@ -31,7 +31,7 @@ canFireTests =
 
                 result = canFire $ buildPistol isInfinite shotCount shotCoolDown
             equal expected result
-        test "canFireWhenHasAmmoAndNotCoolingDownAndNotInfiniteAmmo" do
+        test "SHOULD be true WHEN has ammo AND not cooling down AND not infinite ammo" do
             let 
                 isInfinite = false
                 shotCount = 1
@@ -41,7 +41,7 @@ canFireTests =
 
                 result = canFire $ buildPistol isInfinite shotCount shotCoolDown
             equal expected result
-        test "canNotFireWhenCoolingDownAndInfiniteAmmo" do
+        test "SHOULD be false WHEN cooling down AND infinite ammo" do
             let 
                 isInfinite = true
                 shotCount = 1
@@ -51,7 +51,7 @@ canFireTests =
 
                 result = canFire $ buildPistol isInfinite shotCount shotCoolDown
             equal expected result
-        test "canFireWhenHasNoAmmoAndNotCoolingDownAndInfiniteAmmo" do
+        test "SHOULD be true WHEN has no ammo AND not cooling down AND is infinite ammo" do
             let 
                 isInfinite = true
                 shotCount = 1

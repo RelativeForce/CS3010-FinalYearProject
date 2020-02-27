@@ -12,7 +12,7 @@ import Test.Unit.Assert (equal)
 toScaledImageTests :: TestSuite
 toScaledImageTests =
     suite "Engine.Emo8.Data.Sprite - toScaledImage" do
-        test "shouldConvertToScaledImageWhenSpriteIsValid [387 457 5]" do
+        test "SHOULD convert to ScaledImage correctly WHEN width is 387 AND height is 457 AND id is 5" do
             let 
                 expectedWidth = 387
                 expectedHeight = 457
@@ -23,7 +23,7 @@ toScaledImageTests =
             equal expectedWidth result.size.width 
             equal expectedHeight result.size.height
             equal expectedId result.id
-        test "shouldConvertToScaledImageWhenSpriteIsValid [32423 453453 7]" do
+        test "SHOULD convert to ScaledImage correctly WHEN width is 32423 AND height is 453453 AND id is 7" do
             let 
                 expectedWidth = 32423
                 expectedHeight = 453453

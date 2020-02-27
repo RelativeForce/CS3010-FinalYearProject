@@ -9,7 +9,7 @@ import Test.Unit.Assert (equal)
 defaultBigBerthaTests :: TestSuite
 defaultBigBerthaTests =
     suite "Revoked.Data.Enemy.BigBertha - defaultBigBertha" do
-        test "shouldHave15AsInitialHealth" do
+        test "SHOULD have 15 as initial health" do
             let 
                 leftLimit = {  x: 0, y: 5 }
                 rightLimit = { x: 15, y: 5 } 

@@ -11,7 +11,7 @@ import Test.Unit.Assert (equal)
 damageBigBerthaTests :: TestSuite
 damageBigBerthaTests =
     suite "Revoked.Data.Enemy.BigBertha - damageBigBertha" do
-        test "shouldDealDamageWhenNOTImmuneAndDamageDoesNotEncounterHealthGate" do
+        test "SHOULD deal damage WHEN not immune AND damage does not encounter a health gate" do
             let 
                 leftLimit = {  x: 0, y: 5 }
                 rightLimit = { x: 15, y: 5 } 
@@ -24,7 +24,7 @@ damageBigBerthaTests =
 
                 result = damageBigBertha bertha damage
             equal expected result.health   
-        test "shouldDealDamageUptoHealthGateWhenNOTImmuneAndDamageWouldResultInLowerHealthThenHealthGate" do
+        test "SHOULD deal damage upto health gate WHEN not immune AND damage would result in lower health than the health gate" do
             let 
                 leftLimit = {  x: 0, y: 5 }
                 rightLimit = { x: 15, y: 5 } 
@@ -39,7 +39,7 @@ damageBigBerthaTests =
 
                 result = damageBigBertha bertha damage
             equal expected result.health
-        test "shouldNOTDealDamageWhenImmune" do
+        test "SHOULD not deal damage WHEN immune" do
             let 
                 leftLimit = {  x: 0, y: 5 }
                 rightLimit = { x: 15, y: 5 } 

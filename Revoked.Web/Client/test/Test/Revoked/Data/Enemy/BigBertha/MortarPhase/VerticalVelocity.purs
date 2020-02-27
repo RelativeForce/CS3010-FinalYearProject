@@ -9,7 +9,7 @@ import Test.Helper (equalTolerance)
 verticalVelocityTests :: TestSuite
 verticalVelocityTests =
     suite "Revoked.Data.Enemy.BigBertha.MortarPhase - verticalVelocity" do
-        test "shouldHaveExpectedValue" do
+        test "SHOULD have expected value" do
             let 
                 expected = 19.5959
 
