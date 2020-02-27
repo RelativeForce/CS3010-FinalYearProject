@@ -7,10 +7,7 @@ import Prelude
 import Constants (bulletSpeed)
 import Data.Gun.Helper (bulletVelocity)
 import Test.Unit (TestSuite, suite, test)
-import Test.Unit.Assert (equal)
-
-accuracyTolerance :: Number
-accuracyTolerance = 0.001
+import Test.Helper (equalTolerance)
 
 bulletVelocityTests :: TestSuite
 bulletVelocityTests =
@@ -25,8 +22,8 @@ bulletVelocityTests =
                 }  
 
                 result = bulletVelocity angle
-            equal true $ isWithinTolerance expected.xSpeed result.xSpeed
-            equal true $ isWithinTolerance expected.ySpeed result.ySpeed    
+            equalTolerance expected.xSpeed result.xSpeed
+            equalTolerance expected.ySpeed result.ySpeed    
         test "shouldFullSpeedInYWhenAimedUp" do
             let 
                 angle = 90
@@ -37,8 +34,8 @@ bulletVelocityTests =
                 }  
 
                 result = bulletVelocity angle
-            equal true $ isWithinTolerance expected.xSpeed result.xSpeed
-            equal true $ isWithinTolerance expected.ySpeed result.ySpeed    
+            equalTolerance expected.xSpeed result.xSpeed
+            equalTolerance expected.ySpeed result.ySpeed    
         test "shouldHalfSpeedInXandYWhenAimedDiagonallyRightAndUp" do
             let 
                 angle = 45
@@ -50,8 +47,5 @@ bulletVelocityTests =
 
                 result = bulletVelocity angle
 
-            equal true $ isWithinTolerance expected.xSpeed result.xSpeed
-            equal true $ isWithinTolerance expected.ySpeed result.ySpeed 
-
-isWithinTolerance :: Number -> Number -> Boolean
-isWithinTolerance a b = a <= b + accuracyTolerance && a >= b - accuracyTolerance 
+            equalTolerance expected.xSpeed result.xSpeed
+            equalTolerance expected.ySpeed result.ySpeed 

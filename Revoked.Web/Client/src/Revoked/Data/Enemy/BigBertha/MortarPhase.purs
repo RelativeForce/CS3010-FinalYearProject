@@ -24,13 +24,12 @@ mortarApex = toNumber $ mapTileSize.height * 12
 shotCooldown :: Int
 shotCooldown = 8
 
-horizontalVelocity :: Position -> MortarPhase -> Number
-horizontalVelocity target mortarPhase = (d * sqrt g) / ((sqrt (2.0 * h)) + sqrt (2.0 * (h - l)))
-    where
-        mortarPos = mortarPosition mortarPhase
-        d = abs $ toNumber $ mortarPos.x - target.x
+horizontalVelocity :: Position -> Position -> Number
+horizontalVelocity target mortar = (d * sqrt g) / ((sqrt (2.0 * h)) + sqrt (2.0 * (h - l)))
+    where 
+        d = toNumber $ target.x - mortar.x 
         h = mortarApex
-        l = toNumber $ target.y - mortarPos.y
+        l = toNumber $ target.y - mortar.y
         g = abs gravity
 
 verticalVelocity :: Number
@@ -42,7 +41,7 @@ canFire p mortarPhase = mortarPhase.shotCoolDown == 0 && playerInRange p mortarP
 bulletVelocity :: Player -> MortarPhase -> Velocity
 bulletVelocity (Player p) mortarPhase = { xSpeed: xSpeed, ySpeed: ySpeed }
     where 
-        xSpeed = - horizontalVelocity p.pos mortarPhase
+        xSpeed = horizontalVelocity p.pos (mortarPosition mortarPhase)
         ySpeed = verticalVelocity
 
 mortarPosition :: MortarPhase -> Position
