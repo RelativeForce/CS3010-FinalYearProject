@@ -10,7 +10,7 @@ import Test.Unit.Assert (equal)
 
 adjustXTests :: TestSuite
 adjustXTests =
-    suite "Collision - adjustX" do
+    suite "Revoked.Collision - adjustX" do
 
         -- Moving Left
         test "ASSERT x = 20 WHEN oldX = 64, newX = 0, distance = 12" do

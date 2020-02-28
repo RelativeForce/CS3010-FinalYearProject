@@ -9,7 +9,7 @@ import Test.Unit.Assert (equal)
 
 angleTests :: TestSuite
 angleTests =
-    suite "Emo8.Utils - angle" do
+    suite "Engine.Emo8.Utils - angle" do
         test "ASSERT angle = 45 WHEN x = 5, y = 5" do
             let 
                 vector = { x: 5, y: 5 }

@@ -10,7 +10,7 @@ import Test.Unit.Assert (equal)
 
 adjustYTests :: TestSuite
 adjustYTests =
-    suite "Collision - adjustY" do
+    suite "Revoked.Collision - adjustY" do
 
         -- Moving Up
         test "ASSERT y = 64 WHEN oldY = 0, newY = 64" do
