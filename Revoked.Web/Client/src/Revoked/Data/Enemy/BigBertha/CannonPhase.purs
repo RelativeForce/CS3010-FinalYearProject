@@ -2,11 +2,11 @@ module Data.Enemy.BigBertha.CannonPhase where
 
 import Prelude
 
-import Constants (bulletSpeed, bigBerthaSpeed)
+import Constants (bulletSpeed, bigBerthaSpeed, bigBerthaCannonPhaseShotCooldown)
 import Data.Bullet (Bullet, newLinearBullet)
-import Data.Player (Player(..))
+import Data.Player (Player)
 import Emo8.Types (Position, Velocity, Deg, X)
-import Emo8.Utils (xComponent, yComponent, angle, vectorTo)
+import Emo8.Utils (xComponent, yComponent)
 import Data.Enemy.BigBertha.Helper (playerInRange, updateVelocity, updatePosition, ensureLeftLimit, ensureRightLimit, coolDownShot)
 
 type CannonPhase = { 
@@ -14,18 +14,8 @@ type CannonPhase = {
     rightLimit :: Position,
     leftLimit :: Position,
     velocity :: Velocity,
-    offset :: Int,
     shotCoolDown :: Int
 }
-
-accuracyDeviationIncrements :: Int
-accuracyDeviationIncrements = 5
-
-maxOffset :: Int
-maxOffset = 7
-
-shotCooldown :: Int
-shotCooldown = 20
 
 bulletVelocity :: Deg -> Velocity
 bulletVelocity angle = velocity
@@ -37,15 +27,6 @@ bulletVelocity angle = velocity
 
 canFire :: Player -> CannonPhase -> Boolean
 canFire p cannonPhase = cannonPhase.shotCoolDown == 0 && playerInRange p cannonPhase.pos
-
-angleOffset :: Deg -> Int -> Deg
-angleOffset angle offset = mod (angle + aOffset) 360
-    where
-        relativeOffset = offset - (maxOffset / 2)
-        aOffset = accuracyDeviationIncrements * relativeOffset
-
-angleToPlayer :: Player -> CannonPhase -> Deg
-angleToPlayer (Player p) cannonPhase = angle $ vectorTo (machineGunPosition cannonPhase) p.pos
 
 machineGunPosition :: CannonPhase -> Position
 machineGunPosition cannonPhase = {
@@ -73,10 +54,8 @@ updateCannonPhase distance p cannonPhase = { phase: newCannonPhase, bullets: new
             ] 
             else []
         movedCannonPhase = updatePositionAndVelocity distance cannonPhase
-        newOffset = if shouldFire then mod (cannonPhase.offset + 1) maxOffset else cannonPhase.offset
         newCannonPhase = movedCannonPhase {
-            offset = newOffset,
-            shotCoolDown = if shouldFire then shotCooldown else coolDownShot movedCannonPhase.shotCoolDown
+            shotCoolDown = if shouldFire then bigBerthaCannonPhaseShotCooldown else coolDownShot movedCannonPhase.shotCoolDown
         }
 
 updatePositionAndVelocity :: X -> CannonPhase -> CannonPhase
@@ -90,7 +69,6 @@ defaultCannonPhase pos leftLimit rightLimit = {
     pos: pos,
     leftLimit: ensureLeftLimit leftLimit rightLimit,
     rightLimit: ensureRightLimit leftLimit rightLimit,
-    offset: 0,
     velocity: {
         xSpeed: -bigBerthaSpeed,
         ySpeed: 0.0

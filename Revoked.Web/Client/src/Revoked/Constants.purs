@@ -165,3 +165,9 @@ bigBerthaImmunityCooldown = 120
 
 bigBerthaMortarPhaseShotCooldown :: Int
 bigBerthaMortarPhaseShotCooldown = 8
+
+bigBerthaMachineGunPhaseShotCooldown :: Int
+bigBerthaMachineGunPhaseShotCooldown = 10
+
+bigBerthaCannonPhaseShotCooldown :: Int
+bigBerthaCannonPhaseShotCooldown = 20

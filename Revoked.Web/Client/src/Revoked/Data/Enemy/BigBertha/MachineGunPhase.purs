@@ -2,7 +2,7 @@ module Data.Enemy.BigBertha.MachineGunPhase where
 
 import Prelude
 
-import Constants (bulletSpeed, bigBerthaSpeed)
+import Constants (bulletSpeed, bigBerthaSpeed, bigBerthaMachineGunPhaseShotCooldown)
 import Data.Bullet (Bullet, newLinearBullet)
 import Data.Player (Player(..))
 import Emo8.Types (Position, Velocity, Deg, X)
@@ -23,9 +23,6 @@ accuracyDeviationIncrements = 5
 
 maxOffset :: Int
 maxOffset = 7
-
-shotCooldown :: Int
-shotCooldown = 10
 
 bulletVelocity :: Deg -> Velocity
 bulletVelocity angle = velocity
@@ -69,7 +66,7 @@ updateMachineGunPhase distance p machineGunPhase = { phase: newMachineGunPhase, 
         newOffset = if shouldFire then mod (machineGunPhase.offset + 1) maxOffset else machineGunPhase.offset
         newMachineGunPhase = movedMachineGunPhase {
             offset = newOffset,
-            shotCoolDown = if shouldFire then shotCooldown else coolDownShot movedMachineGunPhase.shotCoolDown
+            shotCoolDown = if shouldFire then bigBerthaMachineGunPhaseShotCooldown else coolDownShot movedMachineGunPhase.shotCoolDown
         }
 
 updatePositionAndVelocity :: X -> MachineGunPhase -> MachineGunPhase
