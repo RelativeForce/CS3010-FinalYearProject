@@ -8,6 +8,7 @@ import Effect (Effect)
 
 -- Sub Modules
 import Test.Revoked.Data.Enemy.BigBertha.MortarPhase (mortarPhaseTests)
+import Test.Revoked.Data.Enemy.BigBertha.Helper (helperTests)
 
 -- Tests
 import Test.Revoked.Data.Enemy.BigBertha.DefaultBigBertha (defaultBigBerthaTests)
@@ -22,6 +23,7 @@ bigBerthaTests :: Effect Unit
 bigBerthaTests = do
     -- Sub Modules
     mortarPhaseTests
+    helperTests
 
     -- Tests
     runTest do
