@@ -6,7 +6,7 @@ import Prelude
 
 import Data.Enemy.BigBertha.Helper (updatePosition)
 import Data.Int (floor)
-import Constants (maxPlayerSpeedX)
+import Constants (bigBerthaSpeed)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 
@@ -19,9 +19,9 @@ updatePositionTests =
                 leftLimit = { x: 0, y: 0 }
                 rightLimit = { x: 1000, y: 0 }
                 pos = { x: 100, y: 0 }
-                velocity = { xSpeed: -maxPlayerSpeedX, ySpeed: 0.0 }
+                velocity = { xSpeed: -bigBerthaSpeed, ySpeed: 0.0 }
 
-                expected = { x: floor (100.0 - maxPlayerSpeedX), y: 0 }
+                expected = { x: floor (100.0 - bigBerthaSpeed), y: 0 }
 
                 result = updatePosition distance leftLimit rightLimit pos velocity
             equal expected result
@@ -30,8 +30,8 @@ updatePositionTests =
                 distance = 0
                 leftLimit = { x: 0, y: 0 }
                 rightLimit = { x: 1000, y: 0 }
-                pos = { x: 5, y: 0 }
-                velocity = { xSpeed: -maxPlayerSpeedX, ySpeed: 0.0 }
+                pos = { x: 1, y: 0 }
+                velocity = { xSpeed: -bigBerthaSpeed, ySpeed: 0.0 }
 
                 expected = leftLimit
 
@@ -42,8 +42,8 @@ updatePositionTests =
                 distance = 0
                 leftLimit = { x: 0, y: 0 }
                 rightLimit = { x: 1000, y: 0 }
-                pos = { x: 998, y: 0 }
-                velocity = { xSpeed: maxPlayerSpeedX, ySpeed: 0.0 }
+                pos = { x: 999, y: 0 }
+                velocity = { xSpeed: bigBerthaSpeed, ySpeed: 0.0 }
 
                 expected = rightLimit
 
