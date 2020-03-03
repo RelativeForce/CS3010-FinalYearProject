@@ -9,6 +9,7 @@ import Test.Unit (TestSuite)
 -- Sub Modules
 import Test.Revoked.Data.Enemy.BigBertha.MortarPhase (mortarPhaseTests)
 import Test.Revoked.Data.Enemy.BigBertha.Helper (helperTests)
+import Test.Revoked.Data.Enemy.BigBertha.MachineGunPhase (machineGunPhaseTests)
 
 -- Tests
 import Test.Revoked.Data.Enemy.BigBertha.DefaultBigBertha (defaultBigBerthaTests)
@@ -21,6 +22,7 @@ import Test.Revoked.Data.Enemy.BigBertha.TransitionPhase (transitionPhaseTests)
 bigBerthaTests :: TestSuite
 bigBerthaTests = do
     mortarPhaseTests
+    machineGunPhaseTests
     helperTests
     defaultBigBerthaTests
     isImmuneTests
