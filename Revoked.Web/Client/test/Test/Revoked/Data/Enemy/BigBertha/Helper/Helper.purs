@@ -8,6 +8,7 @@ import Effect (Effect)
 import Test.Revoked.Data.Enemy.BigBertha.Helper.EnsureLeftLimit (ensureLeftLimitTests)
 import Test.Revoked.Data.Enemy.BigBertha.Helper.PlayerInRange (playerInRangeTests)
 import Test.Revoked.Data.Enemy.BigBertha.Helper.CoolDownShot (coolDownShotTests)
+import Test.Revoked.Data.Enemy.BigBertha.Helper.EnsureRightLimit (ensureRightLimitTests)
 import Test.Unit.Main (runTest)
 
 helperTests :: Effect Unit
@@ -19,4 +20,5 @@ helperTests = do
         ensureLeftLimitTests
         playerInRangeTests
         coolDownShotTests
+        ensureRightLimitTests
     
