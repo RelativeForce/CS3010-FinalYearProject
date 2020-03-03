@@ -29,7 +29,6 @@ instance objectBullet :: Object Bullet where
     scroll offset (LinearBullet b) = LinearBullet $ b { pos = { x: b.pos.x + offset, y: b.pos.y }}
     scroll offset (ArcBullet b) = ArcBullet $ b { pos = { x: b.pos.x + offset, y: b.pos.y }}
 
-
 instance objectDrawBullet :: ObjectDraw Bullet where
     draw (LinearBullet b) = drawSprite b.sprite b.pos.x b.pos.y
     draw (ArcBullet b) = drawSprite b.sprite b.pos.x b.pos.y

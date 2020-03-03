@@ -2,7 +2,12 @@ module Data.Enemy.BigBertha.MachineGunPhase where
 
 import Prelude
 
-import Constants (bigBerthaSpeed, bigBerthaMachineGunPhaseShotCooldown)
+import Constants (
+    bigBerthaSpeed, 
+    bigBerthaMachineGunPhaseShotCooldown, 
+    bigBerthaMachineGunPhaseAccuracyDeviationIncrements, 
+    bigBerthaMachineGunPhaseMaxDeviation
+)
 import Data.Bullet (Bullet, newLinearBullet, toBulletVelocity)
 import Data.Player (Player(..))
 import Emo8.Types (Position, Velocity, Deg, X)
@@ -25,20 +30,14 @@ type MachineGunPhase = {
     shotCoolDown :: Int
 }
 
-accuracyDeviationIncrements :: Int
-accuracyDeviationIncrements = 5
-
-maxOffset :: Int
-maxOffset = 7
-
 canFire :: Player -> MachineGunPhase -> Boolean
 canFire p machineGunPhase = machineGunPhase.shotCoolDown == 0 && playerInRange p machineGunPhase.pos
 
 angleOffset :: Deg -> Int -> Deg
 angleOffset angle offset = mod (angle + aOffset) 360
     where
-        relativeOffset = offset - (maxOffset / 2)
-        aOffset = accuracyDeviationIncrements * relativeOffset
+        relativeOffset = offset - (bigBerthaMachineGunPhaseMaxDeviation / 2)
+        aOffset = bigBerthaMachineGunPhaseAccuracyDeviationIncrements * relativeOffset
 
 angleToPlayer :: Player -> MachineGunPhase -> Deg
 angleToPlayer (Player p) machineGunPhase = angle $ vectorTo (machineGunPosition machineGunPhase) p.pos
@@ -62,7 +61,7 @@ updateMachineGunPhase distance p machineGunPhase = { phase: newMachineGunPhase, 
         shouldFire = canFire p machineGunPhase
         newBullets = if shouldFire then [ newBullet p machineGunPhase ] else []
         movedMachineGunPhase = updatePositionAndVelocity distance machineGunPhase
-        newOffset = if shouldFire then mod (machineGunPhase.offset + 1) maxOffset else machineGunPhase.offset
+        newOffset = if shouldFire then mod (machineGunPhase.offset + 1) bigBerthaMachineGunPhaseMaxDeviation else machineGunPhase.offset
         newMachineGunPhase = movedMachineGunPhase {
             offset = newOffset,
             shotCoolDown = if shouldFire then bigBerthaMachineGunPhaseShotCooldown else coolDownShot movedMachineGunPhase.shotCoolDown

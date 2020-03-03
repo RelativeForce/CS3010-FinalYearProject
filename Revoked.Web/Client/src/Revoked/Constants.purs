@@ -163,11 +163,23 @@ bigBerthaAgroRange = 1000.0
 bigBerthaImmunityCooldown :: Int
 bigBerthaImmunityCooldown = 120
 
+-- Big Bertha Mortar Phase
+
 bigBerthaMortarPhaseShotCooldown :: Int
 bigBerthaMortarPhaseShotCooldown = 8
 
+-- Big Bertha Machine Gun Phase
+
 bigBerthaMachineGunPhaseShotCooldown :: Int
 bigBerthaMachineGunPhaseShotCooldown = 10
+
+bigBerthaMachineGunPhaseAccuracyDeviationIncrements :: Int
+bigBerthaMachineGunPhaseAccuracyDeviationIncrements = 5
+
+bigBerthaMachineGunPhaseMaxDeviation :: Int
+bigBerthaMachineGunPhaseMaxDeviation = 7
+
+-- Big Bertha Cannon Phase
 
 bigBerthaCannonPhaseShotCooldown :: Int
 bigBerthaCannonPhaseShotCooldown = 20
