@@ -5,13 +5,11 @@ import Prelude
 import Effect (Effect)
 import Test.Engine (engineTests)
 import Test.Revoked (revokedTests)
+import Test.Unit.Main (runTest)
 
 main :: Effect Unit
-main =
-  do
-    -- Tests
-    
-    -- Sub Modules
+main = do
+  runTest do
     engineTests
     revokedTests
 

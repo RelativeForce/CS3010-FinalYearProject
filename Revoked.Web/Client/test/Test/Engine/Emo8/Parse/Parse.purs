@@ -2,17 +2,9 @@ module Test.Engine.Emo8.Parse(
     parseTests 
 ) where
 
-import Prelude
-
-import Effect (Effect)
-import Test.Unit.Main (runTest)
 import Test.Engine.Emo8.Parse.MapSum (mapSumTests)
+import Test.Unit (TestSuite)
 
-parseTests :: Effect Unit
+parseTests :: TestSuite
 parseTests = do
-    -- Tests
-    runTest do
-        mapSumTests
-    -- Sub Modules
-
-    
+    mapSumTests

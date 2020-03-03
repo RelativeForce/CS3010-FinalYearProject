@@ -4,14 +4,11 @@ module Test.Revoked.Data.Gun (
 
 import Prelude
 
-import Effect (Effect)
 import Test.Revoked.Data.Gun.Pistol (pistolTests)
 import Test.Revoked.Data.Gun.Helper (helperTests)
+import Test.Unit (TestSuite)
 
-gunTests :: Effect Unit
+gunTests :: TestSuite
 gunTests = do
-    -- Tests
-
-    -- Sub Modules
     pistolTests
     helperTests

@@ -2,14 +2,9 @@ module Test.Engine.Emo8.FFI(
     ffiTests 
 ) where
 
-import Prelude
-
-import Effect (Effect)
 import Test.Engine.Emo8.FFI.AudioController (audioControllerTests)
+import Test.Unit (TestSuite)
 
-ffiTests :: Effect Unit
+ffiTests :: TestSuite
 ffiTests = do
-    -- Tests
-    
-    -- Sub Modules
     audioControllerTests

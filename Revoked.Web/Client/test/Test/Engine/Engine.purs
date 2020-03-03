@@ -2,14 +2,9 @@ module Test.Engine (
     engineTests 
 ) where
 
-import Prelude
-
-import Effect (Effect)
 import Test.Engine.Emo8 (emo8Tests)
+import Test.Unit (TestSuite)
 
-engineTests :: Effect Unit
+engineTests :: TestSuite
 engineTests = do
-    -- Tests
-
-    -- Sub Modules
     emo8Tests

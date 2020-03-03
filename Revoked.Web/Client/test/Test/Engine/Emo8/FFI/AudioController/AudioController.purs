@@ -4,20 +4,15 @@ module Test.Engine.Emo8.FFI.AudioController(
 
 import Prelude
 
-import Effect (Effect)
 import Test.Engine.Emo8.FFI.AudioController.AddAudioStream (addAudioStreamTests)
 import Test.Engine.Emo8.FFI.AudioController.StopAudioStream (stopAudioStreamTests)
 import Test.Engine.Emo8.FFI.AudioController.IsAudioStreamPlaying (isAudioStreamPlayingTests)
-import Test.Unit.Main (runTest)
+import Test.Unit (TestSuite)
 
-audioControllerTests :: Effect Unit
+audioControllerTests :: TestSuite
 audioControllerTests = do
-    -- Sub Modules
-
-    -- Tests
-    runTest do
-        addAudioStreamTests
-        stopAudioStreamTests
-        isAudioStreamPlayingTests
+    addAudioStreamTests
+    stopAudioStreamTests
+    isAudioStreamPlayingTests
     
     

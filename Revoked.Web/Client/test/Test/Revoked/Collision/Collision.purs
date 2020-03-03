@@ -4,15 +4,11 @@ module Test.Revoked.Collision (
 
 import Prelude
 
-import Effect (Effect)
 import Test.Revoked.Collision.AdjustY (adjustYTests)
 import Test.Revoked.Collision.AdjustX (adjustXTests)
-import Test.Unit.Main (runTest)
+import Test.Unit (TestSuite)
 
-collisionTests :: Effect Unit
+collisionTests :: TestSuite
 collisionTests = do
-    -- Tests
-    runTest do
-        adjustXTests
-        adjustYTests
-    -- Sub Modules
+    adjustXTests
+    adjustYTests

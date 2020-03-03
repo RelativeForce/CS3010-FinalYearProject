@@ -2,14 +2,9 @@ module Test.Engine.Emo8.Data (
     dataTests 
 ) where
 
-import Prelude
-
-import Effect (Effect)
 import Test.Engine.Emo8.Data.Sprite (spriteTests)
+import Test.Unit (TestSuite)
 
-dataTests :: Effect Unit
+dataTests :: TestSuite
 dataTests = do
-    -- Tests
-
-    -- Sub Modules
     spriteTests

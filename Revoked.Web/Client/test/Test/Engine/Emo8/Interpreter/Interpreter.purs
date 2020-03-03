@@ -2,14 +2,9 @@ module Test.Engine.Emo8.Interpreter (
     interpreterTests 
 ) where
 
-import Prelude
-
-import Effect (Effect)
 import Test.Emo8.Interpreter.Update (updateTests)
+import Test.Unit (TestSuite)
 
-interpreterTests :: Effect Unit
+interpreterTests :: TestSuite
 interpreterTests = do
-    -- Tests
-
-    -- Sub Modules
     updateTests

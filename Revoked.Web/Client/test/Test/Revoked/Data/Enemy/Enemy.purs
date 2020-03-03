@@ -4,14 +4,11 @@ module Test.Revoked.Data.Enemy (
 
 import Prelude
 
-import Effect (Effect)
+import Test.Unit (TestSuite)
 import Test.Revoked.Data.Enemy.Marine (marineTests)
 import Test.Revoked.Data.Enemy.BigBertha (bigBerthaTests)
 
-enemyTests :: Effect Unit
+enemyTests :: TestSuite
 enemyTests = do
-    -- Tests
-
-    -- Sub Modules
     marineTests
     bigBerthaTests

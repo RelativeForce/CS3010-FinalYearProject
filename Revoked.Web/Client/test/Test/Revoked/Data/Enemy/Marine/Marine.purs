@@ -2,15 +2,9 @@ module Test.Revoked.Data.Enemy.Marine (
     marineTests 
 ) where
 
-import Prelude
-
-import Effect (Effect)
 import Test.Revoked.Data.Enemy.Marine.PlayerInRange (playerInRangeTests)
-import Test.Unit.Main (runTest)
+import Test.Unit (TestSuite)
 
-marineTests :: Effect Unit
+marineTests :: TestSuite
 marineTests = do
-    -- Tests
-    runTest do
-        playerInRangeTests
-    -- Sub Modules
+    playerInRangeTests
