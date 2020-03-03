@@ -584,8 +584,6 @@
 /Revoked.Web/Client/output/Assets.Sprites.AssaultRifleRight.Sprite
 /Revoked.Web/Client/output/Data.Gun.Helper
 /Revoked.Web/Client/output/Data.Gun.AssaultRifle
-/Revoked.Web/Client/output/Test.Revoked.Data.Gun.Helper.BulletVelocity
-/Revoked.Web/Client/output/Test.Revoked.Data.Gun.Helper
 /Revoked.Web/Client/output/Levels.Level02
 /Revoked.Web/Client/output/Levels.Helper
 /Revoked.Web/Client/output/Data.Helper
@@ -631,3 +629,5 @@
 /Revoked.Web/Client/output/Test.Revoked.Data.Enemy.BigBertha.Helper.EnsureRightLimit
 /Revoked.Web/Client/output/Test.Revoked.Data.Enemy.BigBertha.Helper.UpdatePosition
 /Revoked.Web/Client/output/Test.Revoked.Data.Enemy.BigBertha.Helper.UpdateVelocity
+/Revoked.Web/Client/output/Test.Revoked.Data.Bullet.ToBulletVelocity
+/Revoked.Web/Client/output/Test.Revoked.Data.Bullet

@@ -2,12 +2,18 @@ module Data.Enemy.BigBertha.CannonPhase where
 
 import Prelude
 
-import Constants (bulletSpeed, bigBerthaSpeed, bigBerthaCannonPhaseShotCooldown)
-import Data.Bullet (Bullet, newLinearBullet)
+import Constants (bigBerthaSpeed, bigBerthaCannonPhaseShotCooldown)
+import Data.Bullet (Bullet, newLinearBullet, toBulletVelocity)
 import Data.Player (Player)
 import Emo8.Types (Position, Velocity, Deg, X)
-import Emo8.Utils (xComponent, yComponent)
-import Data.Enemy.BigBertha.Helper (playerInRange, updateVelocity, updatePosition, ensureLeftLimit, ensureRightLimit, coolDownShot)
+import Data.Enemy.BigBertha.Helper (
+    playerInRange, 
+    updateVelocity, 
+    updatePosition, 
+    ensureLeftLimit, 
+    ensureRightLimit, 
+    coolDownShot
+)
 
 type CannonPhase = { 
     pos :: Position,
@@ -16,14 +22,6 @@ type CannonPhase = {
     velocity :: Velocity,
     shotCoolDown :: Int
 }
-
-bulletVelocity :: Deg -> Velocity
-bulletVelocity angle = velocity
-    where
-        velocity = {
-            xSpeed: xComponent angle bulletSpeed,
-            ySpeed: yComponent angle bulletSpeed
-        }
 
 canFire :: Player -> CannonPhase -> Boolean
 canFire p cannonPhase = cannonPhase.shotCoolDown == 0 && playerInRange p cannonPhase.pos
@@ -37,7 +35,7 @@ machineGunPosition cannonPhase = {
 newBullet :: Deg -> CannonPhase -> Bullet
 newBullet angle cannonPhase = nb
     where
-        velocity = bulletVelocity angle
+        velocity = toBulletVelocity angle
         nb = newLinearBullet (machineGunPosition cannonPhase) velocity
 
 updateCannonPhase :: X -> Player -> CannonPhase -> { phase :: CannonPhase, bullets :: Array Bullet }

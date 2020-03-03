@@ -6,9 +6,10 @@ import Class.Object (class ObjectDraw, class Object)
 import Emo8.Action.Draw (drawSprite)
 import Data.Int (floor)
 import Assets.Sprites as S
-import Emo8.Types (Position, Sprite, Velocity)
+import Emo8.Types (Position, Sprite, Velocity, Deg)
 import Emo8.Data.Sprite (incrementFrame)
-import Constants (gravity)
+import Emo8.Utils (xComponent, yComponent)
+import Constants (gravity, bulletSpeed)
 
 type BaseBullet = { 
     pos :: Position,
@@ -49,6 +50,14 @@ updateBullet (ArcBullet b) = ArcBullet $ b { pos = newPos, sprite = newSprite, v
         } 
         newVelocity = b.velocity { ySpeed = b.velocity.ySpeed + gravity }
         newSprite = incrementFrame b.sprite
+
+toBulletVelocity :: Deg -> Velocity
+toBulletVelocity angle = velocity
+    where
+        velocity = {
+            xSpeed: xComponent angle bulletSpeed,
+            ySpeed: yComponent angle bulletSpeed
+        }
 
 newLinearBullet :: Position -> Velocity -> Bullet
 newLinearBullet pos velocity = LinearBullet $ {

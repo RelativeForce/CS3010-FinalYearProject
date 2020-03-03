@@ -2,12 +2,19 @@ module Data.Enemy.BigBertha.MachineGunPhase where
 
 import Prelude
 
-import Constants (bulletSpeed, bigBerthaSpeed, bigBerthaMachineGunPhaseShotCooldown)
-import Data.Bullet (Bullet, newLinearBullet)
+import Constants (bigBerthaSpeed, bigBerthaMachineGunPhaseShotCooldown)
+import Data.Bullet (Bullet, newLinearBullet, toBulletVelocity)
 import Data.Player (Player(..))
 import Emo8.Types (Position, Velocity, Deg, X)
-import Emo8.Utils (xComponent, yComponent, angle, vectorTo)
-import Data.Enemy.BigBertha.Helper (playerInRange, updateVelocity, updatePosition, ensureLeftLimit, ensureRightLimit, coolDownShot)
+import Emo8.Utils (angle, vectorTo)
+import Data.Enemy.BigBertha.Helper (
+    playerInRange, 
+    updateVelocity, 
+    updatePosition, 
+    ensureLeftLimit, 
+    ensureRightLimit, 
+    coolDownShot
+)
 
 type MachineGunPhase = { 
     pos :: Position,
@@ -23,14 +30,6 @@ accuracyDeviationIncrements = 5
 
 maxOffset :: Int
 maxOffset = 7
-
-bulletVelocity :: Deg -> Velocity
-bulletVelocity angle = velocity
-    where
-        velocity = {
-            xSpeed: xComponent angle bulletSpeed,
-            ySpeed: yComponent angle bulletSpeed
-        }
 
 canFire :: Player -> MachineGunPhase -> Boolean
 canFire p machineGunPhase = machineGunPhase.shotCoolDown == 0 && playerInRange p machineGunPhase.pos
@@ -54,7 +53,7 @@ newBullet :: Player -> MachineGunPhase -> Bullet
 newBullet p machineGunPhase = nb
     where
         angle = angleOffset (angleToPlayer p machineGunPhase) machineGunPhase.offset
-        velocity = bulletVelocity angle
+        velocity = toBulletVelocity angle
         nb = newLinearBullet (machineGunPosition machineGunPhase) velocity
 
 updateMachineGunPhase :: X -> Player -> MachineGunPhase -> { phase :: MachineGunPhase, bullets :: Array Bullet }

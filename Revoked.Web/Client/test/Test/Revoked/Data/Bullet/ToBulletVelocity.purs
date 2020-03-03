@@ -1,17 +1,17 @@
-module Test.Revoked.Data.Gun.Helper.BulletVelocity ( 
-    bulletVelocityTests 
+module Test.Revoked.Data.Bullet.ToBulletVelocity ( 
+    toBulletVelocityTests 
 ) where
 
 import Prelude
 
 import Constants (bulletSpeed)
-import Data.Gun.Helper (bulletVelocity)
+import Data.Bullet (toBulletVelocity)
 import Test.Unit (TestSuite, suite, test)
 import Test.Helper (equalTolerance)
 
-bulletVelocityTests :: TestSuite
-bulletVelocityTests =
-    suite "Revoked.Data.Gun.Pistol - bulletVelocity" do
+toBulletVelocityTests :: TestSuite
+toBulletVelocityTests =
+    suite "Revoked.Data.Bullet - toBulletVelocity" do
         test "SHOULD have full speed in X WHEN aimed right" do
             let 
                 angle = 0
@@ -21,7 +21,7 @@ bulletVelocityTests =
                     ySpeed: 0.0
                 }  
 
-                result = bulletVelocity angle
+                result = toBulletVelocity angle
             equalTolerance expected.xSpeed result.xSpeed
             equalTolerance expected.ySpeed result.ySpeed    
         test "SHOULD have full speed in Y WHEN aimed up" do
@@ -33,7 +33,7 @@ bulletVelocityTests =
                     ySpeed: bulletSpeed
                 }  
 
-                result = bulletVelocity angle
+                result = toBulletVelocity angle
             equalTolerance expected.xSpeed result.xSpeed
             equalTolerance expected.ySpeed result.ySpeed    
         test "SHOULD have half speed in X AND half speed in Y WHEN aimed diagonally right and up" do
@@ -45,7 +45,7 @@ bulletVelocityTests =
                     ySpeed: 5.6568
                 }  
 
-                result = bulletVelocity angle
+                result = toBulletVelocity angle
 
             equalTolerance expected.xSpeed result.xSpeed
             equalTolerance expected.ySpeed result.ySpeed 
