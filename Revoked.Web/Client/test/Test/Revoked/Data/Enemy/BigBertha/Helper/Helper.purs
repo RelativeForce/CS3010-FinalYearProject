@@ -9,6 +9,7 @@ import Test.Revoked.Data.Enemy.BigBertha.Helper.EnsureLeftLimit (ensureLeftLimit
 import Test.Revoked.Data.Enemy.BigBertha.Helper.PlayerInRange (playerInRangeTests)
 import Test.Revoked.Data.Enemy.BigBertha.Helper.CoolDownShot (coolDownShotTests)
 import Test.Revoked.Data.Enemy.BigBertha.Helper.EnsureRightLimit (ensureRightLimitTests)
+import Test.Revoked.Data.Enemy.BigBertha.Helper.UpdatePosition (updatePositionTests)
 import Test.Unit.Main (runTest)
 
 helperTests :: Effect Unit
@@ -21,4 +22,5 @@ helperTests = do
         playerInRangeTests
         coolDownShotTests
         ensureRightLimitTests
+        updatePositionTests
     
