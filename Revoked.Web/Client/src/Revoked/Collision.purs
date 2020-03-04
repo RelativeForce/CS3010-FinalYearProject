@@ -3,10 +3,25 @@ module Collision where
 import Prelude
 
 import Class.Object (class Object, position, size)
-import Constants (walls, hazards, mapTileSize)
+import Constants (walls, hazards, mapTileSize, mapSizeInt, mapTileInMonitorSize, mapSize)
 import Emo8.Constants (defaultMonitorSize)
 import Emo8.Types (Asset, Height, MapId, Position, Size, Width, Y, X)
 import Emo8.Utils (isCollide, isMonitorCollide, isOutOfMonitor, isMapCollide)
+
+isCollideMapWalls :: forall a. Object a => Asset -> MapId -> X -> a -> Boolean
+isCollideMapWalls asset = isCollideMap (isWallsCollide asset)
+
+isCollideMapHazards :: forall a. Object a => Asset -> MapId -> X -> a -> Boolean
+isCollideMapHazards asset = isCollideMap (isHazardCollide asset)
+
+isCollideMap :: forall a. Object a => (MapId -> Size -> Size -> Position -> Boolean) -> MapId -> X -> a -> Boolean
+isCollideMap f mapId distance o = collideCondition mapId distance
+    where
+        collideCondition :: MapId -> X -> Boolean
+        collideCondition mId d = do
+            if (-mapSizeInt * mapTileInMonitorSize.width <= d && d < mapSize.width)
+                then f mId mapTileSize (size o) { x: (position o).x + d, y: (position o).y }
+                else false
 
 isWallsCollide :: Asset -> MapId -> Size -> Size -> Position -> Boolean
 isWallsCollide asset mId mSize = isMapCollide asset mId mSize walls

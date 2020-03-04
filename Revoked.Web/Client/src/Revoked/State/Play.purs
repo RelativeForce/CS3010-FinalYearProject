@@ -5,7 +5,7 @@ import Prelude
 import Assets.Audio as A
 import States.StateIds as S
 import Class.Object (scroll, damage, heal)
-import Collision (isCollideObjects, isOutOfWorld)
+import Collision (isCollideObjects, isOutOfWorld, isCollideMapWalls, isCollideMapHazards)
 import Data.Array (any, filter, partition, concatMap, length)
 import Data.Bullet (Bullet, updateBullet)
 import Data.Enemy (Enemy, updateEnemy, enemyToScore)
@@ -21,7 +21,7 @@ import Emo8.Input (Input)
 import Emo8.Types (MapId, Score, StateId, Asset)
 import Data.Helper (isDead)
 import Levels (enemies, goals, levelCount, startPosition)
-import Helper (isCollideMapWalls, isCollideMapHazards, adjustMonitorDistance, formatDifference, enemyToParticle)
+import Helper (adjustMonitorDistance, formatDifference, enemyToParticle)
 
 type PlayState = { 
     distance :: Int, 
