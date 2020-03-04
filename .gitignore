@@ -640,3 +640,6 @@
 /Revoked.Web/Client/output/Test.Revoked.Data.Enemy.BigBertha.CannonPhase.UpdateCannonPhase
 /Revoked.Web/Client/output/Test.Revoked.Data.Goal
 /Revoked.Web/Client/output/Test.Revoked.Data.Goal.MapToHealth
+/Revoked.Web/Client/output/Test.Revoked.Data.Goal.IsNextLevelGoal
+/Revoked.Web/Client/output/Test.Revoked.Data.Goal.IsGunGoal
+/Revoked.Web/Client/output/Test.Revoked.Data.Goal.MapToGun

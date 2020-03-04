@@ -14,6 +14,10 @@ instance gunAppearEqual :: Eq GunAppear where
     eq (Right) (Right) = true
     eq _ _ = false
 
+instance gunAppearShow :: Show GunAppear where
+    show (Left) = "Left"
+    show (Right) = "Right"
+
 bulletPosition :: Deg -> Position -> Size -> Position
 bulletPosition angle pos size = { x: x, y: y }
     where 

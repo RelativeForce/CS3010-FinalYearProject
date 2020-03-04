@@ -17,6 +17,19 @@ data Gun =
     AssaultRifleGun AssaultRifle |
     BlasterGun Blaster
 
+instance gunEqual :: Eq Gun where
+    eq (PistolGun p1) (PistolGun p2) = p1 == p2
+    eq (ShotgunGun sg1) (ShotgunGun sg2) = sg1 == sg2
+    eq (AssaultRifleGun ar1) (AssaultRifleGun ar2) = ar1 == ar2
+    eq (BlasterGun b1) (BlasterGun b2) = b1 == b2
+    eq _ _ = false
+
+instance gunShow :: Show Gun where
+    show (PistolGun p) = "PistolGun " <> show p
+    show (ShotgunGun sg) = "ShotgunGun " <> show sg
+    show (AssaultRifleGun ar) = "AssaultRifleGun " <> show ar
+    show (BlasterGun b) = "BlasterGun " <> show b
+
 instance objectGun :: Object Gun where
     size (PistolGun p) = p.sprite.size
     size (ShotgunGun sg) = sg.sprite.size
