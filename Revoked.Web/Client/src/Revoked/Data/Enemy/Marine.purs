@@ -166,6 +166,6 @@ defaultMarine marineHealth pos = {
         xSpeed: 0.0,
         ySpeed: 0.0
     },
-    gun: defaultPistolGun true pos 180,
+    gun: defaultPistolGun pos 180,
     health: marineHealth
 }

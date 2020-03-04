@@ -149,7 +149,7 @@ updatePlayerGun collidedGun (Player p) = newPlayer
     where 
         newPlayer = case (shotCount p.gun) > 0, collidedGun of
             true, Nothing -> Player p
-            false, Nothing -> setGun (Player p) (defaultPistolGun true p.pos 0)
+            false, Nothing -> setGun (Player p) (defaultPistolGun p.pos 0)
             _, Just gun -> adjustGunPosition $ setGun (Player p) gun
 
 initialPlayer :: Position -> Player
@@ -162,7 +162,7 @@ initialPlayer pos = Player {
         ySpeed: 0.0
     },
     onFloor: true,
-    gun: defaultPistolGun true (pos { x = pos.x + 10 }) 0,
+    gun: defaultPistolGun (pos { x = pos.x + 10 }) 0,
     health: defaultPlayerHealth
 }
 

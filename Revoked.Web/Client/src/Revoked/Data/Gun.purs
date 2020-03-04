@@ -63,13 +63,13 @@ updateGun (AssaultRifleGun ar) = AssaultRifleGun $ updateAssaultRifle ar
 updateGun (BlasterGun b) = BlasterGun $ updateBlaster b
 
 shotCount :: Gun -> Int 
-shotCount (PistolGun p) = if p.infinte then 99999 else p.shotCount
+shotCount (PistolGun p) = 99999 
 shotCount (ShotgunGun sg) = sg.shotCount
 shotCount (AssaultRifleGun ar) = ar.shotCount
 shotCount (BlasterGun b) = 99999
 
 isInfinite :: Gun -> Boolean 
-isInfinite (PistolGun p) = p.infinte
+isInfinite (PistolGun p) = true
 isInfinite (ShotgunGun sg) = false
 isInfinite (AssaultRifleGun ar) = false
 isInfinite (BlasterGun b) = true
@@ -83,8 +83,8 @@ setPositionAndRotation (ShotgunGun sg) pos angle = ShotgunGun $ setShotgunPositi
 setPositionAndRotation (AssaultRifleGun ar) pos angle = AssaultRifleGun $ setAssaultRiflePositionAndRotation ar pos angle 
 setPositionAndRotation (BlasterGun b) pos angle = BlasterGun $ setBlasterPositionAndRotation b pos angle 
 
-defaultPistolGun :: Boolean -> Position -> Deg -> Gun
-defaultPistolGun infinte pos angle = PistolGun $ defaultPistol infinte pos angle
+defaultPistolGun :: Position -> Deg -> Gun
+defaultPistolGun pos angle = PistolGun $ defaultPistol pos angle
 
 defaultShotgunGun :: Position -> Deg -> Gun
 defaultShotgunGun pos angle = ShotgunGun $ defaultShotgun pos angle
