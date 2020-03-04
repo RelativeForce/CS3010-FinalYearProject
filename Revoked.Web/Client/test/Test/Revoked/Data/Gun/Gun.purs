@@ -11,8 +11,10 @@ import Test.Revoked.Data.Gun.Pistol (pistolTests)
 
 -- Tests
 import Test.Revoked.Data.Gun.IsInfinite (isInfiniteTests)
+import Test.Revoked.Data.Gun.ShotCount (shotCountTests)
 
 gunTests :: TestSuite
 gunTests = do
     pistolTests
     isInfiniteTests
+    shotCountTests

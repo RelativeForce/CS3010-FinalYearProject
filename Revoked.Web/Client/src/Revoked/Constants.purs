@@ -16,6 +16,9 @@ frictionFactor = 0.7
 maxUsernameLength :: Int
 maxUsernameLength = 3
 
+maxShotCount :: Int
+maxShotCount = 99999
+
 -- Player
 
 maxPlayerSpeedX :: Number
@@ -110,9 +113,6 @@ bulletSpeed :: Number
 bulletSpeed = 8.0
 
 -- Pistol
-
-pistolMagazineSize :: Int
-pistolMagazineSize = 6
 
 pistolShotCooldown :: Int
 pistolShotCooldown = 10

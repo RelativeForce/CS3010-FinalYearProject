@@ -10,6 +10,7 @@ import Data.Gun.Shotgun (Shotgun, defaultShotgun, fireAndUpdateShotgun, setShotg
 import Data.Gun.AssaultRifle (AssaultRifle, defaultAssaultRifle, fireAndUpdateAssaultRifle, setAssaultRiflePositionAndRotation, updateAssaultRifle)
 import Emo8.Action.Draw (drawRotatedSprite)
 import Emo8.Types (Position, Deg)
+import Constants (maxShotCount)
 
 data Gun = 
     PistolGun Pistol |
@@ -63,10 +64,10 @@ updateGun (AssaultRifleGun ar) = AssaultRifleGun $ updateAssaultRifle ar
 updateGun (BlasterGun b) = BlasterGun $ updateBlaster b
 
 shotCount :: Gun -> Int 
-shotCount (PistolGun p) = 99999 
+shotCount (PistolGun p) = maxShotCount 
 shotCount (ShotgunGun sg) = sg.shotCount
 shotCount (AssaultRifleGun ar) = ar.shotCount
-shotCount (BlasterGun b) = 99999
+shotCount (BlasterGun b) = maxShotCount
 
 isInfinite :: Gun -> Boolean 
 isInfinite (PistolGun p) = true
