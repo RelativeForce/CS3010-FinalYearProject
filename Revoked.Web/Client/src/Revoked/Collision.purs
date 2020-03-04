@@ -30,16 +30,10 @@ isHazardCollide :: Asset -> MapId -> Size -> Size -> Position -> Boolean
 isHazardCollide asset mId mSize = isMapCollide asset mId mSize hazards
 
 isCollideWorld :: forall a. Object a => a -> Boolean
-isCollideWorld o = isCollWorld (size o) (position o)
-
-isCollWorld :: Size -> Position -> Boolean
-isCollWorld = isMonitorCollide defaultMonitorSize
+isCollideWorld o = isMonitorCollide defaultMonitorSize (size o) (position o)
 
 isOutOfWorld :: forall a. Object a => a -> Boolean
-isOutOfWorld o = isOut (size o) (position o)
-
-isOut :: Size -> Position -> Boolean
-isOut = isOutOfMonitor defaultMonitorSize
+isOutOfWorld o = isOutOfMonitor defaultMonitorSize (size o) (position o)
 
 isCollideObjects :: forall a b. Object a => Object b => a -> b -> Boolean
 isCollideObjects a b = isCollide (size a) (position a) (size b) (position b)
