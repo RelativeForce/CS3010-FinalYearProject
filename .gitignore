@@ -649,3 +649,9 @@
 /Revoked.Web/Client/output/Test.Revoked.Data.Gun.ShotCount
 /Revoked.Web/Client/output/Draw
 /Revoked.Web/Client/output/Data.Draw
+/Revoked.Web/Client/output/Test.Revoked.Data.Gun.AssaultRifle
+/Revoked.Web/Client/output/Test.Revoked.Data.Gun.AssaultRifle.CanFire
+/Revoked.Web/Client/output/Test.Revoked.Data.Gun.Blaster
+/Revoked.Web/Client/output/Test.Revoked.Data.Gun.Blaster.CanFire
+/Revoked.Web/Client/output/Test.Revoked.Data.Gun.Shotgun
+/Revoked.Web/Client/output/Test.Revoked.Data.Gun.Shotgun.CanFire
