@@ -15,6 +15,17 @@ data Goal =
     NextLevel { pos :: Position, sprite :: Sprite } |
     GunPickup Gun |
     HealthPack { pos :: Position, sprite :: Sprite }
+
+instance goalEqual :: Eq Goal where
+    eq (NextLevel nl1) (NextLevel nl2) = nl1 == nl2
+    eq (GunPickup gp1) (GunPickup gp2) = gp1 == gp2
+    eq (HealthPack hp1) (HealthPack hp2) = hp1 == hp2
+    eq _ _ = false
+
+instance goalShow :: Show Goal where
+    show (NextLevel nl) = "NextLevel " <> show nl
+    show (GunPickup gp) = "GunPickup " <> show gp
+    show (HealthPack hp) = "HealthPack " <> show hp
  
 instance objectGoal :: Object Goal where
     size (NextLevel nl) = nl.sprite.size
