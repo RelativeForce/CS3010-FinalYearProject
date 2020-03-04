@@ -643,3 +643,5 @@
 /Revoked.Web/Client/output/Test.Revoked.Data.Goal.IsNextLevelGoal
 /Revoked.Web/Client/output/Test.Revoked.Data.Goal.IsGunGoal
 /Revoked.Web/Client/output/Test.Revoked.Data.Goal.MapToGun
+/Revoked.Web/Client/output/Test.Revoked.Data.Goal.FirstGun
+/Revoked.Web/Client/output/Test.Revoked.Data.Goal.ToHealthBonus
