@@ -12,7 +12,7 @@ import Emo8.Constants (defaultMonitorSize)
 beInMonitorTests :: TestSuite
 beInMonitorTests =
     suite "Revoked.Data.Player - beInMonitor" do
-        test "positionShouldNotChangeWhenPlayerHasNotMovedWithInMonitorBounds" do
+        test "SHOULD not change position WHEN player has not moved within MonitorBounds" do
             let 
                 x = 50
                 y = 50
@@ -30,7 +30,7 @@ beInMonitorTests =
 
             equal expectedPos result.pos
         
-        test "positionShouldNotChangeWhenPlayerHasOutsideMonitorBoundsLeft" do
+        test "SHOULD not change position WHEN player is outside MonitorBounds on left edge" do
             let 
                 y = 50
                 oldPos = {
@@ -47,7 +47,7 @@ beInMonitorTests =
 
             equal expectedPos result.pos
 
-        test "positionShouldNotChangeWhenPlayerHasOutsideMonitorBoundsDown" do
+        test "SHOULD not change position WHEN player is outside MonitorBounds on bottom edge" do
             let 
                 x = 50
                 oldPos = {
@@ -64,7 +64,7 @@ beInMonitorTests =
 
             equal expectedPos result.pos
 
-        test "positionShouldNotChangeWhenPlayerHasOutsideMonitorBoundsUp" do
+        test "SHOULD not change position WHEN player is outside MonitorBounds on top edge" do
             let 
                 x = 50
                 yBoundry = defaultMonitorSize.height - spriteSize.height
@@ -82,7 +82,7 @@ beInMonitorTests =
 
             equal expectedPos result.pos
 
-        test "positionShouldNotChangeWhenPlayerHasOutsideMonitorBoundsRight" do
+        test "SHOULD not change position WHEN player is outside MonitorBounds on right edge" do
             let 
                 y = 50
                 xBoundry = defaultMonitorSize.width - spriteSize.width
@@ -99,7 +99,7 @@ beInMonitorTests =
                 (Player result) = beInMonitor oldPos newPlayer
 
             equal expectedPos result.pos
-        test "positionShouldNotChangeWhenPlayerHasOutsideMonitorBoundsRightAndUp" do
+        test "SHOULD not change position WHEN player is outside MonitorBounds on both top and right" do
             let 
                 xBoundry = defaultMonitorSize.width - spriteSize.width
                 yBoundry = defaultMonitorSize.height - spriteSize.height

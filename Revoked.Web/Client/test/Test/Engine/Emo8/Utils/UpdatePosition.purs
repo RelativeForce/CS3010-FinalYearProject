@@ -9,8 +9,8 @@ import Test.Unit.Assert (equal)
 
 updatePositionTests :: TestSuite
 updatePositionTests =
-    suite "Emo8.Utils - updatePosition" do
-        test "shouldSumXSpeedAndXPosition" do
+    suite "Engine.Emo8.Utils - updatePosition" do
+        test "SHOULD combine speed and position" do
             let 
                 velocity = { xSpeed: 5.0, ySpeed: 3.0 }
                 position = { x: 5, y: 3 }

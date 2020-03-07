@@ -11,7 +11,7 @@ import Test.Unit.Assert (equal)
 healthGateTests :: TestSuite
 healthGateTests =
     suite "Revoked.Data.Enemy.BigBertha - healthGate" do
-        test "healthGateIs10GivenPhase1" do
+        test "SHOULD be 10 WHEN given phase 1" do
             let 
                 leftLimit = {  x: 0, y: 5 }
                 rightLimit = { x: 15, y: 5 } 
@@ -21,7 +21,7 @@ healthGateTests =
 
                 result = healthGate phase
             equal expected result  
-        test "healthGateIs5GivenPhase2" do
+        test "SHOULD be 5 WHEN given phase 2" do
             let 
                 leftLimit = {  x: 0, y: 5 }
                 rightLimit = { x: 15, y: 5 } 
@@ -31,7 +31,7 @@ healthGateTests =
 
                 result = healthGate phase
             equal expected result   
-        test "healthGateIsZeroGivenPhase3" do
+        test "SHOULD be 0 WHEN given phase 3" do
             let 
                 leftLimit = {  x: 0, y: 5 }
                 rightLimit = { x: 15, y: 5 } 

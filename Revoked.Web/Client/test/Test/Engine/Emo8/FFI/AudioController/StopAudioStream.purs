@@ -3,52 +3,43 @@ module Test.Engine.Emo8.FFI.AudioController.StopAudioStream (
 ) where
 
 import Prelude
-import Emo8.FFI.AudioController (_stopAudioStream, newAudioContext, AudioStream, AudioContext)
+import Emo8.FFI.AudioController (_stopAudioStream, newAudioContext, AudioStream)
 import Data.Array(length, head)
 import Data.Maybe (Maybe(..))
-import Test.Unit (suite, test)
+import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
-import Test.Unit.Main (runTest)
+import Effect.Class (liftEffect)
 import Effect (Effect)
 
-stopAudioStreamTests :: Effect Unit
-stopAudioStreamTests = do
+stopAudioStreamTests :: TestSuite
+stopAudioStreamTests =
+    suite "Engine.Emo8.FFI.AudioController - _stopAudioStream" do
+        test "SHOULD stop AND remove audio stream WHEN the stream is active" do
 
-    let testSrc = "testAudioFile"
-    
-    shouldStopAndRemoveAudioStreamWhenThatStreamIsActiveResult <- shouldStopAndRemoveAudioStreamWhenThatStreamIsActiveSetup testSrc  
-    shouldNotRemoveAudioStreamWhenStopperFailsResult <- shouldNotRemoveAudioStreamWhenStopperFailsSetup testSrc
+            let 
+                src = "testAudioFile"
+                controller = (newAudioContext "test") { audioStreams = [ { src: src } ] }
+                stopperSucceeds = true
+                    
+            result <- liftEffect $ _stopAudioStream (mockAudioStopper stopperSucceeds) controller src
 
-    runTest do
-        suite "Engine.Emo8.FFI.AudioController - _stopAudioStream" do
-            test "shouldStopAndRemoveAudioStreamWhenThatStreamIsActive" do
+            equal 0 $ length result.audioStreams
 
-                equal 0 $ length shouldStopAndRemoveAudioStreamWhenThatStreamIsActiveResult.audioStreams
+        test "SHOULD not remove audio stream WHEN stopper fails" do
 
-            test "shouldNotRemoveAudioStreamWhenStopperFails" do
+            let 
+                src = "testAudioFile"
+                controller = (newAudioContext "test") { audioStreams = [ { src: src } ] }
+                stopperSucceeds = false
+                
+            result <- liftEffect $ _stopAudioStream (mockAudioStopper stopperSucceeds) controller src
 
-                let resultControllerFirstAudioStream = head shouldNotRemoveAudioStreamWhenStopperFailsResult.audioStreams
-
-                equal testSrc $ case resultControllerFirstAudioStream of 
+            let 
+                resultSrc = case head result.audioStreams of 
                     Nothing -> "error"
-                    Just as -> as.src
+                    Just as -> as.src 
 
-shouldNotRemoveAudioStreamWhenStopperFailsSetup :: String -> Effect AudioContext
-shouldNotRemoveAudioStreamWhenStopperFailsSetup src = do
-    let 
-        controller = (newAudioContext "test") { audioStreams = [ { src: src } ] }
-        stopperSucceeds = false
-        
-    _stopAudioStream (mockAudioStopper stopperSucceeds) controller src
-
-shouldStopAndRemoveAudioStreamWhenThatStreamIsActiveSetup :: String -> Effect AudioContext
-shouldStopAndRemoveAudioStreamWhenThatStreamIsActiveSetup src = do
-  
-    let 
-        controller = (newAudioContext "test") { audioStreams = [ { src: src } ] }
-        stopperSucceeds = true
-        
-    _stopAudioStream (mockAudioStopper stopperSucceeds) controller src
+            equal src resultSrc    
 
 mockAudioStopper :: Boolean -> AudioStream -> Effect Boolean
 mockAudioStopper expected audioStream = pure expected

@@ -15,7 +15,7 @@ import Test.Unit.Assert (equal)
 playerInRangeTests :: TestSuite
 playerInRangeTests =
     suite "Revoked.Data.Enemy.Marine - playerInRange" do
-        test "shouldBeInRangeWhenPlayerAndMarineHaveSamePosition" do
+        test "SHOULD be in range WHEN player has same position as marine" do
             let 
                 playerPos = {
                     x: 3,
@@ -31,7 +31,7 @@ playerInRangeTests =
 
                 result = playerInRange newPlayer marine
             equal expected result    
-        test "shouldNotBeInRangeWhenPlayerAndMarineIsAtBoundryInX" do
+        test "SHOULD not be in range WHEN player and marine are at boundry in X" do
             let 
                 playerPos = {
                     x: (floor marineAgroRange),
@@ -47,7 +47,7 @@ playerInRangeTests =
 
                 result = playerInRange newPlayer marine
             equal expected result   
-        test "shouldBeInRangeWhenPlayerAndMarineIsWithinBoundryInX" do
+        test "SHOULD be in range WHEN player and marine is within boundry in X" do
             let 
                 playerPos = {
                     x: (floor marineAgroRange) - 1,
@@ -63,7 +63,7 @@ playerInRangeTests =
 
                 result = playerInRange newPlayer marine
             equal expected result 
-        test "shouldNotBeInRangeWhenPlayerAndMarineIsAtBoundryInY" do
+        test "SHOULD not be in range WHEN player and marine are at boundry in Y" do
             let 
                 playerPos = {
                     x: 0,
@@ -79,7 +79,7 @@ playerInRangeTests =
 
                 result = playerInRange newPlayer marine
             equal expected result   
-        test "shouldBeInRangeWhenPlayerAndMarineIsWithinBoundryInY" do
+        test "SHOULD be in range WHEN player and marine is within boundry in Y" do
             let 
                 playerPos = {
                     x: 0,

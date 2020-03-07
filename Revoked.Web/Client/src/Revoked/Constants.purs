@@ -16,6 +16,9 @@ frictionFactor = 0.7
 maxUsernameLength :: Int
 maxUsernameLength = 3
 
+maxShotCount :: Int
+maxShotCount = 99999
+
 -- Player
 
 maxPlayerSpeedX :: Number
@@ -111,9 +114,6 @@ bulletSpeed = 8.0
 
 -- Pistol
 
-pistolMagazineSize :: Int
-pistolMagazineSize = 6
-
 pistolShotCooldown :: Int
 pistolShotCooldown = 10
 
@@ -162,3 +162,24 @@ bigBerthaAgroRange = 1000.0
 
 bigBerthaImmunityCooldown :: Int
 bigBerthaImmunityCooldown = 120
+
+-- Big Bertha Mortar Phase
+
+bigBerthaMortarPhaseShotCooldown :: Int
+bigBerthaMortarPhaseShotCooldown = 8
+
+-- Big Bertha Machine Gun Phase
+
+bigBerthaMachineGunPhaseShotCooldown :: Int
+bigBerthaMachineGunPhaseShotCooldown = 10
+
+bigBerthaMachineGunPhaseAccuracyDeviationIncrements :: Int
+bigBerthaMachineGunPhaseAccuracyDeviationIncrements = 5
+
+bigBerthaMachineGunPhaseMaxDeviation :: Int
+bigBerthaMachineGunPhaseMaxDeviation = 7
+
+-- Big Bertha Cannon Phase
+
+bigBerthaCannonPhaseShotCooldown :: Int
+bigBerthaCannonPhaseShotCooldown = 20

@@ -4,14 +4,23 @@ module Test.Revoked.Data.Gun (
 
 import Prelude
 
-import Effect (Effect)
+import Test.Unit (TestSuite)
+
+-- Sub Modules
 import Test.Revoked.Data.Gun.Pistol (pistolTests)
-import Test.Revoked.Data.Gun.Helper (helperTests)
+import Test.Revoked.Data.Gun.Shotgun (shotgunTests)
+import Test.Revoked.Data.Gun.AssaultRifle (assaultRifleTests)
+import Test.Revoked.Data.Gun.Blaster (blasterTests)
 
-gunTests :: Effect Unit
+-- Tests
+import Test.Revoked.Data.Gun.IsInfinite (isInfiniteTests)
+import Test.Revoked.Data.Gun.ShotCount (shotCountTests)
+
+gunTests :: TestSuite
 gunTests = do
-    -- Tests
-
-    -- Sub Modules
     pistolTests
-    helperTests
+    shotgunTests
+    assaultRifleTests
+    blasterTests
+    isInfiniteTests
+    shotCountTests

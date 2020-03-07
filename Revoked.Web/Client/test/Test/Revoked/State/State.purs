@@ -4,14 +4,11 @@ module Test.Revoked.State (
 
 import Prelude
 
-import Effect (Effect)
 import Test.Revoked.State.Leaderboard (leaderboardTests)
 import Test.Revoked.State.Victory (victoryTests)
+import Test.Unit (TestSuite)
 
-stateTests :: Effect Unit
+stateTests :: TestSuite
 stateTests = do
-    -- Tests
-
-    -- Sub Modules
     leaderboardTests
     victoryTests

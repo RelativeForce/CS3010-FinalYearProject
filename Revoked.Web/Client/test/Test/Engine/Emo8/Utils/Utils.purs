@@ -4,15 +4,11 @@ module Test.Engine.Emo8.Utils (
 
 import Prelude
 
-import Effect (Effect)
 import Test.Engine.Emo8.Utils.UpdatePosition (updatePositionTests)
 import Test.Engine.Emo8.Utils.Angle (angleTests)
-import Test.Unit.Main (runTest)
+import Test.Unit (TestSuite)
 
-utilsTests :: Effect Unit
+utilsTests :: TestSuite
 utilsTests = do
-    -- Tests
-    runTest do
-        updatePositionTests
-        angleTests
-    -- Sub Modules
+    updatePositionTests
+    angleTests

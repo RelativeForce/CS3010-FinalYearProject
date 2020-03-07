@@ -11,7 +11,7 @@ import Test.Unit.Assert (equal)
 newPlayerSpriteTests :: TestSuite
 newPlayerSpriteTests =
     suite "Revoked.Data.Player - newPlayerSprite" do
-        test "newPlayerSpriteShouldBeMovingLeftWhenAppearIsBackwardAndPlayerIsOnFloor" do
+        test "SHOULD be moving left WHEN appear is backward AND player is on floor" do
             let 
                 appear = PlayerBackward
                 xSpeed = 3.2
@@ -21,7 +21,7 @@ newPlayerSpriteTests =
                 result = newPlayerSprite appear xSpeed onFloor
 
             equal expectedId result.id
-        test "newPlayerSpriteShouldBeStandingLeftWhenAppearIsBackward [ OnFloor = true, xSpeed = 0.0 ]" do
+        test "SHOULD be standing left WHEN appear is backward AND player is on floor AND still in x direction" do
             let 
                 appear = PlayerBackward
                 xSpeed = 0.0
@@ -31,7 +31,7 @@ newPlayerSpriteTests =
                 result = newPlayerSprite appear xSpeed onFloor
 
             equal expectedId result.id
-        test "newPlayerSpriteShouldBeStandingLeftWhenAppearIsBackward [ OnFloor = false, xSpeed = 0.0 ]" do
+        test "SHOULD be standing left WHEN appear is backward AND player is not on floor AND still in x direction" do
             let 
                 appear = PlayerBackward
                 xSpeed = 0.0
@@ -41,7 +41,7 @@ newPlayerSpriteTests =
                 result = newPlayerSprite appear xSpeed onFloor
 
             equal expectedId result.id
-        test "newPlayerSpriteShouldBeStandingLeftWhenAppearIsBackward [ OnFloor = false, xSpeed = 3.2 ]" do
+        test "SHOULD be standing left WHEN appear is backward AND player is not on floor AND speed is 3.2 in x direction" do
             let 
                 appear = PlayerBackward
                 xSpeed = 3.2
@@ -51,7 +51,7 @@ newPlayerSpriteTests =
                 result = newPlayerSprite appear xSpeed onFloor
 
             equal expectedId result.id
-        test "newPlayerSpriteShouldBeMovingRightWhenAppearIsForwardAndPlayerIsOnFloor" do
+        test "SHOULD be moving right WHEN appear is forward AND player is on floor" do
             let 
                 appear = PlayerForward
                 xSpeed = 3.2
@@ -61,7 +61,7 @@ newPlayerSpriteTests =
                 result = newPlayerSprite appear xSpeed onFloor
 
             equal expectedId result.id
-        test "newPlayerSpriteShouldBeStandingRightWhenAppearIsForward [ OnFloor = true, xSpeed = 0.0 ]" do
+        test "SHOULD be standing right WHEN appear is forward AND player is on floor AND still in x direction" do
             let 
                 appear = PlayerForward
                 xSpeed = 0.0
@@ -71,7 +71,7 @@ newPlayerSpriteTests =
                 result = newPlayerSprite appear xSpeed onFloor
 
             equal expectedId result.id
-        test "newPlayerSpriteShouldBeStandingRightWhenAppearIsForward [ OnFloor = false, xSpeed = 0.0 ]" do
+        test "SHOULD be standing right WHEN appear is forward AND player is not on floor AND still in x direction" do
             let 
                 appear = PlayerForward
                 xSpeed = 0.0
@@ -81,7 +81,7 @@ newPlayerSpriteTests =
                 result = newPlayerSprite appear xSpeed onFloor
 
             equal expectedId result.id
-        test "newPlayerSpriteShouldBeStandingRightWhenAppearIsForward [ OnFloor = true, xSpeed = 3.2 ]" do
+        test "SHOULD be standing right WHEN appear is forward AND player is not on floor AND speed is 3.2 in x direction" do
             let 
                 appear = PlayerForward
                 xSpeed = 3.2

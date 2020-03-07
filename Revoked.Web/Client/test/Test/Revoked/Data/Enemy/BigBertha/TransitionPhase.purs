@@ -12,7 +12,7 @@ import Test.Unit.Assert (equal)
 transitionPhaseTests :: TestSuite
 transitionPhaseTests =
     suite "Revoked.Data.Enemy.BigBertha - transitionPhase" do
-        test "shouldTransitionPhaseAndBecomeImmuneWhenAtHealthGateAndNOTImmune" do
+        test "SHOULD transition phase AND become immune WHEN at health gate AND not immune" do
             let 
                 leftLimit = {  x: 0, y: 5 }
                 rightLimit = { x: 15, y: 5 } 
@@ -30,7 +30,7 @@ transitionPhaseTests =
             equal 10 result.health
             equal true $ phaseEqual expectedPhase result.phase
             equal expectedImmuneCooldown result.immuneCooldown    
-        test "shouldNOTTransitionPhaseWhenNotAtHealthGate" do
+        test "SHOULD not transition phase WHEN not at health gate" do
             let 
                 leftLimit = {  x: 0, y: 5 }
                 rightLimit = { x: 15, y: 5 } 

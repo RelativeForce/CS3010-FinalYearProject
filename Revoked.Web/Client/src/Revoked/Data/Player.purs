@@ -4,7 +4,7 @@ import Prelude
 
 import Assets.Sprites as S
 import Class.Object (class Object, class ObjectDraw, class MortalEntity, position, scroll, draw, size)
-import Collision (isCollWorld, adjustY, adjustX)
+import Collision (isCollideWorld, adjustY, adjustX)
 import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor, defaultPlayerHealth)
 import Emo8.Constants (defaultMonitorSize)
 import Data.Bullet (Bullet)
@@ -149,7 +149,7 @@ updatePlayerGun collidedGun (Player p) = newPlayer
     where 
         newPlayer = case (shotCount p.gun) > 0, collidedGun of
             true, Nothing -> Player p
-            false, Nothing -> setGun (Player p) (defaultPistolGun true p.pos 0)
+            false, Nothing -> setGun (Player p) (defaultPistolGun p.pos 0)
             _, Just gun -> adjustGunPosition $ setGun (Player p) gun
 
 initialPlayer :: Position -> Player
@@ -162,7 +162,7 @@ initialPlayer pos = Player {
         ySpeed: 0.0
     },
     onFloor: true,
-    gun: defaultPistolGun true (pos { x = pos.x + 10 }) 0,
+    gun: defaultPistolGun (pos { x = pos.x + 10 }) 0,
     health: defaultPlayerHealth
 }
 
@@ -235,8 +235,8 @@ beInMonitor oldPos (Player p) = Player $ p { pos = { x: x, y: y } }
         width = size.width
         height = size.height
         pos = p.pos
-        isCollX = isCollWorld size { x: pos.x, y: oldPos.y }
-        isCollY = isCollWorld size { x: oldPos.x, y: pos.y }
+        isCollX = isCollideWorld $ Player $ p { pos = { x: pos.x, y: oldPos.y } }
+        isCollY = isCollideWorld $ Player $ p { pos = { x: oldPos.x, y: pos.y } }
         x = case isCollX, (pos.x < oldPos.x) of
             true, true -> 0
             true, false -> defaultMonitorSize.width - width

@@ -12,17 +12,17 @@ import Test.Unit.Assert (equal)
 incrementFrameTests :: TestSuite
 incrementFrameTests =
     suite "Engine.Emo8.Data.Sprite - incrementFrame" do
-        test "shouldIncrementFrameWhenFrameIndexIsWithinFrameLimit [0 10 1]" do
+        test "SHOULD increment to frame 1 WHEN on frame 0 of 10 at 1 frame per second" do
             let 
                 result = incrementFrame $ buildSprite 0 10 1
                 expectedFrame = 1
             equal expectedFrame result.frameIndex 
-        test "shouldIncrementFrameWhenFrameIndexIsWithinFrameLimit [5 10 3]" do
+        test "SHOULD increment to frame 6 WHEN on frame 6 of 10 at 3 frame per second" do
             let 
                 result = incrementFrame $ buildSprite 5 10 3
                 expectedFrame = 6
             equal expectedFrame result.frameIndex 
-        test "shouldResetFrameIndexWhenFrameIndexIsAtFrameLimit [39 10 4]" do
+        test "SHOULD increment to frame 0 WHEN on frame 39 of 10 at 4 frame per second" do
             let 
                 result = incrementFrame $ buildSprite 39 10 4
                 expectedFrame = 0

@@ -2,7 +2,7 @@ module Data.Enemy.BigBertha.MortarPhase where
 
 import Prelude
 
-import Constants (gravity, mapTileSize, bigBerthaSpeed)
+import Constants (gravity, mapTileSize, bigBerthaSpeed, bigBerthaMortarPhaseShotCooldown)
 import Data.Bullet (Bullet, newArcBullet)
 import Data.Player (Player(..))
 import Data.Int (toNumber)
@@ -21,16 +21,16 @@ type MortarPhase = {
 mortarApex :: Number
 mortarApex = toNumber $ mapTileSize.height * 12
 
-shotCooldown :: Int
-shotCooldown = 8
-
-horizontalVelocity :: Position -> MortarPhase -> Number
-horizontalVelocity target mortarPhase = (d * sqrt g) / ((sqrt (2.0 * h)) + sqrt (2.0 * (h - l)))
-    where
-        mortarPos = mortarPosition mortarPhase
-        d = abs $ toNumber $ mortarPos.x - target.x
+-- | Calculates the horizontal velocity a projectile would need in order to follow a 
+-- | arcing path such that it will intercept the target position when fired from 
+-- | the mortar position.
+-- | See github issue #103 for derivation of formula
+horizontalVelocity :: Position -> Position -> Number
+horizontalVelocity target mortar = (d * sqrt g) / ((sqrt (2.0 * h)) + sqrt (2.0 * (h - l)))
+    where 
+        d = toNumber $ target.x - mortar.x 
         h = mortarApex
-        l = toNumber $ target.y - mortarPos.y
+        l = toNumber $ target.y - mortar.y
         g = abs gravity
 
 verticalVelocity :: Number
@@ -42,7 +42,7 @@ canFire p mortarPhase = mortarPhase.shotCoolDown == 0 && playerInRange p mortarP
 bulletVelocity :: Player -> MortarPhase -> Velocity
 bulletVelocity (Player p) mortarPhase = { xSpeed: xSpeed, ySpeed: ySpeed }
     where 
-        xSpeed = - horizontalVelocity p.pos mortarPhase
+        xSpeed = horizontalVelocity p.pos (mortarPosition mortarPhase)
         ySpeed = verticalVelocity
 
 mortarPosition :: MortarPhase -> Position
@@ -61,7 +61,7 @@ updateMortarPhase distance p mortarPhase = { phase: newMortarPhase, bullets: new
         newBullets = if shouldFire then [ newShell p mortarPhase ] else []
         movedMortarPhase = updatePositionAndVelocity distance mortarPhase
         newMortarPhase = movedMortarPhase {
-            shotCoolDown = if shouldFire then shotCooldown else coolDownShot movedMortarPhase.shotCoolDown
+            shotCoolDown = if shouldFire then bigBerthaMortarPhaseShotCooldown else coolDownShot movedMortarPhase.shotCoolDown
         }
 
 updatePositionAndVelocity :: X -> MortarPhase -> MortarPhase

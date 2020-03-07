@@ -2,12 +2,24 @@ module Data.Enemy.BigBertha.MachineGunPhase where
 
 import Prelude
 
-import Constants (bulletSpeed, bigBerthaSpeed)
-import Data.Bullet (Bullet, newLinearBullet)
+import Constants (
+    bigBerthaSpeed, 
+    bigBerthaMachineGunPhaseShotCooldown, 
+    bigBerthaMachineGunPhaseAccuracyDeviationIncrements, 
+    bigBerthaMachineGunPhaseMaxDeviation
+)
+import Data.Bullet (Bullet, newLinearBullet, toBulletVelocity)
 import Data.Player (Player(..))
 import Emo8.Types (Position, Velocity, Deg, X)
-import Emo8.Utils (xComponent, yComponent, angle, vectorTo)
-import Data.Enemy.BigBertha.Helper (playerInRange, updateVelocity, updatePosition, ensureLeftLimit, ensureRightLimit, coolDownShot)
+import Emo8.Utils (angle, vectorTo)
+import Data.Enemy.BigBertha.Helper (
+    playerInRange, 
+    updateVelocity, 
+    updatePosition, 
+    ensureLeftLimit, 
+    ensureRightLimit, 
+    coolDownShot
+)
 
 type MachineGunPhase = { 
     pos :: Position,
@@ -18,31 +30,14 @@ type MachineGunPhase = {
     shotCoolDown :: Int
 }
 
-accuracyDeviationIncrements :: Int
-accuracyDeviationIncrements = 5
-
-maxOffset :: Int
-maxOffset = 7
-
-shotCooldown :: Int
-shotCooldown = 10
-
-bulletVelocity :: Deg -> Velocity
-bulletVelocity angle = velocity
-    where
-        velocity = {
-            xSpeed: xComponent angle bulletSpeed,
-            ySpeed: yComponent angle bulletSpeed
-        }
-
 canFire :: Player -> MachineGunPhase -> Boolean
 canFire p machineGunPhase = machineGunPhase.shotCoolDown == 0 && playerInRange p machineGunPhase.pos
 
 angleOffset :: Deg -> Int -> Deg
 angleOffset angle offset = mod (angle + aOffset) 360
     where
-        relativeOffset = offset - (maxOffset / 2)
-        aOffset = accuracyDeviationIncrements * relativeOffset
+        relativeOffset = offset - (bigBerthaMachineGunPhaseMaxDeviation / 2)
+        aOffset = bigBerthaMachineGunPhaseAccuracyDeviationIncrements * relativeOffset
 
 angleToPlayer :: Player -> MachineGunPhase -> Deg
 angleToPlayer (Player p) machineGunPhase = angle $ vectorTo (machineGunPosition machineGunPhase) p.pos
@@ -57,7 +52,7 @@ newBullet :: Player -> MachineGunPhase -> Bullet
 newBullet p machineGunPhase = nb
     where
         angle = angleOffset (angleToPlayer p machineGunPhase) machineGunPhase.offset
-        velocity = bulletVelocity angle
+        velocity = toBulletVelocity angle
         nb = newLinearBullet (machineGunPosition machineGunPhase) velocity
 
 updateMachineGunPhase :: X -> Player -> MachineGunPhase -> { phase :: MachineGunPhase, bullets :: Array Bullet }
@@ -66,10 +61,10 @@ updateMachineGunPhase distance p machineGunPhase = { phase: newMachineGunPhase, 
         shouldFire = canFire p machineGunPhase
         newBullets = if shouldFire then [ newBullet p machineGunPhase ] else []
         movedMachineGunPhase = updatePositionAndVelocity distance machineGunPhase
-        newOffset = if shouldFire then mod (machineGunPhase.offset + 1) maxOffset else machineGunPhase.offset
+        newOffset = if shouldFire then mod (machineGunPhase.offset + 1) bigBerthaMachineGunPhaseMaxDeviation else machineGunPhase.offset
         newMachineGunPhase = movedMachineGunPhase {
             offset = newOffset,
-            shotCoolDown = if shouldFire then shotCooldown else coolDownShot movedMachineGunPhase.shotCoolDown
+            shotCoolDown = if shouldFire then bigBerthaMachineGunPhaseShotCooldown else coolDownShot movedMachineGunPhase.shotCoolDown
         }
 
 updatePositionAndVelocity :: X -> MachineGunPhase -> MachineGunPhase

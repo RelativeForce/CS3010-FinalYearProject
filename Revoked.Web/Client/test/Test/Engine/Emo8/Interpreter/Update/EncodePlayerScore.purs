@@ -9,7 +9,7 @@ import Test.Unit.Assert (equal)
 encodePlayerScoreTests :: TestSuite
 encodePlayerScoreTests =
     suite "Revoked.Data.HighScores - encodePlayerScore" do
-        test "shouldStringifyCorrectlyWithValidData" do
+        test "SHOULD stringify player score" do
             let 
                 score = {
                     username: "test username",

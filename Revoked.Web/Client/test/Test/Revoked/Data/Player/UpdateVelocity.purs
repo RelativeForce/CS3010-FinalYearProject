@@ -12,7 +12,7 @@ import Test.Unit.Assert (equal)
 updateVelocityTests :: TestSuite
 updateVelocityTests =
     suite "Revoked.Data.Player - updateVelocity" do
-        test "shouldApplyGravity" do
+        test "SHOULD apply gravity" do
             let 
                 velocity = { xSpeed: still, ySpeed: still }
                 onFloor = false
@@ -22,7 +22,7 @@ updateVelocityTests =
                 result = updateVelocity input velocity onFloor
             equal still result.xSpeed
             equal (still + gravity) result.ySpeed
-        test "shouldJumpWhenOnFloorAndPressingJumpButton" do
+        test "SHOULD jump WHEN on floor AND pressing jump button" do
             let 
                 velocity = { xSpeed: still, ySpeed: still }
                 onFloor = true
@@ -32,7 +32,7 @@ updateVelocityTests =
                 result = updateVelocity input velocity onFloor
             equal still result.xSpeed
             equal maxPlayerSpeedY result.ySpeed
-        test "shouldNotExceedMaxPlayerSpeedYWhenFalling" do
+        test "SHOULD not exceed max player speed WHEN falling" do
             let 
                 velocity = { xSpeed: still, ySpeed: -maxPlayerSpeedY }
                 onFloor = false
@@ -42,7 +42,7 @@ updateVelocityTests =
                 result = updateVelocity input velocity onFloor
             equal still result.xSpeed
             equal (-maxPlayerSpeedY) result.ySpeed
-        test "shouldApplyFrictionWhenMovingHorizontally" do
+        test "SHOULD apply friction WHEN moving horizontally" do
             let 
                 velocity = { xSpeed: 1.0, ySpeed: still }
                 onFloor = true
@@ -51,7 +51,7 @@ updateVelocityTests =
                 result = updateVelocity input velocity onFloor
             equal frictionFactor result.xSpeed
             equal gravity result.ySpeed
-        test "shouldSetMaxSpeedXWhenPressingLeftButton" do
+        test "SHOULD set max speed WHEN pressing left button" do
             let 
                 velocity = { xSpeed: still, ySpeed: still }
                 onFloor = true
@@ -61,7 +61,7 @@ updateVelocityTests =
                 result = updateVelocity input velocity onFloor
             equal (-maxPlayerSpeedX) result.xSpeed
             equal gravity result.ySpeed
-        test "shouldSetMaxSpeedXWhenPressingRightButton" do
+        test "SHOULD set max speed WHEN pressing right button" do
             let 
                 velocity = { xSpeed: still, ySpeed: still }
                 onFloor = true

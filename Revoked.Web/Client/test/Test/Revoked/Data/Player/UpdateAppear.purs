@@ -11,7 +11,7 @@ import Test.Unit.Assert (equal)
 updateAppearTests :: TestSuite
 updateAppearTests =
     suite "Revoked.Data.Player - updateAppear" do
-        test "shouldUpdateAppearToCurrentAppear [ appear = PlayerBackward, isLeft = true, isRight = true ]" do
+        test "SHOULD appear backward WHEN appearing backward AND input is both left and right" do
             let 
                 appear = PlayerBackward
                 isLeft = true
@@ -21,7 +21,7 @@ updateAppearTests =
 
                 result = updateAppear input appear
             equal true (expectedAppear == result)
-        test "shouldUpdateAppearToCurrentAppear [ appear = PlayerBackward, isLeft = false, isRight = false ]" do
+        test "SHOULD appear backward WHEN appearing backward AND no input is pressed" do
             let 
                 appear = PlayerBackward
                 isLeft = false
@@ -31,7 +31,7 @@ updateAppearTests =
 
                 result = updateAppear input appear
             equal true (expectedAppear == result)
-        test "shouldUpdateAppearToForwardWhenInputIsRight [ appear = PlayerBackward, isLeft = false ]" do
+        test "SHOULD appear forward WHEN appearing backward AND input is right" do
             let 
                 appear = PlayerBackward
                 isLeft = false
@@ -41,7 +41,7 @@ updateAppearTests =
 
                 result = updateAppear input appear
             equal true (expectedAppear == result)
-        test "shouldUpdateAppearToForwardWhenInputIsRight [ appear = PlayerForward, isLeft = false ]" do
+        test "SHOULD appear forward WHEN appearing forward AND input is right" do
             let 
                 appear = PlayerForward
                 isLeft = false
@@ -51,7 +51,7 @@ updateAppearTests =
 
                 result = updateAppear input appear
             equal true (expectedAppear == result)
-        test "shouldUpdateAppearToBackwardWhenInputIsLeft [ appear = PlayerBackward, isRight = false ]" do
+        test "SHOULD appear backward WHEN appearing backward AND input is left" do
             let 
                 appear = PlayerBackward
                 isLeft = true
@@ -61,7 +61,7 @@ updateAppearTests =
 
                 result = updateAppear input appear
             equal true (expectedAppear == result)
-        test "shouldUpdateAppearToBackwardWhenInputIsLeft [ appear = PlayerForward, isRight = false ]" do
+        test "SHOULD appear backward WHEN appearing forward AND input is left" do
             let 
                 appear = PlayerForward
                 isLeft = true

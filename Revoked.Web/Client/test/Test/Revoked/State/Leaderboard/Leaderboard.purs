@@ -2,14 +2,9 @@ module Test.Revoked.State.Leaderboard (
     leaderboardTests 
 ) where
 
-import Prelude
-
-import Effect (Effect)
+import Test.Unit (TestSuite)
 import Test.Revoked.State.Leaderboard.UpdateLeaderboard (updateLeaderboardTests)
-import Test.Unit.Main (runTest)
 
-leaderboardTests :: Effect Unit
+leaderboardTests :: TestSuite
 leaderboardTests = do
-    -- Tests
-    runTest do
-        updateLeaderboardTests
+    updateLeaderboardTests

@@ -2,9 +2,8 @@ module Data.Gun.Helper where
 
 import Prelude
 
-import Emo8.Types (Position, Deg, Size, Velocity)
-import Constants (bulletSpeed)
-import Data.Bullet (Bullet, newLinearBullet)
+import Emo8.Types (Position, Deg, Size)
+import Data.Bullet (Bullet, newLinearBullet, toBulletVelocity)
 import Emo8.Utils (xComponent, yComponent, inLeftDirection)
 import Data.Int (toNumber, floor)
 
@@ -15,13 +14,9 @@ instance gunAppearEqual :: Eq GunAppear where
     eq (Right) (Right) = true
     eq _ _ = false
 
-bulletVelocity :: Deg -> Velocity
-bulletVelocity angle = velocity
-    where
-        velocity = {
-            xSpeed: xComponent angle bulletSpeed,
-            ySpeed: yComponent angle bulletSpeed
-        }
+instance gunAppearShow :: Show GunAppear where
+    show (Left) = "Left"
+    show (Right) = "Right"
 
 bulletPosition :: Deg -> Position -> Size -> Position
 bulletPosition angle pos size = { x: x, y: y }
@@ -39,6 +34,6 @@ appearBasedOnAngle angle = if inLeftDirection angle then Left else Right
 newGunBullet :: Deg -> Position -> Size -> Bullet
 newGunBullet angle pos s = bullet
     where
-        velocity = bulletVelocity angle
+        velocity = toBulletVelocity angle
         position = bulletPosition angle pos s
         bullet = newLinearBullet position velocity 

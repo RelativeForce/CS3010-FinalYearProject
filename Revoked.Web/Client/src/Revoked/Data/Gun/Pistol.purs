@@ -4,7 +4,7 @@ import Prelude
 
 import Assets.Sprites as S
 import Emo8.Types (Position, Sprite, Deg)
-import Constants (pistolShotCooldown, pistolMagazineSize)
+import Constants (pistolShotCooldown)
 import Data.Bullet (Bullet)
 import Emo8.Data.Sprite (incrementFrame)
 import Data.Gun.Helper (GunAppear(..), appearBasedOnAngle, newGunBullet)
@@ -13,10 +13,8 @@ type Pistol = {
     pos :: Position,
     angle :: Deg,
     shotCoolDown :: Int,
-    shotCount :: Int,
     appear :: GunAppear,
-    sprite :: Sprite,
-    infinte :: Boolean
+    sprite :: Sprite
 }
 
 fireAndUpdatePistol :: Pistol -> { gun :: Pistol, bullets :: Array Bullet }
@@ -25,7 +23,7 @@ fireAndUpdatePistol p = pistolAndBullets
         updatedPistol = updatePistol p
         pistolAndBullets = case canFire p of
             true -> { 
-                gun: updatedPistol { shotCoolDown = pistolShotCooldown, shotCount = p.shotCount - 1 }, 
+                gun: updatedPistol { shotCoolDown = pistolShotCooldown }, 
                 bullets: [ newGunBullet p.angle p.pos p.sprite.size ] 
             }
             false -> { gun: updatedPistol, bullets: [] }
@@ -44,7 +42,7 @@ spriteBasedOnAppear appear = case appear of
     Right -> S.pistolRight
 
 canFire :: Pistol -> Boolean
-canFire p = p.shotCoolDown == 0 && (p.infinte || p.shotCount > 0)
+canFire p = p.shotCoolDown == 0
 
 setPistolPositionAndRotation :: Pistol -> Position -> Deg -> Pistol
 setPistolPositionAndRotation p pos angle = newPistol
@@ -60,8 +58,8 @@ setPistolPositionAndRotation p pos angle = newPistol
             appear = newAppear 
         }
 
-defaultPistol :: Boolean -> Position -> Deg -> Pistol
-defaultPistol infinte pos angle = pistol
+defaultPistol :: Position -> Deg -> Pistol
+defaultPistol pos angle = pistol
     where 
         appear = appearBasedOnAngle angle
         sprite = spriteBasedOnAppear appear
@@ -69,8 +67,6 @@ defaultPistol infinte pos angle = pistol
             pos: pos,
             angle: angle,
             shotCoolDown: 0,
-            shotCount: pistolMagazineSize,
             appear: appear,
-            sprite: sprite,
-            infinte: infinte
+            sprite: sprite
         }

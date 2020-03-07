@@ -4,16 +4,15 @@ module Test.Revoked (
 
 import Prelude
 
-import Effect (Effect)
 import Test.Revoked.Collision (collisionTests)
 import Test.Revoked.Data (dataTests)
 import Test.Revoked.State (stateTests)
+import Test.Revoked.Levels (levelTests)
+import Test.Unit (TestSuite)
 
-revokedTests :: Effect Unit
+revokedTests :: TestSuite
 revokedTests = do
-    -- Tests
-
-    -- Sub Modules
     dataTests
     collisionTests
     stateTests
+    levelTests

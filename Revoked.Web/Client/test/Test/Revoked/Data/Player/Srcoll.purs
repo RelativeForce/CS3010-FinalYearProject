@@ -11,7 +11,7 @@ import Test.Unit.Assert (equal)
 scrollTests :: TestSuite
 scrollTests =
     suite "Revoked.Data.Player - scroll" do
-        test "shouldAdjustXCorrectlyWhenOffsetIsPositive" do
+        test "SHOULD adjust X to 44 WHEN offset is 32 AND player x is 12" do
             let 
                 offset = 32
                 playerX = 12
@@ -19,10 +19,10 @@ scrollTests =
                 expectedResult = offset + playerX
                 (Player result) = scroll offset (buildPlayer playerX)
             equal expectedResult result.pos.x
-        test "shouldAdjustXCorrectlyWhenOffsetIsNegative" do
+        test "SHOULD adjust X to 8 WHEN offset is -32 AND player x is 24" do
             let 
-                offset = 32
-                playerX = -24
+                offset = -32
+                playerX = 24
 
                 expectedResult = offset + playerX
                 (Player result) = scroll offset (buildPlayer playerX)

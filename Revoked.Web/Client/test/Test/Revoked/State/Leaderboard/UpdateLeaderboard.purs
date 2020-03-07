@@ -19,7 +19,7 @@ import Test.Revoked.State.Helper (runTestUpdateAllFail, runTestUpdate, interpret
 updateLeaderboardTests :: TestSuite
 updateLeaderboardTests =
     suite "Revoked.State.Leaderboard - updateLeaderboard" do
-        test "shouldReturnTitleScreenIdWithoutRetrievingTopScoresWhenBackSpaceIsPressedAndScoresAreAlreadyLoaded" do
+        test "SHOULD go to title screen AND not retrieve top scores WHEN backspace is pressed AND scores are already loaded" do
             let 
                 pressingBackspacePressed = true
                 state = {
@@ -34,7 +34,7 @@ updateLeaderboardTests =
             result <- liftEffect $ runTestUpdateAllFail $ updateLeaderboard input state
 
             equal expected result
-        test "shouldRetrieveTopScoresWhenInDefaultState" do
+        test "SHOULD retrieve top scores WHEN in default state" do
             let 
                 pressingBackspacePressed = false
                 state = initialLeaderboardState
@@ -58,7 +58,7 @@ updateLeaderboardTests =
             result <- liftEffect $ runTestUpdate (interpreterForLeaderboard response) $ updateLeaderboard input state
 
             equal expected result
-        test "shouldWaitWhenScoresAreNotRetreivedWhenInDefaultState" do
+        test "SHOULD wait until scores are retreived WHEN in default state AND waiting" do
             let 
                 pressingBackspacePressed = false
                 state = initialLeaderboardState

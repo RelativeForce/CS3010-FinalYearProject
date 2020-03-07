@@ -12,13 +12,13 @@ import Test.Unit.Assert (equal)
 currentFrameTests :: TestSuite
 currentFrameTests =
     suite "Engine.Emo8.Data.Sprite - currentFrame" do
-        test "shouldReturnFrame0WhenSpriteIsOnIndex1" do
+        test "SHOULD return frame 0 WHEN sprite is on index 1" do
             equal "frame0" $ currentFrame $ buildSprite 1
-        test "shouldReturnFrame1WhenSpriteIsOnIndex2" do
+        test "SHOULD return frame 1 WHEN sprite is on index 2" do
             equal "frame1" $ currentFrame $ buildSprite 2
-        test "shouldReturnFrame5WhenSpriteIsOnIndex10" do
+        test "SHOULD return frame 5 WHEN sprite is on index 10" do
             equal "frame5" $ currentFrame $ buildSprite 10
-        test "shouldReturnFrame8WhenSpriteIsOnIndex17" do
+        test "SHOULD return frame 8 WHEN sprite is on index 17" do
             equal "frame8" $ currentFrame $ buildSprite 17
 
 buildSprite :: Int -> Sprite

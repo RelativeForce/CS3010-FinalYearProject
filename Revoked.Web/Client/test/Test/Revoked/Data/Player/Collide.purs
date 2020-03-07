@@ -11,7 +11,7 @@ import Emo8.Types (Position)
 collideTests :: TestSuite
 collideTests =
     suite "Revoked.Data.Player - collide" do
-        test "shouldAdjustPositionAndBeOnFloorWhenPlayerCollidesInYDirection" do
+        test "SHOULD adjust position AND be on floor WHEN player collides in Y drection" do
             let 
                 oldPos = { x: 60, y: 65 }
                 newPos = { x: 75, y: 45 }
@@ -30,7 +30,7 @@ collideTests =
             equal expectedPos result.pos
             equal expectedOnFloor result.onFloor
 
-        test "shouldAdjustPositionWhenPlayerCollidesInXDirection" do
+        test "SHOULD adjust position WHEN player collides in X direction" do
             let 
                 oldPos = { x: 60, y: 65 }
                 newPos = { x: 75, y: 45 }
@@ -48,7 +48,7 @@ collideTests =
 
             equal expectedPos result.pos
             equal expectedOnFloor result.onFloor
-        test "shouldAdjustPositionAndBeOnFloorWhenPlayerCollidesInXandYandBothDirections" do
+        test "SHOULD adjust position AND be on floor WHEN player collides in X AND Y AND both directions" do
             let 
                 oldPos = { x: 60, y: 65 }
                 newPos = { x: 75, y: 45 }
@@ -67,7 +67,7 @@ collideTests =
             equal expectedPos result.pos
             equal expectedOnFloor result.onFloor
 
-        test "shouldAdjustXandReachNewYWhenPlayerCollidesInBothDirectionBothButNotXandY" do
+        test "SHOULD adjust X and reach new Y WHEN player collides in both direction both but not X OR Y" do
             let 
                 oldPos = { x: 60, y: 65 }
                 newPos = { x: 75, y: 45 }

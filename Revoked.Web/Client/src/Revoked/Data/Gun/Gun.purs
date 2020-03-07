@@ -10,12 +10,26 @@ import Data.Gun.Shotgun (Shotgun, defaultShotgun, fireAndUpdateShotgun, setShotg
 import Data.Gun.AssaultRifle (AssaultRifle, defaultAssaultRifle, fireAndUpdateAssaultRifle, setAssaultRiflePositionAndRotation, updateAssaultRifle)
 import Emo8.Action.Draw (drawRotatedSprite)
 import Emo8.Types (Position, Deg)
+import Constants (maxShotCount)
 
 data Gun = 
     PistolGun Pistol |
     ShotgunGun Shotgun |
     AssaultRifleGun AssaultRifle |
     BlasterGun Blaster
+
+instance gunEqual :: Eq Gun where
+    eq (PistolGun p1) (PistolGun p2) = p1 == p2
+    eq (ShotgunGun sg1) (ShotgunGun sg2) = sg1 == sg2
+    eq (AssaultRifleGun ar1) (AssaultRifleGun ar2) = ar1 == ar2
+    eq (BlasterGun b1) (BlasterGun b2) = b1 == b2
+    eq _ _ = false
+
+instance gunShow :: Show Gun where
+    show (PistolGun p) = "PistolGun " <> show p
+    show (ShotgunGun sg) = "ShotgunGun " <> show sg
+    show (AssaultRifleGun ar) = "AssaultRifleGun " <> show ar
+    show (BlasterGun b) = "BlasterGun " <> show b
 
 instance objectGun :: Object Gun where
     size (PistolGun p) = p.sprite.size
@@ -50,13 +64,13 @@ updateGun (AssaultRifleGun ar) = AssaultRifleGun $ updateAssaultRifle ar
 updateGun (BlasterGun b) = BlasterGun $ updateBlaster b
 
 shotCount :: Gun -> Int 
-shotCount (PistolGun p) = if p.infinte then 99999 else p.shotCount
+shotCount (PistolGun p) = maxShotCount 
 shotCount (ShotgunGun sg) = sg.shotCount
 shotCount (AssaultRifleGun ar) = ar.shotCount
-shotCount (BlasterGun b) = 99999
+shotCount (BlasterGun b) = maxShotCount
 
 isInfinite :: Gun -> Boolean 
-isInfinite (PistolGun p) = p.infinte
+isInfinite (PistolGun p) = true
 isInfinite (ShotgunGun sg) = false
 isInfinite (AssaultRifleGun ar) = false
 isInfinite (BlasterGun b) = true
@@ -70,8 +84,8 @@ setPositionAndRotation (ShotgunGun sg) pos angle = ShotgunGun $ setShotgunPositi
 setPositionAndRotation (AssaultRifleGun ar) pos angle = AssaultRifleGun $ setAssaultRiflePositionAndRotation ar pos angle 
 setPositionAndRotation (BlasterGun b) pos angle = BlasterGun $ setBlasterPositionAndRotation b pos angle 
 
-defaultPistolGun :: Boolean -> Position -> Deg -> Gun
-defaultPistolGun infinte pos angle = PistolGun $ defaultPistol infinte pos angle
+defaultPistolGun :: Position -> Deg -> Gun
+defaultPistolGun pos angle = PistolGun $ defaultPistol pos angle
 
 defaultShotgunGun :: Position -> Deg -> Gun
 defaultShotgunGun pos angle = ShotgunGun $ defaultShotgun pos angle

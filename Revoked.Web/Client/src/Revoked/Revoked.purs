@@ -18,9 +18,10 @@ import Emo8.Data.Color (Color(..))
 import Emo8.Input (Input, isCatchAny)
 import Emo8.Utils (mkAsset)
 import Emo8.Types (MapId)
-import Helper (drawScrollMap, drawUsername, drawScore, formatDifference, drawPlayerShotCount)
-import Data.Helper (drawHealth)
+import Helper (formatDifference)
+import Data.Draw (drawHealth)
 import Levels (allRawLevels)
+import Draw (drawScrollMap, drawUsername, drawScore, drawPlayerShotCount)
 import States.Play (PlayState, updatePlay, initialPlayState)
 import States.Victory (VictoryState, updateVictory, initialVictoryState)
 import States.Leaderboard (LeaderboardState, updateLeaderboard, initialLeaderboardState)
@@ -134,11 +135,11 @@ firstLevel = 0
 applyCheatCode :: Input -> MapId -> MapId
 applyCheatCode input current = levelId
     where
-        levelId = if input.released.isC && input.released.isV
+        levelId = if input.active.isC && input.active.isV
             then 2 -- Level 3
-            else if input.released.isJ && input.released.isK
+            else if input.active.isJ && input.active.isK
                 then 1 -- Level 2
-                else if input.released.isY && input.released.isU
+                else if input.active.isY && input.active.isU
                     then 0 -- Level 1
                     else current -- Current set
 

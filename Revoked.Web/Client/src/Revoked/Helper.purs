@@ -2,49 +2,18 @@ module Helper where
 
 import Prelude
 
-import Class.Object (class Object, position, size)
-import Collision (isWallsCollide, isHazardCollide)
-import Constants (leftBoundry, mapSizeInt, mapTileInMonitorSize, mapTileSize, mapSize, rightBoundry, hudTextHeight)
-import Data.Array ((!!))
+import Class.Object (position)
+import Constants (leftBoundry, mapSize, rightBoundry)
 import Data.DateTime (DateTime, diff)
 import Data.Either (Either(..))
 import Data.Enemy (Enemy(..))
 import Data.Formatter.DateTime as F
 import Data.Int (floor)
-import Data.Maybe (Maybe(..))
 import Data.Particle (Particle, defaultGhostParticle, defaultExplosionParticle)
-import Data.Player (Player(..), playerShotCount, playerGunIsInfinite)
+import Data.Player (Player(..))
 import Data.Time.Duration (Milliseconds(..))
-import Emo8.Action.Draw (Draw, drawMap, drawText)
 import Emo8.Constants (defaultMonitorSize)
-import Emo8.Data.Color (Color(..))
-import Emo8.Types (MapId, X, Size, Position, PlayerScore, Asset)
-
--- TODO: readable
-drawScrollMap :: X -> MapId -> Draw Unit
-drawScrollMap distance mapId = do
-    drawCond mapId distance
-    where
-        drawCond :: MapId -> X -> Draw Unit
-        drawCond mId d = do
-            when (-mapSizeInt * mapTileInMonitorSize.width <= d && d < mapSize.width) $
-                drawMap mId mapTileSize (-d) 0
-
-isCollideMapWalls :: forall a. Object a => Asset -> MapId -> X -> a -> Boolean
-isCollideMapWalls asset = isCollide (isWallsCollide asset)
-
-isCollideMapHazards :: forall a. Object a => Asset -> MapId -> X -> a -> Boolean
-isCollideMapHazards asset = isCollide (isHazardCollide asset)
-
-isCollide :: forall a. Object a => (MapId -> Size -> Size -> Position -> Boolean) -> MapId -> X -> a -> Boolean
-isCollide f mapId distance o =
-    collCond mapId distance
-    where
-        collCond :: MapId -> X -> Boolean
-        collCond mId d = do
-            if (-mapSizeInt * mapTileInMonitorSize.width <= d && d < mapSize.width)
-                then f mId mapTileSize (size o) { x: (position o).x + d, y: (position o).y }
-                else false
+import Emo8.Types (X, Position)
 
 adjustMonitorDistance :: Player -> X -> X
 adjustMonitorDistance (Player player) distance = 
@@ -85,53 +54,7 @@ formatDifference start end = show minutes <> ":" <> show seconds
         minutes = totalSeconds / 60
         seconds = mod totalSeconds 60
 
-drawUsername :: (Array String) -> Draw Unit
-drawUsername username = do
-    drawText char0 textHeight x y color
-    drawText char1 textHeight (x + 21) y color
-    drawText char2 textHeight (x + 42) y color
-    where
-        char0 = character username 0 
-        char1 = character username 1 
-        char2 = character username 2 
-        x = 635
-        y = 235
-        textHeight = 27
-        color = White
-
-        character :: (Array String) -> Int -> String
-        character u index = case u !! index of
-            Nothing -> "_"
-            Just char -> char
-
-drawScore :: PlayerScore -> Draw Unit
-drawScore ps = do 
-    drawText ps.username textHeight usernameX y color
-    drawText (show ps.score) textHeight scoreX y color
-    drawText ps.time textHeight timeX y color
-    drawText (show ps.position) textHeight positionX y color
-    where 
-        textHeight = 27
-        positionX = 420
-        usernameX = 500
-        scoreX = 600
-        timeX = 700 
-        startY = 500
-        paddingY = 15
-        color = White
-        y = startY - ((ps.position - 1) * (textHeight + paddingY))
-
 enemyToParticle :: Enemy -> Particle
 enemyToParticle (EnemyMarine m) = defaultGhostParticle m.pos
 enemyToParticle (EnemyDrone m) = defaultExplosionParticle m.pos
 enemyToParticle (EnemyBigBertha m) = defaultExplosionParticle $ position m.phase
-
-drawPlayerShotCount :: Player -> Draw Unit
-drawPlayerShotCount p = do
-    drawText (if playerGunIsInfinite p then "" else show shotCount) hudTextHeight x y Lime
-        where 
-            pos = position p
-            playerSize = size p
-            shotCount = playerShotCount p
-            x = pos.x 
-            y = pos.y + playerSize.height + 25
