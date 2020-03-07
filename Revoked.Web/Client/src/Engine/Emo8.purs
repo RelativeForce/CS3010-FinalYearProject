@@ -4,7 +4,6 @@ import Prelude
 
 import Data.Int (toNumber)
 import Data.Maybe (Maybe(..))
-import Data.String (joinWith)
 import Effect (Effect)
 import Effect.Exception (throw)
 import Emo8.Class.Game (class Game, draw, update)
@@ -21,28 +20,43 @@ import Signal.Effect (foldEffect)
 
 -- | Run game function.
 emo8 :: forall s. Game s => s -> Asset -> MonitorSize -> Effect Unit
-emo8 state asset ms = withCanvas \canvas -> do
-  setDim canvas ms
+emo8 state asset ms =
+  -- Perfrom the main game loop with the canvas 
+  withCanvas $ mainLoop state asset ms
+
+-- | The main game render/update loop
+mainLoop :: forall s. Game s => s -> Asset -> MonitorSize -> CanvasElement -> Effect Unit
+mainLoop state asset ms canvas = do
+
+  -- Set up canvas and poll input
+  setCanvasDimensions canvas ms
   context <- getContext2D canvas
   frameSig <- animationFrame
   keyTouchInputSig <- poll
 
+  -- Parse input and build draw context
   let
-    drawCtx = { ctx: context, mapData: asset.mapData, monitorSize: ms } 
-    keyTouchInputSampleSig = sampleOn frameSig keyTouchInputSig
-    inputSampleSig = mkInputSig keyTouchInputSampleSig
+    drawContext = { ctx: context, mapData: asset.mapData, monitorSize: ms } 
+    inputSignal = mkInputSig $ sampleOn frameSig keyTouchInputSig
 
-  stateSig <- foldEffect (\i -> runUpdate <<< (update asset i)) state inputSampleSig 
-  runSignal $ map (\s -> (runDraw drawCtx <<< draw) s) stateSig
+  -- Update game state
+  stateSignal <- foldEffect (\input -> runUpdate <<< (update asset input)) state inputSignal 
 
+  -- Draw updated game state
+  runSignal $ map (\s -> (runDraw drawContext <<< draw) s) stateSignal
+
+-- | Runs a given operation with the graphics canvas if that canvas exists
 withCanvas :: (CanvasElement -> Effect Unit) -> Effect Unit
-withCanvas op = do
-  mCanvas <- getCanvasElementById canvasId
-  case mCanvas of
-    Just c -> op c
-    Nothing -> throw $ joinWith " " ["canvas id:", canvasId, "was not found."]
+withCanvas operation = do
+  maybeCanvas <- getCanvasElementById canvasId
 
-setDim :: CanvasElement -> MonitorSize -> Effect Unit
-setDim canvas ms = do
+  -- If the canvas exists, run given operation, otherwise, throw error.
+  case maybeCanvas of
+    Just canvas -> operation canvas
+    Nothing -> throw $ "canvas id: " <> canvasId <> " was not found."
+
+-- | Sets the canvas dimensions
+setCanvasDimensions :: CanvasElement -> MonitorSize -> Effect Unit
+setCanvasDimensions canvas ms = do
   setCanvasWidth canvas $ toNumber ms.width
   setCanvasHeight canvas $ toNumber ms.height
