@@ -2,20 +2,23 @@ module Data.Player where
 
 import Prelude
 
-import Assets.Sprites as S
-import Class.Object (class Object, class ObjectDraw, class MortalEntity, position, scroll, draw, size)
-import Collision (isCollideWorld, adjustY, adjustX)
-import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor, defaultPlayerHealth)
-import Emo8.Constants (defaultMonitorSize)
-import Data.Bullet (Bullet)
-import Data.Gun (Gun, defaultPistolGun, fireAndUpdateGun, setPositionAndRotation, shotCount, updateGun, isInfinite)
 import Data.Maybe (Maybe(..))
+import Math (abs)
+
 import Emo8.Action.Draw (drawSprite)
 import Emo8.Data.Sprite (incrementFrame)
 import Emo8.Input (Input)
 import Emo8.Types (Sprite, Velocity, X, Position)
 import Emo8.Utils (updatePosition)
-import Math (abs)
+import Emo8.Collision (isCollideWorld)
+import Emo8.Constants (defaultMonitorSize)
+
+import Assets.Sprites as S
+import Class.Object (class Object, class ObjectDraw, class MortalEntity, position, scroll, draw, size)
+import Collision (adjustY, adjustX)
+import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor, defaultPlayerHealth)
+import Data.Bullet (Bullet)
+import Data.Gun (Gun, defaultPistolGun, fireAndUpdateGun, setPositionAndRotation, shotCount, updateGun, isInfinite)
 
 data Player = Player { 
     pos :: Position, 

@@ -1,4 +1,4 @@
-module Emo8( emo8 ) where
+module Emo8( emo8, mkAsset ) where
 
 import Prelude
 
@@ -6,17 +6,21 @@ import Data.Int (toNumber)
 import Data.Maybe (Maybe(..))
 import Effect (Effect)
 import Effect.Exception (throw)
+import Graphics.Canvas (CanvasElement, getCanvasElementById, getContext2D, setCanvasHeight, setCanvasWidth)
+import Signal (runSignal, sampleOn)
+import Signal.DOM (animationFrame)
+import Signal.Effect (foldEffect)
+import Data.Traversable (traverse)
+
+import Emo8.Excepiton (orErrMsg)
+import Emo8.Parse (RawMap, parseTileMap)
 import Emo8.Class.Game (class Game, draw, update)
 import Emo8.Class.Input (poll)
 import Emo8.Constants (canvasId)
 import Emo8.Input (mkInputSig)
 import Emo8.Interpreter.Draw (runDraw)
 import Emo8.Interpreter.Update (runUpdate)
-import Emo8.Types (Asset, MonitorSize)
-import Graphics.Canvas (CanvasElement, getCanvasElementById, getContext2D, setCanvasHeight, setCanvasWidth)
-import Signal (runSignal, sampleOn)
-import Signal.DOM (animationFrame)
-import Signal.Effect (foldEffect)
+import Emo8.Types (Asset, MonitorSize, ScaledImage)
 
 -- | Run game function.
 emo8 :: forall s. Game s => s -> Asset -> MonitorSize -> Effect Unit
@@ -60,3 +64,10 @@ setCanvasDimensions :: CanvasElement -> MonitorSize -> Effect Unit
 setCanvasDimensions canvas ms = do
   setCanvasWidth canvas $ toNumber ms.width
   setCanvasHeight canvas $ toNumber ms.height
+  
+-- | Make asset data from raw maps.
+-- | If there are unparsable strings, exception raised when executing javascript.
+mkAsset :: Array RawMap -> (String -> Maybe ScaledImage) -> Effect Asset
+mkAsset rawMaps mapper = do
+    ms <- orErrMsg $ traverse (\m -> parseTileMap m mapper) rawMaps 
+    pure { mapData: ms }

@@ -6,7 +6,7 @@ import Constants (
     bigBerthaSpeed, 
     bigBerthaMachineGunPhaseShotCooldown, 
     bigBerthaMachineGunPhaseAccuracyDeviationIncrements, 
-    bigBerthaMachineGunPhaseMaxDeviation
+    bigBerthaMachineGunPhaseMaxOffset
 )
 import Data.Bullet (Bullet, newLinearBullet, toBulletVelocity)
 import Data.Player (Player(..))
@@ -36,7 +36,7 @@ canFire p machineGunPhase = machineGunPhase.shotCoolDown == 0 && playerInRange p
 angleOffset :: Deg -> Int -> Deg
 angleOffset angle offset = mod (angle + aOffset) 360
     where
-        relativeOffset = offset - (bigBerthaMachineGunPhaseMaxDeviation / 2)
+        relativeOffset = offset - (bigBerthaMachineGunPhaseMaxOffset / 2)
         aOffset = bigBerthaMachineGunPhaseAccuracyDeviationIncrements * relativeOffset
 
 angleToPlayer :: Player -> MachineGunPhase -> Deg
@@ -61,7 +61,7 @@ updateMachineGunPhase distance p machineGunPhase = { phase: newMachineGunPhase, 
         shouldFire = canFire p machineGunPhase
         newBullets = if shouldFire then [ newBullet p machineGunPhase ] else []
         movedMachineGunPhase = updatePositionAndVelocity distance machineGunPhase
-        newOffset = if shouldFire then mod (machineGunPhase.offset + 1) bigBerthaMachineGunPhaseMaxDeviation else machineGunPhase.offset
+        newOffset = if shouldFire then mod (machineGunPhase.offset + 1) bigBerthaMachineGunPhaseMaxOffset else machineGunPhase.offset
         newMachineGunPhase = movedMachineGunPhase {
             offset = newOffset,
             shotCoolDown = if shouldFire then bigBerthaMachineGunPhaseShotCooldown else coolDownShot movedMachineGunPhase.shotCoolDown

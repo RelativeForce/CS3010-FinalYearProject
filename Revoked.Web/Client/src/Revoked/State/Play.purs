@@ -5,7 +5,8 @@ import Prelude
 import Assets.Audio as A
 import States.StateIds as S
 import Class.Object (scroll, damage, heal)
-import Collision (isCollideObjects, isOutOfWorld, isCollideMapWalls, isCollideMapHazards)
+import Collision (isCollideMapWalls, isCollideMapHazards)
+import Emo8.Collision (isCollideObjects, isOutOfWorld)
 import Data.Array (any, filter, partition, concatMap, length)
 import Data.Bullet (Bullet, updateBullet)
 import Data.Enemy (Enemy, updateEnemy, enemyToScore)

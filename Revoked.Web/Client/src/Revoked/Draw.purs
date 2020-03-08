@@ -11,35 +11,35 @@ import Emo8.Action.Draw (Draw, drawMap, drawText)
 import Emo8.Data.Color (Color(..))
 import Emo8.Types (MapId, X, PlayerScore)
 
-
+-- | Draws the region of the scroll map visible 
 drawScrollMap :: X -> MapId -> Draw Unit
 drawScrollMap distance mapId = do
-    drawCond mapId distance
-    where
-        drawCond :: MapId -> X -> Draw Unit
-        drawCond mId d = do
-            when (-mapSizeInt * mapTileInMonitorSize.width <= d && d < mapSize.width) $
-                drawMap mId mapTileSize (-d) 0
+    when (-mapSizeInt * mapTileInMonitorSize.width <= distance && distance < mapSize.width) $ drawMap mapId mapTileSize (-distance) 0
 
+-- | Draws the username string 
 drawUsername :: (Array String) -> Draw Unit
 drawUsername username = do
+
+    -- Draw characters
     drawText char0 textHeight x y color
     drawText char1 textHeight (x + 21) y color
     drawText char2 textHeight (x + 42) y color
     where
-        char0 = character username 0 
-        char1 = character username 1 
-        char2 = character username 2 
+        char0 = characterAt 0 
+        char1 = characterAt 1 
+        char2 = characterAt 2 
         x = 635
         y = 235
         textHeight = 27
         color = White
 
-        character :: (Array String) -> Int -> String
-        character u index = case u !! index of
+        -- Retrieve username character or placeholder
+        characterAt :: Int -> String
+        characterAt index = case username !! index of
             Nothing -> "_"
             Just char -> char
 
+-- | Draws the given player score where it's vertical coordinate is based on its position attribute.
 drawScore :: PlayerScore -> Draw Unit
 drawScore ps = do 
     drawText ps.username textHeight usernameX y color
@@ -57,12 +57,15 @@ drawScore ps = do
         color = White
         y = startY - ((ps.position - 1) * (textHeight + paddingY))
 
+-- | Draws the player shot count if the players gun is not infinite ammo
 drawPlayerShotCount :: Player -> Draw Unit
-drawPlayerShotCount p = do
-    drawText (if playerGunIsInfinite p then "" else show shotCount) hudTextHeight x y Lime
-        where 
-            pos = position p
-            playerSize = size p
-            shotCount = playerShotCount p
-            x = pos.x 
-            y = pos.y + playerSize.height + 25
+drawPlayerShotCount p = 
+    if playerGunIsInfinite p 
+        then pure unit 
+        else drawText (show shotCount) hudTextHeight x y Lime
+    where 
+        pos = position p
+        playerSize = size p
+        shotCount = playerShotCount p
+        x = pos.x 
+        y = pos.y + playerSize.height + 25
