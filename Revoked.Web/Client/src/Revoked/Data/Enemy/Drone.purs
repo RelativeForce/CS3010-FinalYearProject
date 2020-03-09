@@ -1,4 +1,4 @@
-module Data.Enemy.Drone where
+module Revoked.Data.Enemy.Drone where
 
 import Prelude
 

@@ -1,4 +1,4 @@
-module Data.Enemy.BigBertha.CannonPhase where
+module Revoked.Data.Enemy.BigBertha.CannonPhase where
 
 import Prelude
 
@@ -6,7 +6,7 @@ import Revoked.Constants (bigBerthaSpeed, bigBerthaCannonPhaseShotCooldown)
 import Revoked.Data.Bullet (Bullet, newLinearBullet, toBulletVelocity)
 import Revoked.Data.Player (Player)
 import Emo8.Types (Position, Velocity, Deg, X)
-import Data.Enemy.BigBertha.Helper (
+import Revoked.Data.Enemy.BigBertha.Helper (
     playerInRange, 
     updateVelocity, 
     updatePosition, 

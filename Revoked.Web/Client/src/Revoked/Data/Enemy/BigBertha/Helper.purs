@@ -1,4 +1,4 @@
-module Data.Enemy.BigBertha.Helper where
+module Revoked.Data.Enemy.BigBertha.Helper where
 
 import Prelude
 import Revoked.Constants (bigBerthaSpeed, bigBerthaAgroRange)

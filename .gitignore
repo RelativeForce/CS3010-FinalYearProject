@@ -162,8 +162,7 @@
 /Revoked.Web/Client/output/Data.Either
 /Revoked.Web/Client/output/Data.Either.Inject
 /Revoked.Web/Client/output/Data.Either.Nested
-/Revoked.Web/Client/output/Data.Enemy
-/Revoked.Web/Client/output/Data.EnemyBullet
+/Revoked.Web/Client/output/Revoked.Data.Enemy
 /Revoked.Web/Client/output/Data.Enum
 /Revoked.Web/Client/output/Data.Enum.Gen
 /Revoked.Web/Client/output/Data.Eq
@@ -540,7 +539,7 @@
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.MarineLeft.Sprite
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.MarineRight.Sprite
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.MarineStanding.Sprite
-/Revoked.Web/Client/output/Data.Enemy.Marine
+/Revoked.Web/Client/output/Revoked.Data.Enemy.Marine
 /Revoked.Web/Client/output/Test.Engine.Emo8.Utils
 /Revoked.Web/Client/output/Test.Engine.Emo8.Utils.UpdatePosition
 /Revoked.Web/Client/output/Test.Revoked.Collision
@@ -587,7 +586,7 @@
 /Revoked.Web/Client/output/Revoked.Levels.Helper
 /Revoked.Web/Client/output/Revoked.Data.Helper
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.HealthPack.Sprite
-/Revoked.Web/Client/output/Data.Enemy.Drone
+/Revoked.Web/Client/output/Revoked.Data.Enemy.Drone
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.DroneLeft.Sprite
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.DroneRight.Sprite
 /Revoked.Web/Client/output/Revoked.Data.Gun.Blaster
@@ -595,11 +594,11 @@
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.DroneExplosion.Sprite
 /Revoked.Web/Client/output/Revoked.Data.Particle.Explosion
 /Revoked.Web/Client/output/Revoked.Levels.Level03
-/Revoked.Web/Client/output/Data.Enemy.BigBertha
-/Revoked.Web/Client/output/Data.Enemy.BigBertha.CannonPhase
-/Revoked.Web/Client/output/Data.Enemy.BigBertha.Helper
-/Revoked.Web/Client/output/Data.Enemy.BigBertha.MachineGunPhase
-/Revoked.Web/Client/output/Data.Enemy.BigBertha.MortarPhase
+/Revoked.Web/Client/output/Revoked.Data.Enemy.BigBertha
+/Revoked.Web/Client/output/Revoked.Data.Enemy.BigBertha.CannonPhase
+/Revoked.Web/Client/output/Revoked.Data.Enemy.BigBertha.Helper
+/Revoked.Web/Client/output/Revoked.Data.Enemy.BigBertha.MachineGunPhase
+/Revoked.Web/Client/output/Revoked.Data.Enemy.BigBertha.MortarPhase
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.BigBerthaNormal.Sprite
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.BigBerthaImmune.Sprite
 /Revoked.Web/Client/output/Test.Revoked.State

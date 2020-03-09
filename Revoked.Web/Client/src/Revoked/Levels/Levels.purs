@@ -1,6 +1,6 @@
 module Revoked.Levels where
 
-import Data.Enemy (Enemy)
+import Revoked.Data.Enemy (Enemy)
 import Revoked.Data.Goal (Goal)
 import Emo8.Parse (RawMap)
 import Emo8.Types (MapId, Position)

@@ -4,7 +4,7 @@ module Test.Revoked.Data.Enemy.BigBertha.MortarPhase.DefaultMortarPhase (
 
 import Prelude
 
-import Data.Enemy.BigBertha.MortarPhase (defaultMortarPhase)
+import Revoked.Data.Enemy.BigBertha.MortarPhase (defaultMortarPhase)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 

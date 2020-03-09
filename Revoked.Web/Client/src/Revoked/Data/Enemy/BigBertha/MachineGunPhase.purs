@@ -1,4 +1,4 @@
-module Data.Enemy.BigBertha.MachineGunPhase where
+module Revoked.Data.Enemy.BigBertha.MachineGunPhase where
 
 import Prelude
 
@@ -12,7 +12,7 @@ import Revoked.Data.Bullet (Bullet, newLinearBullet, toBulletVelocity)
 import Revoked.Data.Player (Player(..))
 import Emo8.Types (Position, Velocity, Deg, X)
 import Emo8.Utils (angle, vectorTo)
-import Data.Enemy.BigBertha.Helper (
+import Revoked.Data.Enemy.BigBertha.Helper (
     playerInRange, 
     updateVelocity, 
     updatePosition, 

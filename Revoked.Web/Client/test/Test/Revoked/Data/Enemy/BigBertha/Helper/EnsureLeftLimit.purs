@@ -4,7 +4,7 @@ module Test.Revoked.Data.Enemy.BigBertha.Helper.EnsureLeftLimit (
 
 import Prelude
 
-import Data.Enemy.BigBertha.Helper (ensureLeftLimit)
+import Revoked.Data.Enemy.BigBertha.Helper (ensureLeftLimit)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 

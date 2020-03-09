@@ -1,4 +1,4 @@
-module Data.Enemy.BigBertha.MortarPhase where
+module Revoked.Data.Enemy.BigBertha.MortarPhase where
 
 import Prelude
 
@@ -8,7 +8,7 @@ import Revoked.Data.Player (Player(..))
 import Data.Int (toNumber)
 import Emo8.Types (Position, Velocity, X)
 import Math (sqrt, abs)
-import Data.Enemy.BigBertha.Helper (playerInRange, updateVelocity, updatePosition, ensureLeftLimit, ensureRightLimit, coolDownShot)
+import Revoked.Data.Enemy.BigBertha.Helper (playerInRange, updateVelocity, updatePosition, ensureLeftLimit, ensureRightLimit, coolDownShot)
 
 type MortarPhase = { 
     pos :: Position,

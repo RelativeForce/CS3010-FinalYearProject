@@ -1,4 +1,4 @@
-module Data.Enemy.BigBertha where
+module Revoked.Data.Enemy.BigBertha where
 
 import Prelude
 
@@ -9,9 +9,9 @@ import Revoked.Data.Player (Player)
 import Emo8.Types (Position, X, Sprite)
 import Emo8.Data.Sprite (incrementFrame)
 import Revoked.Constants (bigBerthaImmunityCooldown)
-import Data.Enemy.BigBertha.MortarPhase (MortarPhase, updateMortarPhase, defaultMortarPhase)
-import Data.Enemy.BigBertha.MachineGunPhase (MachineGunPhase, updateMachineGunPhase, defaultMachineGunPhase)
-import Data.Enemy.BigBertha.CannonPhase (CannonPhase, updateCannonPhase, defaultCannonPhase)
+import Revoked.Data.Enemy.BigBertha.MortarPhase (MortarPhase, updateMortarPhase, defaultMortarPhase)
+import Revoked.Data.Enemy.BigBertha.MachineGunPhase (MachineGunPhase, updateMachineGunPhase, defaultMachineGunPhase)
+import Revoked.Data.Enemy.BigBertha.CannonPhase (CannonPhase, updateCannonPhase, defaultCannonPhase)
 
 data Phase = 
     Phase1 MortarPhase | 

@@ -4,7 +4,7 @@ module Test.Revoked.Data.Enemy.BigBertha.CannonPhase.DefaultCannonPhase (
 
 import Prelude
 
-import Data.Enemy.BigBertha.CannonPhase (defaultCannonPhase)
+import Revoked.Data.Enemy.BigBertha.CannonPhase (defaultCannonPhase)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 

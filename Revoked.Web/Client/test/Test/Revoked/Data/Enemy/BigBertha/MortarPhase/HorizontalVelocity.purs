@@ -3,7 +3,7 @@ module Test.Revoked.Data.Enemy.BigBertha.MortarPhase.HorizontalVelocity (
 ) where
 
 import Prelude
-import Data.Enemy.BigBertha.MortarPhase (horizontalVelocity)
+import Revoked.Data.Enemy.BigBertha.MortarPhase (horizontalVelocity)
 import Test.Unit (TestSuite, suite, test)
 import Test.Helper (equalTolerance)
 

@@ -4,7 +4,7 @@ module Test.Revoked.Data.Enemy.BigBertha.Helper.UpdatePosition (
 
 import Prelude
 
-import Data.Enemy.BigBertha.Helper (updatePosition)
+import Revoked.Data.Enemy.BigBertha.Helper (updatePosition)
 import Data.Int (floor)
 import Revoked.Constants (bigBerthaSpeed)
 import Test.Unit (TestSuite, suite, test)

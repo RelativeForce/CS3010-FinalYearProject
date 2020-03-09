@@ -6,7 +6,7 @@ import Emo8.Class.Object (position)
 import Revoked.Constants (leftBoundry, mapSize, rightBoundry)
 import Data.DateTime (DateTime, diff)
 import Data.Either (Either(..))
-import Data.Enemy (Enemy(..))
+import Revoked.Data.Enemy (Enemy(..))
 import Data.Formatter.DateTime as F
 import Data.Int (floor)
 import Revoked.Data.Particle (Particle, defaultGhostParticle, defaultExplosionParticle)
