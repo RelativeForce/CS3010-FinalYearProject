@@ -10,7 +10,7 @@ import Test.Unit.Assert (equal)
 import Emo8.Types (Y, X, Size)
 import Emo8.Constants (defaultMonitorSize)
 
-import Revoked.Data.Player (beInMonitor, initialPlayer, Player(..))
+import Revoked.Data.Player (beInMonitor, initialPlayer, Player(..), PlayerState)
 
 beInMonitorTests :: TestSuite
 beInMonitorTests =
@@ -29,7 +29,7 @@ beInMonitorTests =
                     y: y
                 }
 
-                (Player result) = beInMonitor oldPos newPlayer
+                result = beInMonitor oldPos newPlayer
 
             equal expectedPos result.pos
         
@@ -46,7 +46,7 @@ beInMonitorTests =
                     y: y
                 }
 
-                (Player result) = beInMonitor oldPos newPlayer
+                result = beInMonitor oldPos newPlayer
 
             equal expectedPos result.pos
 
@@ -63,7 +63,7 @@ beInMonitorTests =
                     y: 0
                 }
 
-                (Player result) = beInMonitor oldPos newPlayer
+                result = beInMonitor oldPos newPlayer
 
             equal expectedPos result.pos
 
@@ -81,7 +81,7 @@ beInMonitorTests =
                     y: yBoundry
                 }
 
-                (Player result) = beInMonitor oldPos newPlayer
+                result = beInMonitor oldPos newPlayer
 
             equal expectedPos result.pos
 
@@ -99,7 +99,7 @@ beInMonitorTests =
                     y: y
                 }
 
-                (Player result) = beInMonitor oldPos newPlayer
+                result = beInMonitor oldPos newPlayer
 
             equal expectedPos result.pos
         test "SHOULD not change position WHEN player is outside MonitorBounds on both top and right" do
@@ -116,13 +116,15 @@ beInMonitorTests =
                     y: yBoundry
                 }
 
-                (Player result) = beInMonitor oldPos newPlayer
+                result = beInMonitor oldPos newPlayer
 
             equal expectedPos result.pos
 
 
-player :: X -> Y -> Player
-player x y = initialPlayer { x: x, y: y } 
+player :: X -> Y -> PlayerState
+player x y = p
+    where
+        (Player p) = initialPlayer { x: x, y: y } 
 
 spriteSize :: Size
 spriteSize = p.sprite.size
