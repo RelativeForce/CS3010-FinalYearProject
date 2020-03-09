@@ -4,11 +4,12 @@ module Test.Revoked (
 
 import Prelude
 
+import Test.Unit (TestSuite)
+
 import Test.Revoked.Collision (collisionTests)
 import Test.Revoked.Data (dataTests)
 import Test.Revoked.State (stateTests)
 import Test.Revoked.Levels (levelTests)
-import Test.Unit (TestSuite)
 
 revokedTests :: TestSuite
 revokedTests = do

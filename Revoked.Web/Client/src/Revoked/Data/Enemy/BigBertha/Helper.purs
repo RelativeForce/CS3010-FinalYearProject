@@ -1,11 +1,14 @@
 module Revoked.Data.Enemy.BigBertha.Helper where
 
 import Prelude
-import Revoked.Constants (bigBerthaSpeed, bigBerthaAgroRange)
-import Revoked.Data.Player (Player(..))
+
 import Data.Int (floor)
+
 import Emo8.Types (Position, Velocity, X)
 import Emo8.Utils (distanceBetween)
+
+import Revoked.Constants (bigBerthaSpeed, bigBerthaAgroRange)
+import Revoked.Data.Player (Player(..))
 
 playerInRange :: Player -> Position -> Boolean
 playerInRange (Player p) pos = bigBerthaAgroRange > distanceBetween p.pos pos

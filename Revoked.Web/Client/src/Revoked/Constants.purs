@@ -1,8 +1,10 @@
 module Revoked.Constants where
   
 import Prelude
+
 import Emo8.Types (AssetId, Size, TextHeight, X, Y)
 import Emo8.Constants (defaultMonitorSize)
+
 import Revoked.Assets.AssetIds as Id
 
 -- | The acceleration per frame applied to objects 

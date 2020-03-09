@@ -4,10 +4,11 @@ module Test.Revoked.Data.Enemy.BigBertha.Helper.UpdateVelocity (
 
 import Prelude
 
-import Revoked.Data.Enemy.BigBertha.Helper (updateVelocity)
-import Revoked.Constants (bigBerthaSpeed)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Revoked.Data.Enemy.BigBertha.Helper (updateVelocity)
+import Revoked.Constants (bigBerthaSpeed)
 
 updateVelocityTests :: TestSuite
 updateVelocityTests =

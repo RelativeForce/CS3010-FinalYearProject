@@ -2,9 +2,10 @@ module Test.Revoked.Data.Enemy.BigBertha.MortarPhase.VerticalVelocity (
     verticalVelocityTests 
 ) where
 
-import Revoked.Data.Enemy.BigBertha.MortarPhase (verticalVelocity)
 import Test.Unit (TestSuite, suite, test)
 import Test.Helper (equalTolerance)
+
+import Revoked.Data.Enemy.BigBertha.MortarPhase (verticalVelocity)
 
 verticalVelocityTests :: TestSuite
 verticalVelocityTests =

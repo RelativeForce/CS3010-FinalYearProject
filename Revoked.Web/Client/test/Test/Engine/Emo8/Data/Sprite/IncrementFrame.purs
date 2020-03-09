@@ -4,10 +4,11 @@ module Test.Engine.Emo8.Data.Sprite.IncrementFrame (
 
 import Prelude
 
-import Emo8.Types (Sprite)
-import Emo8.Data.Sprite (incrementFrame)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Emo8.Types (Sprite)
+import Emo8.Data.Sprite (incrementFrame)
 
 incrementFrameTests :: TestSuite
 incrementFrameTests =

@@ -4,9 +4,10 @@ module Test.Revoked.Data.Enemy.BigBertha.MachineGunPhase.DefaultMachineGunPhase 
 
 import Prelude
 
-import Revoked.Data.Enemy.BigBertha.MachineGunPhase (defaultMachineGunPhase)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Revoked.Data.Enemy.BigBertha.MachineGunPhase (defaultMachineGunPhase)
 
 defaultMachineGunPhaseTests :: TestSuite
 defaultMachineGunPhaseTests =

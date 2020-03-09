@@ -3,9 +3,11 @@ module Test.Engine.Emo8.Utils.Angle (
 ) where
 
 import Prelude
-import Emo8.Utils (angle)
+
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Emo8.Utils (angle)
 
 angleTests :: TestSuite
 angleTests =

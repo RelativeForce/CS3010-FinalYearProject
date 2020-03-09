@@ -2,13 +2,15 @@ module Revoked.Data.Bullet where
 
 import Prelude
 
-import Emo8.Class.Object (class ObjectDraw, class Object)
-import Emo8.Action.Draw (drawSprite)
 import Data.Int (floor)
-import Revoked.Assets.Sprites as S
+
 import Emo8.Types (Position, Sprite, Velocity, Deg)
 import Emo8.Data.Sprite (incrementFrame)
 import Emo8.Utils (xComponent, yComponent)
+import Emo8.Class.Object (class ObjectDraw, class Object)
+import Emo8.Action.Draw (drawSprite)
+
+import Revoked.Assets.Sprites as S
 import Revoked.Constants (gravity, bulletSpeed)
 
 type BaseBullet = { 

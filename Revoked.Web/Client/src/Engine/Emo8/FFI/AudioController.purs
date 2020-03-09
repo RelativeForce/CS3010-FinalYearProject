@@ -13,6 +13,7 @@ module Emo8.FFI.AudioController (
 ) where
 
 import Prelude
+
 import Data.Maybe (Maybe(..))
 import Data.Array (filter, find)
 import Effect (Effect)

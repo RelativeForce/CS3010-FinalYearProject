@@ -4,10 +4,10 @@ module Test.Revoked.Collision (
 
 import Prelude
 
-import Test.Revoked.Collision.AdjustY (adjustYTests)
-import Test.Revoked.Collision.AdjustX (adjustXTests)
 import Test.Unit (TestSuite)
 
+import Test.Revoked.Collision.AdjustY (adjustYTests)
+import Test.Revoked.Collision.AdjustX (adjustXTests)
 collisionTests :: TestSuite
 collisionTests = do
     adjustXTests

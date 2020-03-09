@@ -3,6 +3,9 @@ module Revoked.Data.Enemy where
 import Prelude
 
 import Emo8.Class.Object (class ObjectDraw, class Object, position, draw, scroll)
+import Emo8.Action.Draw (drawSprite)
+import Emo8.Types (Position, Score, X)
+
 import Revoked.Class.MortalEntity (class MortalEntity)
 import Revoked.Data.Bullet (Bullet)
 import Revoked.Data.Enemy.BigBertha (BigBertha, defaultBigBertha, updateBigBertha, damageBigBertha)
@@ -10,8 +13,6 @@ import Revoked.Data.Enemy.Drone (Drone, defaultDrone, updateDrone)
 import Revoked.Data.Enemy.Marine (Marine, updateMarine, defaultMarine)
 import Revoked.Data.Draw (drawHealth)
 import Revoked.Data.Player (Player)
-import Emo8.Action.Draw (drawSprite)
-import Emo8.Types (Position, Score, X)
 
 data Enemy = 
     EnemyMarine Marine |

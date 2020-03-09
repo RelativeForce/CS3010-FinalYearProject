@@ -4,10 +4,11 @@ module Test.Engine.Emo8.Data.Sprite.CurrentFrame (
 
 import Prelude
 
-import Emo8.Types (Sprite)
-import Emo8.Data.Sprite (currentFrame)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Emo8.Types (Sprite)
+import Emo8.Data.Sprite (currentFrame)
 
 currentFrameTests :: TestSuite
 currentFrameTests =

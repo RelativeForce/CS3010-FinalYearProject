@@ -1,15 +1,18 @@
 module Revoked.Data.Goal where
 
 import Prelude
-import Emo8.Class.Object (class ObjectDraw, class Object, position, draw, size, scroll)
-import Emo8.Action.Draw (drawSprite)
-import Revoked.Constants (healthPackBonusHealth)
+
 import Data.Foldable (sum)
 import Data.Array (mapMaybe, head)
+import Data.Maybe (Maybe(..))
+
 import Emo8.Types (Position, Sprite)
 import Emo8.Data.Sprite (incrementFrame)
-import Data.Maybe (Maybe(..))
+import Emo8.Class.Object (class ObjectDraw, class Object, position, draw, size, scroll)
+import Emo8.Action.Draw (drawSprite)
+
 import Revoked.Data.Gun (Gun, updateGun)
+import Revoked.Constants (healthPackBonusHealth)
 
 data Goal =    
     NextLevel { pos :: Position, sprite :: Sprite } |

@@ -4,14 +4,16 @@ module Test.Revoked.Data.Enemy.BigBertha.CannonPhase.UpdateCannonPhase (
 
 import Prelude
 
+import Test.Unit (TestSuite, suite, test)
+import Test.Unit.Assert (equal)
+import Data.Int (floor)
+import Data.Array (length)
+
+import Emo8.Types (Position)
+
 import Revoked.Constants (bigBerthaSpeed, bigBerthaCannonPhaseShotCooldown)
 import Revoked.Data.Enemy.BigBertha.CannonPhase (CannonPhase, updateCannonPhase, defaultCannonPhase)
 import Revoked.Data.Player (initialPlayer)
-import Data.Int (floor)
-import Data.Array (length)
-import Emo8.Types (Position)
-import Test.Unit (TestSuite, suite, test)
-import Test.Unit.Assert (equal)
 
 updateCannonPhaseTests :: TestSuite
 updateCannonPhaseTests =

@@ -4,9 +4,10 @@ module Test.Revoked.Data.Enemy.BigBertha.DamageBigBertha (
 
 import Prelude
 
-import Revoked.Data.Enemy.BigBertha (damageBigBertha, healthGate, defaultBigBertha)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Revoked.Data.Enemy.BigBertha (damageBigBertha, healthGate, defaultBigBertha)
 
 damageBigBerthaTests :: TestSuite
 damageBigBerthaTests =

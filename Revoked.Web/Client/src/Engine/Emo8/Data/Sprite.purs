@@ -1,13 +1,12 @@
 module Emo8.Data.Sprite where
 
 import Prelude
+
 import Data.Array (index)
 import Data.Maybe (Maybe(..))
 import Data.Int (toNumber, floor)
-import Emo8.Types (
-    Sprite, 
-    ScaledImage
-)
+
+import Emo8.Types (Sprite, ScaledImage)
 
 toScaledImage :: Sprite -> ScaledImage
 toScaledImage sprite = {

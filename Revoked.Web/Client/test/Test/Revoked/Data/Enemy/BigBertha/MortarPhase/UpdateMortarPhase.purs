@@ -4,14 +4,16 @@ module Test.Revoked.Data.Enemy.BigBertha.MortarPhase.UpdateMortarPhase (
 
 import Prelude
 
+import Test.Unit (TestSuite, suite, test)
+import Test.Unit.Assert (equal)
+import Data.Int (floor)
+import Data.Array (length)
+
+import Emo8.Types (Position)
+
 import Revoked.Constants (bigBerthaSpeed, bigBerthaMortarPhaseShotCooldown)
 import Revoked.Data.Enemy.BigBertha.MortarPhase (MortarPhase, updateMortarPhase, defaultMortarPhase)
 import Revoked.Data.Player (initialPlayer)
-import Data.Int (floor)
-import Data.Array (length)
-import Emo8.Types (Position)
-import Test.Unit (TestSuite, suite, test)
-import Test.Unit.Assert (equal)
 
 updateMortarPhaseTests :: TestSuite
 updateMortarPhaseTests =

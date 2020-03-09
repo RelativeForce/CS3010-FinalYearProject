@@ -2,9 +2,10 @@ module Test.Revoked.Data.Enemy.BigBertha.DefaultBigBertha (
     defaultBigBerthaTests 
 ) where
 
-import Revoked.Data.Enemy.BigBertha (defaultBigBertha)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Revoked.Data.Enemy.BigBertha (defaultBigBertha)
 
 defaultBigBerthaTests :: TestSuite
 defaultBigBerthaTests =

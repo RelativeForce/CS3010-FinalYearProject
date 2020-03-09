@@ -3,10 +3,13 @@ module Test.Revoked.Data.Player.Srcoll (
 ) where
 
 import Prelude
-import Emo8.Class.Object (scroll)
-import Revoked.Data.Player (Player(..),  initialPlayer)
+
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Emo8.Class.Object (scroll)
+
+import Revoked.Data.Player (Player(..),  initialPlayer)
 
 scrollTests :: TestSuite
 scrollTests =

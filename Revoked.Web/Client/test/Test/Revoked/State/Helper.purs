@@ -7,9 +7,10 @@ import Effect (Effect)
 import Data.Either (Either(..))
 import Effect.Exception (throw)
 import Effect.Now (nowDateTime)
+import Data.DateTime (DateTime)
+
 import Emo8.Action.Update (Update, UpdateF(..))
 import Emo8.FFI.AudioController (AudioContext, newAudioContext)
-import Data.DateTime (DateTime)
 
 -- | Interprets a `Update` into an `Effect` where all of the `UpdateF` functors throw a `JavaScript` exception when 
 -- | evaluated. The intended use for this is during tests where non of the `UpdateF` functors are expected to be used.

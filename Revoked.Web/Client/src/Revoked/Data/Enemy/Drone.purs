@@ -2,17 +2,19 @@ module Revoked.Data.Enemy.Drone where
 
 import Prelude
 
-import Revoked.Assets.Sprites as S
+import Data.Array (length)
+import Data.Int (floor)
+
 import Emo8.Class.Object (size)
+import Emo8.Data.Sprite (incrementFrame)
+import Emo8.Types (Position, Sprite, Velocity, X, Deg)
+import Emo8.Utils (vectorTo, angle)
+
+import Revoked.Assets.Sprites as S
 import Revoked.Data.Bullet (Bullet)
 import Revoked.Data.Gun (Gun, defaultBlasterGun, fireAndUpdateGun, setPositionAndRotation)
 import Revoked.Data.Player (Player(..))
 import Revoked.Constants (droneAccuracyDeviationIncrements, droneSpeed)
-import Emo8.Data.Sprite (incrementFrame)
-import Data.Array (length)
-import Data.Int (floor)
-import Emo8.Types (Position, Sprite, Velocity, X, Deg)
-import Emo8.Utils (vectorTo, angle)
 
 type Drone = { 
     pos :: Position,

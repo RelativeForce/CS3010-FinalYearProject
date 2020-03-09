@@ -2,25 +2,27 @@ module Revoked.States.Play where
 
 import Prelude
 
-import Revoked.Assets.Audio as A
-import Revoked.States.StateIds as S
-import Emo8.Class.Object (scroll)
-import Revoked.Class.MortalEntity (damage, heal)
-import Revoked.Collision (isCollideMapWalls, isCollideMapHazards)
-import Emo8.Collision (isCollideObjects, isOutOfWorld)
 import Data.Array (any, filter, partition, concatMap, length)
-import Revoked.Data.Bullet (Bullet, updateBullet)
-import Revoked.Data.Enemy (Enemy, updateEnemy, enemyToScore)
 import Data.Foldable (sum)
 import Data.Either (Either(..))
-import Revoked.Data.Goal (Goal, updateGoal, isNextLevelGoal, firstGun, toHealthBonus)
-import Revoked.Data.Particle (Particle, updateParticle)
-import Revoked.Data.Player (Player(..), initialPlayer, updatePlayer, updatePlayerGun)
-import Emo8.Action.Update (Update, isAudioStreamPlaying, stopAudioStream, addAudioStream, nowDateTime, muteAudio, unmuteAudio)
 import Data.DateTime (DateTime)
+
+import Emo8.Class.Object (scroll)
+import Emo8.Collision (isCollideObjects, isOutOfWorld)
+import Emo8.Action.Update (Update, isAudioStreamPlaying, stopAudioStream, addAudioStream, nowDateTime, muteAudio, unmuteAudio)
 import Emo8.FFI.AudioController (AudioContext, newAudioContext)
 import Emo8.Input (Input)
 import Emo8.Types (MapId, Score, StateId, Asset)
+
+import Revoked.Assets.Audio as A
+import Revoked.States.StateIds as S
+import Revoked.Class.MortalEntity (damage, heal)
+import Revoked.Collision (isCollideMapWalls, isCollideMapHazards)
+import Revoked.Data.Bullet (Bullet, updateBullet)
+import Revoked.Data.Enemy (Enemy, updateEnemy, enemyToScore)
+import Revoked.Data.Goal (Goal, updateGoal, isNextLevelGoal, firstGun, toHealthBonus)
+import Revoked.Data.Particle (Particle, updateParticle)
+import Revoked.Data.Player (Player(..), initialPlayer, updatePlayer, updatePlayerGun)
 import Revoked.Data.Helper (isDead)
 import Revoked.Levels (enemies, goals, levelCount, startPosition)
 import Revoked.Helper (adjustMonitorDistance, formatDifference, enemyToParticle)

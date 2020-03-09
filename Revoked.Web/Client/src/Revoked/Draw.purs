@@ -2,14 +2,16 @@ module Revoked.Draw where
 
 import Prelude
 
-import Emo8.Class.Object (position, size)
-import Revoked.Constants (mapSizeInt, mapTileInMonitorSize, mapTileSize, mapSize, hudTextHeight)
 import Data.Array ((!!))
 import Data.Maybe (Maybe(..))
-import Revoked.Data.Player (Player, playerShotCount, playerGunIsInfinite)
+
+import Emo8.Class.Object (position, size)
 import Emo8.Action.Draw (Draw, drawMap, drawText)
 import Emo8.Data.Color (Color(..))
 import Emo8.Types (MapId, X, PlayerScore)
+
+import Revoked.Constants (mapSizeInt, mapTileInMonitorSize, mapTileSize, mapSize, hudTextHeight)
+import Revoked.Data.Player (Player, playerShotCount, playerGunIsInfinite)
 
 -- | Draws the region of the scroll map visible 
 drawScrollMap :: X -> MapId -> Draw Unit

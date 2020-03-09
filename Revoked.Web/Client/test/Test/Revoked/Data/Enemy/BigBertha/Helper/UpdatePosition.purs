@@ -4,11 +4,12 @@ module Test.Revoked.Data.Enemy.BigBertha.Helper.UpdatePosition (
 
 import Prelude
 
-import Revoked.Data.Enemy.BigBertha.Helper (updatePosition)
 import Data.Int (floor)
-import Revoked.Constants (bigBerthaSpeed)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Revoked.Data.Enemy.BigBertha.Helper (updatePosition)
+import Revoked.Constants (bigBerthaSpeed)
 
 updatePositionTests :: TestSuite
 updatePositionTests =

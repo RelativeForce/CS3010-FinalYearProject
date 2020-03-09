@@ -5,6 +5,7 @@ import Prelude
 import Emo8.Class.Object (class ObjectDraw, class Object, position)
 import Emo8.Action.Draw (drawSprite)
 import Emo8.Types (Position)
+
 import Revoked.Data.Particle.Ghost (Ghost, scrollGhost, updateGhost, defaultMarineGhost, ghostSize, ghostPosition)
 import Revoked.Data.Particle.Explosion (Explosion, scrollExplosion, updateExplosion, defaultDroneExplosion, explosionSize, explosionPosition)
 

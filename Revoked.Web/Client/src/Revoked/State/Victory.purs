@@ -1,17 +1,18 @@
 module Revoked.States.Victory where
 
 import Prelude
-
-import Revoked.States.StateIds as S
-import Revoked.Constants (maxUsernameLength)
+import Data.DateTime (DateTime)
 import Data.Array (length, init)
 import Data.Either (Either(..))
 import Data.String (joinWith)
 import Data.Maybe (Maybe(..))
+
 import Emo8.Action.Update (Update, storePlayerScore)
-import Data.DateTime (DateTime)
 import Emo8.Input (Input, mapToCharacter)
 import Emo8.Types (StateId, Score)
+
+import Revoked.States.StateIds as S
+import Revoked.Constants (maxUsernameLength)
 import Revoked.Helper (formatDateTime)
 
 type VictoryState = {

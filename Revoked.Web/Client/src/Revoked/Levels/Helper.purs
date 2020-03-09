@@ -2,12 +2,13 @@ module Revoked.Levels.Helper where
 
 import Prelude
 
+import Emo8.Types (Position)
+
 import Revoked.Assets.Sprites as S
 import Revoked.Constants (mapTileSize)
 import Revoked.Data.Goal (Goal(..))
 import Revoked.Data.Gun (defaultShotgunGun, defaultAssaultRifleGun)
 import Revoked.Data.Enemy (Enemy, defaultDroneEnemy)
-import Emo8.Types (Position)
 
 toTilePosition :: Int -> Int -> Position
 toTilePosition x y = { x: x * mapTileSize.width, y: y * mapTileSize.height }

@@ -1,8 +1,10 @@
 module Revoked.Assets.AssetMapper where
-  
-import Revoked.Assets.Images as I
+
 import Data.Maybe (Maybe(..))
+
 import Emo8.Types (ScaledImage)
+
+import Revoked.Assets.Images as I
 
 emojiToImage :: String -> Maybe ScaledImage
 emojiToImage s = case s of

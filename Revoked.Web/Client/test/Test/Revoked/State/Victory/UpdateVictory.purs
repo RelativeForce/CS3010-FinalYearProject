@@ -6,13 +6,16 @@ import Prelude
 
 import Data.Either (Either(..))
 import Effect.Class(liftEffect)
-import Emo8.Input (Input)
-import Revoked.States.Victory (updateVictory, inputInterval)
-import Revoked.States.StateIds as S
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
-import Emo8.Action.Update (UpdateF(..))
 import Effect (Effect)
+
+import Emo8.Input (Input)
+import Emo8.Action.Update (UpdateF(..))
+
+import Revoked.States.Victory (updateVictory, inputInterval)
+import Revoked.States.StateIds as S
+
 import Test.Revoked.State.Helper (runTestUpdateAllFail, runTestUpdate, interpretAllFail)
 
 updateVictoryTests :: TestSuite

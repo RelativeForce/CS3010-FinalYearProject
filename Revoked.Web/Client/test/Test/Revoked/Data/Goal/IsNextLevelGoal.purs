@@ -4,11 +4,12 @@ module Test.Revoked.Data.Goal.IsNextLevelGoal (
 
 import Prelude
 
+import Test.Unit (TestSuite, suite, test)
+import Test.Unit.Assert (equal)
+
 import Revoked.Assets.Sprites as S
 import Revoked.Data.Goal (Goal(..), isNextLevelGoal)
 import Revoked.Data.Gun (defaultShotgunGun)
-import Test.Unit (TestSuite, suite, test)
-import Test.Unit.Assert (equal)
 
 isNextLevelGoalTests :: TestSuite
 isNextLevelGoalTests =

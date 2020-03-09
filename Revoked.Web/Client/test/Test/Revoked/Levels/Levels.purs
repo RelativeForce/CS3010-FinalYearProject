@@ -4,9 +4,10 @@ module Test.Revoked.Levels (
 
 import Prelude
 
+import Test.Unit (TestSuite)
+
 import Test.Revoked.Levels.Enemies (enemiesTests)
 import Test.Revoked.Levels.Goals (goalsTests)
-import Test.Unit (TestSuite)
 
 levelTests :: TestSuite
 levelTests = do

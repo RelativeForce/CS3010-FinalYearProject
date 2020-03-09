@@ -3,11 +3,14 @@ module Test.Revoked.Data.Player.BeInMonitor (
 ) where
 
 import Prelude
-import Revoked.Data.Player (beInMonitor, initialPlayer, Player(..))
+
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
 import Emo8.Types (Y, X, Size)
 import Emo8.Constants (defaultMonitorSize)
+
+import Revoked.Data.Player (beInMonitor, initialPlayer, Player(..))
 
 beInMonitorTests :: TestSuite
 beInMonitorTests =

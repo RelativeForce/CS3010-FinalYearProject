@@ -4,13 +4,15 @@ module Test.Revoked.Data.Enemy.Marine.PlayerInRange (
 
 import Prelude
 
-import Revoked.Constants (marineAgroRange)
-import Revoked.Data.Enemy.Marine (playerInRange, defaultMarine)
 import Data.Int (floor)
-import Revoked.Data.Player (Player, initialPlayer)
-import Emo8.Types (Position)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Emo8.Types (Position)
+
+import Revoked.Constants (marineAgroRange)
+import Revoked.Data.Enemy.Marine (playerInRange, defaultMarine)
+import Revoked.Data.Player (Player, initialPlayer)
 
 playerInRangeTests :: TestSuite
 playerInRangeTests =

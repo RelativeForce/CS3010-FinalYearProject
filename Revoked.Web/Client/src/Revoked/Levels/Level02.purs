@@ -1,9 +1,11 @@
 module Revoked.Levels.Level02 where
 
 import Prelude
-import Emo8.Types (Position)
-import Revoked.Data.Enemy (Enemy, defaultMarineEnemy)
+
 import Emo8.Parse (RawMap(..))
+import Emo8.Types (Position)
+
+import Revoked.Data.Enemy (Enemy, defaultMarineEnemy)
 import Revoked.Data.Goal (Goal)
 import Revoked.Levels.Helper (toTilePosition, shotgunSpawn, assaultRifleSpawn, ladderSection, chopper, healthPack)
 

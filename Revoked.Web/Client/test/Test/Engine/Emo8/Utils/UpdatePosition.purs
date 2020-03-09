@@ -3,9 +3,11 @@ module Test.Engine.Emo8.Utils.UpdatePosition (
 ) where
 
 import Prelude
-import Emo8.Utils (updatePosition)
+
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Emo8.Utils (updatePosition)
 
 updatePositionTests :: TestSuite
 updatePositionTests =

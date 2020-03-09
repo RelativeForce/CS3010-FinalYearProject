@@ -3,8 +3,9 @@ module Emo8.Utils where
 import Prelude
 
 import Data.Int (toNumber, floor)
-import Emo8.Types (Position, Velocity, Deg, Vector)
 import Math (sqrt, atan, pi, abs, cos, sin)
+
+import Emo8.Types (Position, Velocity, Deg, Vector)
 
 xor :: Boolean -> Boolean -> Boolean
 xor a b = (not a && b) || (not b && a)

@@ -1,13 +1,11 @@
 module Emo8.FFI.TextBaseline where
 
-
 -- | Enumerates types of text alignment.
 import Prelude
 
 import Effect (Effect)
 import Effect.Exception.Unsafe (unsafeThrow)
 import Graphics.Canvas (Context2D)
-
 
 -- | Enumerates types of text alignment.
 data TextBaseline

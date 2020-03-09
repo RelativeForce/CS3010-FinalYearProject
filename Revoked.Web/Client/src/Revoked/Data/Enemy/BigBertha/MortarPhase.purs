@@ -2,12 +2,14 @@ module Revoked.Data.Enemy.BigBertha.MortarPhase where
 
 import Prelude
 
+import Math (sqrt, abs)
+import Data.Int (toNumber)
+
+import Emo8.Types (Position, Velocity, X)
+
 import Revoked.Constants (gravity, mapTileSize, bigBerthaSpeed, bigBerthaMortarPhaseShotCooldown)
 import Revoked.Data.Bullet (Bullet, newArcBullet)
 import Revoked.Data.Player (Player(..))
-import Data.Int (toNumber)
-import Emo8.Types (Position, Velocity, X)
-import Math (sqrt, abs)
 import Revoked.Data.Enemy.BigBertha.Helper (playerInRange, updateVelocity, updatePosition, ensureLeftLimit, ensureRightLimit, coolDownShot)
 
 type MortarPhase = { 

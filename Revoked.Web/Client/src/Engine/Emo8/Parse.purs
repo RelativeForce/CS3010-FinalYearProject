@@ -12,8 +12,9 @@ import Data.String (Pattern(..), Replacement(..), replace)
 import Data.String.EmojiSplitter (splitEmoji)
 import Data.String.Utils (lines)
 import Data.Traversable (traverse)
-import Emo8.Types (TileMap, ScaledImage)
 import Data.Maybe (Maybe)
+
+import Emo8.Types (TileMap, ScaledImage)
 
 newtype RawMap = RawMap String
 

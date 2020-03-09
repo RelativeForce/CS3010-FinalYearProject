@@ -7,9 +7,10 @@ module Emo8.Input(
 
 import Prelude
 
+import Signal (Signal, foldp)
+
 import Emo8.Data.KeyInput (KeyInput(..))
 import Emo8.Data.PressState (PressState(..), updatePressState)
-import Signal (Signal, foldp)
 
 type InputFlags = {
   isSpace :: Boolean,

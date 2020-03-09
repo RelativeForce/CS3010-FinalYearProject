@@ -4,10 +4,11 @@ module Test.Engine.Emo8.Data.Sprite.ToScaledImage (
 
 import Prelude
 
-import Emo8.Types (Sprite)
-import Emo8.Data.Sprite (toScaledImage)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Emo8.Types (Sprite)
+import Emo8.Data.Sprite (toScaledImage)
 
 toScaledImageTests :: TestSuite
 toScaledImageTests =

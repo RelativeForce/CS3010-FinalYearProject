@@ -5,6 +5,7 @@ import Prelude
 import Control.Monad.Free (Free, liftF)
 import Data.DateTime (DateTime)
 import Data.Either (Either)
+
 import Emo8.FFI.AudioController (AudioContext)
 import Emo8.Types (PlayerScore, PlayerScoreCreateRequestData)
 

@@ -3,11 +3,13 @@ module Test.Engine.Emo8.FFI.AudioController.IsAudioStreamPlaying (
 ) where
 
 import Prelude
-import Emo8.FFI.AudioController (_isAudioStreamPlaying, newAudioContext, AudioStream)
+
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 import Effect.Class (liftEffect)
 import Effect (Effect)
+
+import Emo8.FFI.AudioController (_isAudioStreamPlaying, newAudioContext, AudioStream)
 
 isAudioStreamPlayingTests :: TestSuite
 isAudioStreamPlayingTests = 

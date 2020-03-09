@@ -3,13 +3,15 @@ module Test.Engine.Emo8.FFI.AudioController.StopAudioStream (
 ) where
 
 import Prelude
-import Emo8.FFI.AudioController (_stopAudioStream, newAudioContext, AudioStream)
+
 import Data.Array(length, head)
 import Data.Maybe (Maybe(..))
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 import Effect.Class (liftEffect)
 import Effect (Effect)
+
+import Emo8.FFI.AudioController (_stopAudioStream, newAudioContext, AudioStream)
 
 stopAudioStreamTests :: TestSuite
 stopAudioStreamTests =

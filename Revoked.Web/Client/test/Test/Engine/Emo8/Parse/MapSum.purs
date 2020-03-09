@@ -6,6 +6,7 @@ import Prelude
 
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
 import Emo8.Parse (RawMap(..))
 
 mapSumTests :: TestSuite

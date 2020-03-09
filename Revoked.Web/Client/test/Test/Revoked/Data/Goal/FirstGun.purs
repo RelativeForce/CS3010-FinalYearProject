@@ -4,12 +4,13 @@ module Test.Revoked.Data.Goal.FirstGun (
 
 import Prelude
 
-import Revoked.Assets.Sprites as S
-import Revoked.Data.Goal (Goal(..), firstGun)
-import Revoked.Data.Gun (defaultBlasterGun, defaultShotgunGun, defaultAssaultRifleGun)
 import Data.Maybe (Maybe(..))
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Revoked.Assets.Sprites as S
+import Revoked.Data.Goal (Goal(..), firstGun)
+import Revoked.Data.Gun (defaultBlasterGun, defaultShotgunGun, defaultAssaultRifleGun)
 
 firstGunTests :: TestSuite
 firstGunTests =

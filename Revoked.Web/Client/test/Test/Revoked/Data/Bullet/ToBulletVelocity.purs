@@ -4,9 +4,11 @@ module Test.Revoked.Data.Bullet.ToBulletVelocity (
 
 import Prelude
 
+import Test.Unit (TestSuite, suite, test)
+
 import Revoked.Constants (bulletSpeed)
 import Revoked.Data.Bullet (toBulletVelocity)
-import Test.Unit (TestSuite, suite, test)
+
 import Test.Helper (equalTolerance)
 
 toBulletVelocityTests :: TestSuite

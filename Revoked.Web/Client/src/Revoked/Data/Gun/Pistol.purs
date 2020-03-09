@@ -2,11 +2,12 @@ module Revoked.Data.Gun.Pistol where
 
 import Prelude
 
-import Revoked.Assets.Sprites as S
 import Emo8.Types (Position, Sprite, Deg)
+import Emo8.Data.Sprite (incrementFrame)
+
+import Revoked.Assets.Sprites as S
 import Revoked.Constants (pistolShotCooldown)
 import Revoked.Data.Bullet (Bullet)
-import Emo8.Data.Sprite (incrementFrame)
 import Revoked.Data.Gun.Helper (GunAppear(..), appearBasedOnAngle, newGunBullet)
 
 type Pistol = { 

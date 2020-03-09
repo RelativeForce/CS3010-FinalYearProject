@@ -11,39 +11,15 @@ import Data.Traversable (for_)
 import Data.Tuple (Tuple(..))
 import Effect (Effect)
 import Effect.Exception (throwException, error)
+import Graphics.Canvas (CanvasImageSource, fillText, restore, rotate, save, setFillStyle, setFont, translate, drawImage, tryLoadImage, drawImageScale)
+import Math (pi)
+
 import Emo8.Action.Draw (Draw, DrawF(..))
 import Emo8.Constants (fontFamily)
 import Emo8.Data.Color (Color, colorToCode)
 import Emo8.FFI.TextBaseline (TextBaseline(..), setTextBaseline)
-import Emo8.Types (
-    Deg, 
-    MapId, 
-    MonitorSize, 
-    Size, 
-    X, 
-    Y, 
-    DrawContext, 
-    Image, 
-    ScaledImage, 
-    Sprite, 
-    Height,
-    TextHeight
-)
+import Emo8.Types (Deg, MapId, MonitorSize, Size, X, Y, DrawContext, Image, ScaledImage, Sprite, Height, TextHeight)
 import Emo8.Data.Sprite (toScaledImage)
-import Graphics.Canvas ( 
-    CanvasImageSource,  
-    fillText, 
-    restore, 
-    rotate, 
-    save,
-    setFillStyle, 
-    setFont, 
-    translate, 
-    drawImage, 
-    tryLoadImage, 
-    drawImageScale
-)
-import Math (pi)
 
 type RenderOp = DrawContext -> Effect Unit
 

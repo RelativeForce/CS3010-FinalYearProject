@@ -2,10 +2,11 @@ module Revoked.Data.Gun.Blaster where
 
 import Prelude
 
-import Revoked.Assets.Sprites as S
 import Emo8.Types (Position, Sprite, Deg)
-import Revoked.Data.Bullet (Bullet)
 import Emo8.Data.Sprite (incrementFrame)
+
+import Revoked.Assets.Sprites as S
+import Revoked.Data.Bullet (Bullet)
 import Revoked.Data.Gun.Helper (newGunBullet)
 import Revoked.Constants (blasterShotCooldown)
 

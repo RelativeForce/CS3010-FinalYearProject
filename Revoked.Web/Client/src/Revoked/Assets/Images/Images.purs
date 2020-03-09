@@ -1,6 +1,7 @@
 module Revoked.Assets.Images where
 
 import Emo8.Types (ScaledImage)
+
 import Revoked.Assets.AssetIds as Id
 import Revoked.Assets.Images.TitleScreen (titleScreenData)
 import Revoked.Assets.Images.PlayBackground (playBackgroundData)

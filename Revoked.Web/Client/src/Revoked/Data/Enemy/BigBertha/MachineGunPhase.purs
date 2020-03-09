@@ -2,24 +2,13 @@ module Revoked.Data.Enemy.BigBertha.MachineGunPhase where
 
 import Prelude
 
-import Revoked.Constants (
-    bigBerthaSpeed, 
-    bigBerthaMachineGunPhaseShotCooldown, 
-    bigBerthaMachineGunPhaseAccuracyDeviationIncrements, 
-    bigBerthaMachineGunPhaseMaxOffset
-)
-import Revoked.Data.Bullet (Bullet, newLinearBullet, toBulletVelocity)
-import Revoked.Data.Player (Player(..))
 import Emo8.Types (Position, Velocity, Deg, X)
 import Emo8.Utils (angle, vectorTo)
-import Revoked.Data.Enemy.BigBertha.Helper (
-    playerInRange, 
-    updateVelocity, 
-    updatePosition, 
-    ensureLeftLimit, 
-    ensureRightLimit, 
-    coolDownShot
-)
+
+import Revoked.Constants (bigBerthaSpeed, bigBerthaMachineGunPhaseShotCooldown, bigBerthaMachineGunPhaseAccuracyDeviationIncrements, bigBerthaMachineGunPhaseMaxOffset)
+import Revoked.Data.Bullet (Bullet, newLinearBullet, toBulletVelocity)
+import Revoked.Data.Player (Player(..))
+import Revoked.Data.Enemy.BigBertha.Helper (playerInRange, updateVelocity, updatePosition, ensureLeftLimit, ensureRightLimit, coolDownShot)
 
 type MachineGunPhase = { 
     pos :: Position,

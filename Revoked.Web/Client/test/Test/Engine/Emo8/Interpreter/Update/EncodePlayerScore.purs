@@ -2,9 +2,10 @@ module Test.Emo8.Interpreter.Update.EncodePlayerScore (
     encodePlayerScoreTests 
 ) where
 
-import Emo8.Interpreter.Update (encodePlayerScore)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Emo8.Interpreter.Update (encodePlayerScore)
 
 encodePlayerScoreTests :: TestSuite
 encodePlayerScoreTests =

@@ -4,11 +4,13 @@ module Test.Revoked.Data.Helper.IsDead (
 
 import Prelude
 
-import Emo8.Class.Object (class Object)
-import Revoked.Class.MortalEntity (class MortalEntity)
-import Revoked.Data.Helper (isDead)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Emo8.Class.Object (class Object)
+
+import Revoked.Class.MortalEntity (class MortalEntity)
+import Revoked.Data.Helper (isDead)
 
 isDeadTests :: TestSuite
 isDeadTests =

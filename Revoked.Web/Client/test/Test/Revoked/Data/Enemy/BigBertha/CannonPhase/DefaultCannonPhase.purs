@@ -4,9 +4,10 @@ module Test.Revoked.Data.Enemy.BigBertha.CannonPhase.DefaultCannonPhase (
 
 import Prelude
 
-import Revoked.Data.Enemy.BigBertha.CannonPhase (defaultCannonPhase)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Revoked.Data.Enemy.BigBertha.CannonPhase (defaultCannonPhase)
 
 defaultCannonPhaseTests :: TestSuite
 defaultCannonPhaseTests =

@@ -2,11 +2,13 @@ module Revoked.States.Leaderboard where
 
 import Prelude
 
-import Revoked.States.StateIds as S
 import Data.Either (Either(..))
+
 import Emo8.Action.Update (Update, listTopScores)
 import Emo8.Input (Input)
 import Emo8.Types (StateId, PlayerScore)
+
+import Revoked.States.StateIds as S
 
 type LeaderboardState = {
     scores :: Array PlayerScore,

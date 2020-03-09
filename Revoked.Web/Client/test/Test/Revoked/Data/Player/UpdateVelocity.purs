@@ -3,11 +3,14 @@ module Test.Revoked.Data.Player.UpdateVelocity (
 ) where
 
 import Prelude
-import Emo8.Input (Input)
-import Revoked.Data.Player (updateVelocity)
+
 import Test.Unit (TestSuite, suite, test)
-import Revoked.Constants (gravity, frictionFactor, maxPlayerSpeedY, maxPlayerSpeedX)
 import Test.Unit.Assert (equal)
+
+import Emo8.Input (Input)
+
+import Revoked.Data.Player (updateVelocity)
+import Revoked.Constants (gravity, frictionFactor, maxPlayerSpeedY, maxPlayerSpeedX)
 
 updateVelocityTests :: TestSuite
 updateVelocityTests =

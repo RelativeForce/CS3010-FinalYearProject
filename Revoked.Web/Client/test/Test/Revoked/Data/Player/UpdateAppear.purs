@@ -3,10 +3,13 @@ module Test.Revoked.Data.Player.UpdateAppear (
 ) where
 
 import Prelude
-import Emo8.Input (Input)
-import Revoked.Data.Player (updateAppear, PlayerAppear(..))
+
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Emo8.Input (Input)
+
+import Revoked.Data.Player (updateAppear, PlayerAppear(..))
 
 updateAppearTests :: TestSuite
 updateAppearTests =

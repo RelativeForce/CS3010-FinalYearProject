@@ -2,8 +2,9 @@ module Emo8.Data.KeyInput (KeyInput(..)) where
 
 import Prelude
 
-import Emo8.Class.Input (class Input)
 import Signal.DOM (keyPressed)
+
+import Emo8.Class.Input (class Input)
 
 newtype KeyInput = KeyInput { 
   isSpace :: Boolean,

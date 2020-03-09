@@ -2,12 +2,13 @@ module Revoked.Data.Enemy.BigBertha where
 
 import Prelude
 
-import Revoked.Assets.Sprites as S
-import Emo8.Class.Object (class Object)
-import Revoked.Data.Bullet (Bullet)
-import Revoked.Data.Player (Player)
 import Emo8.Types (Position, X, Sprite)
 import Emo8.Data.Sprite (incrementFrame)
+import Emo8.Class.Object (class Object)
+
+import Revoked.Assets.Sprites as S
+import Revoked.Data.Bullet (Bullet)
+import Revoked.Data.Player (Player)
 import Revoked.Constants (bigBerthaImmunityCooldown)
 import Revoked.Data.Enemy.BigBertha.MortarPhase (MortarPhase, updateMortarPhase, defaultMortarPhase)
 import Revoked.Data.Enemy.BigBertha.MachineGunPhase (MachineGunPhase, updateMachineGunPhase, defaultMachineGunPhase)

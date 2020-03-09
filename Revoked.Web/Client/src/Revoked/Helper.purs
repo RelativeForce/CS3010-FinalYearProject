@@ -2,18 +2,20 @@ module Revoked.Helper where
 
 import Prelude
 
-import Emo8.Class.Object (position)
-import Revoked.Constants (leftBoundry, mapSize, rightBoundry)
-import Data.DateTime (DateTime, diff)
-import Data.Either (Either(..))
-import Revoked.Data.Enemy (Enemy(..))
+import Data.Time.Duration (Milliseconds(..))
 import Data.Formatter.DateTime as F
 import Data.Int (floor)
-import Revoked.Data.Particle (Particle, defaultGhostParticle, defaultExplosionParticle)
-import Revoked.Data.Player (Player(..))
-import Data.Time.Duration (Milliseconds(..))
+import Data.DateTime (DateTime, diff)
+import Data.Either (Either(..))
+
+import Emo8.Class.Object (position)
 import Emo8.Constants (defaultMonitorSize)
 import Emo8.Types (X)
+
+import Revoked.Constants (leftBoundry, mapSize, rightBoundry)
+import Revoked.Data.Enemy (Enemy(..))
+import Revoked.Data.Particle (Particle, defaultGhostParticle, defaultExplosionParticle)
+import Revoked.Data.Player (Player(..))
 
 -- | Adjusts the monitor distance so that player remains between the left and right 
 -- | boundry on the screen.

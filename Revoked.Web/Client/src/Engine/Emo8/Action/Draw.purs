@@ -3,6 +3,7 @@ module Emo8.Action.Draw where
 import Prelude
 
 import Control.Monad.Free (Free, liftF)
+
 import Emo8.Data.Color (Color)
 import Emo8.Types (Deg, MapId, X, Y, Image, ScaledImage, Sprite, Size, TextHeight)
 

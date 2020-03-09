@@ -2,18 +2,12 @@ module Revoked.Data.Enemy.BigBertha.CannonPhase where
 
 import Prelude
 
+import Emo8.Types (Position, Velocity, Deg, X)
+
 import Revoked.Constants (bigBerthaSpeed, bigBerthaCannonPhaseShotCooldown)
 import Revoked.Data.Bullet (Bullet, newLinearBullet, toBulletVelocity)
 import Revoked.Data.Player (Player)
-import Emo8.Types (Position, Velocity, Deg, X)
-import Revoked.Data.Enemy.BigBertha.Helper (
-    playerInRange, 
-    updateVelocity, 
-    updatePosition, 
-    ensureLeftLimit, 
-    ensureRightLimit, 
-    coolDownShot
-)
+import Revoked.Data.Enemy.BigBertha.Helper (playerInRange, updateVelocity, updatePosition, ensureLeftLimit, ensureRightLimit, coolDownShot)
 
 type CannonPhase = { 
     pos :: Position,

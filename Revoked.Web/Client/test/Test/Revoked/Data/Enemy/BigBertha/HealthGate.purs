@@ -4,9 +4,10 @@ module Test.Revoked.Data.Enemy.BigBertha.HealthGate (
 
 import Prelude
 
-import Revoked.Data.Enemy.BigBertha (phase1, phase2, phase3, healthGate)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Revoked.Data.Enemy.BigBertha (phase1, phase2, phase3, healthGate)
 
 healthGateTests :: TestSuite
 healthGateTests =
