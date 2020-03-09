@@ -19,7 +19,7 @@ import Revoked.Class.MortalEntity (class MortalEntity)
 import Revoked.Collision (adjustY, adjustX)
 import Revoked.Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor, defaultPlayerHealth)
 import Revoked.Data.Bullet (Bullet)
-import Data.Gun (Gun, defaultPistolGun, fireAndUpdateGun, setPositionAndRotation, shotCount, updateGun, isInfinite)
+import Revoked.Data.Gun (Gun, defaultPistolGun, fireAndUpdateGun, setPositionAndRotation, shotCount, updateGun, isInfinite)
 
 data Player = Player { 
     pos :: Position, 

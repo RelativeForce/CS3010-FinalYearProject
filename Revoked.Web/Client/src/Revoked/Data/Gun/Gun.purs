@@ -1,13 +1,13 @@
-module Data.Gun where
+module Revoked.Data.Gun where
 
 import Prelude
 
 import Emo8.Class.Object (class ObjectDraw, class Object, position)
 import Revoked.Data.Bullet (Bullet)
-import Data.Gun.Pistol (Pistol, fireAndUpdatePistol, updatePistol, defaultPistol, setPistolPositionAndRotation)
-import Data.Gun.Blaster (Blaster, fireAndUpdateBlaster, updateBlaster, defaultBlaster, setBlasterPositionAndRotation)
-import Data.Gun.Shotgun (Shotgun, defaultShotgun, fireAndUpdateShotgun, setShotgunPositionAndRotation, updateShotgun)
-import Data.Gun.AssaultRifle (AssaultRifle, defaultAssaultRifle, fireAndUpdateAssaultRifle, setAssaultRiflePositionAndRotation, updateAssaultRifle)
+import Revoked.Data.Gun.Pistol (Pistol, fireAndUpdatePistol, updatePistol, defaultPistol, setPistolPositionAndRotation)
+import Revoked.Data.Gun.Blaster (Blaster, fireAndUpdateBlaster, updateBlaster, defaultBlaster, setBlasterPositionAndRotation)
+import Revoked.Data.Gun.Shotgun (Shotgun, defaultShotgun, fireAndUpdateShotgun, setShotgunPositionAndRotation, updateShotgun)
+import Revoked.Data.Gun.AssaultRifle (AssaultRifle, defaultAssaultRifle, fireAndUpdateAssaultRifle, setAssaultRiflePositionAndRotation, updateAssaultRifle)
 import Emo8.Action.Draw (drawRotatedSprite)
 import Emo8.Types (Position, Deg)
 import Revoked.Constants (maxShotCount)

@@ -1,4 +1,4 @@
-module Data.Gun.Helper where
+module Revoked.Data.Gun.Helper where
 
 import Prelude
 

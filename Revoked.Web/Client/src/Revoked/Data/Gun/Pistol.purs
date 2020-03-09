@@ -1,4 +1,4 @@
-module Data.Gun.Pistol where
+module Revoked.Data.Gun.Pistol where
 
 import Prelude
 
@@ -7,7 +7,7 @@ import Emo8.Types (Position, Sprite, Deg)
 import Revoked.Constants (pistolShotCooldown)
 import Revoked.Data.Bullet (Bullet)
 import Emo8.Data.Sprite (incrementFrame)
-import Data.Gun.Helper (GunAppear(..), appearBasedOnAngle, newGunBullet)
+import Revoked.Data.Gun.Helper (GunAppear(..), appearBasedOnAngle, newGunBullet)
 
 type Pistol = { 
     pos :: Position,

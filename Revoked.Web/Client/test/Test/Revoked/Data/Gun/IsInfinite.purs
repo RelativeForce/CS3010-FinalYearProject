@@ -4,7 +4,7 @@ module Test.Revoked.Data.Gun.IsInfinite (
 
 import Prelude
 
-import Data.Gun (isInfinite, defaultPistolGun, defaultShotgunGun, defaultAssaultRifleGun, defaultBlasterGun)
+import Revoked.Data.Gun (isInfinite, defaultPistolGun, defaultShotgunGun, defaultAssaultRifleGun, defaultBlasterGun)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 

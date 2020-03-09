@@ -567,8 +567,8 @@
 /Revoked.Web/Client/output/Test.Revoked.Data.Enemy.Marine.VelocityOfMarineBullet
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.MarineGhost.Sprite
 /Revoked.Web/Client/output/Revoked.Data.Particle.Ghost
-/Revoked.Web/Client/output/Data.Gun
-/Revoked.Web/Client/output/Data.Gun.Pistol
+/Revoked.Web/Client/output/Revoked.Data.Gun
+/Revoked.Web/Client/output/Revoked.Data.Gun.Pistol
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.PistolLeft.Sprite
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.PistolRight.Sprite
 /Revoked.Web/Client/output/Test.Engine.Emo8.Utils.Angle
@@ -578,11 +578,11 @@
 /Revoked.Web/Client/output/Test.Revoked.Data.Gun.Pistol.CanFire
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.ShotgunLeft.Sprite
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.ShotgunRight.Sprite
-/Revoked.Web/Client/output/Data.Gun.Shotgun
+/Revoked.Web/Client/output/Revoked.Data.Gun.Shotgun
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.AssaultRifleLeft.Sprite
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.AssaultRifleRight.Sprite
-/Revoked.Web/Client/output/Data.Gun.Helper
-/Revoked.Web/Client/output/Data.Gun.AssaultRifle
+/Revoked.Web/Client/output/Revoked.Data.Gun.Helper
+/Revoked.Web/Client/output/Revoked.Data.Gun.AssaultRifle
 /Revoked.Web/Client/output/Revoked.Levels.Level02
 /Revoked.Web/Client/output/Revoked.Levels.Helper
 /Revoked.Web/Client/output/Revoked.Data.Helper
@@ -590,7 +590,7 @@
 /Revoked.Web/Client/output/Data.Enemy.Drone
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.DroneLeft.Sprite
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.DroneRight.Sprite
-/Revoked.Web/Client/output/Data.Gun.Blaster
+/Revoked.Web/Client/output/Revoked.Data.Gun.Blaster
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.Blaster.Sprite
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.DroneExplosion.Sprite
 /Revoked.Web/Client/output/Revoked.Data.Particle.Explosion

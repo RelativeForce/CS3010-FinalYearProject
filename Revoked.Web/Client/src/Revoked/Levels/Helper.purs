@@ -5,7 +5,7 @@ import Prelude
 import Revoked.Assets.Sprites as S
 import Revoked.Constants (mapTileSize)
 import Revoked.Data.Goal (Goal(..))
-import Data.Gun (defaultShotgunGun, defaultAssaultRifleGun)
+import Revoked.Data.Gun (defaultShotgunGun, defaultAssaultRifleGun)
 import Data.Enemy (Enemy, defaultDroneEnemy)
 import Emo8.Types (Position)
 

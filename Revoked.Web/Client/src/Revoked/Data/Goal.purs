@@ -9,7 +9,7 @@ import Data.Array (mapMaybe, head)
 import Emo8.Types (Position, Sprite)
 import Emo8.Data.Sprite (incrementFrame)
 import Data.Maybe (Maybe(..))
-import Data.Gun (Gun, updateGun)
+import Revoked.Data.Gun (Gun, updateGun)
 
 data Goal =    
     NextLevel { pos :: Position, sprite :: Sprite } |

@@ -7,7 +7,7 @@ import Prelude
 import Revoked.Assets.Sprites as S
 import Revoked.Constants (healthPackBonusHealth)
 import Revoked.Data.Goal (Goal(..), mapToHealth)
-import Data.Gun (defaultShotgunGun)
+import Revoked.Data.Gun (defaultShotgunGun)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 

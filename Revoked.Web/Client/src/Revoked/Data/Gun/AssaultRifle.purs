@@ -1,4 +1,4 @@
-module Data.Gun.AssaultRifle where
+module Revoked.Data.Gun.AssaultRifle where
 
 import Prelude
 
@@ -7,7 +7,7 @@ import Emo8.Types (Position, Sprite, Deg)
 import Revoked.Constants (assaultRifleShotCooldown, assaultRifleMagazineSize)
 import Revoked.Data.Bullet (Bullet)
 import Emo8.Data.Sprite (incrementFrame)
-import Data.Gun.Helper (GunAppear(..), appearBasedOnAngle, newGunBullet)
+import Revoked.Data.Gun.Helper (GunAppear(..), appearBasedOnAngle, newGunBullet)
 
 type AssaultRifle = { 
     pos :: Position,

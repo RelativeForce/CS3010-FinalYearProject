@@ -4,7 +4,7 @@ module Test.Revoked.Data.Gun.AssaultRifle.CanFire (
 
 import Prelude
 
-import Data.Gun.AssaultRifle (AssaultRifle, canFire, defaultAssaultRifle)
+import Revoked.Data.Gun.AssaultRifle (AssaultRifle, canFire, defaultAssaultRifle)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 
