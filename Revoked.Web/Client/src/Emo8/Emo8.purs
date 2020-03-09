@@ -17,7 +17,7 @@ import Emo8.Parse (RawMap, parseTileMap)
 import Emo8.Class.Game (class Game, draw, update)
 import Emo8.Class.Input (poll)
 import Emo8.Constants (canvasId)
-import Emo8.Input (mkInputSig)
+import Emo8.Input (toInputSignal)
 import Emo8.Interpreter.Draw (runDraw)
 import Emo8.Interpreter.Update (runUpdate)
 import Emo8.Types (Asset, MonitorSize, ScaledImage)
@@ -41,7 +41,7 @@ mainLoop state asset ms canvas = do
   -- Parse input and build draw context
   let
     drawContext = { ctx: context, mapData: asset.mapData, monitorSize: ms } 
-    inputSignal = mkInputSig $ sampleOn frameSig keyTouchInputSig
+    inputSignal = toInputSignal $ sampleOn frameSig keyTouchInputSig
 
   -- Update game state
   stateSignal <- foldEffect (\input -> runUpdate <<< (update asset input)) state inputSignal 

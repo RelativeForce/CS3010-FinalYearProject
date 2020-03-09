@@ -1,7 +1,7 @@
 module Emo8.Input( 
   Input, 
   InputFlags,
-  mkInputSig, 
+  toInputSignal, 
   mapToCharacter
 ) where
 
@@ -12,6 +12,7 @@ import Signal (Signal, foldp)
 import Emo8.Data.KeyInput (KeyInput(..))
 import Emo8.Data.PressState (PressState(..), updatePressState)
 
+-- | Represents the on/off state of each key input 
 type InputFlags = {
   isSpace :: Boolean,
   isEnter :: Boolean,
@@ -44,12 +45,17 @@ type InputFlags = {
   isZ :: Boolean
 }
 
+-- | Represents the three states of each input.
+-- | - `active` is the `InputFlags` where keys that were pressed or has been held since the last input poll are `true`.
+-- | - `catched` is the `InputFlags` where keys that were pressed since the last input poll are `true`.
+-- | - `released` is the `InputFlags` where keys that were released since the last input poll are `true`.
 type Input = { 
   active :: InputFlags,
   catched :: InputFlags, 
   released :: InputFlags
 }
 
+-- | Represents the `PressState` of each input key.
 -- NOTE: update after sampleOn not to miss catch and release state
 type InputState = { 
   spaceState :: PressState,
@@ -83,12 +89,23 @@ type InputState = {
   zState :: PressState
 }
 
-mkInputSig :: Signal KeyInput -> Signal Input
-mkInputSig = map mkInput <<< mkInputStateSig
+-- | Maps a `KeyInput` signal to a `Input` signal.
+toInputSignal :: Signal KeyInput -> Signal Input
+toInputSignal = map toInput <<< (foldp updateInputState initialInputState)
 
-mkInputStateSig :: Signal KeyInput -> Signal InputState
-mkInputStateSig = foldp updateInputState initialInputState
+-- | Converts a `InputState` into an `Input`
+toInput :: InputState -> Input
+toInput s = { 
+  active : toSubInput s isActive,
+  catched: toSubInput s isCatched, 
+  released: toSubInput s isReleased
+}
+  where
+    isActive ps = ps == Catched || ps == Pressed
+    isCatched ps = ps == Catched
+    isReleased ps = ps == Released
 
+-- | The initial state of the key inputs which is `Unpressed`.
 initialInputState :: InputState
 initialInputState = { 
   spaceState: Unpressed,
@@ -122,6 +139,7 @@ initialInputState = {
   zState : Unpressed
 }
 
+-- | Merges a `InputState` with a `KeyInput` into a new `InputState`
 updateInputState :: KeyInput -> InputState -> InputState
 updateInputState (KeyInput i) s = { 
   spaceState: updatePressState i.isSpace s.spaceState,
@@ -155,8 +173,9 @@ updateInputState (KeyInput i) s = {
   zState : updatePressState i.isZ s.zState
 }
 
-mkSubInput :: InputState -> (PressState -> Boolean) -> InputFlags
-mkSubInput s f = {
+-- | Parses the given `InputState` for each key using a given check function into `InputFlags`.
+toSubInput :: InputState -> (PressState -> Boolean) -> InputFlags
+toSubInput s f = {
   isSpace: f s.spaceState,
   isEnter: f s.enterState,
   isBackspace: f s.backspaceState,
@@ -188,17 +207,9 @@ mkSubInput s f = {
   isZ : f s.zState
 }
 
-mkInput :: InputState -> Input
-mkInput s = { 
-  active : mkSubInput s isActive,
-  catched: mkSubInput s isCatched, 
-  released: mkSubInput s isReleased
-}
-  where
-    isActive ps = ps == Catched || ps == Pressed
-    isCatched ps = ps == Catched
-    isReleased ps = ps == Released
-
+-- | Maps a input into a single character string. The characters are checked in alphabetical 
+-- | order meaning that if `A` and `H` are both active then "A" will be returned. If none 
+-- | are active then empty string is returned.
 mapToCharacter :: Input -> String
 mapToCharacter i = 
   if i.active.isA 
