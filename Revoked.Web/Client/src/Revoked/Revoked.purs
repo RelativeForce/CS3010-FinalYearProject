@@ -23,7 +23,7 @@ import Revoked.States.StateIds as S
 import Revoked.Assets.AssetMapper (emojiToImage)
 import Revoked.Helper (formatDifference)
 import Data.Draw (drawHealth)
-import Levels (allRawLevels)
+import Revoked.Levels (allRawLevels)
 import Revoked.Draw (drawScrollMap, drawUsername, drawScore, drawPlayerShotCount)
 import Revoked.States.Play (PlayState, updatePlay, initialPlayState)
 import Revoked.States.Victory (VictoryState, updateVictory, initialVictoryState)

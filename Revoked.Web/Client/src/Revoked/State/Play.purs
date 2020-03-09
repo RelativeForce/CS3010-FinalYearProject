@@ -22,7 +22,7 @@ import Emo8.FFI.AudioController (AudioContext, newAudioContext)
 import Emo8.Input (Input)
 import Emo8.Types (MapId, Score, StateId, Asset)
 import Data.Helper (isDead)
-import Levels (enemies, goals, levelCount, startPosition)
+import Revoked.Levels (enemies, goals, levelCount, startPosition)
 import Revoked.Helper (adjustMonitorDistance, formatDifference, enemyToParticle)
 
 type PlayState = { 

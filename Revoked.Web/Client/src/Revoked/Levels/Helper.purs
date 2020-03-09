@@ -1,4 +1,4 @@
-module Levels.Helper where
+module Revoked.Levels.Helper where
 
 import Prelude
 

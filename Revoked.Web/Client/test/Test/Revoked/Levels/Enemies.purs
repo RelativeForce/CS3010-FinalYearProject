@@ -4,7 +4,7 @@ module Test.Revoked.Levels.Enemies (
 
 import Prelude
 
-import Levels (enemies, levelCount)
+import Revoked.Levels (enemies, levelCount)
 import Test.Helper (equalLength)
 import Test.Unit (TestSuite, suite, test)
 

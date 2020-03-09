@@ -486,8 +486,8 @@
 /Revoked.Web/Client/output/Test.Revoked.Data.Player.UpdatePosition
 /Revoked.Web/Client/output/Revoked.Assets.AssetIds
 /Revoked.Web/Client/output/Revoked.Assets.Images
-/Revoked.Web/Client/output/Levels.Level01
-/Revoked.Web/Client/output/Levels
+/Revoked.Web/Client/output/Revoked.Levels.Level01
+/Revoked.Web/Client/output/Revoked.Levels
 /Revoked.Web/Client/output/Revoked.Assets.AssetMapper
 /Revoked.Web/Client/output/Emo8.FFI.ServerIO
 /Revoked.Web/Client/output/Data.HighScores
@@ -583,8 +583,8 @@
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.AssaultRifleRight.Sprite
 /Revoked.Web/Client/output/Data.Gun.Helper
 /Revoked.Web/Client/output/Data.Gun.AssaultRifle
-/Revoked.Web/Client/output/Levels.Level02
-/Revoked.Web/Client/output/Levels.Helper
+/Revoked.Web/Client/output/Revoked.Levels.Level02
+/Revoked.Web/Client/output/Revoked.Levels.Helper
 /Revoked.Web/Client/output/Data.Helper
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.HealthPack.Sprite
 /Revoked.Web/Client/output/Data.Enemy.Drone
@@ -594,7 +594,7 @@
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.Blaster.Sprite
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.DroneExplosion.Sprite
 /Revoked.Web/Client/output/Data.Particle.Explosion
-/Revoked.Web/Client/output/Levels.Level03
+/Revoked.Web/Client/output/Revoked.Levels.Level03
 /Revoked.Web/Client/output/Data.Enemy.BigBertha
 /Revoked.Web/Client/output/Data.Enemy.BigBertha.CannonPhase
 /Revoked.Web/Client/output/Data.Enemy.BigBertha.Helper

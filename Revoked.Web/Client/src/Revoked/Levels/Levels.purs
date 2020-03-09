@@ -1,12 +1,12 @@
-module Levels where
+module Revoked.Levels where
 
 import Data.Enemy (Enemy)
 import Data.Goal (Goal)
 import Emo8.Parse (RawMap)
 import Emo8.Types (MapId, Position)
-import Levels.Level01 as L1
-import Levels.Level02 as L2
-import Levels.Level03 as L3
+import Revoked.Levels.Level01 as L1
+import Revoked.Levels.Level02 as L2
+import Revoked.Levels.Level03 as L3
 
 enemies :: MapId -> Array Enemy
 enemies mapId = 
