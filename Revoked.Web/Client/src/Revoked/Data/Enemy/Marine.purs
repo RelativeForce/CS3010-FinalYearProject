@@ -2,7 +2,7 @@ module Data.Enemy.Marine where
 
 import Prelude
 
-import Assets.Sprites as S
+import Revoked.Assets.Sprites as S
 import Collision (adjustX)
 import Constants (marineWalkSpeed, gravity, marineAgroRange)
 import Class.Object (size)

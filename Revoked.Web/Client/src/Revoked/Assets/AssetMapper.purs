@@ -1,6 +1,6 @@
-module Assets.AssetMapper where
+module Revoked.Assets.AssetMapper where
   
-import Assets.Images as I
+import Revoked.Assets.Images as I
 import Data.Maybe (Maybe(..))
 import Emo8.Types (ScaledImage)
 

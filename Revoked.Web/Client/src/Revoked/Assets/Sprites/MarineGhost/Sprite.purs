@@ -1,17 +1,17 @@
-module Assets.Sprites.MarineGhost.Sprite where
+module Revoked.Assets.Sprites.MarineGhost.Sprite where
 
 import Emo8.Types (Sprite)
-import Assets.Sprites.MarineGhost.Frame0 (frame0Data)
-import Assets.Sprites.MarineGhost.Frame1 (frame1Data)
-import Assets.Sprites.MarineGhost.Frame2 (frame2Data)
-import Assets.Sprites.MarineGhost.Frame3 (frame3Data)
-import Assets.Sprites.MarineGhost.Frame4 (frame4Data)
-import Assets.Sprites.MarineGhost.Frame5 (frame5Data)
-import Assets.Sprites.MarineGhost.Frame6 (frame6Data)
-import Assets.Sprites.MarineGhost.Frame7 (frame7Data)
-import Assets.Sprites.MarineGhost.Frame8 (frame8Data)
-import Assets.Sprites.MarineGhost.Frame9 (frame9Data)
-import Assets.AssetIds as Id
+import Revoked.Assets.Sprites.MarineGhost.Frame0 (frame0Data)
+import Revoked.Assets.Sprites.MarineGhost.Frame1 (frame1Data)
+import Revoked.Assets.Sprites.MarineGhost.Frame2 (frame2Data)
+import Revoked.Assets.Sprites.MarineGhost.Frame3 (frame3Data)
+import Revoked.Assets.Sprites.MarineGhost.Frame4 (frame4Data)
+import Revoked.Assets.Sprites.MarineGhost.Frame5 (frame5Data)
+import Revoked.Assets.Sprites.MarineGhost.Frame6 (frame6Data)
+import Revoked.Assets.Sprites.MarineGhost.Frame7 (frame7Data)
+import Revoked.Assets.Sprites.MarineGhost.Frame8 (frame8Data)
+import Revoked.Assets.Sprites.MarineGhost.Frame9 (frame9Data)
+import Revoked.Assets.AssetIds as Id
 
 marineGhost:: Sprite
 marineGhost = {

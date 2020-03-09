@@ -1,8 +1,8 @@
-module Assets.Sprites.Ladder.Sprite where
+module Revoked.Assets.Sprites.Ladder.Sprite where
 
 import Emo8.Types (Sprite)
-import Assets.Sprites.Ladder.Frame0 (frame0Data)
-import Assets.AssetIds as Id
+import Revoked.Assets.Sprites.Ladder.Frame0 (frame0Data)
+import Revoked.Assets.AssetIds as Id
 
 ladder :: Sprite
 ladder = {

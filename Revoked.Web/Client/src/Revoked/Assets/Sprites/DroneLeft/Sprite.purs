@@ -1,11 +1,11 @@
-module Assets.Sprites.DroneLeft.Sprite where
+module Revoked.Assets.Sprites.DroneLeft.Sprite where
 
 import Emo8.Types (Sprite)
-import Assets.Sprites.DroneLeft.Frame0 (frame0Data)
-import Assets.Sprites.DroneLeft.Frame1 (frame1Data)
-import Assets.Sprites.DroneLeft.Frame2 (frame2Data)
-import Assets.Sprites.DroneLeft.Frame3 (frame3Data)
-import Assets.AssetIds as Id
+import Revoked.Assets.Sprites.DroneLeft.Frame0 (frame0Data)
+import Revoked.Assets.Sprites.DroneLeft.Frame1 (frame1Data)
+import Revoked.Assets.Sprites.DroneLeft.Frame2 (frame2Data)
+import Revoked.Assets.Sprites.DroneLeft.Frame3 (frame3Data)
+import Revoked.Assets.AssetIds as Id
 
 droneLeft :: Sprite
 droneLeft = {

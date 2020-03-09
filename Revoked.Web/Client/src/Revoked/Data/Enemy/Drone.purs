@@ -2,7 +2,7 @@ module Data.Enemy.Drone where
 
 import Prelude
 
-import Assets.Sprites as S
+import Revoked.Assets.Sprites as S
 import Class.Object (size)
 import Data.Bullet (Bullet)
 import Data.Gun (Gun, defaultBlasterGun, fireAndUpdateGun, setPositionAndRotation)

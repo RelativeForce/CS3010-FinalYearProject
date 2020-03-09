@@ -2,7 +2,7 @@ module Data.Enemy.BigBertha where
 
 import Prelude
 
-import Assets.Sprites as S
+import Revoked.Assets.Sprites as S
 import Class.Object (class Object)
 import Data.Bullet (Bullet)
 import Data.Player (Player)

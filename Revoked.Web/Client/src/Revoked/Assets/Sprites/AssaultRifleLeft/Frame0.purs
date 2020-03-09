@@ -1,4 +1,4 @@
-module Assets.Sprites.AssaultRifleLeft.Frame0 where
+module Revoked.Assets.Sprites.AssaultRifleLeft.Frame0 where
 
 frame0Data :: String
 frame0Data = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAJCAYAAABT2S4KAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAB0SURBVDhPY2QgEuysCvsPZTK4t60iWh8hwASlBwwwgXyG7DtyQERExH8QhnJRACGz4SFASCE1gx0ZoEQBCSFBUYghA0ZCls6/h3BjotI/KAtVHBdAV79ixQqMUCTJAbQABOMVV+IiB2ALAaIBpQ7Brp+BAQCwMC9PU9A9VQAAAABJRU5ErkJggg=="

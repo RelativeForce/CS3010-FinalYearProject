@@ -1,4 +1,4 @@
-module Assets.Audio where
+module Revoked.Assets.Audio where
 
 import Prelude
 

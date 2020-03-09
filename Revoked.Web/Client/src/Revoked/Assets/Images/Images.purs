@@ -1,21 +1,21 @@
-module Assets.Images where
+module Revoked.Assets.Images where
 
 import Emo8.Types (ScaledImage)
-import Assets.AssetIds as Id
-import Assets.Images.TitleScreen (titleScreenData)
-import Assets.Images.PlayBackground (playBackgroundData)
-import Assets.Images.ToxicWaste (toxicWasteData)
-import Assets.Images.GrassTop (grassTopData)
-import Assets.Images.GrassLeftCorner (grassLeftCornerData)
-import Assets.Images.GrassRightCorner (grassRightCornerData)
-import Assets.Images.GrassLeft (grassLeftData)
-import Assets.Images.GrassRight (grassRightData)
-import Assets.Images.GrassCenter (grassCenterData)
-import Assets.Images.GameOverScreen (gameOverScreenData)
-import Assets.Images.VictoryScreen (victoryScreenData)
-import Assets.Images.LeaderboardScreen (leaderboardScreenData)
-import Assets.Images.InstructionsScreen (instructionsScreenData)
-import Assets.Images.Heart (heartData)
+import Revoked.Assets.AssetIds as Id
+import Revoked.Assets.Images.TitleScreen (titleScreenData)
+import Revoked.Assets.Images.PlayBackground (playBackgroundData)
+import Revoked.Assets.Images.ToxicWaste (toxicWasteData)
+import Revoked.Assets.Images.GrassTop (grassTopData)
+import Revoked.Assets.Images.GrassLeftCorner (grassLeftCornerData)
+import Revoked.Assets.Images.GrassRightCorner (grassRightCornerData)
+import Revoked.Assets.Images.GrassLeft (grassLeftData)
+import Revoked.Assets.Images.GrassRight (grassRightData)
+import Revoked.Assets.Images.GrassCenter (grassCenterData)
+import Revoked.Assets.Images.GameOverScreen (gameOverScreenData)
+import Revoked.Assets.Images.VictoryScreen (victoryScreenData)
+import Revoked.Assets.Images.LeaderboardScreen (leaderboardScreenData)
+import Revoked.Assets.Images.InstructionsScreen (instructionsScreenData)
+import Revoked.Assets.Images.Heart (heartData)
 
 titleScreen :: ScaledImage
 titleScreen = {

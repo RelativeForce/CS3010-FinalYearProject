@@ -5,7 +5,7 @@ import Prelude
 import Class.Object (class ObjectDraw, class Object)
 import Emo8.Action.Draw (drawSprite)
 import Data.Int (floor)
-import Assets.Sprites as S
+import Revoked.Assets.Sprites as S
 import Emo8.Types (Position, Sprite, Velocity, Deg)
 import Emo8.Data.Sprite (incrementFrame)
 import Emo8.Utils (xComponent, yComponent)

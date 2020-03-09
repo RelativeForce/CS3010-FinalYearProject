@@ -4,7 +4,7 @@ module Test.Revoked.Data.Goal.MapToHealth (
 
 import Prelude
 
-import Assets.Sprites as S
+import Revoked.Assets.Sprites as S
 import Constants (healthPackBonusHealth)
 import Data.Goal (Goal(..), mapToHealth)
 import Data.Gun (defaultShotgunGun)

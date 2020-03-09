@@ -2,7 +2,7 @@ module Data.Gun.Blaster where
 
 import Prelude
 
-import Assets.Sprites as S
+import Revoked.Assets.Sprites as S
 import Emo8.Types (Position, Sprite, Deg)
 import Data.Bullet (Bullet)
 import Emo8.Data.Sprite (incrementFrame)

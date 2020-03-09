@@ -2,7 +2,7 @@ module States.Play where
 
 import Prelude
 
-import Assets.Audio as A
+import Revoked.Assets.Audio as A
 import States.StateIds as S
 import Class.Object (scroll, damage, heal)
 import Collision (isCollideMapWalls, isCollideMapHazards)

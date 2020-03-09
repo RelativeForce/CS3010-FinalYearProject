@@ -17,9 +17,9 @@ import Emo8.Types (MapId)
 
 import Class.Object (draw, health)
 import Constants (scoreDisplayX, hudDisplayY, timeDisplayX, hudTextHeight, levelDisplayX, healthScoreMultipler)
-import Assets.Images as I
+import Revoked.Assets.Images as I
 import States.StateIds as S
-import Assets.AssetMapper (emojiToImage)
+import Revoked.Assets.AssetMapper (emojiToImage)
 import Helper (formatDifference)
 import Data.Draw (drawHealth)
 import Levels (allRawLevels)

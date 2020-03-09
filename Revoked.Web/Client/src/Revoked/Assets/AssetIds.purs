@@ -1,4 +1,4 @@
-module Assets.AssetIds where
+module Revoked.Assets.AssetIds where
 
 import Emo8.Types (AssetId)
 

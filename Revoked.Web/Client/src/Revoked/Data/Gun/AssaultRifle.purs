@@ -2,7 +2,7 @@ module Data.Gun.AssaultRifle where
 
 import Prelude
 
-import Assets.Sprites as S
+import Revoked.Assets.Sprites as S
 import Emo8.Types (Position, Sprite, Deg)
 import Constants (assaultRifleShotCooldown, assaultRifleMagazineSize)
 import Data.Bullet (Bullet)

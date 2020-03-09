@@ -5,7 +5,7 @@ import Prelude
 import Constants (ghostAscentSpeed)
 import Emo8.Types (Position, Sprite, X, Size)
 import Emo8.Data.Sprite (incrementFrame)
-import Assets.Sprites as S
+import Revoked.Assets.Sprites as S
 
 type Ghost = { 
     pos :: Position,

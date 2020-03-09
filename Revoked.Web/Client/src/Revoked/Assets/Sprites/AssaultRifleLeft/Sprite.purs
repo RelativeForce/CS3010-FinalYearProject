@@ -1,8 +1,8 @@
-module Assets.Sprites.AssaultRifleLeft.Sprite where
+module Revoked.Assets.Sprites.AssaultRifleLeft.Sprite where
 
 import Emo8.Types (Sprite)
-import Assets.Sprites.AssaultRifleLeft.Frame0 (frame0Data)
-import Assets.AssetIds as Id
+import Revoked.Assets.Sprites.AssaultRifleLeft.Frame0 (frame0Data)
+import Revoked.Assets.AssetIds as Id
 
 assaultRifleLeft ::  Sprite
 assaultRifleLeft = {

@@ -2,7 +2,7 @@ module Data.Draw where
 
 import Prelude
 
-import Assets.Images as I
+import Revoked.Assets.Images as I
 import Class.Object (class MortalEntity, position, size, health)
 import Data.Array ((..))
 import Data.Traversable (for_)

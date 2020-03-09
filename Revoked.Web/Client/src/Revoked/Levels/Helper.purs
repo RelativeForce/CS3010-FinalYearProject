@@ -2,7 +2,7 @@ module Levels.Helper where
 
 import Prelude
 
-import Assets.Sprites as S
+import Revoked.Assets.Sprites as S
 import Constants (mapTileSize)
 import Data.Goal (Goal(..))
 import Data.Gun (defaultShotgunGun, defaultAssaultRifleGun)

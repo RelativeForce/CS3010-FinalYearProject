@@ -1,8 +1,8 @@
-module Assets.Sprites.Blaster.Sprite where
+module Revoked.Assets.Sprites.Blaster.Sprite where
 
 import Emo8.Types (Sprite)
-import Assets.Sprites.Blaster.Frame0 (frame0Data)
-import Assets.AssetIds as Id
+import Revoked.Assets.Sprites.Blaster.Frame0 (frame0Data)
+import Revoked.Assets.AssetIds as Id
 
 blaster :: Sprite
 blaster = {

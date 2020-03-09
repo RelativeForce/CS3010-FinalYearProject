@@ -4,7 +4,7 @@ import Prelude
 
 import Emo8.Types (Position, Sprite, X, Size)
 import Emo8.Data.Sprite (incrementFrame, isLastFrame)
-import Assets.Sprites as S
+import Revoked.Assets.Sprites as S
 
 type Explosion = { 
     pos :: Position,

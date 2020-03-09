@@ -1,10 +1,10 @@
-module Assets.Sprites.MarineRight.Sprite where
+module Revoked.Assets.Sprites.MarineRight.Sprite where
 
 import Emo8.Types (Sprite)
-import Assets.Sprites.MarineRight.Frame0 (frame0Data)
-import Assets.Sprites.MarineRight.Frame1 (frame1Data)
-import Assets.Sprites.MarineRight.Frame2 (frame2Data)
-import Assets.AssetIds as Id
+import Revoked.Assets.Sprites.MarineRight.Frame0 (frame0Data)
+import Revoked.Assets.Sprites.MarineRight.Frame1 (frame1Data)
+import Revoked.Assets.Sprites.MarineRight.Frame2 (frame2Data)
+import Revoked.Assets.AssetIds as Id
 
 marineRight :: Sprite
 marineRight = {
