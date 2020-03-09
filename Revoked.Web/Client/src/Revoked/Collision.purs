@@ -1,4 +1,4 @@
-module Collision where
+module Revoked.Collision where
 
 import Prelude
 

@@ -3,7 +3,7 @@ module Test.Revoked.Collision.AdjustX (
 ) where
 
 import Prelude
-import Collision (adjustX)
+import Revoked.Collision (adjustX)
 import Emo8.Types (Width)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)

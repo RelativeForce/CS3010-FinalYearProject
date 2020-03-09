@@ -6,7 +6,7 @@ import Revoked.Assets.Audio as A
 import States.StateIds as S
 import Emo8.Class.Object (scroll)
 import Revoked.Class.MortalEntity (damage, heal)
-import Collision (isCollideMapWalls, isCollideMapHazards)
+import Revoked.Collision (isCollideMapWalls, isCollideMapHazards)
 import Emo8.Collision (isCollideObjects, isOutOfWorld)
 import Data.Array (any, filter, partition, concatMap, length)
 import Data.Bullet (Bullet, updateBullet)
