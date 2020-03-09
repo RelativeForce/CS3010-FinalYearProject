@@ -10,7 +10,7 @@ import Data.Enemy (Enemy(..))
 import Data.Formatter.DateTime as F
 import Data.Int (floor)
 import Data.Particle (Particle, defaultGhostParticle, defaultExplosionParticle)
-import Data.Player (Player(..))
+import Revoked.Data.Player (Player(..))
 import Data.Time.Duration (Milliseconds(..))
 import Emo8.Constants (defaultMonitorSize)
 import Emo8.Types (X)

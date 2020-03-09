@@ -3,7 +3,7 @@ module Test.Revoked.Data.Player.AdjustVelocity (
 ) where
 
 import Prelude
-import Data.Player (adjustVelocity, Player(..), initialPlayer)
+import Revoked.Data.Player (adjustVelocity, Player(..), initialPlayer)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 import Emo8.Types (Y, X, Velocity)

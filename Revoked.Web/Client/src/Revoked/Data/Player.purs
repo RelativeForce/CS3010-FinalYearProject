@@ -1,4 +1,4 @@
-module Data.Player where
+module Revoked.Data.Player where
 
 import Prelude
 

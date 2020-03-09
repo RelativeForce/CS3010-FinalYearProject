@@ -5,7 +5,7 @@ module Test.Revoked.Data.Enemy.BigBertha.Helper.PlayerInRange (
 import Prelude
 
 import Data.Enemy.BigBertha.Helper (playerInRange)
-import Data.Player (initialPlayer)
+import Revoked.Data.Player (initialPlayer)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 

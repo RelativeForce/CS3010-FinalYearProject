@@ -5,7 +5,7 @@ import Prelude
 import Revoked.Assets.Sprites as S
 import Emo8.Class.Object (class Object)
 import Data.Bullet (Bullet)
-import Data.Player (Player)
+import Revoked.Data.Player (Player)
 import Emo8.Types (Position, X, Sprite)
 import Emo8.Data.Sprite (incrementFrame)
 import Revoked.Constants (bigBerthaImmunityCooldown)

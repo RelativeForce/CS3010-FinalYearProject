@@ -6,7 +6,7 @@ import Prelude
 
 import Revoked.Constants (bigBerthaSpeed, bigBerthaMortarPhaseShotCooldown)
 import Data.Enemy.BigBertha.MortarPhase (MortarPhase, updateMortarPhase, defaultMortarPhase)
-import Data.Player (initialPlayer)
+import Revoked.Data.Player (initialPlayer)
 import Data.Int (floor)
 import Data.Array (length)
 import Emo8.Types (Position)

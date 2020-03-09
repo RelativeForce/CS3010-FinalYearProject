@@ -4,7 +4,7 @@ module Test.Revoked.Data.Player.NewPlayerSprite (
 
 import Prelude
 import Revoked.Assets.Sprites as S
-import Data.Player (newPlayerSprite, PlayerAppear(..))
+import Revoked.Data.Player (newPlayerSprite, PlayerAppear(..))
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 

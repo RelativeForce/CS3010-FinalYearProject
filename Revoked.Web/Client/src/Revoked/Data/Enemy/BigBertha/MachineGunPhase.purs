@@ -9,7 +9,7 @@ import Revoked.Constants (
     bigBerthaMachineGunPhaseMaxOffset
 )
 import Data.Bullet (Bullet, newLinearBullet, toBulletVelocity)
-import Data.Player (Player(..))
+import Revoked.Data.Player (Player(..))
 import Emo8.Types (Position, Velocity, Deg, X)
 import Emo8.Utils (angle, vectorTo)
 import Data.Enemy.BigBertha.Helper (

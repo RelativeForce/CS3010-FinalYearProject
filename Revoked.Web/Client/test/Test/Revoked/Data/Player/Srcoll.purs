@@ -4,7 +4,7 @@ module Test.Revoked.Data.Player.Srcoll (
 
 import Prelude
 import Emo8.Class.Object (scroll)
-import Data.Player (Player(..),  initialPlayer)
+import Revoked.Data.Player (Player(..),  initialPlayer)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 

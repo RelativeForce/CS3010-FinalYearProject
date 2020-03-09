@@ -4,7 +4,7 @@ import Prelude
 
 import Revoked.Constants (gravity, mapTileSize, bigBerthaSpeed, bigBerthaMortarPhaseShotCooldown)
 import Data.Bullet (Bullet, newArcBullet)
-import Data.Player (Player(..))
+import Revoked.Data.Player (Player(..))
 import Data.Int (toNumber)
 import Emo8.Types (Position, Velocity, X)
 import Math (sqrt, abs)

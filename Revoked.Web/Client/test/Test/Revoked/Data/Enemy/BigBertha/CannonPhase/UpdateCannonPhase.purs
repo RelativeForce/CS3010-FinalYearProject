@@ -6,7 +6,7 @@ import Prelude
 
 import Revoked.Constants (bigBerthaSpeed, bigBerthaCannonPhaseShotCooldown)
 import Data.Enemy.BigBertha.CannonPhase (CannonPhase, updateCannonPhase, defaultCannonPhase)
-import Data.Player (initialPlayer)
+import Revoked.Data.Player (initialPlayer)
 import Data.Int (floor)
 import Data.Array (length)
 import Emo8.Types (Position)

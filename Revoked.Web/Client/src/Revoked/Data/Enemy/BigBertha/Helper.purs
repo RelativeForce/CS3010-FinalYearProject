@@ -2,7 +2,7 @@ module Data.Enemy.BigBertha.Helper where
 
 import Prelude
 import Revoked.Constants (bigBerthaSpeed, bigBerthaAgroRange)
-import Data.Player (Player(..))
+import Revoked.Data.Player (Player(..))
 import Data.Int (floor)
 import Emo8.Types (Position, Velocity, X)
 import Emo8.Utils (distanceBetween)

@@ -6,7 +6,7 @@ import Prelude
 
 import Revoked.Constants (bigBerthaSpeed, bigBerthaMachineGunPhaseShotCooldown)
 import Data.Enemy.BigBertha.MachineGunPhase (MachineGunPhase, updateMachineGunPhase, defaultMachineGunPhase)
-import Data.Player (initialPlayer)
+import Revoked.Data.Player (initialPlayer)
 import Data.Int (floor)
 import Data.Array (length)
 import Emo8.Types (Position)

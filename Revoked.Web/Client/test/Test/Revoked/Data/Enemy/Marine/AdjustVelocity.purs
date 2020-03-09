@@ -6,7 +6,7 @@ import Prelude
 
 import Revoked.Constants (marineWalkSpeed)
 import Data.Enemy.Marine (adjustVelocity, defaultMarine)
-import Data.Player (Player, initialPlayer)
+import Revoked.Data.Player (Player, initialPlayer)
 import Emo8.Types (Position)
 import Test.Helper (equalTolerance)
 import Test.Unit (TestSuite, suite, test)

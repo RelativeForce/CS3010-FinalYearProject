@@ -3,7 +3,7 @@ module Test.Revoked.Data.Player.Collide (
 ) where
 
 import Prelude
-import Data.Player (collide, initialPlayer, Player(..))
+import Revoked.Data.Player (collide, initialPlayer, Player(..))
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 import Emo8.Types (Position)

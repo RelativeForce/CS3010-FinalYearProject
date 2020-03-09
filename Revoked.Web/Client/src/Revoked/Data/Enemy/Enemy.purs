@@ -9,7 +9,7 @@ import Data.Enemy.BigBertha (BigBertha, defaultBigBertha, updateBigBertha, damag
 import Data.Enemy.Drone (Drone, defaultDrone, updateDrone)
 import Data.Enemy.Marine (Marine, updateMarine, defaultMarine)
 import Data.Draw (drawHealth)
-import Data.Player (Player)
+import Revoked.Data.Player (Player)
 import Emo8.Action.Draw (drawSprite)
 import Emo8.Types (Position, Score, X)
 

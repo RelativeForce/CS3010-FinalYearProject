@@ -4,7 +4,7 @@ module Test.Revoked.Data.Player.UpdateAppear (
 
 import Prelude
 import Emo8.Input (Input)
-import Data.Player (updateAppear, PlayerAppear(..))
+import Revoked.Data.Player (updateAppear, PlayerAppear(..))
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 

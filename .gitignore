@@ -278,7 +278,7 @@
 /Revoked.Web/Client/output/Data.Ord.Unsafe
 /Revoked.Web/Client/output/Data.Ordering
 /Revoked.Web/Client/output/Data.Particle
-/Revoked.Web/Client/output/Data.Player
+/Revoked.Web/Client/output/Revoked.Data.Player
 /Revoked.Web/Client/output/Data.Predicate
 /Revoked.Web/Client/output/Data.Profunctor
 /Revoked.Web/Client/output/Data.Profunctor.Choice
@@ -585,7 +585,7 @@
 /Revoked.Web/Client/output/Data.Gun.AssaultRifle
 /Revoked.Web/Client/output/Revoked.Levels.Level02
 /Revoked.Web/Client/output/Revoked.Levels.Helper
-/Revoked.Web/Client/output/Data.Helper
+/Revoked.Web/Client/output/Revoked.Data.Helper
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.HealthPack.Sprite
 /Revoked.Web/Client/output/Data.Enemy.Drone
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.DroneLeft.Sprite

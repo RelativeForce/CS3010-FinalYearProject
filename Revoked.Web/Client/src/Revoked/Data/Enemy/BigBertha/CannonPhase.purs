@@ -4,7 +4,7 @@ import Prelude
 
 import Revoked.Constants (bigBerthaSpeed, bigBerthaCannonPhaseShotCooldown)
 import Data.Bullet (Bullet, newLinearBullet, toBulletVelocity)
-import Data.Player (Player)
+import Revoked.Data.Player (Player)
 import Emo8.Types (Position, Velocity, Deg, X)
 import Data.Enemy.BigBertha.Helper (
     playerInRange, 
