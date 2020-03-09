@@ -136,7 +136,7 @@
 /Revoked.Web/Client/output/Data.Boolean
 /Revoked.Web/Client/output/Data.BooleanAlgebra
 /Revoked.Web/Client/output/Data.Bounded
-/Revoked.Web/Client/output/Data.Bullet
+/Revoked.Web/Client/output/Revoked.Data.Bullet
 /Revoked.Web/Client/output/Data.CatList
 /Revoked.Web/Client/output/Data.CatQueue
 /Revoked.Web/Client/output/Data.Char

@@ -5,7 +5,7 @@ import Prelude
 import Revoked.Assets.Sprites as S
 import Emo8.Types (Position, Sprite, Deg)
 import Revoked.Constants (assaultRifleShotCooldown, assaultRifleMagazineSize)
-import Data.Bullet (Bullet)
+import Revoked.Data.Bullet (Bullet)
 import Emo8.Data.Sprite (incrementFrame)
 import Data.Gun.Helper (GunAppear(..), appearBasedOnAngle, newGunBullet)
 

@@ -1,4 +1,4 @@
-module Data.Bullet where
+module Revoked.Data.Bullet where
 
 import Prelude
 

@@ -4,7 +4,7 @@ import Prelude
 
 import Revoked.Assets.Sprites as S
 import Emo8.Types (Position, Sprite, Deg)
-import Data.Bullet (Bullet)
+import Revoked.Data.Bullet (Bullet)
 import Emo8.Data.Sprite (incrementFrame)
 import Data.Gun.Helper (newGunBullet)
 import Revoked.Constants (blasterShotCooldown)

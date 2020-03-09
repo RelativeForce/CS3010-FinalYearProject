@@ -4,7 +4,7 @@ import Prelude
 
 import Revoked.Assets.Sprites as S
 import Emo8.Class.Object (size)
-import Data.Bullet (Bullet)
+import Revoked.Data.Bullet (Bullet)
 import Data.Gun (Gun, defaultBlasterGun, fireAndUpdateGun, setPositionAndRotation)
 import Revoked.Data.Player (Player(..))
 import Revoked.Constants (droneAccuracyDeviationIncrements, droneSpeed)

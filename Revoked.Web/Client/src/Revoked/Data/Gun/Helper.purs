@@ -3,7 +3,7 @@ module Data.Gun.Helper where
 import Prelude
 
 import Emo8.Types (Position, Deg, Size)
-import Data.Bullet (Bullet, newLinearBullet, toBulletVelocity)
+import Revoked.Data.Bullet (Bullet, newLinearBullet, toBulletVelocity)
 import Emo8.Utils (xComponent, yComponent, inLeftDirection)
 import Data.Int (toNumber, floor)
 

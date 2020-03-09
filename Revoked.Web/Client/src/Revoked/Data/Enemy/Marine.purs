@@ -6,7 +6,7 @@ import Revoked.Assets.Sprites as S
 import Revoked.Collision (adjustX)
 import Revoked.Constants (marineWalkSpeed, gravity, marineAgroRange)
 import Emo8.Class.Object (size)
-import Data.Bullet (Bullet)
+import Revoked.Data.Bullet (Bullet)
 import Data.Gun (Gun, defaultPistolGun, fireAndUpdateGun, setPositionAndRotation, updateGun)
 import Revoked.Data.Player (Player(..))
 import Emo8.Data.Sprite (incrementFrame)

@@ -18,7 +18,7 @@ import Emo8.Class.Object (class Object, class ObjectDraw, position, scroll, draw
 import Revoked.Class.MortalEntity (class MortalEntity)
 import Revoked.Collision (adjustY, adjustX)
 import Revoked.Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor, defaultPlayerHealth)
-import Data.Bullet (Bullet)
+import Revoked.Data.Bullet (Bullet)
 import Data.Gun (Gun, defaultPistolGun, fireAndUpdateGun, setPositionAndRotation, shotCount, updateGun, isInfinite)
 
 data Player = Player { 
