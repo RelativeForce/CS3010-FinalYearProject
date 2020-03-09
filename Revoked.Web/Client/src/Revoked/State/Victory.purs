@@ -15,6 +15,7 @@ import Revoked.States.StateIds as S
 import Revoked.Constants (maxUsernameLength)
 import Revoked.Helper (formatDateTime)
 
+-- | Represents the victory state
 type VictoryState = {
     username :: Array String,
     score :: Int,
@@ -24,12 +25,16 @@ type VictoryState = {
     isWaiting :: Boolean
 }
 
+-- | The number of frames between each user character input (prevents one key 
+-- | tap from filling in all three user name characters)
 inputInterval :: Int
 inputInterval = 15
 
+-- | Update the given `VictoryState` based on the user input.
 updateVictory :: Input -> VictoryState -> Update (Either VictoryState StateId)
 updateVictory input s = do
     let 
+        -- Update the username
         isMaxUsernameLength = maxUsernameLength == length s.username
         backSpacePressed = input.active.isBackspace
         character = mapToCharacter input
@@ -43,11 +48,15 @@ updateVictory input s = do
                 Just username -> username
                 Nothing -> s.username
             _, _ -> s.username 
+
+        -- Update the input interval
         newInputInterval = if addCharacter || removeCharacter 
             then inputInterval 
             else if s.inputInterval == 0 
                 then 0 
                 else s.inputInterval - 1
+        
+        -- Build the score request
         request = {
             username: joinWith "" s.username,
             score: s.score,
@@ -55,10 +64,12 @@ updateVictory input s = do
             end: formatDateTime s.end
         }
 
+    -- Store the player score if the user name has been inputted
     result <- if s.isWaiting || (enterPressed && isMaxUsernameLength) 
         then do storePlayerScore request 
         else pure $ Left "AllowInput"
 
+    -- Parse the response
     let
         isWaiting = case result of
             Left "Waiting" -> true
@@ -67,8 +78,9 @@ updateVictory input s = do
             Right response -> response
             _-> false
         
+    -- Update the state based on the submission success
     pure $ case submissionSuccess of
-        true -> Right S.titleScreenId
+        true -> Right S.titleScreenId -- To title screen
         false -> Left $ s {
             username = newUsername,
             inputInterval = newInputInterval,

@@ -18,12 +18,12 @@ isAudioStreamPlayingTests =
 
             let 
                 src = "testAudioFile"
-                controller = (newAudioContext "test") { audioStreams = [ { src: src } ] }
+                context = (newAudioContext "test") { audioStreams = [ { src: src } ] }
                 checkerSucceeds = true
                 
                 expectedResult = true
 
-            result <- liftEffect $ _isAudioStreamPlaying (mockAudioChecker checkerSucceeds) controller src
+            result <- liftEffect $ _isAudioStreamPlaying (mockAudioChecker checkerSucceeds) context src
 
             equal expectedResult result
 
@@ -31,12 +31,12 @@ isAudioStreamPlayingTests =
 
             let 
                 src = "testAudioFile"
-                controller = (newAudioContext "test") { audioStreams = [ { src: src } ] }
+                context = (newAudioContext "test") { audioStreams = [ { src: src } ] }
                 checkerSucceeds = false
                         
                 expectedResult = false
 
-            result <- liftEffect $ _isAudioStreamPlaying (mockAudioChecker checkerSucceeds) controller src
+            result <- liftEffect $ _isAudioStreamPlaying (mockAudioChecker checkerSucceeds) context src
 
             equal expectedResult $ result
 

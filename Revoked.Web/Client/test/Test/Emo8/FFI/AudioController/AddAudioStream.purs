@@ -20,12 +20,12 @@ addAudioStreamTests =
 
             let
                 testSrc = "testAudioFile"
-                controller = newAudioContext "test" 
+                context = newAudioContext "test" 
             
-            resultController <- liftEffect $ _addAudioStream mockAudioPlayer controller testSrc
+            resultContext <- liftEffect $ _addAudioStream mockAudioPlayer context testSrc
 
             let 
-                resultSrc = case head resultController.audioStreams of 
+                resultSrc = case head resultContext.audioStreams of 
                     Nothing -> "error"
                     Just as -> as.src
 
@@ -34,11 +34,11 @@ addAudioStreamTests =
 
             let 
                 testSrc = "testAudioFile"
-                controller = newAudioContext "test"
+                context = newAudioContext "test"
 
-            resultController <- liftEffect $ _addAudioStream mockAudioPlayerThatFails controller testSrc
+            resultContext <- liftEffect $ _addAudioStream mockAudioPlayerThatFails context testSrc
 
-            equal Nothing $ head resultController.audioStreams     
+            equal Nothing $ head resultContext.audioStreams     
 
 mockAudioPlayer :: Boolean -> String -> Effect (Maybe AudioStream)
 mockAudioPlayer _ src = pure $ Just { src: src }

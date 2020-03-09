@@ -1,4 +1,4 @@
-module Emo8( emo8, mkAsset ) where
+module Emo8( emo8, buildAsset ) where
 
 import Prelude
 
@@ -65,9 +65,9 @@ setCanvasDimensions canvas ms = do
   setCanvasWidth canvas $ toNumber ms.width
   setCanvasHeight canvas $ toNumber ms.height
   
--- | Make asset data from raw maps.
--- | If there are unparsable strings, exception raised when executing javascript.
-mkAsset :: Array RawMap -> (String -> Maybe ScaledImage) -> Effect Asset
-mkAsset rawMaps mapper = do
-    ms <- orErrMsg $ traverse (\m -> parseTileMap m mapper) rawMaps 
+-- | Build asset data from raw maps using a given emoji mapping function. If there are 
+-- | unparsable strings, exception raised when executing javascript.
+buildAsset :: Array RawMap -> (String -> Maybe ScaledImage) -> Effect Asset
+buildAsset rawMaps mapper = do
+    ms <- orErrMsg $ traverse (parseTileMap mapper) rawMaps 
     pure { mapData: ms }

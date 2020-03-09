@@ -6,7 +6,7 @@ import Data.Either (Either(..))
 import Data.Foldable (traverse_)
 import Effect (Effect)
 
-import Emo8 (emo8, mkAsset)
+import Emo8 (emo8, buildAsset)
 import Emo8.Constants (defaultMonitorSize)
 import Emo8.Action.Draw (drawScaledImage, drawText)
 import Emo8.Action.Update (nowDateTime)
@@ -188,7 +188,7 @@ main :: Effect Unit
 main = do
 
     -- Parse the raw levels into game Asset
-    asset <- mkAsset allRawLevels emojiToImage
+    asset <- buildAsset allRawLevels emojiToImage
 
     -- Launch the game 
     emo8 initialState asset defaultMonitorSize

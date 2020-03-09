@@ -20,24 +20,24 @@ stopAudioStreamTests =
 
             let 
                 src = "testAudioFile"
-                controller = (newAudioContext "test") { audioStreams = [ { src: src } ] }
+                context = (newAudioContext "test") { audioStreams = [ { src: src } ] }
                 stopperSucceeds = true
                     
-            result <- liftEffect $ _stopAudioStream (mockAudioStopper stopperSucceeds) controller src
+            resultContext <- liftEffect $ _stopAudioStream (mockAudioStopper stopperSucceeds) context src
 
-            equal 0 $ length result.audioStreams
+            equal 0 $ length resultContext.audioStreams
 
         test "SHOULD not remove audio stream WHEN stopper fails" do
 
             let 
                 src = "testAudioFile"
-                controller = (newAudioContext "test") { audioStreams = [ { src: src } ] }
+                context = (newAudioContext "test") { audioStreams = [ { src: src } ] }
                 stopperSucceeds = false
                 
-            result <- liftEffect $ _stopAudioStream (mockAudioStopper stopperSucceeds) controller src
+            resultContext <- liftEffect $ _stopAudioStream (mockAudioStopper stopperSucceeds) context src
 
             let 
-                resultSrc = case head result.audioStreams of 
+                resultSrc = case head resultContext.audioStreams of 
                     Nothing -> "error"
                     Just as -> as.src 
 
