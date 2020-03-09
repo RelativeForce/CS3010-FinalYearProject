@@ -4,7 +4,7 @@ module Test.Engine.Emo8.Interpreter (
 
 import Test.Unit (TestSuite)
 
-import Test.Emo8.Interpreter.Update (updateTests)
+import Test.Engine.Emo8.Interpreter.Update (updateTests)
 
 interpreterTests :: TestSuite
 interpreterTests = do

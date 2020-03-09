@@ -1,4 +1,4 @@
-module Test.Emo8.Interpreter.Update.EncodePlayerScore ( 
+module Test.Engine.Emo8.Interpreter.Update.EncodePlayerScore ( 
     encodePlayerScoreTests 
 ) where
 
@@ -9,7 +9,7 @@ import Emo8.Interpreter.Update (encodePlayerScore)
 
 encodePlayerScoreTests :: TestSuite
 encodePlayerScoreTests =
-    suite "Revoked.Data.HighScores - encodePlayerScore" do
+    suite "Engine.Emo8.Interpreter.Update - encodePlayerScore" do
         test "SHOULD stringify player score" do
             let 
                 score = {
