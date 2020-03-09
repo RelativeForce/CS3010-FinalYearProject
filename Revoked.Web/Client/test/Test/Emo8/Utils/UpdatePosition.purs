@@ -1,4 +1,4 @@
-module Test.Engine.Emo8.Utils.UpdatePosition ( 
+module Test.Emo8.Utils.UpdatePosition ( 
     updatePositionTests 
 ) where
 
@@ -11,7 +11,7 @@ import Emo8.Utils (updatePosition)
 
 updatePositionTests :: TestSuite
 updatePositionTests =
-    suite "Engine.Emo8.Utils - updatePosition" do
+    suite "Emo8.Utils - updatePosition" do
         test "SHOULD combine speed and position" do
             let 
                 velocity = { xSpeed: 5.0, ySpeed: 3.0 }

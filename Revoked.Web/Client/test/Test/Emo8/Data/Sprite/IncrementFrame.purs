@@ -1,4 +1,4 @@
-module Test.Engine.Emo8.Data.Sprite.IncrementFrame ( 
+module Test.Emo8.Data.Sprite.IncrementFrame ( 
     incrementFrameTests 
 ) where
 
@@ -12,7 +12,7 @@ import Emo8.Data.Sprite (incrementFrame)
 
 incrementFrameTests :: TestSuite
 incrementFrameTests =
-    suite "Engine.Emo8.Data.Sprite - incrementFrame" do
+    suite "Emo8.Data.Sprite - incrementFrame" do
         test "SHOULD increment to frame 1 WHEN on frame 0 of 10 at 1 frame per second" do
             let 
                 result = incrementFrame $ buildSprite 0 10 1

@@ -1,4 +1,4 @@
-module Test.Engine.Emo8.FFI.AudioController.AddAudioStream ( 
+module Test.Emo8.FFI.AudioController.AddAudioStream ( 
     addAudioStreamTests 
 ) where
 
@@ -15,7 +15,7 @@ import Emo8.FFI.AudioController (_addAudioStream, newAudioContext, AudioStream)
 
 addAudioStreamTests :: TestSuite
 addAudioStreamTests =
-    suite "Engine.Emo8.FFI.AudioController - _addAudioStream" do
+    suite "Emo8.FFI.AudioController - _addAudioStream" do
         test "SHOULD add audio stream WHEN no audio streams are active" do
 
             let

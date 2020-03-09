@@ -1,4 +1,4 @@
-module Test.Engine.Emo8.Data.Sprite.ToScaledImage ( 
+module Test.Emo8.Data.Sprite.ToScaledImage ( 
     toScaledImageTests 
 ) where
 
@@ -12,7 +12,7 @@ import Emo8.Data.Sprite (toScaledImage)
 
 toScaledImageTests :: TestSuite
 toScaledImageTests =
-    suite "Engine.Emo8.Data.Sprite - toScaledImage" do
+    suite "Emo8.Data.Sprite - toScaledImage" do
         test "SHOULD convert to ScaledImage correctly WHEN width is 387 AND height is 457 AND id is 5" do
             let 
                 expectedWidth = 387

@@ -1,4 +1,4 @@
-module Test.Engine.Emo8.Parse.MapSum( 
+module Test.Emo8.Parse.MapSum( 
     mapSumTests
 ) where
 
@@ -11,7 +11,7 @@ import Emo8.Parse (RawMap(..))
 
 mapSumTests :: TestSuite
 mapSumTests =
-    suite "Engine.Emo8.Parse - mapSum" do
+    suite "Emo8.Parse - mapSum" do
         test "SHOULD concat mapA to mapB" do
             equal mapSum $ mapA <> mapB
 

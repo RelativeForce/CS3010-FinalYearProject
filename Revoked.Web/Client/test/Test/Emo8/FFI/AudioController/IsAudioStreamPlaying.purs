@@ -1,4 +1,4 @@
-module Test.Engine.Emo8.FFI.AudioController.IsAudioStreamPlaying ( 
+module Test.Emo8.FFI.AudioController.IsAudioStreamPlaying ( 
     isAudioStreamPlayingTests 
 ) where
 
@@ -13,7 +13,7 @@ import Emo8.FFI.AudioController (_isAudioStreamPlaying, newAudioContext, AudioSt
 
 isAudioStreamPlayingTests :: TestSuite
 isAudioStreamPlayingTests = 
-    suite "Engine.Emo8.FFI.AudioController - _isAudioStreamPlaying" do
+    suite "Emo8.FFI.AudioController - _isAudioStreamPlaying" do
         test "SHOULD return playing WHEN checker determines audio stream is playing" do
 
             let 

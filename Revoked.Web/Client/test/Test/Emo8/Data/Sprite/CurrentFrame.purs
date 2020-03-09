@@ -1,4 +1,4 @@
-module Test.Engine.Emo8.Data.Sprite.CurrentFrame ( 
+module Test.Emo8.Data.Sprite.CurrentFrame ( 
     currentFrameTests 
 ) where
 
@@ -12,7 +12,7 @@ import Emo8.Data.Sprite (currentFrame)
 
 currentFrameTests :: TestSuite
 currentFrameTests =
-    suite "Engine.Emo8.Data.Sprite - currentFrame" do
+    suite "Emo8.Data.Sprite - currentFrame" do
         test "SHOULD return frame 0 WHEN sprite is on index 1" do
             equal "frame0" $ currentFrame $ buildSprite 1
         test "SHOULD return frame 1 WHEN sprite is on index 2" do

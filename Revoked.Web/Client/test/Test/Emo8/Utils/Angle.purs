@@ -1,4 +1,4 @@
-module Test.Engine.Emo8.Utils.Angle ( 
+module Test.Emo8.Utils.Angle ( 
     angleTests 
 ) where
 
@@ -11,7 +11,7 @@ import Emo8.Utils (angle)
 
 angleTests :: TestSuite
 angleTests =
-    suite "Engine.Emo8.Utils - angle" do
+    suite "Emo8.Utils - angle" do
         test "ASSERT angle = 45 WHEN x = 5, y = 5" do
             let 
                 vector = { x: 5, y: 5 }

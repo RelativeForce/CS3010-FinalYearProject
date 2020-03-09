@@ -1,4 +1,4 @@
-module Test.Engine.Emo8.FFI.AudioController.StopAudioStream ( 
+module Test.Emo8.FFI.AudioController.StopAudioStream ( 
     stopAudioStreamTests 
 ) where
 
@@ -15,7 +15,7 @@ import Emo8.FFI.AudioController (_stopAudioStream, newAudioContext, AudioStream)
 
 stopAudioStreamTests :: TestSuite
 stopAudioStreamTests =
-    suite "Engine.Emo8.FFI.AudioController - _stopAudioStream" do
+    suite "Emo8.FFI.AudioController - _stopAudioStream" do
         test "SHOULD stop AND remove audio stream WHEN the stream is active" do
 
             let 
