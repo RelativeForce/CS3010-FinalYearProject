@@ -5,7 +5,7 @@ module Test.Revoked.Data.Goal.MapToGun (
 import Prelude
 
 import Revoked.Assets.Sprites as S
-import Data.Goal (Goal(..), mapToGun)
+import Revoked.Data.Goal (Goal(..), mapToGun)
 import Data.Maybe (Maybe(..))
 import Data.Gun (defaultShotgunGun)
 import Test.Unit (TestSuite, suite, test)

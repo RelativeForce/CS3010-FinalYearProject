@@ -4,7 +4,7 @@ import Prelude
 import Emo8.Types (Position)
 import Data.Enemy (Enemy, defaultMarineEnemy, defaultBigBerthaEnemy)
 import Emo8.Parse (RawMap(..))
-import Data.Goal (Goal)
+import Revoked.Data.Goal (Goal)
 import Revoked.Levels.Helper (toTilePosition, shotgunSpawn, assaultRifleSpawn, ladderSection, chopper, healthPack, drone)
 
 mapData :: RawMap

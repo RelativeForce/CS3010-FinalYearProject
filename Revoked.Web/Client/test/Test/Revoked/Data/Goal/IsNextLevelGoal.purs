@@ -5,7 +5,7 @@ module Test.Revoked.Data.Goal.IsNextLevelGoal (
 import Prelude
 
 import Revoked.Assets.Sprites as S
-import Data.Goal (Goal(..), isNextLevelGoal)
+import Revoked.Data.Goal (Goal(..), isNextLevelGoal)
 import Data.Gun (defaultShotgunGun)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)

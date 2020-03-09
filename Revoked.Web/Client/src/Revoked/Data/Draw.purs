@@ -1,4 +1,4 @@
-module Data.Draw where
+module Revoked.Data.Draw where
 
 import Prelude
 

@@ -1,4 +1,4 @@
-module Data.Goal where
+module Revoked.Data.Goal where
 
 import Prelude
 import Emo8.Class.Object (class ObjectDraw, class Object, position, draw, size, scroll)

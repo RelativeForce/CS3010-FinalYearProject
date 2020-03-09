@@ -498,7 +498,7 @@
 /Revoked.Web/Client/output/Test.Revoked.Data.Player.AdjustX
 /Revoked.Web/Client/output/Test.Revoked.Helper
 /Revoked.Web/Client/output/Test.Revoked.Helper.AdjustPlayerPos
-/Revoked.Web/Client/output/Data.Goal
+/Revoked.Web/Client/output/Revoked.Data.Goal
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.Chopper.Sprite
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.Ladder.Sprite
 /Revoked.Web/Client/output/Test.Revoked.Data.Player.Srcoll
@@ -647,7 +647,7 @@
 /Revoked.Web/Client/output/Test.Revoked.Data.Gun.IsInfinite
 /Revoked.Web/Client/output/Test.Revoked.Data.Gun.ShotCount
 /Revoked.Web/Client/output/Revoked.Draw
-/Revoked.Web/Client/output/Data.Draw
+/Revoked.Web/Client/output/Revoked.Data.Draw
 /Revoked.Web/Client/output/Test.Revoked.Data.Gun.AssaultRifle
 /Revoked.Web/Client/output/Test.Revoked.Data.Gun.AssaultRifle.CanFire
 /Revoked.Web/Client/output/Test.Revoked.Data.Gun.Blaster

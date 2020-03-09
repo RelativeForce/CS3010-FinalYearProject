@@ -1,7 +1,7 @@
 module Revoked.Levels where
 
 import Data.Enemy (Enemy)
-import Data.Goal (Goal)
+import Revoked.Data.Goal (Goal)
 import Emo8.Parse (RawMap)
 import Emo8.Types (MapId, Position)
 import Revoked.Levels.Level01 as L1

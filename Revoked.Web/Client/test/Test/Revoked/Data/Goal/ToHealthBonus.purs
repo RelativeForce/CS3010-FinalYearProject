@@ -5,7 +5,7 @@ module Test.Revoked.Data.Goal.ToHealthBonus (
 import Prelude
 
 import Revoked.Assets.Sprites as S
-import Data.Goal (Goal(..), toHealthBonus)
+import Revoked.Data.Goal (Goal(..), toHealthBonus)
 import Revoked.Constants (healthPackBonusHealth)
 import Data.Gun (defaultShotgunGun)
 import Test.Unit (TestSuite, suite, test)
