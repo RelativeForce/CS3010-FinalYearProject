@@ -4,7 +4,7 @@ module Test.Revoked.Data.Enemy.Marine.PlayerInRange (
 
 import Prelude
 
-import Constants (marineAgroRange)
+import Revoked.Constants (marineAgroRange)
 import Data.Enemy.Marine (playerInRange, defaultMarine)
 import Data.Int (floor)
 import Data.Player (Player, initialPlayer)

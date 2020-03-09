@@ -2,7 +2,7 @@ module Data.Particle.Ghost where
 
 import Prelude
 
-import Constants (ghostAscentSpeed)
+import Revoked.Constants (ghostAscentSpeed)
 import Emo8.Types (Position, Sprite, X, Size)
 import Emo8.Data.Sprite (incrementFrame)
 import Revoked.Assets.Sprites as S

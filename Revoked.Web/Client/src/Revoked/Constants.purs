@@ -1,4 +1,4 @@
-module Constants where
+module Revoked.Constants where
   
 import Prelude
 import Emo8.Types (AssetId, Size, TextHeight, X, Y)

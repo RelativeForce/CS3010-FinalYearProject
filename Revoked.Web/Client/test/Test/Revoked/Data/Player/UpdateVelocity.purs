@@ -6,7 +6,7 @@ import Prelude
 import Emo8.Input (Input)
 import Data.Player (updateVelocity)
 import Test.Unit (TestSuite, suite, test)
-import Constants (gravity, frictionFactor, maxPlayerSpeedY, maxPlayerSpeedX)
+import Revoked.Constants (gravity, frictionFactor, maxPlayerSpeedY, maxPlayerSpeedX)
 import Test.Unit.Assert (equal)
 
 updateVelocityTests :: TestSuite

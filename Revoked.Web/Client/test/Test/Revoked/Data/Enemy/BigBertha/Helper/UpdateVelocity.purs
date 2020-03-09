@@ -5,7 +5,7 @@ module Test.Revoked.Data.Enemy.BigBertha.Helper.UpdateVelocity (
 import Prelude
 
 import Data.Enemy.BigBertha.Helper (updateVelocity)
-import Constants (bigBerthaSpeed)
+import Revoked.Constants (bigBerthaSpeed)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 

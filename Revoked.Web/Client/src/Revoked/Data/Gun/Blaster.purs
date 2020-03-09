@@ -7,7 +7,7 @@ import Emo8.Types (Position, Sprite, Deg)
 import Data.Bullet (Bullet)
 import Emo8.Data.Sprite (incrementFrame)
 import Data.Gun.Helper (newGunBullet)
-import Constants (blasterShotCooldown)
+import Revoked.Constants (blasterShotCooldown)
 
 type Blaster = { 
     pos :: Position,

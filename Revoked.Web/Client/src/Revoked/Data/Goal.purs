@@ -3,7 +3,7 @@ module Data.Goal where
 import Prelude
 import Emo8.Class.Object (class ObjectDraw, class Object, position, draw, size, scroll)
 import Emo8.Action.Draw (drawSprite)
-import Constants (healthPackBonusHealth)
+import Revoked.Constants (healthPackBonusHealth)
 import Data.Foldable (sum)
 import Data.Array (mapMaybe, head)
 import Emo8.Types (Position, Sprite)

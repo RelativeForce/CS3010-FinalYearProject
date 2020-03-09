@@ -4,7 +4,7 @@ module Test.Revoked.Data.Enemy.BigBertha.CannonPhase.UpdateCannonPhase (
 
 import Prelude
 
-import Constants (bigBerthaSpeed, bigBerthaCannonPhaseShotCooldown)
+import Revoked.Constants (bigBerthaSpeed, bigBerthaCannonPhaseShotCooldown)
 import Data.Enemy.BigBertha.CannonPhase (CannonPhase, updateCannonPhase, defaultCannonPhase)
 import Data.Player (initialPlayer)
 import Data.Int (floor)

@@ -4,7 +4,7 @@ module Test.Revoked.Data.Bullet.UpdateBullet (
 
 import Prelude
 
-import Constants (bulletSpeed, gravity)
+import Revoked.Constants (bulletSpeed, gravity)
 import Emo8.Types (Velocity)
 import Emo8.Class.Object (position)
 import Data.Int (floor)

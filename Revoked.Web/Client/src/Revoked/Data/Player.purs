@@ -17,7 +17,7 @@ import Revoked.Assets.Sprites as S
 import Emo8.Class.Object (class Object, class ObjectDraw, position, scroll, draw, size)
 import Revoked.Class.MortalEntity (class MortalEntity)
 import Collision (adjustY, adjustX)
-import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor, defaultPlayerHealth)
+import Revoked.Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor, defaultPlayerHealth)
 import Data.Bullet (Bullet)
 import Data.Gun (Gun, defaultPistolGun, fireAndUpdateGun, setPositionAndRotation, shotCount, updateGun, isInfinite)
 

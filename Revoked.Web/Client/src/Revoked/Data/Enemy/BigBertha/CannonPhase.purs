@@ -2,7 +2,7 @@ module Data.Enemy.BigBertha.CannonPhase where
 
 import Prelude
 
-import Constants (bigBerthaSpeed, bigBerthaCannonPhaseShotCooldown)
+import Revoked.Constants (bigBerthaSpeed, bigBerthaCannonPhaseShotCooldown)
 import Data.Bullet (Bullet, newLinearBullet, toBulletVelocity)
 import Data.Player (Player)
 import Emo8.Types (Position, Velocity, Deg, X)

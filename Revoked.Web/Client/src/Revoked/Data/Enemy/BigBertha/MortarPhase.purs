@@ -2,7 +2,7 @@ module Data.Enemy.BigBertha.MortarPhase where
 
 import Prelude
 
-import Constants (gravity, mapTileSize, bigBerthaSpeed, bigBerthaMortarPhaseShotCooldown)
+import Revoked.Constants (gravity, mapTileSize, bigBerthaSpeed, bigBerthaMortarPhaseShotCooldown)
 import Data.Bullet (Bullet, newArcBullet)
 import Data.Player (Player(..))
 import Data.Int (toNumber)

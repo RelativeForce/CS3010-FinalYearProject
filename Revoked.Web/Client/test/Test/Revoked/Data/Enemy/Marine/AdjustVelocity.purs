@@ -4,7 +4,7 @@ module Test.Revoked.Data.Enemy.Marine.AdjustVelocity (
 
 import Prelude
 
-import Constants (marineWalkSpeed)
+import Revoked.Constants (marineWalkSpeed)
 import Data.Enemy.Marine (adjustVelocity, defaultMarine)
 import Data.Player (Player, initialPlayer)
 import Emo8.Types (Position)

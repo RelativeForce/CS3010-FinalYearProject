@@ -2,7 +2,7 @@ module Data.Enemy.BigBertha.MachineGunPhase where
 
 import Prelude
 
-import Constants (
+import Revoked.Constants (
     bigBerthaSpeed, 
     bigBerthaMachineGunPhaseShotCooldown, 
     bigBerthaMachineGunPhaseAccuracyDeviationIncrements, 

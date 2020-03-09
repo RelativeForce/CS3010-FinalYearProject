@@ -3,7 +3,7 @@ module States.Victory where
 import Prelude
 
 import States.StateIds as S
-import Constants (maxUsernameLength)
+import Revoked.Constants (maxUsernameLength)
 import Data.Array (length, init)
 import Data.Either (Either(..))
 import Data.String (joinWith)

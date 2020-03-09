@@ -5,7 +5,7 @@ module Test.Revoked.Data.Enemy.BigBertha.TransitionPhase (
 import Prelude
 
 import Data.Enemy.BigBertha (transitionPhase, phase2, phase1, defaultBigBertha, Phase(..))
-import Constants (bigBerthaImmunityCooldown)
+import Revoked.Constants (bigBerthaImmunityCooldown)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 

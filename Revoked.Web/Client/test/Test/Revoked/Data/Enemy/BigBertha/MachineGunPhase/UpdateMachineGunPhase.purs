@@ -4,7 +4,7 @@ module Test.Revoked.Data.Enemy.BigBertha.MachineGunPhase.UpdateMachineGunPhase (
 
 import Prelude
 
-import Constants (bigBerthaSpeed, bigBerthaMachineGunPhaseShotCooldown)
+import Revoked.Constants (bigBerthaSpeed, bigBerthaMachineGunPhaseShotCooldown)
 import Data.Enemy.BigBertha.MachineGunPhase (MachineGunPhase, updateMachineGunPhase, defaultMachineGunPhase)
 import Data.Player (initialPlayer)
 import Data.Int (floor)

@@ -3,7 +3,7 @@ module Draw where
 import Prelude
 
 import Emo8.Class.Object (position, size)
-import Constants (mapSizeInt, mapTileInMonitorSize, mapTileSize, mapSize, hudTextHeight)
+import Revoked.Constants (mapSizeInt, mapTileInMonitorSize, mapTileSize, mapSize, hudTextHeight)
 import Data.Array ((!!))
 import Data.Maybe (Maybe(..))
 import Data.Player (Player, playerShotCount, playerGunIsInfinite)

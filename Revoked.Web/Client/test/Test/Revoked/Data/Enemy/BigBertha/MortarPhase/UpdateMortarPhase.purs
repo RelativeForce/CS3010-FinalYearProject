@@ -4,7 +4,7 @@ module Test.Revoked.Data.Enemy.BigBertha.MortarPhase.UpdateMortarPhase (
 
 import Prelude
 
-import Constants (bigBerthaSpeed, bigBerthaMortarPhaseShotCooldown)
+import Revoked.Constants (bigBerthaSpeed, bigBerthaMortarPhaseShotCooldown)
 import Data.Enemy.BigBertha.MortarPhase (MortarPhase, updateMortarPhase, defaultMortarPhase)
 import Data.Player (initialPlayer)
 import Data.Int (floor)

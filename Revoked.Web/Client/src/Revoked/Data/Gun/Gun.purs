@@ -10,7 +10,7 @@ import Data.Gun.Shotgun (Shotgun, defaultShotgun, fireAndUpdateShotgun, setShotg
 import Data.Gun.AssaultRifle (AssaultRifle, defaultAssaultRifle, fireAndUpdateAssaultRifle, setAssaultRiflePositionAndRotation, updateAssaultRifle)
 import Emo8.Action.Draw (drawRotatedSprite)
 import Emo8.Types (Position, Deg)
-import Constants (maxShotCount)
+import Revoked.Constants (maxShotCount)
 
 data Gun = 
     PistolGun Pistol |

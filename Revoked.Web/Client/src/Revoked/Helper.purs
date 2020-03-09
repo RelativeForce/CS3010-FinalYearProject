@@ -3,7 +3,7 @@ module Helper where
 import Prelude
 
 import Emo8.Class.Object (position)
-import Constants (leftBoundry, mapSize, rightBoundry)
+import Revoked.Constants (leftBoundry, mapSize, rightBoundry)
 import Data.DateTime (DateTime, diff)
 import Data.Either (Either(..))
 import Data.Enemy (Enemy(..))

@@ -5,7 +5,7 @@ module Test.Revoked.Data.Gun.ShotCount (
 import Prelude
 
 import Data.Gun (shotCount, defaultPistolGun, defaultShotgunGun, defaultAssaultRifleGun, defaultBlasterGun)
-import Constants (maxShotCount, shotgunMagazineSize, assaultRifleMagazineSize)
+import Revoked.Constants (maxShotCount, shotgunMagazineSize, assaultRifleMagazineSize)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 

@@ -9,7 +9,7 @@ import Revoked.Assets.Sprites as S
 import Emo8.Types (Position, Sprite, Velocity, Deg)
 import Emo8.Data.Sprite (incrementFrame)
 import Emo8.Utils (xComponent, yComponent)
-import Constants (gravity, bulletSpeed)
+import Revoked.Constants (gravity, bulletSpeed)
 
 type BaseBullet = { 
     pos :: Position,
