@@ -14,6 +14,7 @@ import Revoked.Data.Enemy.Marine (Marine, updateMarine, defaultMarine)
 import Revoked.Data.Draw (drawHealth)
 import Revoked.Data.Player (Player)
 
+-- | Wraps the different types of Enemy
 data Enemy = 
     EnemyMarine Marine |
     EnemyDrone Drone |
@@ -54,27 +55,30 @@ instance mortalEntityPlayer :: MortalEntity Enemy where
     heal (EnemyDrone m) healthBonus = EnemyDrone $ m { health = m.health + healthBonus }
     heal (EnemyBigBertha m) healthBonus = EnemyBigBertha $ m { health = m.health + healthBonus }
 
+-- | Maps an enemy into the score rewarded for killing that enemy
 enemyToScore :: Enemy -> Score
-enemyToScore (EnemyMarine s) = 9
-enemyToScore (EnemyDrone s) = 15
-enemyToScore (EnemyBigBertha s) = 100
+enemyToScore (EnemyMarine _) = 9
+enemyToScore (EnemyDrone _) = 15
+enemyToScore (EnemyBigBertha _) = 100
 
+-- | Updates the specified enemy based on the given `Player` and map collision function
 updateEnemy :: (Enemy -> Boolean) -> X -> Player -> Enemy -> { enemy :: Enemy, bullets :: Array Bullet }
-updateEnemy collisionCheck distance playerObject (EnemyMarine marine) = (toEnemyAndBullets (EnemyMarine)) $ updateMarine (toMarineCollision collisionCheck) distance playerObject marine
+updateEnemy collisionCheck distance playerObject (EnemyMarine marine) = (toEnemyAndBullets (EnemyMarine)) $ updateMarine (collisionCheck <<< EnemyMarine) distance playerObject marine
 updateEnemy collisionCheck distance playerObject (EnemyDrone drone) = (toEnemyAndBullets (EnemyDrone)) $ updateDrone distance playerObject drone
 updateEnemy collisionCheck distance playerObject (EnemyBigBertha bigBertha) = (toEnemyAndBullets (EnemyBigBertha)) $ updateBigBertha distance playerObject bigBertha
 
+-- | Builds a `Marine` with a specified `Position` and initial health
 defaultMarineEnemy :: Int -> Position -> Enemy
 defaultMarineEnemy initialHealth pos = EnemyMarine $ defaultMarine initialHealth pos
 
+-- | Builds a `Drone` with a specified `Position` and initial health
 defaultDroneEnemy :: Int -> Position -> Position -> Enemy
 defaultDroneEnemy initialHealth leftLimit rightLimit = EnemyDrone $ defaultDrone initialHealth leftLimit rightLimit
 
+-- | Builds a `BigBertha` with specified left and right limit `Position`s
 defaultBigBerthaEnemy :: Position -> Position -> Enemy
 defaultBigBerthaEnemy leftLimit rightLimit = EnemyBigBertha $ defaultBigBertha leftLimit rightLimit
 
-toMarineCollision :: (Enemy -> Boolean) -> Marine -> Boolean
-toMarineCollision check = check <<< EnemyMarine
-
+-- | Maps any type of Enemy and bullets pair into a Enemy and bullets pair using the specified mapper function. 
 toEnemyAndBullets :: forall a. (a -> Enemy) -> { enemy :: a, bullets :: Array Bullet } -> { enemy :: Enemy, bullets :: Array Bullet }
 toEnemyAndBullets mapper r = { enemy: mapper r.enemy, bullets: r.bullets }

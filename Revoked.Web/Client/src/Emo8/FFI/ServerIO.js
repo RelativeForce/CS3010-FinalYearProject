@@ -34,6 +34,7 @@ exports.sendRequest = function(left){
 
 function send(requestData){
 
+    // Get the anit-forgiery token from the page
     var token = document.getElementsByName("__RequestVerificationToken")[0].value;
 
     $.ajax({
@@ -47,13 +48,16 @@ function send(requestData){
         },
         success : function(result, status, xhr) {
         
+            // Get the request from the local store
             var localRequest = findInLocalStore(requestData);
 
+            // Remove request if it wasn't a success
             if (status !== "success") {
                 removeFromLocalStore(requestData);
                 return;
             }
 
+            // Update the request result in the local store
             localRequest.isWaiting = false;
             if(result || result === []){
                 localRequest.result = result;
@@ -80,7 +84,8 @@ function send(requestData){
             } else {
                 msg = 'Uncaught Error.\n' + jqXHR.responseText;
             }
-
+            
+            // Log the error and remove the request from the store.
             console.log(msg);
             removeFromLocalStore(requestData);
         }

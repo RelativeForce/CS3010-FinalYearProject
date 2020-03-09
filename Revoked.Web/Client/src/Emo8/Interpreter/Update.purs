@@ -15,6 +15,8 @@ import Emo8.Types (PlayerScoreCreateRequestData, PlayerScore, Request)
 import Emo8.FFI.ServerIO (send)
 import Emo8.FFI.AudioController (addAudioStream, isAudioStreamPlaying, stopAudioStream, muteAudio, unmuteAudio)
 
+-- | Interprets a `Update` into an `Effect` where all of the `UpdateF` functors perform their appropraite 
+-- | non-pure functions.
 runUpdate :: forall s. Game s => Update s -> Effect s
 runUpdate = foldFree interpret
   where
@@ -28,6 +30,7 @@ runUpdate = foldFree interpret
     interpret (MuteAudio controller f) = f <$> muteAudio controller
     interpret (UnmuteAudio controller f) = f <$> unmuteAudio controller
 
+-- | Converts a `PlayerScoreCreateRequestData` into a request
 buildSendPlayerScoreRequest :: PlayerScoreCreateRequestData -> Request
 buildSendPlayerScoreRequest ps = {
     json: encodePlayerScore ps,
@@ -35,12 +38,15 @@ buildSendPlayerScoreRequest ps = {
     method: "POST"
 }
 
+-- | Converts `PlayerScoreCreateRequestData` into a Json string
 encodePlayerScore :: PlayerScoreCreateRequestData -> String
 encodePlayerScore ps = stringify $ encodeJson ps
 
+-- | Sends `PlayerScoreCreateRequestData` to the server to be stored.
 sendPlayerScore :: PlayerScoreCreateRequestData -> Effect (Either String Boolean)
 sendPlayerScore ps = send $ buildSendPlayerScoreRequest ps
 
+-- | The request for retrieving the top scores
 getTopScoresRequest :: Request
 getTopScoresRequest = {
     json: "",
@@ -48,6 +54,7 @@ getTopScoresRequest = {
     method: "GET"
 }
 
+-- | Retrieves the top player scores from the server.
 listTopScores :: Effect (Either String (Array PlayerScore))
 listTopScores = send getTopScoresRequest
                 

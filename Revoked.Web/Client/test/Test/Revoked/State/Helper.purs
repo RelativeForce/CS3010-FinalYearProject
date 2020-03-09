@@ -50,6 +50,7 @@ defaultEither = pure (Left "Test")
 cannotCallMessage :: String -> String
 cannotCallMessage s = "Cannot call '" <> s <> "' during this test"
 
+-- | Throws a javascript error and returns the default value specified.
 errorOnCall :: forall a. String -> (Effect a) -> Effect a
 errorOnCall message defaultResult = do
     _ <- throw message

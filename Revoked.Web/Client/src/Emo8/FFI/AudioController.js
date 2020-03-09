@@ -18,23 +18,27 @@ exports.isPlaying = function(audio){
   }
 };
 
-exports.mute = function(controller){
+exports.mute = function(context){
   return function(){
-    for (var index = 0; index < controller.audioStreams.length; index++) {
-      controller.audioStreams[index].mute();
+
+    // Iterate over each of the audio streames in the context and mute them.
+    for (var index = 0; index < context.audioStreams.length; index++) {
+      context.audioStreams[index].mute();
     }
 
-    return controller;
+    return context;
   }
 }
 
-exports.unmute = function(controller){
+exports.unmute = function(context){
   return function(){
-    for (var index = 0; index < controller.audioStreams.length; index++) {
-      controller.audioStreams[index].unmute();
+
+    // Iterate over each of the audio streames in the context and unmute them.
+    for (var index = 0; index < context.audioStreams.length; index++) {
+      context.audioStreams[index].unmute();
     }
 
-    return controller;
+    return context;
   }
 }
 
@@ -44,6 +48,8 @@ exports.play = function(just){
       return function(src){
         return function(){
           try {
+
+            // Construct a new sound and start it playing.
             var audio = new sound(src, muted);
             audio.play();
             return just(audio);

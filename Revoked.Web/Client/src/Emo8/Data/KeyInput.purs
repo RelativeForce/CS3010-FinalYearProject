@@ -6,6 +6,7 @@ import Signal.DOM (keyPressed)
 
 import Emo8.Class.Input (class Input)
 
+-- | Represents all the key board keys supported that can be polled.
 newtype KeyInput = KeyInput { 
   isSpace :: Boolean,
   isEnter :: Boolean,
@@ -132,6 +133,7 @@ instance inputKeyInput :: Input KeyInput where
       where
         mkSignal = keyPressed <<< keyToCodeNum
 
+-- | All the keyboard keys supported
 data Key = 
   Space 
   | Enter
@@ -163,6 +165,7 @@ data Key =
   | Y   
   | Z  
 
+-- | Maps a `Key` to its UniCode character number
 keyToCodeNum :: Key -> Int 
 keyToCodeNum Space = 32
 keyToCodeNum Enter = 13

@@ -27,32 +27,43 @@ isCollide objectSizeA posA objectSizeB posB
         pBby = posB.y
         pBty = posB.y + objectSizeB.height - 1 
 
+-- | If the specified object has collided with any map tiles who's AssetId is contained within the 
+-- | specified list of collidableObjects
 isMapCollide :: Array AssetId -> Asset -> MapId -> Size -> Size -> Position -> Boolean
-isMapCollide collidableObjectIds asset mId mSize size pos = foldr f false [lbE, rbE, ltE, rtE]
+isMapCollide collidableObjectIds asset mapId mSize size pos = foldr f false [lbE, rbE, ltE, rtE]
     where
         lx = pos.x
         rx = pos.x + size.width - 1
         by = pos.y
         ty = pos.y + size.height - 1
+
+        -- Whether the scaled image is collidable 
         f :: Maybe ScaledImage -> Boolean -> Boolean
         f maybeImage b = case maybeImage of
             Just img | elem img.id collidableObjectIds -> true
             _ -> b
-        lbE = getMapTile asset mId (lx / mSize.width) (by / mSize.height)
-        rbE = getMapTile asset mId (rx / mSize.width) (by / mSize.height)
-        ltE = getMapTile asset mId (lx / mSize.width) (ty / mSize.height)
-        rtE = getMapTile asset mId (rx / mSize.width) (ty / mSize.height)
 
+        lbE = getMapTile asset mapId (lx / mSize.width) (by / mSize.height)
+        rbE = getMapTile asset mapId (rx / mSize.width) (by / mSize.height)
+        ltE = getMapTile asset mapId (lx / mSize.width) (ty / mSize.height)
+        rtE = getMapTile asset mapId (rx / mSize.width) (ty / mSize.height)
+
+-- | Retrives a specific tile at a given tile X and Y
 getMapTile :: Asset -> MapId -> X -> Y -> Maybe ScaledImage
-getMapTile ass mId xId yId = maybeTile
+getMapTile asset mapId xId yId = maybeTile
     where 
-        map = case ass.mapData !! mId of
+        -- Retrieve the map
+        map = case asset.mapData !! mapId of
             Nothing -> []
             Just m -> m
+
+        -- Retrive the maybe cell
         maybeAtIndex = reverse map !! yId >>= flip (!!) xId
+
+        -- Parse (Maybe Maybe ScaledImage) into (Maybe ScaledImage)
         maybeTile = case maybeAtIndex of
             Nothing -> Nothing
-            Just e -> e
+            Just img -> img
 
 -- | Collision detection if an object completely protrudes out of monitor
 isOutOfMonitor :: MonitorSize -> Size -> Position -> Boolean
@@ -70,11 +81,14 @@ isMonitorCollide ms objectSize pos
     || pos.y < 0
     || pos.y + objectSize.height - 1 > ms.height
 
+-- | If the object has collided with the monitor
 isCollideWorld :: forall a. Object a => a -> Boolean
 isCollideWorld o = isMonitorCollide defaultMonitorSize (size o) (position o)
 
+-- | If the object is completely out of view
 isOutOfWorld :: forall a. Object a => a -> Boolean
 isOutOfWorld o = isOutOfMonitor defaultMonitorSize (size o) (position o)
 
+-- | If the two Objects specified are colliding using simple box collision.
 isCollideObjects :: forall a b. Object a => Object b => a -> b -> Boolean
 isCollideObjects a b = isCollide (size a) (position a) (size b) (position b)
