@@ -1,9 +1,9 @@
-module States.Play where
+module Revoked.States.Play where
 
 import Prelude
 
 import Revoked.Assets.Audio as A
-import States.StateIds as S
+import Revoked.States.StateIds as S
 import Emo8.Class.Object (scroll)
 import Revoked.Class.MortalEntity (damage, heal)
 import Revoked.Collision (isCollideMapWalls, isCollideMapHazards)

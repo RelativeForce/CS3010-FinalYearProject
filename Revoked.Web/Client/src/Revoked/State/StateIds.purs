@@ -1,4 +1,4 @@
-module States.StateIds where
+module Revoked.States.StateIds where
 
 import Emo8.Types (StateId)
 

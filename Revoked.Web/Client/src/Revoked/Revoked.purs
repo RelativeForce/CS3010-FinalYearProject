@@ -19,15 +19,15 @@ import Emo8.Class.Object (draw)
 import Revoked.Class.MortalEntity (health)
 import Revoked.Constants (scoreDisplayX, hudDisplayY, timeDisplayX, hudTextHeight, levelDisplayX, healthScoreMultipler)
 import Revoked.Assets.Images as I
-import States.StateIds as S
+import Revoked.States.StateIds as S
 import Revoked.Assets.AssetMapper (emojiToImage)
 import Revoked.Helper (formatDifference)
 import Data.Draw (drawHealth)
 import Levels (allRawLevels)
 import Revoked.Draw (drawScrollMap, drawUsername, drawScore, drawPlayerShotCount)
-import States.Play (PlayState, updatePlay, initialPlayState)
-import States.Victory (VictoryState, updateVictory, initialVictoryState)
-import States.Leaderboard (LeaderboardState, updateLeaderboard, initialLeaderboardState)
+import Revoked.States.Play (PlayState, updatePlay, initialPlayState)
+import Revoked.States.Victory (VictoryState, updateVictory, initialVictoryState)
+import Revoked.States.Leaderboard (LeaderboardState, updateLeaderboard, initialLeaderboardState)
 
 -- | The union type for representing the state of the game.
 data State = 

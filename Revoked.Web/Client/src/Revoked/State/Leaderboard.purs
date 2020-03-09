@@ -1,8 +1,8 @@
-module States.Leaderboard where
+module Revoked.States.Leaderboard where
 
 import Prelude
 
-import States.StateIds as S
+import Revoked.States.StateIds as S
 import Data.Either (Either(..))
 import Emo8.Action.Update (Update, listTopScores)
 import Emo8.Input (Input)

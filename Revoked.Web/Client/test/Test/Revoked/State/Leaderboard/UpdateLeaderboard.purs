@@ -8,8 +8,8 @@ import Data.Either (Either(..))
 import Effect.Class(liftEffect)
 import Emo8.Types (PlayerScore)
 import Emo8.Input (Input)
-import States.Leaderboard (updateLeaderboard, initialLeaderboardState)
-import States.StateIds as S
+import Revoked.States.Leaderboard (updateLeaderboard, initialLeaderboardState)
+import Revoked.States.StateIds as S
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 import Emo8.Action.Update (UpdateF(..))
