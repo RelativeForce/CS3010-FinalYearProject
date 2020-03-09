@@ -277,7 +277,7 @@
 /Revoked.Web/Client/output/Data.Ord.Min
 /Revoked.Web/Client/output/Data.Ord.Unsafe
 /Revoked.Web/Client/output/Data.Ordering
-/Revoked.Web/Client/output/Data.Particle
+/Revoked.Web/Client/output/Revoked.Data.Particle
 /Revoked.Web/Client/output/Revoked.Data.Player
 /Revoked.Web/Client/output/Data.Predicate
 /Revoked.Web/Client/output/Data.Profunctor
@@ -566,7 +566,7 @@
 /Revoked.Web/Client/output/Test.Revoked.Data.Enemy.Marine.PlayerInRange
 /Revoked.Web/Client/output/Test.Revoked.Data.Enemy.Marine.VelocityOfMarineBullet
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.MarineGhost.Sprite
-/Revoked.Web/Client/output/Data.Particle.Ghost
+/Revoked.Web/Client/output/Revoked.Data.Particle.Ghost
 /Revoked.Web/Client/output/Data.Gun
 /Revoked.Web/Client/output/Data.Gun.Pistol
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.PistolLeft.Sprite
@@ -593,7 +593,7 @@
 /Revoked.Web/Client/output/Data.Gun.Blaster
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.Blaster.Sprite
 /Revoked.Web/Client/output/Revoked.Assets.Sprites.DroneExplosion.Sprite
-/Revoked.Web/Client/output/Data.Particle.Explosion
+/Revoked.Web/Client/output/Revoked.Data.Particle.Explosion
 /Revoked.Web/Client/output/Revoked.Levels.Level03
 /Revoked.Web/Client/output/Data.Enemy.BigBertha
 /Revoked.Web/Client/output/Data.Enemy.BigBertha.CannonPhase

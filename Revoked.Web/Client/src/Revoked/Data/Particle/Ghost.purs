@@ -1,4 +1,4 @@
-module Data.Particle.Ghost where
+module Revoked.Data.Particle.Ghost where
 
 import Prelude
 

@@ -9,7 +9,7 @@ import Data.Either (Either(..))
 import Data.Enemy (Enemy(..))
 import Data.Formatter.DateTime as F
 import Data.Int (floor)
-import Data.Particle (Particle, defaultGhostParticle, defaultExplosionParticle)
+import Revoked.Data.Particle (Particle, defaultGhostParticle, defaultExplosionParticle)
 import Revoked.Data.Player (Player(..))
 import Data.Time.Duration (Milliseconds(..))
 import Emo8.Constants (defaultMonitorSize)

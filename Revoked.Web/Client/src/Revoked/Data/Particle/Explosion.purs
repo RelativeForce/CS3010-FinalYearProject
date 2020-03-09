@@ -1,4 +1,4 @@
-module Data.Particle.Explosion where
+module Revoked.Data.Particle.Explosion where
 
 import Prelude
 
