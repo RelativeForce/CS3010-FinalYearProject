@@ -21,7 +21,7 @@ import Revoked.Constants (scoreDisplayX, hudDisplayY, timeDisplayX, hudTextHeigh
 import Revoked.Assets.Images as I
 import States.StateIds as S
 import Revoked.Assets.AssetMapper (emojiToImage)
-import Helper (formatDifference)
+import Revoked.Helper (formatDifference)
 import Data.Draw (drawHealth)
 import Levels (allRawLevels)
 import Revoked.Draw (drawScrollMap, drawUsername, drawScore, drawPlayerShotCount)

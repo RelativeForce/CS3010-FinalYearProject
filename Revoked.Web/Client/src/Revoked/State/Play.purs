@@ -23,7 +23,7 @@ import Emo8.Input (Input)
 import Emo8.Types (MapId, Score, StateId, Asset)
 import Data.Helper (isDead)
 import Levels (enemies, goals, levelCount, startPosition)
-import Helper (adjustMonitorDistance, formatDifference, enemyToParticle)
+import Revoked.Helper (adjustMonitorDistance, formatDifference, enemyToParticle)
 
 type PlayState = { 
     distance :: Int, 

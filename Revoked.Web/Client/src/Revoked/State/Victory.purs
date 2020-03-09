@@ -12,7 +12,7 @@ import Emo8.Action.Update (Update, storePlayerScore)
 import Data.DateTime (DateTime)
 import Emo8.Input (Input, mapToCharacter)
 import Emo8.Types (StateId, Score)
-import Helper (formatDateTime)
+import Revoked.Helper (formatDateTime)
 
 type VictoryState = {
     username :: Array String,
