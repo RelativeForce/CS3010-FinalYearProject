@@ -10,12 +10,6 @@ canvasId = "scene"
 fontFamily :: String
 fontFamily = "sans-serif"
 
-maxNoteSize :: Int
-maxNoteSize = 5
-
-targetFramesPerSecond :: Int
-targetFramesPerSecond = 60
-
 defaultMonitorSize :: MonitorSize
 defaultMonitorSize = { 
     width: 1280, 

@@ -1,9 +1,7 @@
 module Emo8.Input( 
   Input, 
   InputFlags,
-  mkInputSig,
-  isCatchAny, 
-  isReleaseAny,
+  mkInputSig, 
   mapToCharacter
 ) where
 
@@ -83,16 +81,6 @@ type InputState = {
   yState :: PressState, 
   zState :: PressState
 }
-
-isCatchAny :: Input -> Boolean
-isCatchAny i
-  = i.catched.isW || i.catched.isS || i.catched.isA || i.catched.isD
-  || i.catched.isSpace || i.catched.isEnter
-
-isReleaseAny :: Input -> Boolean
-isReleaseAny i
-  = i.released.isW || i.released.isS || i.released.isA || i.released.isD
-  || i.released.isSpace || i.released.isEnter
 
 mkInputSig :: Signal KeyInput -> Signal Input
 mkInputSig = map mkInput <<< mkInputStateSig
