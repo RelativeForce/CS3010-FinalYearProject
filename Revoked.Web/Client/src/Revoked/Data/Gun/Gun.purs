@@ -2,7 +2,7 @@ module Data.Gun where
 
 import Prelude
 
-import Class.Object (class ObjectDraw, class Object, position)
+import Emo8.Class.Object (class ObjectDraw, class Object, position)
 import Data.Bullet (Bullet)
 import Data.Gun.Pistol (Pistol, fireAndUpdatePistol, updatePistol, defaultPistol, setPistolPositionAndRotation)
 import Data.Gun.Blaster (Blaster, fireAndUpdateBlaster, updateBlaster, defaultBlaster, setBlasterPositionAndRotation)

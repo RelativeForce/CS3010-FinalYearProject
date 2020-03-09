@@ -2,7 +2,7 @@ module Helper where
 
 import Prelude
 
-import Class.Object (position)
+import Emo8.Class.Object (position)
 import Constants (leftBoundry, mapSize, rightBoundry)
 import Data.DateTime (DateTime, diff)
 import Data.Either (Either(..))

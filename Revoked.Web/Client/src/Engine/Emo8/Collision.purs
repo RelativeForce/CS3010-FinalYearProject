@@ -6,7 +6,7 @@ import Data.Array (reverse, (!!))
 import Data.Foldable (elem, foldr)
 import Data.Maybe (Maybe(..))
 
-import Class.Object (class Object, position, size)
+import Emo8.Class.Object (class Object, position, size)
 import Emo8.Types (Asset, MonitorSize, Size, Position, MapId, ScaledImage, AssetId, X, Y)
 import Emo8.Constants (defaultMonitorSize)
 

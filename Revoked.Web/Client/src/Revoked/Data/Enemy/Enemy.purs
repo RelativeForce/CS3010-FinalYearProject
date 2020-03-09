@@ -2,8 +2,8 @@ module Data.Enemy where
 
 import Prelude
 
-import Class.Object (class ObjectDraw, class Object, position, draw, scroll)
-import Class.MortalEntity (class MortalEntity)
+import Emo8.Class.Object (class ObjectDraw, class Object, position, draw, scroll)
+import Revoked.Class.MortalEntity (class MortalEntity)
 import Data.Bullet (Bullet)
 import Data.Enemy.BigBertha (BigBertha, defaultBigBertha, updateBigBertha, damageBigBertha)
 import Data.Enemy.Drone (Drone, defaultDrone, updateDrone)

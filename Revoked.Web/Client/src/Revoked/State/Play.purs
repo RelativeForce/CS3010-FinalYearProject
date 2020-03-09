@@ -4,8 +4,8 @@ import Prelude
 
 import Revoked.Assets.Audio as A
 import States.StateIds as S
-import Class.Object (scroll)
-import Class.MortalEntity (damage, heal)
+import Emo8.Class.Object (scroll)
+import Revoked.Class.MortalEntity (damage, heal)
 import Collision (isCollideMapWalls, isCollideMapHazards)
 import Emo8.Collision (isCollideObjects, isOutOfWorld)
 import Data.Array (any, filter, partition, concatMap, length)

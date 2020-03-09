@@ -14,8 +14,8 @@ import Emo8.Collision (isCollideWorld)
 import Emo8.Constants (defaultMonitorSize)
 
 import Revoked.Assets.Sprites as S
-import Class.Object (class Object, class ObjectDraw, position, scroll, draw, size)
-import Class.MortalEntity (class MortalEntity)
+import Emo8.Class.Object (class Object, class ObjectDraw, position, scroll, draw, size)
+import Revoked.Class.MortalEntity (class MortalEntity)
 import Collision (adjustY, adjustX)
 import Constants (maxPlayerSpeedX, maxPlayerSpeedY, gravity, frictionFactor, defaultPlayerHealth)
 import Data.Bullet (Bullet)

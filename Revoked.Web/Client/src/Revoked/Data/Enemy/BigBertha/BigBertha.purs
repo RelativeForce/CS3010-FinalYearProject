@@ -3,7 +3,7 @@ module Data.Enemy.BigBertha where
 import Prelude
 
 import Revoked.Assets.Sprites as S
-import Class.Object (class Object)
+import Emo8.Class.Object (class Object)
 import Data.Bullet (Bullet)
 import Data.Player (Player)
 import Emo8.Types (Position, X, Sprite)

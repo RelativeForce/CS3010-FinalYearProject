@@ -1,6 +1,6 @@
-module Class.MortalEntity where
+module Revoked.Class.MortalEntity where
   
-import Class.Object (class Object)
+import Emo8.Class.Object (class Object)
 
 class Object s <= MortalEntity s where
     health :: s -> Int

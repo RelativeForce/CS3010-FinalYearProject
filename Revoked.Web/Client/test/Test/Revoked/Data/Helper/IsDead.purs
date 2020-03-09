@@ -4,8 +4,8 @@ module Test.Revoked.Data.Helper.IsDead (
 
 import Prelude
 
-import Class.Object (class Object)
-import Class.MortalEntity (class MortalEntity)
+import Emo8.Class.Object (class Object)
+import Revoked.Class.MortalEntity (class MortalEntity)
 import Data.Helper (isDead)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)

@@ -5,7 +5,7 @@ import Prelude
 import Emo8.Types (Asset, Height, MapId, Position, Size, Width, Y, X)
 import Emo8.Collision (isMapCollide)
 
-import Class.Object (class Object, position, size)
+import Emo8.Class.Object (class Object, position, size)
 import Constants (walls, hazards, mapTileSize, mapSizeInt, mapTileInMonitorSize, mapSize)
 
 isCollideMapWalls :: forall a. Object a => Asset -> MapId -> X -> a -> Boolean

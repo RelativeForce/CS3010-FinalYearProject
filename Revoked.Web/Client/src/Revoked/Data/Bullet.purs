@@ -2,7 +2,7 @@ module Data.Bullet where
 
 import Prelude
 
-import Class.Object (class ObjectDraw, class Object)
+import Emo8.Class.Object (class ObjectDraw, class Object)
 import Emo8.Action.Draw (drawSprite)
 import Data.Int (floor)
 import Revoked.Assets.Sprites as S

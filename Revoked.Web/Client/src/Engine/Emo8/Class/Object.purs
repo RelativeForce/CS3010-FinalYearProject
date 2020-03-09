@@ -1,4 +1,4 @@
-module Class.Object where
+module Emo8.Class.Object where
   
 import Prelude
 import Emo8.Action.Draw (Draw)

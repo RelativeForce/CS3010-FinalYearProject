@@ -2,7 +2,7 @@ module Draw where
 
 import Prelude
 
-import Class.Object (position, size)
+import Emo8.Class.Object (position, size)
 import Constants (mapSizeInt, mapTileInMonitorSize, mapTileSize, mapSize, hudTextHeight)
 import Data.Array ((!!))
 import Data.Maybe (Maybe(..))

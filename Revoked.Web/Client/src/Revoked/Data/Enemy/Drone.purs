@@ -3,7 +3,7 @@ module Data.Enemy.Drone where
 import Prelude
 
 import Revoked.Assets.Sprites as S
-import Class.Object (size)
+import Emo8.Class.Object (size)
 import Data.Bullet (Bullet)
 import Data.Gun (Gun, defaultBlasterGun, fireAndUpdateGun, setPositionAndRotation)
 import Data.Player (Player(..))

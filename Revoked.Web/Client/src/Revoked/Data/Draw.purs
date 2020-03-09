@@ -3,8 +3,8 @@ module Data.Draw where
 import Prelude
 
 import Revoked.Assets.Images as I
-import Class.Object (position, size)
-import Class.MortalEntity (class MortalEntity, health)
+import Emo8.Class.Object (position, size)
+import Revoked.Class.MortalEntity (class MortalEntity, health)
 import Data.Array ((..))
 import Data.Traversable (for_)
 import Emo8.Action.Draw (Draw, drawScaledImage)

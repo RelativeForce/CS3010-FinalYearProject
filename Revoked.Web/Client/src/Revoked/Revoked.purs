@@ -15,8 +15,8 @@ import Emo8.Data.Color (Color(..))
 import Emo8.Input (Input)
 import Emo8.Types (MapId)
 
-import Class.Object (draw)
-import Class.MortalEntity (health)
+import Emo8.Class.Object (draw)
+import Revoked.Class.MortalEntity (health)
 import Constants (scoreDisplayX, hudDisplayY, timeDisplayX, hudTextHeight, levelDisplayX, healthScoreMultipler)
 import Revoked.Assets.Images as I
 import States.StateIds as S
