@@ -14,6 +14,8 @@ import Emo8.Action.Draw (drawSprite)
 import Revoked.Data.Gun (Gun, updateGun)
 import Revoked.Constants (healthPackBonusHealth)
 
+-- | The union type representing the different types of Goal that 
+-- | the player can intercept to gain some benifit.
 data Goal =    
     NextLevel { pos :: Position, sprite :: Sprite } |
     GunPickup Gun |
