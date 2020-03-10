@@ -1,3 +1,4 @@
+-- | Provides a single module for accessing all the sprites used in the revoked game.
 module Revoked.Assets.Sprites (
     module Revoked.Assets.Sprites.PlayerStandingLeft.Sprite,
     module Revoked.Assets.Sprites.PlayerStandingRight.Sprite,

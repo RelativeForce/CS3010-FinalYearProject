@@ -1,3 +1,4 @@
+-- | Provides a module to access all of the Images used in the game.
 module Revoked.Assets.Images where
 
 import Emo8.Types (ScaledImage)
