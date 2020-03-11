@@ -10,6 +10,8 @@ import Revoked.Constants (pistolShotCooldown)
 import Revoked.Data.Bullet (Bullet)
 import Revoked.Data.Gun.Helper (GunAppear(..), appearBasedOnAngle, newGunBullet)
 
+-- | Denotes the state of a pistol which fires single 
+-- | shots at a slow rate.
 type Pistol = { 
     pos :: Position,
     angle :: Deg,
@@ -18,6 +20,7 @@ type Pistol = {
     sprite :: Sprite
 }
 
+-- | Updates a pistol and fires it if possible.
 fireAndUpdatePistol :: Pistol -> { gun :: Pistol, bullets :: Array Bullet }
 fireAndUpdatePistol p = pistolAndBullets
     where 
@@ -29,6 +32,7 @@ fireAndUpdatePistol p = pistolAndBullets
             }
             false -> { gun: updatedPistol, bullets: [] }
 
+-- | Updates a pistol's sprite and de-incremenets the Pistols shot delay
 updatePistol :: Pistol -> Pistol
 updatePistol p = newPistol
     where
@@ -37,14 +41,18 @@ updatePistol p = newPistol
             shotCoolDown = if p.shotCoolDown > 0 then p.shotCoolDown - 1 else 0
         }
 
+-- | Retrieves which sprite should be used when the pistol is facing in 
+-- | a given direction.
 spriteBasedOnAppear :: GunAppear -> Sprite
 spriteBasedOnAppear appear = case appear of
     Left -> S.pistolLeft
     Right -> S.pistolRight
 
+-- | Whether or not the given pistol can fire
 canFire :: Pistol -> Boolean
 canFire p = p.shotCoolDown == 0
 
+-- | Sets the position and rotation of a given pistol to the specified angle and position.
 setPistolPositionAndRotation :: Pistol -> Position -> Deg -> Pistol
 setPistolPositionAndRotation p pos angle = newPistol
     where
@@ -59,6 +67,7 @@ setPistolPositionAndRotation p pos angle = newPistol
             appear = newAppear 
         }
 
+-- | Builds a Pistol with a given position and angle
 defaultPistol :: Position -> Deg -> Pistol
 defaultPistol pos angle = pistol
     where 
