@@ -4,9 +4,10 @@ module Test.Revoked.Data.Enemy.BigBertha.NextPhase (
 
 import Prelude
 
-import Data.Enemy.BigBertha (phase1, phase2, phase3, nextPhase, Phase(..))
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Revoked.Data.Enemy.BigBertha (phase1, phase2, phase3, nextPhase, Phase(..))
 
 nextPhaseTests :: TestSuite
 nextPhaseTests =

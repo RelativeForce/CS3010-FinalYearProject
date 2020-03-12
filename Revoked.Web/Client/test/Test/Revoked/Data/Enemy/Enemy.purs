@@ -5,6 +5,7 @@ module Test.Revoked.Data.Enemy (
 import Prelude
 
 import Test.Unit (TestSuite)
+
 import Test.Revoked.Data.Enemy.Marine (marineTests)
 import Test.Revoked.Data.Enemy.BigBertha (bigBerthaTests)
 

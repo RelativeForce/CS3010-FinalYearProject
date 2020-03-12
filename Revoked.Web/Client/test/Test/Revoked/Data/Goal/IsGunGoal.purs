@@ -4,11 +4,12 @@ module Test.Revoked.Data.Goal.IsGunGoal (
 
 import Prelude
 
-import Assets.Sprites as S
-import Data.Goal (Goal(..), isGunGoal)
-import Data.Gun (defaultShotgunGun)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Revoked.Assets.Sprites as S
+import Revoked.Data.Goal (Goal(..), isGunGoal)
+import Revoked.Data.Gun (defaultShotgunGun)
 
 isGunGoalTests :: TestSuite
 isGunGoalTests =

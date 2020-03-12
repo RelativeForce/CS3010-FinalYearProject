@@ -4,12 +4,13 @@ module Test.Revoked.Data.Goal.ToHealthBonus (
 
 import Prelude
 
-import Assets.Sprites as S
-import Data.Goal (Goal(..), toHealthBonus)
-import Constants (healthPackBonusHealth)
-import Data.Gun (defaultShotgunGun)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Revoked.Assets.Sprites as S
+import Revoked.Data.Goal (Goal(..), toHealthBonus)
+import Revoked.Constants (healthPackBonusHealth)
+import Revoked.Data.Gun (defaultShotgunGun)
 
 toHealthBonusTests :: TestSuite
 toHealthBonusTests =

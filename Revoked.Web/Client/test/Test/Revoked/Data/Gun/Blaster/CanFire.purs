@@ -4,9 +4,10 @@ module Test.Revoked.Data.Gun.Blaster.CanFire (
 
 import Prelude
 
-import Data.Gun.Blaster (Blaster, canFire, defaultBlaster)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Revoked.Data.Gun.Blaster (Blaster, canFire, defaultBlaster)
 
 canFireTests :: TestSuite
 canFireTests =

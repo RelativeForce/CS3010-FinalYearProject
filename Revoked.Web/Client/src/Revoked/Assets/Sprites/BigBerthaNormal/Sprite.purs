@@ -1,8 +1,8 @@
-module Assets.Sprites.BigBerthaNormal.Sprite where
+module Revoked.Assets.Sprites.BigBerthaNormal.Sprite where
 
 import Emo8.Types (Sprite)
-import Assets.Sprites.BigBerthaNormal.Frame0 (frame0Data)
-import Assets.AssetIds as Id
+import Revoked.Assets.Sprites.BigBerthaNormal.Frame0 (frame0Data)
+import Revoked.Assets.AssetIds as Id
 
 bigBerthaNormal :: Sprite
 bigBerthaNormal = {

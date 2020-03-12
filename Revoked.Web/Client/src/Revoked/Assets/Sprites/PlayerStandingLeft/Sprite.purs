@@ -1,8 +1,8 @@
-module Assets.Sprites.PlayerStandingLeft.Sprite where
+module Revoked.Assets.Sprites.PlayerStandingLeft.Sprite where
 
 import Emo8.Types (Sprite)
-import Assets.Sprites.PlayerStandingLeft.Frame0 (frame0Data)
-import Assets.AssetIds as Id
+import Revoked.Assets.Sprites.PlayerStandingLeft.Frame0 (frame0Data)
+import Revoked.Assets.AssetIds as Id
 
 playerStandingLeft ::  Sprite
 playerStandingLeft = {

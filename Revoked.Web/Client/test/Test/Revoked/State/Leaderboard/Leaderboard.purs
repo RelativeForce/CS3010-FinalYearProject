@@ -3,6 +3,7 @@ module Test.Revoked.State.Leaderboard (
 ) where
 
 import Test.Unit (TestSuite)
+
 import Test.Revoked.State.Leaderboard.UpdateLeaderboard (updateLeaderboardTests)
 
 leaderboardTests :: TestSuite

@@ -1,4 +1,4 @@
-module Assets.Sprites.Blaster.Frame0 where
+module Revoked.Assets.Sprites.Blaster.Frame0 where
 
 frame0Data :: String
 frame0Data = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAECAYAAABodtTSAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAtSURBVChTY2RgYPgPxMQAkFqsAGxIREQEhIcHrFixAsrCBExQmiJABe8wMAAAM5EGBchzQfoAAAAASUVORK5CYII="

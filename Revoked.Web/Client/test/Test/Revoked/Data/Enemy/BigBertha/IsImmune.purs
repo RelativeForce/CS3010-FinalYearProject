@@ -3,9 +3,11 @@ module Test.Revoked.Data.Enemy.BigBertha.IsImmune (
 ) where
 
 import Prelude
-import Data.Enemy.BigBertha (defaultBigBertha, isImmune)
+
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Revoked.Data.Enemy.BigBertha (defaultBigBertha, isImmune)
 
 isImmuneTests :: TestSuite
 isImmuneTests =

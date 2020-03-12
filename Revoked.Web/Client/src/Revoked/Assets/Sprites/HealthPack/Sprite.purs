@@ -1,8 +1,8 @@
-module Assets.Sprites.HealthPack.Sprite where
+module Revoked.Assets.Sprites.HealthPack.Sprite where
 
 import Emo8.Types (Sprite)
-import Assets.Sprites.HealthPack.Frame0 (frame0Data)
-import Assets.AssetIds as Id
+import Revoked.Assets.Sprites.HealthPack.Frame0 (frame0Data)
+import Revoked.Assets.AssetIds as Id
 
 healthPack :: Sprite
 healthPack = {

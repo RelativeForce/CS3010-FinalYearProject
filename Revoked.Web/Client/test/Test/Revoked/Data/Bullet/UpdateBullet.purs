@@ -4,14 +4,17 @@ module Test.Revoked.Data.Bullet.UpdateBullet (
 
 import Prelude
 
-import Constants (bulletSpeed, gravity)
-import Emo8.Types (Velocity)
-import Class.Object (position)
-import Data.Int (floor)
-import Data.Bullet (Bullet(..), updateBullet, newArcBullet, newLinearBullet)
-import Test.Unit (TestSuite, suite, test)
-import Test.Helper (equalTolerance)
 import Test.Unit.Assert (equal)
+import Test.Unit (TestSuite, suite, test)
+import Data.Int (floor)
+
+import Emo8.Types (Velocity)
+import Emo8.Class.Object (position)
+
+import Revoked.Constants (bulletSpeed, gravity)
+import Revoked.Data.Bullet (Bullet(..), updateBullet, newArcBullet, newLinearBullet)
+
+import Test.Helper (equalTolerance)
 
 updateBulletTests :: TestSuite
 updateBulletTests =

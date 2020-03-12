@@ -4,12 +4,15 @@ module Test.Revoked.Data.Enemy.Marine.AdjustVelocity (
 
 import Prelude
 
-import Constants (marineWalkSpeed)
-import Data.Enemy.Marine (adjustVelocity, defaultMarine)
-import Data.Player (Player, initialPlayer)
-import Emo8.Types (Position)
-import Test.Helper (equalTolerance)
 import Test.Unit (TestSuite, suite, test)
+
+import Emo8.Types (Position)
+
+import Revoked.Constants (marineWalkSpeed)
+import Revoked.Data.Enemy.Marine (adjustVelocity, defaultMarine)
+import Revoked.Data.Player (Player, initialPlayer)
+
+import Test.Helper (equalTolerance)
 
 adjustVelocityTests :: TestSuite
 adjustVelocityTests =

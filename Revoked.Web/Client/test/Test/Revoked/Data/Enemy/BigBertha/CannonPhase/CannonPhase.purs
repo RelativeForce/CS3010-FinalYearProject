@@ -4,9 +4,10 @@ module Test.Revoked.Data.Enemy.BigBertha.CannonPhase (
 
 import Prelude
 
+import Test.Unit (TestSuite)
+
 import Test.Revoked.Data.Enemy.BigBertha.CannonPhase.DefaultCannonPhase (defaultCannonPhaseTests)
 import Test.Revoked.Data.Enemy.BigBertha.CannonPhase.UpdateCannonPhase (updateCannonPhaseTests)
-import Test.Unit (TestSuite)
 
 cannonPhaseTests :: TestSuite
 cannonPhaseTests = do

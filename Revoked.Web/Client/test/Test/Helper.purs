@@ -4,6 +4,7 @@ module Test.Helper (
 ) where
 
 import Prelude
+
 import Data.Array (length)
 import Test.Unit (success, failure, Test)
 

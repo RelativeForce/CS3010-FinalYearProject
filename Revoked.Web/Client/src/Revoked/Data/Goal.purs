@@ -1,16 +1,21 @@
-module Data.Goal where
+module Revoked.Data.Goal where
 
 import Prelude
-import Class.Object (class ObjectDraw, class Object, position, draw, size, scroll)
-import Emo8.Action.Draw (drawSprite)
-import Constants (healthPackBonusHealth)
+
 import Data.Foldable (sum)
 import Data.Array (mapMaybe, head)
+import Data.Maybe (Maybe(..))
+
 import Emo8.Types (Position, Sprite)
 import Emo8.Data.Sprite (incrementFrame)
-import Data.Maybe (Maybe(..))
-import Data.Gun (Gun, updateGun)
+import Emo8.Class.Object (class ObjectDraw, class Object, position, draw, size, scroll)
+import Emo8.Action.Draw (drawSprite)
 
+import Revoked.Data.Gun (Gun, updateGun)
+import Revoked.Constants (healthPackBonusHealth)
+
+-- | The union type representing the different types of Goal that 
+-- | the player can intercept to gain some benifit.
 data Goal =    
     NextLevel { pos :: Position, sprite :: Sprite } |
     GunPickup Gun |
@@ -43,34 +48,44 @@ instance objectDrawGoal :: ObjectDraw Goal where
     draw (GunPickup gp) = draw gp  
     draw (HealthPack hp) = drawSprite hp.sprite hp.pos.x hp.pos.y 
 
+-- | Updates the specified `Goal`.
 updateGoal :: Goal -> Goal
 updateGoal (NextLevel nl) = NextLevel $ nl { sprite = incrementFrame nl.sprite }
 updateGoal (GunPickup gp) = GunPickup $ updateGun gp
 updateGoal (HealthPack hp) = HealthPack $ hp { sprite = incrementFrame hp.sprite }
 
+-- | Whether or not the specified `Goal` is a `GunPickup`.
 isGunGoal :: Goal -> Boolean
 isGunGoal (NextLevel _) = false
 isGunGoal (GunPickup _) = true
 isGunGoal (HealthPack _) = false
 
+-- | Whether or not the specified `Goal` is a `NextLevel`.
 isNextLevelGoal :: Goal -> Boolean
 isNextLevelGoal (NextLevel _) = true
 isNextLevelGoal (GunPickup _) = false
 isNextLevelGoal (HealthPack _) = false
 
+-- | Maps the specified `Goal` into a `Maybe Gun`. If the `Goal` is not a `GunPickup` 
+-- | this returns `Nothing`.
 mapToGun :: Goal -> Maybe Gun
 mapToGun (NextLevel _) = Nothing
 mapToGun (GunPickup gp) = Just gp
 mapToGun (HealthPack _) = Nothing
 
+-- | Maps the specified `Goal` into a halth bonus. If the `Goal` is not a `HealthPack` 
+-- | this returns 0, otherwise, it returns the constant health pack bonus.
 mapToHealth :: Goal -> Int
 mapToHealth (NextLevel _) = 0
 mapToHealth (GunPickup _) = 0
 mapToHealth (HealthPack _) = healthPackBonusHealth
 
+-- | Maps an collection of `Goal`s into the equivelent health bonus using `mapToHealth`.
 toHealthBonus :: Array Goal -> Int
 toHealthBonus goals = sum $ map mapToHealth goals
 
+-- | Retrieves the first `Gun` from a collection of `Goal`s. If no `Gun` is present 
+-- | then `Nothing` is returned.
 firstGun :: Array Goal -> Maybe Gun
 firstGun goals = head guns
     where 

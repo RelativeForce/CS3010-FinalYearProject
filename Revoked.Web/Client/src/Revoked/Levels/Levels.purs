@@ -1,13 +1,15 @@
-module Levels where
+module Revoked.Levels where
 
-import Data.Enemy (Enemy)
-import Data.Goal (Goal)
 import Emo8.Parse (RawMap)
 import Emo8.Types (MapId, Position)
-import Levels.Level01 as L1
-import Levels.Level02 as L2
-import Levels.Level03 as L3
 
+import Revoked.Data.Enemy (Enemy)
+import Revoked.Data.Goal (Goal)
+import Revoked.Levels.Level01 as L1
+import Revoked.Levels.Level02 as L2
+import Revoked.Levels.Level03 as L3
+
+-- | Retrieves the initial enemies in the map with the specified `MapId`.
 enemies :: MapId -> Array Enemy
 enemies mapId = 
     case mapId of 
@@ -16,6 +18,8 @@ enemies mapId =
         2 -> L3.enemies
         _ -> []
 
+-- | Retrieves the starting `Position` for the player in the map with the 
+-- | specified `MapId`.
 startPosition :: MapId -> Position
 startPosition mapId = 
     case mapId of 
@@ -24,9 +28,11 @@ startPosition mapId =
         2 -> L3.startPosition
         _ -> { x: 0, y: 0 }
 
+-- | The raw levels that must be parsed into `TileMaps`
 allRawLevels :: Array RawMap
 allRawLevels = [ L1.mapData, L2.mapData, L3.mapData ]
 
+-- | Retrieves the initial goals in the map with the specified `MapId`.
 goals :: MapId -> Array Goal
 goals mapId  = 
     case mapId of 
@@ -35,5 +41,6 @@ goals mapId  =
         2 -> L3.goals
         _ -> []
 
+-- | The number of maps in the game.
 levelCount :: Int
 levelCount = 3

@@ -3,10 +3,13 @@ module Test.Revoked.Data.Player.AdjustVelocity (
 ) where
 
 import Prelude
-import Data.Player (adjustVelocity, Player(..), initialPlayer)
+
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
 import Emo8.Types (Y, X, Velocity)
+
+import Revoked.Data.Player (adjustVelocity, Player(..), initialPlayer, PlayerState)
 
 adjustVelocityTests :: TestSuite
 adjustVelocityTests =
@@ -29,7 +32,7 @@ adjustVelocityTests =
                     ySpeed: 0.0
                 }   
 
-                (Player result) = adjustVelocity oldPos newPlayer
+                result = adjustVelocity oldPos newPlayer
 
             equal expectedVelocity result.velocity
         test "SHOULD adjust velocity to still in X WHEN position has not changed in X direction" do
@@ -50,7 +53,7 @@ adjustVelocityTests =
                     ySpeed: ySpeed
                 }   
 
-                (Player result) = adjustVelocity oldPos newPlayer
+                result = adjustVelocity oldPos newPlayer
 
             equal expectedVelocity result.velocity
         test "SHOULD adjust velocity to still in Y WHEN position has not changed in Y direction" do
@@ -71,7 +74,7 @@ adjustVelocityTests =
                     ySpeed: 0.0
                 }   
 
-                (Player result) = adjustVelocity oldPos newPlayer
+                result = adjustVelocity oldPos newPlayer
 
             equal expectedVelocity result.velocity
         test "SHOULD not adjust velocity WHEN position has changed in both directions" do
@@ -92,11 +95,11 @@ adjustVelocityTests =
                     ySpeed: ySpeed
                 }   
 
-                (Player result) = adjustVelocity oldPos newPlayer
+                result = adjustVelocity oldPos newPlayer
 
             equal expectedVelocity result.velocity
 
-player :: X -> Y -> Velocity -> Player
-player x y v = Player $ p { velocity = v }
+player :: X -> Y -> Velocity -> PlayerState
+player x y v = p { velocity = v }
     where
         (Player p) = initialPlayer { x: x, y: y }

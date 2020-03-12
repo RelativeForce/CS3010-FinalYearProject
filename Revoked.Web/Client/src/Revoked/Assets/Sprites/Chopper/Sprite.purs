@@ -1,11 +1,11 @@
-module Assets.Sprites.Chopper.Sprite where
+module Revoked.Assets.Sprites.Chopper.Sprite where
 
 import Emo8.Types (Sprite)
-import Assets.Sprites.Chopper.Frame0 (frame0Data)
-import Assets.Sprites.Chopper.Frame1 (frame1Data)
-import Assets.Sprites.Chopper.Frame2 (frame2Data)
-import Assets.Sprites.Chopper.Frame3 (frame3Data)
-import Assets.AssetIds as Id
+import Revoked.Assets.Sprites.Chopper.Frame0 (frame0Data)
+import Revoked.Assets.Sprites.Chopper.Frame1 (frame1Data)
+import Revoked.Assets.Sprites.Chopper.Frame2 (frame2Data)
+import Revoked.Assets.Sprites.Chopper.Frame3 (frame3Data)
+import Revoked.Assets.AssetIds as Id
 
 chopper ::  Sprite
 chopper = {

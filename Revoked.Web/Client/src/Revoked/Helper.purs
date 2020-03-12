@@ -1,51 +1,49 @@
-module Helper where
+module Revoked.Helper where
 
 import Prelude
 
-import Class.Object (position)
-import Constants (leftBoundry, mapSize, rightBoundry)
-import Data.DateTime (DateTime, diff)
-import Data.Either (Either(..))
-import Data.Enemy (Enemy(..))
+import Data.Time.Duration (Milliseconds(..))
 import Data.Formatter.DateTime as F
 import Data.Int (floor)
-import Data.Particle (Particle, defaultGhostParticle, defaultExplosionParticle)
-import Data.Player (Player(..))
-import Data.Time.Duration (Milliseconds(..))
-import Emo8.Constants (defaultMonitorSize)
-import Emo8.Types (X, Position)
+import Data.DateTime (DateTime, diff)
+import Data.Either (Either(..))
 
+import Emo8.Class.Object (position)
+import Emo8.Constants (defaultMonitorSize)
+import Emo8.Types (X)
+
+import Revoked.Constants (leftBoundry, mapSize, rightBoundry)
+import Revoked.Data.Enemy (Enemy(..))
+import Revoked.Data.Particle (Particle, defaultGhostParticle, defaultExplosionParticle)
+import Revoked.Data.Player (Player(..))
+
+-- | Adjusts the monitor distance so that player remains between the left and right 
+-- | boundry on the screen.
 adjustMonitorDistance :: Player -> X -> X
 adjustMonitorDistance (Player player) distance = 
-    case isLevelAtMinimumDistance distance, isLevelAtMaximumDistance distance, isInLeftBoundry playerPos, isInRightBoundry playerPos of
+    case isLevelAtMinimumDistance, isLevelAtMaximumDistance, isInLeftBoundry, isInRightBoundry of
         true, _, true, _ -> 0
         _, true, _, true -> mapSize.width
-        false, _, true, _ -> if(newDistanceIfInLeftBoundry < 0) then 0 else newDistanceIfInLeftBoundry
-        _, false, _, true -> if(newDistanceIfInRightBoundry > mapSize.width - defaultMonitorSize.width) then mapSize.width - defaultMonitorSize.width else newDistanceIfInRightBoundry   
+        false, _, true, _ -> if newDistanceIfInLeftBoundry < 0 then 0 else newDistanceIfInLeftBoundry
+        _, false, _, true -> if newDistanceIfInRightBoundry > mapSize.width - defaultMonitorSize.width then mapSize.width - defaultMonitorSize.width else newDistanceIfInRightBoundry   
         _, _, _, _ -> distance
     where
         playerPos = player.pos
         playerWidth = player.sprite.size.width
         newDistanceIfInLeftBoundry = distance + playerPos.x - leftBoundry
         newDistanceIfInRightBoundry = distance + playerPos.x + playerWidth - rightBoundry
+        isLevelAtMinimumDistance = distance == 0
+        isLevelAtMaximumDistance = distance == mapSize.width
+        isInLeftBoundry = playerPos.x < leftBoundry
+        isInRightBoundry = playerPos.x + playerWidth > rightBoundry
 
-        isLevelAtMinimumDistance :: X -> Boolean
-        isLevelAtMinimumDistance d = d == 0
-
-        isLevelAtMaximumDistance :: X -> Boolean
-        isLevelAtMaximumDistance d = d == mapSize.width
-
-        isInLeftBoundry :: Position -> Boolean
-        isInLeftBoundry p = p.x < leftBoundry
-
-        isInRightBoundry :: Position -> Boolean
-        isInRightBoundry p = p.x + playerWidth > rightBoundry
-
+-- | Format a DateTime into a string that can be parsed by the server
 formatDateTime :: DateTime -> String
 formatDateTime dt = case F.formatDateTime "YYYY/MM/DD hh:mm:ss" dt of
     Left error -> ""
     Right dateString -> dateString
 
+-- | Format the difference between two DateTimes into the minutes and seconds duration
 formatDifference :: DateTime -> DateTime -> String
 formatDifference start end = show minutes <> ":" <> show seconds
     where
@@ -54,6 +52,7 @@ formatDifference start end = show minutes <> ":" <> show seconds
         minutes = totalSeconds / 60
         seconds = mod totalSeconds 60
 
+-- | Converts a Enemy into a Particle
 enemyToParticle :: Enemy -> Particle
 enemyToParticle (EnemyMarine m) = defaultGhostParticle m.pos
 enemyToParticle (EnemyDrone m) = defaultExplosionParticle m.pos

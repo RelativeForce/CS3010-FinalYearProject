@@ -4,9 +4,11 @@ module Test.Revoked.Levels.Goals (
 
 import Prelude
 
-import Levels (goals, levelCount)
-import Test.Helper (equalLength)
 import Test.Unit (TestSuite, suite, test)
+
+import Revoked.Levels (goals, levelCount)
+
+import Test.Helper (equalLength)
 
 goalsTests :: TestSuite
 goalsTests =

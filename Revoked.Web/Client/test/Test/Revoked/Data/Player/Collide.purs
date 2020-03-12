@@ -3,10 +3,13 @@ module Test.Revoked.Data.Player.Collide (
 ) where
 
 import Prelude
-import Data.Player (collide, initialPlayer, Player(..))
+
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
 import Emo8.Types (Position)
+
+import Revoked.Data.Player (collide, initialPlayer, Player(..), PlayerState)
 
 collideTests :: TestSuite
 collideTests =
@@ -25,7 +28,7 @@ collideTests =
                 expectedPos = { x: 75,  y: 64 }
                 expectedOnFloor = true
 
-                (Player result) = collide oldPos newPlayer distance collisionCheck
+                result = collide oldPos newPlayer distance collisionCheck
 
             equal expectedPos result.pos
             equal expectedOnFloor result.onFloor
@@ -44,7 +47,7 @@ collideTests =
                 expectedPos = { x: 54,  y: 45 }
                 expectedOnFloor = false
 
-                (Player result) = collide oldPos newPlayer distance collisionCheck
+                result = collide oldPos newPlayer distance collisionCheck
 
             equal expectedPos result.pos
             equal expectedOnFloor result.onFloor
@@ -62,7 +65,7 @@ collideTests =
                 expectedPos = { x: 54,  y: 64 }
                 expectedOnFloor = true
 
-                (Player result) = collide oldPos newPlayer distance collisionCheck
+                result = collide oldPos newPlayer distance collisionCheck
 
             equal expectedPos result.pos
             equal expectedOnFloor result.onFloor
@@ -81,14 +84,14 @@ collideTests =
                 expectedPos = { x: 54,  y: 45 }
                 expectedOnFloor = false
 
-                (Player result) = collide oldPos newPlayer distance collisionCheck
+                result = collide oldPos newPlayer distance collisionCheck
 
             equal expectedPos result.pos
             equal expectedOnFloor result.onFloor
 
 
-mockCollisionCheck :: Boolean -> Boolean -> Boolean -> Position -> Player -> Boolean
-mockCollisionCheck collideX collideY collideBoth oldPos (Player p) = collided
+mockCollisionCheck :: Boolean -> Boolean -> Boolean -> Position -> PlayerState -> Boolean
+mockCollisionCheck collideX collideY collideBoth oldPos p = collided
     where
         xSame = oldPos.x == p.pos.x
         ySame = oldPos.y == p.pos.y
@@ -98,5 +101,7 @@ mockCollisionCheck collideX collideY collideBoth oldPos (Player p) = collided
             true, false -> collideY
             false, false -> collideBoth
 
-player :: Position -> Player
-player pos = initialPlayer pos 
+player :: Position -> PlayerState
+player pos = p
+    where
+        (Player p) = initialPlayer pos 

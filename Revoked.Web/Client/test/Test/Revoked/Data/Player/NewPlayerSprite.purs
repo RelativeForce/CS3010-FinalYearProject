@@ -3,10 +3,12 @@ module Test.Revoked.Data.Player.NewPlayerSprite (
 ) where
 
 import Prelude
-import Assets.Sprites as S
-import Data.Player (newPlayerSprite, PlayerAppear(..))
+
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Revoked.Assets.Sprites as S
+import Revoked.Data.Player (newPlayerSprite, PlayerAppear(..))
 
 newPlayerSpriteTests :: TestSuite
 newPlayerSpriteTests =

@@ -1,11 +1,13 @@
-module Levels.Level03 where
+module Revoked.Levels.Level03 where
 
 import Prelude
+
 import Emo8.Types (Position)
-import Data.Enemy (Enemy, defaultMarineEnemy, defaultBigBerthaEnemy)
 import Emo8.Parse (RawMap(..))
-import Data.Goal (Goal)
-import Levels.Helper (toTilePosition, shotgunSpawn, assaultRifleSpawn, ladderSection, chopper, healthPack, drone)
+
+import Revoked.Data.Enemy (Enemy, defaultMarineEnemy, defaultBigBerthaEnemy)
+import Revoked.Data.Goal (Goal)
+import Revoked.Levels.Helper (toTilePosition, shotgunSpawn, assaultRifleSpawn, ladderSection, chopper, healthPack, drone)
 
 mapData :: RawMap
 mapData = RawMap """

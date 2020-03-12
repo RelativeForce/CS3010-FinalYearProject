@@ -1,28 +1,33 @@
-module States.Play where
+module Revoked.States.Play where
 
 import Prelude
 
-import Assets.Audio as A
-import States.StateIds as S
-import Class.Object (scroll, damage, heal)
-import Collision (isCollideObjects, isOutOfWorld, isCollideMapWalls, isCollideMapHazards)
 import Data.Array (any, filter, partition, concatMap, length)
-import Data.Bullet (Bullet, updateBullet)
-import Data.Enemy (Enemy, updateEnemy, enemyToScore)
 import Data.Foldable (sum)
 import Data.Either (Either(..))
-import Data.Goal (Goal, updateGoal, isNextLevelGoal, firstGun, toHealthBonus)
-import Data.Particle (Particle, updateParticle)
-import Data.Player (Player(..), initialPlayer, updatePlayer, updatePlayerGun)
-import Emo8.Action.Update (Update, isAudioStreamPlaying, stopAudioStream, addAudioStream, nowDateTime, muteAudio, unmuteAudio)
 import Data.DateTime (DateTime)
+
+import Emo8.Class.Object (scroll)
+import Emo8.Collision (isCollideObjects, isOutOfWorld)
+import Emo8.Action.Update (Update, isAudioStreamPlaying, stopAudioStream, addAudioStream, nowDateTime, muteAudio, unmuteAudio)
 import Emo8.FFI.AudioController (AudioContext, newAudioContext)
 import Emo8.Input (Input)
 import Emo8.Types (MapId, Score, StateId, Asset)
-import Data.Helper (isDead)
-import Levels (enemies, goals, levelCount, startPosition)
-import Helper (adjustMonitorDistance, formatDifference, enemyToParticle)
 
+import Revoked.Assets.Audio as A
+import Revoked.States.StateIds as S
+import Revoked.Class.MortalEntity (damage, heal)
+import Revoked.Collision (isCollideMapWalls, isCollideMapHazards)
+import Revoked.Data.Bullet (Bullet, updateBullet)
+import Revoked.Data.Enemy (Enemy, updateEnemy, enemyToScore)
+import Revoked.Data.Goal (Goal, updateGoal, isNextLevelGoal, firstGun, toHealthBonus)
+import Revoked.Data.Particle (Particle, updateParticle)
+import Revoked.Data.Player (Player(..), initialPlayer, updatePlayer, updatePlayerGun)
+import Revoked.Data.Helper (isDead)
+import Revoked.Levels (enemies, goals, levelCount, startPosition)
+import Revoked.Helper (adjustMonitorDistance, formatDifference, enemyToParticle)
+
+-- | Represents the play state
 type PlayState = { 
     distance :: Int, 
     player :: Player, 
@@ -33,15 +38,16 @@ type PlayState = {
     goals :: Array Goal,
     mapId :: MapId,
     score :: Score,
-    audioController :: AudioContext,
+    audioContext :: AudioContext,
     start :: DateTime,
     elapsed :: String
 }
 
+-- | Update the given `PlayState` based on the user input.
 updatePlay :: Asset -> Input -> PlayState -> Update (Either PlayState StateId)
 updatePlay asset input s = do
 
-    -- adjust player, entities and map for scrolling
+    -- Adjust player, entities and map for scrolling
     let { player: updatedPlayer, bullets: newBullets } = updatePlayer input s.player s.distance (isCollideMapWalls asset s.mapId s.distance)
         newDistance = adjustMonitorDistance updatedPlayer s.distance
         scrollOffset = (s.distance - newDistance)
@@ -52,7 +58,7 @@ updatePlay asset input s = do
         scrollAdjustedParticles = map (scroll scrollOffset) s.particles
         scrollAdjustedEnemyBullets = map (scroll scrollOffset) s.enemyBullets
 
-    -- updated entities
+    -- Updated entities
     let { yes: enemiesInView, no: enemiesNotInView } = partition (not <<< isOutOfWorld) scrollAdjustedEnemies
         updatedEnemiesAndNewBullets = map (updateEnemy (isCollideMapWalls asset s.mapId s.distance) s.distance s.player) enemiesInView
         updatedEnemies = map toEnemy updatedEnemiesAndNewBullets
@@ -62,55 +68,57 @@ updatePlay asset input s = do
         updatedBullets = map updateBullet scrollAdjustedBullets
         updatedEnemyBullets = map updateBullet scrollAdjustedEnemyBullets
 
-    -- player collision
+    -- Player collision
     let hasCollidedHazard = isCollideMapHazards asset s.mapId s.distance scrollAdjustedPlayer
         hasCollidedEnemy = any (isCollideObjects scrollAdjustedPlayer) updatedEnemies
 
-    -- collision with enemies
+    -- Collision with enemies
     let { yes: collidedEnemies, no: notCollidedEnemies } = partition (\e -> any (isCollideObjects e) updatedBullets) updatedEnemies
         { yes: collidedBullets, no: notCollidedBullets } = partition (\b -> any (isCollideObjects b) updatedEnemies) updatedBullets
         { yes: collidedEnemyBullets, no: notCollidedEnemyBullets } = partition (isCollideObjects scrollAdjustedPlayer) updatedEnemyBullets
         { yes: collidedGoals, no: notCollidedGoals } = partition (isCollideObjects scrollAdjustedPlayer) updatedGoals
+
+        -- Apply damage to enemies and map the dead enemies into particles
         damageCounter = (\e -> length (filter (isCollideObjects e) updatedBullets))
         damagedEnemies = map (\e -> damage e (damageCounter e)) collidedEnemies 
         { yes: deadEnemies, no: damagedButAliveEnemies } = partition isDead damagedEnemies
-        collidedEnemyBulletCount = length collidedEnemyBullets
+        newParticles = map enemyToParticle deadEnemies
+        
+    -- Calculate the score to add
+    let newScore = sum $ map enemyToScore deadEnemies
 
-    -- add new entities
-    let newParticles = map enemyToParticle deadEnemies
-        newScore = sum $ map enemyToScore deadEnemies
-
-    -- delete entities (out of monitor)
+    -- Delete entities (out of monitor)
     let updatedBulletsInView = filter (not <<< isOutOfWorld) notCollidedBullets
         updatedEnemyBulletsInView = filter (not <<< isOutOfWorld) notCollidedEnemyBullets
         updatedParticlesInView = filter (not <<< isOutOfWorld) updatedParticles
 
-    -- delete entities (map collision)
+    -- Delete entities (map collision)
     let notCollidedWithMapBullets = filter (not <<< (isCollideMapWalls asset s.mapId s.distance)) updatedBulletsInView
         notCollidedWithMapEnemyBullets = filter (not <<< (isCollideMapWalls asset s.mapId s.distance)) updatedEnemyBulletsInView
 
-    -- update player based on collision
-    let damagedPlayer = damage scrollAdjustedPlayer collidedEnemyBulletCount
+    -- Apply damage and health bonuses
+    let collidedEnemyBulletCount = length collidedEnemyBullets
+        damagedPlayer = damage scrollAdjustedPlayer collidedEnemyBulletCount
         healthBonusedPlayer = heal damagedPlayer (toHealthBonus collidedGoals)
         newPlayer = updatePlayerGun (firstGun collidedGoals) healthBonusedPlayer 
 
-    -- evaluate game condition
+    -- Evaluate game condition
     let isPlayerDead = isDead newPlayer
         isGameOver = hasCollidedHazard || hasCollidedEnemy || isPlayerDead
         isNextLevel = any isNextLevelGoal collidedGoals
         isLastLevel = s.mapId + 1 >= levelCount
 
-    -- update music
-    isBackgroundMusicPlaying <- isAudioStreamPlaying s.audioController A.backgroundMusicId
-    newAudioContext <- updateAudioContext s.audioController input (isGameOver || (isNextLevel && isLastLevel))
+    -- Update music
+    newAudioContext <- updateAudioContext s.audioContext input (isGameOver || (isNextLevel && isLastLevel))
     
+    -- Get the current date time
     now <- nowDateTime
     
     pure $ case isGameOver, isNextLevel of
-        true, _ -> Right S.gameOverId
+        true, _ -> Right S.gameOverId -- To Game over
         false, true -> if isLastLevel 
-            then Right $ S.victoryId
-            else Left $ newLevel (s.mapId + 1) s.player s.score s.audioController s.elapsed s.start
+            then Right $ S.victoryId -- To victory
+            else Left $ newLevel s.player s.score s.audioContext s.elapsed (s.mapId + 1) s.start -- To next Level
         false, false -> Left $ s { 
             distance = newDistance, 
             player = newPlayer, 
@@ -121,13 +129,15 @@ updatePlay asset input s = do
             goals = notCollidedGoals,
             mapId = s.mapId,
             score = s.score + newScore,
-            audioController = newAudioContext,
+            audioContext = newAudioContext,
             start = s.start,
             elapsed = formatDifference s.start now
         }
 
-newLevel :: MapId -> Player -> Score -> AudioContext -> String -> DateTime -> PlayState
-newLevel mapId (Player p) score audioController elapsed start = { 
+-- | Builds a new level with a specifed `MapId`, `Player`, `Score`, `AudioContext`, elapsed time string and 
+-- | start `DateTime`.
+newLevel :: Player -> Score -> AudioContext -> String -> MapId -> DateTime -> PlayState
+newLevel (Player p) score audioContext elapsed mapId start = { 
     distance: 0, 
     player: Player $ p { pos = startPosition mapId }, 
     bullets: [], 
@@ -137,34 +147,43 @@ newLevel mapId (Player p) score audioController elapsed start = {
     goals: goals mapId,
     mapId: mapId,
     score: score,
-    audioController: audioController,
+    audioContext: audioContext,
     start: start,
     elapsed: elapsed
 }
 
+-- | Builds the initial play state base 
 initialPlayState :: MapId -> DateTime -> PlayState
-initialPlayState mapId = newLevel mapId (initialPlayer (startPosition 0)) 0 (newAudioContext "Play") "0:00"
+initialPlayState = newLevel (initialPlayer (startPosition 0)) 0 (newAudioContext "Play") "0:00"
 
+-- | Retrieves the `Bullet`s from the enemy and bullets pair
 toBullets :: { enemy :: Enemy, bullets :: Array Bullet } -> Array Bullet
 toBullets enemyAndBullets = enemyAndBullets.bullets
 
+-- | Retrieves the `Enemy` from the enemy and bullets pair
 toEnemy :: { enemy :: Enemy, bullets :: Array Bullet } -> Enemy
 toEnemy enemyAndBullets = enemyAndBullets.enemy
 
+-- | Updates the specified `AudioContext` based on the users input and whether the background 
+-- | music should stop playing.
 updateAudioContext :: AudioContext -> Input -> Boolean -> Update AudioContext
-updateAudioContext controller input shouldStop = do
+updateAudioContext context input shouldStop = do
 
-    isBackgroundMusicPlaying <- isAudioStreamPlaying controller A.backgroundMusicId
+    -- Determine if the background music is playing already
+    isBackgroundMusicPlaying <- isAudioStreamPlaying context A.backgroundMusic
 
-    controllerWithBackgroundMusic <- case isBackgroundMusicPlaying, shouldStop of
-            true, true -> stopAudioStream controller A.backgroundMusicId
-            false, false -> addAudioStream controller A.backgroundMusicId
-            _, _ -> pure controller
+    -- Start or Stop the background music based on whether its playing and whether the background 
+    -- music should stop playing.
+    contextWithBackgroundMusic <- case isBackgroundMusicPlaying, shouldStop of
+            true, true -> stopAudioStream context A.backgroundMusic
+            false, false -> addAudioStream context A.backgroundMusic
+            _, _ -> pure context
 
-    updatedController <- if input.released.isM 
-        then if controllerWithBackgroundMusic.muted 
-            then unmuteAudio controllerWithBackgroundMusic 
-            else muteAudio controllerWithBackgroundMusic
-        else pure controllerWithBackgroundMusic
+    -- Mute or Unmute the audio context based on the user input.
+    updatedContext <- if input.released.isM 
+        then if contextWithBackgroundMusic.muted 
+            then unmuteAudio contextWithBackgroundMusic 
+            else muteAudio contextWithBackgroundMusic
+        else pure contextWithBackgroundMusic
 
-    pure updatedController
+    pure updatedContext

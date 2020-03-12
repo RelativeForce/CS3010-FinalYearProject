@@ -1,14 +1,18 @@
-module Data.Draw where
+module Revoked.Data.Draw where
 
 import Prelude
 
-import Assets.Images as I
-import Class.Object (class MortalEntity, position, size, health)
 import Data.Array ((..))
 import Data.Traversable (for_)
+
+import Emo8.Class.Object (position, size)
 import Emo8.Action.Draw (Draw, drawScaledImage)
 import Emo8.Types (Position)
 
+import Revoked.Assets.Images as I
+import Revoked.Class.MortalEntity (class MortalEntity, health)
+
+-- | Draws the health bar for any `MortalEntity` above that entity.
 drawHealth :: forall a. MortalEntity a => a -> Draw Unit
 drawHealth entity = do
     for_ (map toHeartPosition indexes) \(heartPos) -> 
@@ -23,6 +27,6 @@ drawHealth entity = do
             width = increment * entityHealth
             toHeartPosition :: Int -> Position
             toHeartPosition i = { 
-                x: entityPos.x - ( width / 2) + (i * increment) + (entitySize.width / 2), 
+                x: entityPos.x - (width / 2) + (i * increment) + (entitySize.width / 2), 
                 y: entityPos.y + entitySize.height + 5
             }

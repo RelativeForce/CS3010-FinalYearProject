@@ -1,4 +1,6 @@
-module Assets.AssetIds where
+-- | This module contains the unique Id numbers for each visual 
+-- | asset that is used in the game.
+module Revoked.Assets.AssetIds where
 
 import Emo8.Types (AssetId)
 

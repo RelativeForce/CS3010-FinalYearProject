@@ -3,10 +3,13 @@ module Test.Revoked.Collision.AdjustY (
 ) where
 
 import Prelude
-import Collision (adjustY)
-import Emo8.Types (Height)
+
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
+
+import Emo8.Types (Height)
+
+import Revoked.Collision (adjustY)
 
 adjustYTests :: TestSuite
 adjustYTests =
